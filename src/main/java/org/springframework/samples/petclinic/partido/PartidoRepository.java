@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface PartidoRepository extends CrudRepository<Partido, Integer> {
 
     List<Partido> findAll();
-
 }
