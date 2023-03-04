@@ -1,10 +1,12 @@
 package org.springframework.samples.petclinic.jugador;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -14,6 +16,7 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.partido.Partido;
 import org.springframework.samples.petclinic.user.User;
 
 import lombok.Getter;
@@ -34,11 +37,10 @@ public class Jugador extends Person{
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
 
-    /*@ManyToMany
-    @JoinTable(
-        name = "jugador_partido",
-        joinColumns = @JoinColumn(name = "jugador_id"),
-        inverseJoinColumns = @JoinColumn(name = "partido_id"))
-    private List<Partido> partidos;*/
+
+    @ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "jugador_partidos", joinColumns = @JoinColumn(name = "jugador_id"),
+			inverseJoinColumns = @JoinColumn(name = "partido_id"))
+	private Set<Partido> partidos;
     
 }
