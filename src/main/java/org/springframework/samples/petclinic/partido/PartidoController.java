@@ -16,7 +16,7 @@ public class PartidoController {
 	private PartidoService partidoService;
     
     //VIEWS
-	private static final String VIEW_LISTA_PARTIDOS = "partidos/X";
+	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
 
     @GetMapping(value = { "/partidos" })
 	public String showPartidos(Map<String, Object> model) {

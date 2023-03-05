@@ -18,8 +18,6 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.samples.petclinic.jugador.Jugador;
 
 import lombok.Getter;
@@ -39,8 +37,9 @@ public class Partido{
     @JoinColumn(name = "creador", referencedColumnName = "username")
 	private Jugador creador;
 
-    @NotEmpty
-    private int numJugadoresNecesarios;
+    @NotBlank
+    @Column(name = "num_jugadores")
+    private Integer numJugadoresNecesarios;
 
     @NotBlank
     private String lugar;
@@ -52,8 +51,8 @@ public class Partido{
     @Digits(integer=3, fraction=2)        
 	private BigDecimal precioPersona;
 
-    @Column(name = "fechaCreacion", updatable = false, nullable = false)
-    private LocalDateTime fechaCreacion;
+    @Column(name = "fecha_creacion", updatable = false, nullable = false)
+    private LocalDateTime fechaCreacion=LocalDateTime.now();
 
     @ManyToMany(mappedBy = "partidos")
     private List<Jugador> jugadores;
