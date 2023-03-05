@@ -20,6 +20,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.samples.petclinic.jugador.Jugador;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,9 +35,9 @@ public class Partido{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "creador", referencedColumnName = "user")
-	// private Jugador creador;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "creador", referencedColumnName = "username")
+	private Jugador creador;
 
     @NotEmpty
     private int numJugadoresNecesarios;
@@ -53,7 +55,7 @@ public class Partido{
     @Column(name = "fechaCreacion", updatable = false, nullable = false)
     private LocalDateTime fechaCreacion;
 
-    // @ManyToMany(mappedBy = "partidos")
-    // private List<Jugador> jugadores;
+    @ManyToMany(mappedBy = "partidos")
+    private List<Jugador> jugadores;
 
 }
