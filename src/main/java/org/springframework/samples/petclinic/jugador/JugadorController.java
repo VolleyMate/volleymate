@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.jugador;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.jugador.exceptions.YaUnidoException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class JugadorController {
                 redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
                 /*
                     Aqui que el de frontend que redirija donde se tenga que redirigir, provisionalmente redirige a partidos.
+                    ACORDARSE: Hay que mostrar el mensaje en la vista
                 */
                 String redirect = String.format("redirect:/partidos");
                 return redirect;
@@ -39,6 +41,7 @@ public class JugadorController {
                 redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
                 /*
                     Aqui que el de frontend que redirija donde se tenga que redirigir, provisionalmente redirige a partidos.
+                    ACORDARSE: Hay que mostrar el mensaje en la vista
                 */
                 return "redirect:/partidos";
             }
