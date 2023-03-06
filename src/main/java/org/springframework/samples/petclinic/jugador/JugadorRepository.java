@@ -9,4 +9,7 @@ public interface JugadorRepository extends Repository<Jugador, Integer> {
     @Query("SELECT j FROM Jugador j WHERE j.id=:id")
     public Jugador findById(@Param("id") int id);
 
+    @Query("select j from Jugador j where j.user.username = ?1")
+    public Jugador findByUsername(String username);
+
 }
