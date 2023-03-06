@@ -35,7 +35,7 @@ public class JugadorController {
                     Aqui que el de frontend que redirija donde se tenga que redirigir, provisionalmente redirige a partidos.
                     ACORDARSE: Hay que mostrar el mensaje en la vista
                 */
-                String redirect = String.format("redirect:/partidos");
+                String redirect = "redirect:/partidos";
                 return redirect;
             }catch(YaUnidoException ex){
                 redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
