@@ -16,7 +16,7 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Codacy Coverage Reporter
-        uses: codacy/codacy-coverage-reporter-action@v1
+        uses: codacy/codacy-coverage-reporter@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           reportPath: target/site/jacoco/jacoco.xml
