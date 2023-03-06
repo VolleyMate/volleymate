@@ -12,16 +12,16 @@
     </h2>
     <form:form modelAttribute="jugador" class="form-horizontal" id="añadir-jugador-form">
         <div class="form-group has-feedback">
-            <petclinic:inputField label="Nombre" name="nombre"/>
-            <petclinic:inputField label="Apellido" name="apellido"/>
-            <petclinic:inputField label="Usuario" name="user.usuario"/>
-            <petclinic:inputField label="Email" name="email"/>
-            <petclinic:inputField label="Contraseña" name="user.contraseña"/>
+            <petclinic:inputField label="Nombre" name="first_name">
+            <petclinic:inputField label="Apellido" name="last_name"/>
+            <petclinic:inputField label="Teléfono" name="telephone"/>
+            <petclinic:inputField label="Usuario" name="user.username"/>
+            <petclinic:inputField label="Contraseña" name="user.password"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">            
                     
-            	<button class="btn btn-default" type="submit">Añadir jugador</button>                  
+            	<button class="btn btn-default" type="submit">Registrarse</button>                  
                 
             </div>
         </div>

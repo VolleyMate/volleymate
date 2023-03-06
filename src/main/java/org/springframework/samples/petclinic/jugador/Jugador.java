@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.jugador;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
