@@ -16,7 +16,6 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Codacy Coverage Reporter
-        if: steps.test.outcome == 'success'
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
