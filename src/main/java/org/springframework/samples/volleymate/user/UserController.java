@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.volleymate.jugador.JugadorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -38,11 +39,11 @@ public class UserController {
 
 	private static final String VIEWS_OWNER_CREATE_FORM = "users/createOwnerForm";
 
-	private final UserService userService;
+	private final JugadorService jugadorService;
 
 	@Autowired
-	public UserController(UserService clinicService) {
-		this.userService = clinicService;
+	public UserController(JugadorService clinicService) {
+		this.jugadorService = clinicService;
 	}
 
 	@InitBinder
@@ -64,7 +65,7 @@ public class UserController {
 		}
 		else {
 			//creating owner, user, and authority
-			this.userService.saveUser(user);
+			//this.jugadorService.saveUser(user);
 			return "redirect:/";
 		}
 	}
