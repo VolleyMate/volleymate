@@ -31,10 +31,10 @@
                     <c:out value="${partido.lugar}"/>
                 </td>
                 <td>
-                    <c:out value="${partido.fecha}"/>
+                    <c:out value="${partido.getFechaParseada()}"/>
                 </td>
                 <td>
-                    <c:out value="${partido.fechaCreacion}"/>
+                    <c:out value="${partido.getFechaCreacionParseada()}"/>
                 </td>
             </tr>
         </c:forEach>
