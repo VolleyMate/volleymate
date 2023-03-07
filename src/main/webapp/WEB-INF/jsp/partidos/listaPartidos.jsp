@@ -11,38 +11,42 @@
 
     <table id="partidosTable" class="table table-striped">
         <thead>
-          <tr>
-            <th style="width: 150px;">Creador</th>
-            <th>numJugadoresNecesarios</th>
-            <th>Lugar</th>
-            <th style="width: 120px">Fecha actividad</th>
-            <th style="width: 120px">Fecha creación</th>
-          </tr>
-          <tr style="height: 15px;"></tr>
-        </thead>
-        
-        <tbody>
-          <c:forEach items="${partidos}" var="partido">
-            <tr style="border: 1px solid black; padding: 5px;">
-              <td>
-                <c:out value="${partido.creador.user.username}"/>
-              </td>
-              <td>
-                <c:out value="${partido.numJugadoresNecesarios}"/>
-              </td>
-              <td>
-                <c:out value="${partido.lugar}"/>
-              </td>
-              <td>
-                <c:out value="${partido.getFechaParseada()}"/>
-              </td>
-              <td>
-                <c:out value="${partido.getFechaCreacionParseada()}"/>
-              </td>
+            <tr>
+                <th style="width: 150px; text-align: center;">Creador</th>
+                <th style="width: 120px; text-align: center;">numJugadoresNecesarios</th>
+                <th style="width: 120px; text-align: center;">Lugar</th>
+                <th style="width: 120px; text-align: center;">Fecha actividad</th>
+                <th style="width: 120px; text-align: center;">Fecha creación</th>
+                <th style="width: 60px;"></th>
             </tr>
             <tr style="height: 15px;"></tr>
-          </c:forEach>
+        </thead>
+        <tbody>
+            <c:forEach items="${partidos}" var="partido">
+                <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
+                    <td style="text-align: center;">
+                        <c:out value="${partido.creador.user.username}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <c:out value="${partido.numJugadoresNecesarios}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <c:out value="${partido.lugar}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <c:out value="${partido.getFechaParseada()}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <c:out value="${partido.getFechaCreacionParseada()}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <button style="background-color: red; border-radius: 30px; width: 100px; height: 35px;">Ver</button>
+                    </td> 
+                </tr>
+                <tr style="height: 15px;"></tr>
+            </c:forEach>
         </tbody>
-      </table>
+    </table>
+    
       
 </petclinic:layout>

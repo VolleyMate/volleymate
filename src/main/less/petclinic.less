@@ -58,11 +58,18 @@ table {
   color: @spring-light-grey;
 }
 
-.table > thead > tr {
+.table > tbody > tr > th {
   background-color: lighten(@spring-brown, 3%);
   color: @spring-light-grey;
   border-radius: 20px;
 }
+
+.table > thead > tr {
+   background-color: lighten(@spring-brown, 3%);
+   color: @spring-light-grey;
+   border-radius: 20px;
+}
+
 
 .table-filter {
   background-color: @spring-brown;
