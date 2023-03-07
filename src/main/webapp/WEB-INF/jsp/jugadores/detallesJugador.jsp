@@ -9,7 +9,7 @@
     <h3><c:out value="${jugador.user.username}"/></h3>
 
 
-    <table class="table table-striped">
+    <table class="table table-striped" description="tabla para ver los datos del jugador">
         <tr>
             <th>Teléfono</th>
             <td><c:out value="${jugador.telephone}"/></td>
@@ -24,8 +24,8 @@
         </tr>
     </table>
     
-    <h2>Partidos activos</h2>
-    <table class="table table-striped">
+    <h2>Partidos</h2>
+    <table class="table table-striped" description="tabla para ver los partidos del jugador">
         <c:forEach var="partido" items="${jugador.partidos}">
             <tr>
                 <td valign="top">
