@@ -27,6 +27,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Jugador extends Person{
+	@Column(name = "ciudad")
+	@NotEmpty
+	private String ciudad;
 
     @Column(name = "telephone")
 	@NotEmpty
