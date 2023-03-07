@@ -20,6 +20,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.model.BaseEntity;
+import java.time.format.DateTimeFormatter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -53,5 +54,14 @@ public class Partido extends BaseEntity {
 
     @ManyToMany(mappedBy = "partidos")
     private List<Jugador> jugadores;
+
+    public String getFechaParseada(){
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm dd'/'MM'/'yyyy");
+		return formato.format(fecha);
+    }
+    public String getFechaCreacionParseada() {
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm dd'/'MM'/'yyyy");
+		return formato.format(fechaCreacion);
+	}
 
 }

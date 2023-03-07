@@ -1,4 +1,4 @@
-package org.solicitud;
+package org.springframework.samples.petclinic.solicitud;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
