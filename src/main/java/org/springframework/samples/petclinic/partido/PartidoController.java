@@ -68,7 +68,7 @@ public class PartidoController {
 	}
 
 	@PostMapping(value = "/partidos/new")
-	public String processCreationForm(Jugador jugador, @Valid Partido partido, BindingResult result, ModelMap model) {		
+	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model) {		
 		if (result.hasErrors()) {
 			model.put("partido", partido);
 			return VIEW_PARTIDOS_CREATE_OR_UPDATE;
@@ -76,27 +76,6 @@ public class PartidoController {
 		else {
 			this.partidoService.save(partido);
 			return "redirect:/partidos/"+partido.getId();
-		}
-	}
-	
-	//Update Partidos
-	
-	@GetMapping(value = "/partidos/{partidoId}/edit")
-	public String initUpdateForm(@PathVariable("partidoId") int partidoId, ModelMap model) {
-		Partido partido = this.partidoService.findPartidoById(partidoId);
-		model.put("partido", partido);
-		return VIEW_PARTIDOS_CREATE_OR_UPDATE;
-	}
-	
-    @RequestMapping(value = "/partidos/{partidoId}/edit")
-	public String processUpdateForm(@Valid Partido partido, BindingResult result, Jugador jugador,@PathVariable("partidoId") int partidoId, ModelMap model) {
-		if (result.hasErrors()) {
-			model.put("partido", partido);
-			return VIEW_PARTIDOS_CREATE_OR_UPDATE;
-		}
-		else {
-			this.partidoService.save(partido);
-			return "redirect:/partidos/{partidoId}";
 		}
 	}
 }
