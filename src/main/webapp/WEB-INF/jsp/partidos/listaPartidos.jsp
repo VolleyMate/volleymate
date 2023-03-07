@@ -9,7 +9,7 @@
 <petclinic:layout pageName="partidos">
     <h2>Partidos creados</h2>
 
-    <table id="partidosTable" class="table table-striped">
+    <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
         <thead>
             <tr>
                 <th style="width: 150px; text-align: center;">Creador</th>
