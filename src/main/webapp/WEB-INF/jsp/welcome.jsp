@@ -5,7 +5,7 @@
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <petclinic:layout pageName="home">
-    <div style="" class="row">
+    <div class="row">
         <spring:url value="/resources/images/VolleyMate.jpeg" htmlEscape="true" var="logoVolleyMate"/>
         <img class="img-responsive" src="${logoVolleyMate}" style="display: block; margin: auto;" alt="logoInicio"/>
     </div>
