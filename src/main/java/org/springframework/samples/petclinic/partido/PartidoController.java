@@ -2,11 +2,18 @@ package org.springframework.samples.petclinic.partido;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.jugador.Jugador;
+import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class PartidoController {
@@ -14,9 +21,12 @@ public class PartidoController {
     //SERVICES
 	@Autowired
 	private PartidoService partidoService;
+
+	@Autowired
+	private JugadorService jugadorService;
     
     //VIEWS
-	private static final String VIEW_LISTA_PARTIDOS = "partidos/X";
+	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
 
     @GetMapping(value = { "/partidos" })
 	public String showPartidos(Map<String, Object> model) {
@@ -31,5 +41,14 @@ public class PartidoController {
 			return "redirect:/";
 		}
 	}
+
+	@GetMapping("/partidos/{partidoId}")
+    public ModelAndView showPartido(@PathVariable("partidoId") int partidoId) {
+        ModelAndView mav = new ModelAndView("partidos/partidoDetails");
+        mav.addObject(this.partidoService.findPartidoById(partidoId));
+        return mav;
+    }
+
+	
 
 }
