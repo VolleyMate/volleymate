@@ -19,6 +19,7 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import org.springframework.samples.petclinic.jugador.Jugador;
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,11 +28,7 @@ import lombok.Setter;
 @Table(name = "partidos")
 @Getter
 @Setter
-public class Partido{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Partido extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "creador", referencedColumnName = "username")

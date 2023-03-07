@@ -25,7 +25,7 @@ public class PartidoService {
 	}
 	@Transactional(readOnly = true)
     public Partido findPartidoById(int id) throws DataAccessException {
-        return partidoRepository.findById(id);
+        return partidoRepository.findById(id).get();
     }
 
 	@Transactional
