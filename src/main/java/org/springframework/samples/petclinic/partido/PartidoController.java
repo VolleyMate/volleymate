@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -31,7 +32,7 @@ public class PartidoController {
     
     //VIEWS
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/X";
-	private static final String VIEW_PARTIDOS_CREATE_OR_UPDATE = "partidos/X";
+	private static final String VIEW_PARTIDOS_CREATE_OR_UPDATE = "partidos/createOrUpdatePartidoForm";
 
     @GetMapping(value = { "/partidos" })
 	public String showPartidos(Map<String, Object> model) {
@@ -87,7 +88,7 @@ public class PartidoController {
 		return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 	}
 	
-    @PostMapping(value = "/partidos/{partidoId}/edit")
+    @RequestMapping(value = "/partidos/{partidoId}/edit")
 	public String processUpdateForm(@Valid Partido partido, BindingResult result, Jugador jugador,@PathVariable("partidoId") int partidoId, ModelMap model) {
 		if (result.hasErrors()) {
 			model.put("partido", partido);
