@@ -37,4 +37,6 @@ public class PartidoService {
 	public void deletePartido(@Valid Partido partido) throws DataAccessException, DataIntegrityViolationException {
 		partidoRepository.delete(partido);
 	}
+
+	
 }

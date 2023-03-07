@@ -6,9 +6,7 @@ import org.springframework.samples.petclinic.jugador.exceptions.YaUnidoException
 import org.springframework.samples.petclinic.partido.Partido;
 import org.springframework.samples.petclinic.partido.PartidoRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
@@ -28,6 +26,12 @@ public class JugadorService {
     public Jugador findJugadorById(int id) throws DataAccessException {
         return jugadorRepository.findById(id);
     }
+
+    @Transactional(readOnly = true)
+    public Jugador findJugadorByUsername(String username) throws DataAccessException {
+      return jugadorRepository.findByUsername(username);
+    }
+
 
     public void unirsePartida(int jugadorId, int partidoId) throws YaUnidoException{
         Jugador jugador = this.jugadorRepository.findById(jugadorId);

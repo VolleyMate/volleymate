@@ -67,5 +67,6 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
 INSERT INTO jugadores VALUES (1,'Jorge','Sillero','657236154','jorsilman');
+INSERT INTO jugadores VALUES (2,'Admin','Admin','666666666','admin1');
 INSERT INTO partidos(id,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (1,'jorsilman',3,'Sevilla','2013-01-01','2013-01-01');
 
