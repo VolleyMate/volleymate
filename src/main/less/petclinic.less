@@ -18,6 +18,8 @@
 @spring-brown:      #34302D;
 @spring-grey:       #838789;
 @spring-light-grey: #f1f1f1;
+@spring-light-red:  #ff0000;
+@spring-red:        #a70000;
 
 @body-bg:                           @spring-light-grey;
 @text-color:                        @spring-brown;
@@ -39,6 +41,10 @@
 @btn-default-color:              @spring-light-grey;
 @btn-default-bg:                 @spring-brown;
 @btn-default-border:             @spring-green;
+
+@btn-red-color:                  @spring-light-grey;
+@btn-red-bg:                     @spring-red;
+@btn-red-border:                 @spring-light-red;
 
 @nav-tabs-active-link-hover-color:        @spring-light-grey;
 @nav-tabs-active-link-hover-bg:           @spring-brown;
@@ -81,6 +87,23 @@
   }
 }
 
+.btn-red {
+  border-width: 2px;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-color: @spring-red;
+    border-color: @spring-light-red;
+  }
+}
 
 .container .text-muted {
   margin: 20px 0;

@@ -23,7 +23,6 @@
             <td><c:out value="${jugador.ciudad}"/></td>
         </tr>
     </table>
-    <a href="" class="btn btn-default">Partidos pasados</a>
     
     <h2>Partidos activos</h2>
     <table class="table table-striped">
@@ -41,4 +40,8 @@
                 </td>
         </c:forEach>
     </table>
+
+    <a href="" class="btn btn-default">Partidos pasados</a>
+
+    <a href="" class="btn btn-default">Reportar jugador</a>
 </petclinic:layout>
