@@ -3,23 +3,20 @@ package org.springframework.samples.petclinic.partido;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import javax.validation.Valid;
-
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
-import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.pet.Pet;
-import org.springframework.samples.petclinic.pet.exceptions.DuplicatedPetNameException;
+import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class PartidoController {
@@ -27,6 +24,9 @@ public class PartidoController {
     //SERVICES
 	@Autowired
 	private PartidoService partidoService;
+
+	@Autowired
+	private JugadorService jugadorService;
     
     //VIEWS
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/X";
@@ -56,6 +56,15 @@ public class PartidoController {
 		model.put("partido", partido);
 		return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 	}
+
+	@GetMapping("/partidos/{partidoId}")
+    public ModelAndView showPartido(@PathVariable("partidoId") int partidoId) {
+        ModelAndView mav = new ModelAndView("partidos/partidoDetails");
+        mav.addObject(this.partidoService.findPartidoById(partidoId));
+        return mav;
+    }
+
+	
 
 	@PostMapping(value = "/partidos/new")
 	public String processCreationForm(Jugador jugador, @Valid Partido partido, BindingResult result, ModelMap model) {		

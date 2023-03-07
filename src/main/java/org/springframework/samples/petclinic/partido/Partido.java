@@ -18,7 +18,9 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import org.springframework.samples.petclinic.jugador.Jugador;
+import org.springframework.samples.petclinic.model.BaseEntity;
+import java.time.format.DateTimeFormatter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,18 +29,15 @@ import lombok.Setter;
 @Table(name = "partidos")
 @Getter
 @Setter
-public class Partido{
+public class Partido extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "creador", referencedColumnName = "username")
+	private Jugador creador;
 
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "creador", referencedColumnName = "user")
-	// private Jugador creador;
-
-    @NotEmpty
-    private int numJugadoresNecesarios;
+    @NotBlank
+    @Column(name = "num_jugadores")
+    private Integer numJugadoresNecesarios;
 
     @NotBlank
     private String lugar;
@@ -50,10 +49,19 @@ public class Partido{
     @Digits(integer=3, fraction=2)        
 	private BigDecimal precioPersona;
 
-    @Column(name = "fechaCreacion", updatable = false, nullable = false)
-    private LocalDateTime fechaCreacion;
+    @Column(name = "fecha_creacion", updatable = false, nullable = false)
+    private LocalDateTime fechaCreacion=LocalDateTime.now();
 
-    // @ManyToMany(mappedBy = "partidos")
-    // private List<Jugador> jugadores;
+    @ManyToMany(mappedBy = "partidos")
+    private List<Jugador> jugadores;
+
+    public String getFechaParseada(){
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm dd'/'MM'/'yyyy");
+		return formato.format(fecha);
+    }
+    public String getFechaCreacionParseada() {
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm dd'/'MM'/'yyyy");
+		return formato.format(fechaCreacion);
+	}
 
 }

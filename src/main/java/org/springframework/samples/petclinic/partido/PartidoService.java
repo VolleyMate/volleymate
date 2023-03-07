@@ -26,6 +26,10 @@ public class PartidoService {
 	public List<Partido> findAllPartidos(){
 		return partidoRepository.findAll();
 	}
+	@Transactional(readOnly = true)
+    public Partido findPartidoById(int id) throws DataAccessException {
+        return partidoRepository.findById(id).get();
+    }
 
 	@Transactional(rollbackFor = IllegalArgumentException.class)
 	public void save(Partido partido) throws DataAccessException, IllegalArgumentException {
@@ -37,7 +41,7 @@ public class PartidoService {
 	}
 
 	@Transactional
-	public void deletePartida(@Valid Partido partido) throws DataAccessException, DataIntegrityViolationException {
+	public void deletePartido(@Valid Partido partido) throws DataAccessException, DataIntegrityViolationException {
 		partidoRepository.delete(partido);
 	}
 
