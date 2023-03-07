@@ -7,38 +7,42 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="partidos">
-    <h2>Partidos</h2>
+    <h2>Partidos creados</h2>
 
     <table id="partidosTable" class="table table-striped">
         <thead>
-        <tr>
+          <tr>
             <th style="width: 150px;">Creador</th>
             <th>numJugadoresNecesarios</th>
             <th>Lugar</th>
             <th style="width: 120px">Fecha actividad</th>
             <th style="width: 120px">Fecha creación</th>
-        </tr>
+          </tr>
+          <tr style="height: 15px;"></tr>
         </thead>
+        
         <tbody>
-        <c:forEach items="${partidos}" var="partido">
-            <tr>
-                <td>
-                    <c:out value="${partido.creador.user.username}"/></a>
-                </td>
-                <td>
-                    <c:out value="${partido.numJugadoresNecesarios}"/>
-                </td>
-                <td>
-                    <c:out value="${partido.lugar}"/>
-                </td>
-                <td>
-                    <c:out value="${partido.getFechaParseada()}"/>
-                </td>
-                <td>
-                    <c:out value="${partido.getFechaCreacionParseada()}"/>
-                </td>
+          <c:forEach items="${partidos}" var="partido">
+            <tr style="border: 1px solid black; padding: 5px;">
+              <td>
+                <c:out value="${partido.creador.user.username}"/>
+              </td>
+              <td>
+                <c:out value="${partido.numJugadoresNecesarios}"/>
+              </td>
+              <td>
+                <c:out value="${partido.lugar}"/>
+              </td>
+              <td>
+                <c:out value="${partido.getFechaParseada()}"/>
+              </td>
+              <td>
+                <c:out value="${partido.getFechaCreacionParseada()}"/>
+              </td>
             </tr>
-        </c:forEach>
+            <tr style="height: 15px;"></tr>
+          </c:forEach>
         </tbody>
-    </table>
+      </table>
+      
 </petclinic:layout>

@@ -49,9 +49,19 @@
 @pagination-active-border:                @spring-green;
 @table-border-color:                      @spring-brown;
 
+table {
+  border-spacing: 0 10px;
+}
+
 .table > thead > tr > th {
   background-color: lighten(@spring-brown, 3%);
   color: @spring-light-grey;
+}
+
+.table > thead > tr {
+  background-color: lighten(@spring-brown, 3%);
+  color: @spring-light-grey;
+  border-radius: 20px;
 }
 
 .table-filter {
