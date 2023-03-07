@@ -25,7 +25,7 @@ public class JugadorController {
 
     @GetMapping("/jugadores/{jugadorId}")
     public ModelAndView showJugador(@PathVariable("jugadorId") int jugadorId) {
-        ModelAndView mav = new ModelAndView("jugadores/jugadorDetails");
+        ModelAndView mav = new ModelAndView("jugadores/detallesJugador");
         mav.addObject(this.jugadorService.findJugadorById(jugadorId));
         return mav;
     }

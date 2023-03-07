@@ -66,8 +66,16 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO jugadores VALUES (1,'Jorge','Sillero','657236154','jorsilman');
-INSERT INTO jugadores VALUES (2,'Admin','Admin','666666666','admin1');
-INSERT INTO partidos(id,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (1,'jorsilman',3,'Sevilla','2013-01-01','2013-01-01');
-INSERT INTO partidos(id,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (2,'admin1',3,'Sevilla','2013-01-01','2013-01-01');
+INSERT INTO jugadores VALUES (1,'Jorge','Sillero','Sevilla','657236154','jorsilman');
+INSERT INTO jugadores VALUES (2,'Admin','Admin','Sevilla','666666666','admin1');
 
+INSERT INTO partidos(id,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (1,'jorsilman',3,'Sevilla','2013-01-02 17:00','2013-01-01 17:00');
+INSERT INTO partidos(id,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (2,'admin1',3,'Sevilla','2013-01-02 17:00','2013-01-01 17:00');
+INSERT INTO partidos(id,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (3,'jorsilman',4,'Sevilla','2013-01-04 17:00','2013-01-03 17:00');
+INSERT INTO partidos(id,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (4,'jorsilman',4,'Sevilla','2013-05-02 17:00','2013-05-01 17:00');
+INSERT INTO partidos(id,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (5,'jorsilman',3,'Sevilla','2013-05-03 17:00','2013-05-02 17:00');
+
+INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,1);
+INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,3);
+INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,4);
+INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,5);
