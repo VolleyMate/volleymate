@@ -43,8 +43,8 @@
     </table>
 
     <a href="" class="btn btn-default">Partidos pasados</a>
-    
-    <c:if test="${jugadorVista.equals(jugadorAutenticado)}">
+
+    <c:if test="${!jugadorVista.equals(jugadorAutenticado)}">
         <a href="" class="btn btn-default">Reportar jugador</a>
     </c:if>
 </petclinic:layout>
