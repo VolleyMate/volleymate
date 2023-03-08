@@ -57,8 +57,9 @@ public class JugadorController {
     @GetMapping("/jugador/mispartidoscreados")
     public String listMisPartidosCreados(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth != null){
-			if(auth.isAuthenticated()){
+		if(auth == null || !auth.isAuthenticated()){
+				return "redirect:/";
+			}else {
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 				String usuario = currentUser.getUsername();
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
@@ -66,9 +67,6 @@ public class JugadorController {
 				model.addAttribute("partidosCreados", partidos);
 				return "jugador/misPartidosCreados";
 			}
-			return "redirect:/";
-		}
-		return "redirect:/";
     }
 
     @GetMapping("/jugadores/{jugadorId}/unirse/{partidoId}")
