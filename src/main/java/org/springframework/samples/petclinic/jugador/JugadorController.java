@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.jugador;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -52,23 +53,14 @@ public class JugadorController {
     }
 
     @GetMapping("/jugadores/{jugadorId}")
-    public String showJugador(@PathVariable("jugadorId") int jugadorId, Map<String,Object> model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if(auth.isAuthenticated()){
-				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String usuario = currentUser.getUsername();
-				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-                Jugador jugador2 = jugadorService.findJugadorById(jugadorId);
-                if (jugador.equals(jugador2)){
-                    model.put("jugador",jugador);
-                    return "redirect:/jugadores";
-                } else {
-                    model.put("jugador",jugador2);
-                    return "jugadores/detallesJugador";
-                }
-            } else {
-                return "welcome";
-            }
+    public String showJugador(@PathVariable("jugadorId") int jugadorId, Map<String,Object> model, Principal principal) {
+				Jugador jugadorAutenticado = jugadorService.findJugadorByUsername(principal.getName());
+                Jugador jugadorVista = jugadorService.findJugadorById(jugadorId);
+                
+                model.put("jugadorAutenticado", jugadorAutenticado);
+                model.put("jugadorVista", jugadorVista);
+                
+                return "jugadores/detallesJugador";
     }
 
 
