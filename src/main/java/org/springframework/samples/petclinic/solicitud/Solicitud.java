@@ -2,6 +2,10 @@ package org.springframework.samples.petclinic.solicitud;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -22,8 +26,9 @@ public class Solicitud extends BaseEntity {
   @NotEmpty
   private Jugador jugador;
 
-  @Column(name = "partido")
-  @NotEmpty
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinTable(name="solicitudes_partido", joinColumns = @JoinColumn(name = "solicitudId"), 
+        inverseJoinColumns = @JoinColumn(name = "partidoId"))
   private Partido partido;
 
   @Column(name = "estado")
