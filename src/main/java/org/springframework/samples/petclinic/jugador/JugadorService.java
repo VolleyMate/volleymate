@@ -35,7 +35,7 @@ public class JugadorService {
 
     public void unirsePartida(int jugadorId, int partidoId) throws YaUnidoException{
         Jugador jugador = this.jugadorRepository.findById(jugadorId);
-        Partido partido = this.partidoRepository.findById(partidoId).get();
+        Partido partido = this.partidoRepository.findById(partidoId);
         
         if(jugador.getPartidos().contains(partido)){
             throw new YaUnidoException();
