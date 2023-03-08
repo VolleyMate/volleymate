@@ -53,7 +53,7 @@ public class Partido extends BaseEntity {
     @Column(name = "fecha_creacion", updatable = false, nullable = false)
     private LocalDateTime fechaCreacion=LocalDateTime.now();
 
-    @OneToMany(mappedBy = "partidos")
+    @OneToMany(mappedBy = "partido")
     private Set<Solicitud> solicitudes;
 
     @ManyToMany(mappedBy = "partidos")

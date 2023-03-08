@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface SolicitudRepository extends CrudRepository<Solicitud, Integer> {
     
-    @Query("SELECT s FROM Solicitud s WHEN s.partido.id = :partidoId")
+    @Query("SELECT s FROM Solicitud s WHERE s.partido.id = :partidoId")
     public Set<Solicitud> findSolicitudesByPartidoId(int partidoId);
 
 }
