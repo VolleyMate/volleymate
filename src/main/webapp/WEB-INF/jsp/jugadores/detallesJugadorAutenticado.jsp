@@ -42,7 +42,6 @@
         </c:forEach>
     </table>
 
-    <a href="" class="btn btn-default">Partidos pasados</a>
-
-    <a href="" class="btn btn-default">Reportar jugador</a>
+    <a href="" class="btn btn-default">Partidos jugados</a>
+    
 </petclinic:layout>
