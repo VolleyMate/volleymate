@@ -1,6 +1,11 @@
 package org.springframework.samples.petclinic.jugador;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.exceptions.YaUnidoException;
@@ -29,11 +34,41 @@ public class JugadorController {
         this.partidoService = partidoService;
     }
 
+    @GetMapping("/jugadores")
+    public ModelAndView showJugadorAutenticado() {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if(auth.isAuthenticated()){
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				String usuario = currentUser.getUsername();
+				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
+                ModelAndView mav = new ModelAndView("jugadores/detallesJugadorAutenticado");
+                mav.addObject(this.jugadorService.findJugadorById(jugador.getId()));
+                return mav;
+            
+            } else {
+                ModelAndView mav = new ModelAndView("welcome");
+                return mav;
+            }
+    }
+
     @GetMapping("/jugadores/{jugadorId}")
-    public ModelAndView showJugador(@PathVariable("jugadorId") int jugadorId) {
-        ModelAndView mav = new ModelAndView("jugadores/detallesJugador");
-        mav.addObject(this.jugadorService.findJugadorById(jugadorId));
-        return mav;
+    public String showJugador(@PathVariable("jugadorId") int jugadorId, Map<String,Object> model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if(auth.isAuthenticated()){
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				String usuario = currentUser.getUsername();
+				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
+                Jugador jugador2 = jugadorService.findJugadorById(jugadorId);
+                if (jugador.equals(jugador2)){
+                    model.put("jugador",jugador);
+                    return "redirect:/jugadores";
+                } else {
+                    model.put("jugador",jugador2);
+                    return "jugadores/detallesJugador";
+                }
+            } else {
+                return "welcome";
+            }
     }
 
 
@@ -46,7 +81,11 @@ public class JugadorController {
 				String usuario = currentUser.getUsername();
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
 				Set<Partido> partidos = jugador.getPartidos();
-				model.addAttribute("partidos", partidos);
+                List<Partido> arr = new ArrayList<>();
+                arr.addAll(partidos);
+                Comparator<Partido> comparador = Comparator.comparing(Partido::getFechaCreacion);
+                List<Partido> listaOrdenada =  arr.stream().sorted(comparador.reversed()).collect(Collectors.toList());
+				model.addAttribute("partidos", listaOrdenada);
 				return "jugadores/misPartidos";
 			}
 			return "redirect:/";
