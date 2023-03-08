@@ -1,14 +1,18 @@
 package org.springframework.samples.petclinic.partido;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
+import org.springframework.samples.petclinic.solicitud.Solicitud;
+import org.springframework.samples.petclinic.solicitud.SolicitudService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,10 +32,14 @@ public class PartidoController {
 
 	@Autowired
 	private JugadorService jugadorService;
+
+	@Autowired
+	private SolicitudService solicitudService;
     
     //VIEWS
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
 	private static final String VIEW_PARTIDOS_CREATE_OR_UPDATE = "partidos/createOrUpdatePartidoForm";
+	private static final String VIEW_SOLICITUDES_PARTIDO = "partidos/{partidoId}/solicitudes";
 
     @GetMapping(value = { "/partidos" })
 	public String showPartidos(Map<String, Object> model) {
@@ -76,6 +84,17 @@ public class PartidoController {
 			this.partidoService.save(partido);
 			return "redirect:/partidos/"+partido.getId();
 		}
+	}
+
+	// Show solicitudes
+
+	@GetMapping(value = "partidos/{partidoId}/solicitudes")
+	public String showSolicitudesPartido(@PathVariable("partidoId") int partidoId, ModelMap model) {
+		Set<Solicitud> conj = new HashSet<>();
+		Set<Solicitud> solic = solicitudService.findAllSolicitudesByPartidoId(partidoId);
+		conj.addAll(solic);
+		model.put("solicitudes", conj);
+		return VIEW_SOLICITUDES_PARTIDO;
 	}
 }
 	
