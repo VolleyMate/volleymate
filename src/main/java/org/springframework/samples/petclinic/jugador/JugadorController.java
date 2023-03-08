@@ -31,7 +31,7 @@ public class JugadorController {
     }
 
 
-    @GetMapping("/jugador/mispartidos")
+    @GetMapping("/jugadores/mispartidos")
     public String showMisPartidos(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
@@ -41,7 +41,7 @@ public class JugadorController {
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
 				Set<Partido> partidos = jugador.getPartidos();
 				model.addAttribute("partidos", partidos);
-				return "jugador/misPartidos";
+				return "jugadores/misPartidos";
 			}
 			return "redirect:/";
 		}

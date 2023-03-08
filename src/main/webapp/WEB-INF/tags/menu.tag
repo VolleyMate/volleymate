@@ -19,17 +19,17 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'misPartidos'}" url="/owners/find"
+				<petclinic:menuItem active="${name eq 'misPartidos'}" url="/jugadores/mispartidos"
 					title="misPartidos">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Mis partidos</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'partidos'}" url="/partido/partidos"
+				<petclinic:menuItem active="${name eq 'partidos'}" url="/partidos"
 					title="partidos">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Buscar</span>
-				</petclinic:menuItem>
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Partidos</span>
+				</petclinic:menuItem>				
 
 				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
