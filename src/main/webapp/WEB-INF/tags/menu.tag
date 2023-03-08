@@ -19,13 +19,13 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'misPartidos'}" url="/owners/find"
+				<petclinic:menuItem active="${name eq 'misPartidos'}" url="/partidos"
 					title="misPartidos">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Mis partidos</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'partidos'}" url="/partido/partidos"
+				<petclinic:menuItem active="${name eq 'partidos'}" url="/partidos/buscar"
 					title="partidos">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Buscar</span>
