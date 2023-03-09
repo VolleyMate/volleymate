@@ -33,6 +33,20 @@ import lombok.Setter;
 @Setter
 public class Partido extends BaseEntity {
 
+    @NotBlank
+    private String nombre;
+
+    @Column(name = "sexo")
+    @NotEmpty
+    private Sexo sexo;
+
+    @NotBlank
+    private String descripcion;
+
+    @Column(name = "tipo")
+    @NotEmpty
+    private Tipo tipo;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "creador", referencedColumnName = "username")
 	private Jugador creador;
