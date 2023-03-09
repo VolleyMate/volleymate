@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
-				 	/*.loginPage("/login")*/
+				 	.loginPage("/login")
 				 	.failureUrl("/login-error")
 				.and()
 					.logout()
@@ -71,6 +71,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	        + "where username = ?")	      	      
 	      .passwordEncoder(passwordEncoder());	
 	}
+
+	
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {	    
