@@ -14,11 +14,11 @@ INSERT INTO authorities(id,username,authority) VALUES (2,'jorsilman','owner');
 INSERT INTO jugadores VALUES (1,'Jorge','Sillero','Sevilla','657236154','jorsilman');
 INSERT INTO jugadores VALUES (2,'Admin','Admin','Sevilla','666666666','admin1');
 
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (1,'Partido amistoso','MASCULINO','Vamos a jugar un partido amistoso','VOLEIBOL','jorsilman',3,'Sevilla','2013-01-02 17:00','2013-01-01 17:00');
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (2,'Partido de playa','FEMENINO','Vamos a jugar un partido amistoso','PLAYA','admin1',3,'Sevilla','2013-01-02 17:00','2013-01-01 17:00');
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (3,'Partido de revancha','MIXTO','Vamos a jugar un partido amistoso','FUTVOLEI','jorsilman',4,'Sevilla','2013-01-04 17:00','2013-01-03 17:00');
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (4,'Partido competitivo','FEMENINO','Vamos a jugar un partido amistoso','BOSABALL','jorsilman',4,'Sevilla','2013-05-02 17:00','2013-05-01 17:00');
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (5,'Partido entre amigos','MIXTO','Vamos a jugar un partido amistoso','WATERVOLEY','jorsilman',3,'Sevilla','2013-05-03 17:00','2013-05-02 17:00');
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (1,'Partido amistoso',0,'Vamos a jugar un partido amistoso',0,'jorsilman',3,'Sevilla','2013-01-02 17:00','2013-01-01 17:00');
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (2,'Partido de playa',1,'Vamos a jugar un partido amistoso',5,'admin1',3,'Sevilla','2013-01-02 17:00','2013-01-01 17:00');
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (3,'Partido de revancha',2,'Vamos a jugar un partido amistoso',1,'jorsilman',4,'Sevilla','2013-01-04 17:00','2013-01-03 17:00');
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (4,'Partido competitivo',1,'Vamos a jugar un partido amistoso',2,'jorsilman',4,'Sevilla','2013-05-02 17:00','2013-05-01 17:00');
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (5,'Partido entre amigos',2,'Vamos a jugar un partido amistoso',6,'jorsilman',3,'Sevilla','2013-05-03 17:00','2013-05-02 17:00');
 
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,1);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,3);
