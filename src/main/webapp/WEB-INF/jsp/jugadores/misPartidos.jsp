@@ -20,6 +20,7 @@
                         <dt>Nº jug necesarios</dt>
                         <dd><c:out value="${partido.numJugadoresNecesarios}"/></dd>
                     </dl>
+                  <td> <a href="" class="btn btn-default">Ver partido</a></td> 
                 </td>
         </c:forEach>
     </table>
