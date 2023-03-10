@@ -11,6 +11,7 @@
     <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
         <thead>
             <tr>
+                <th style="width: 120px; text-align: center;">Título</th>
                 <th style="width: 120px; text-align: center;">Fecha actividad</th>
                 <th style="width: 120px; text-align: center;">Lugar</th>
                 <th style="width: 60px;"></th>
@@ -21,6 +22,9 @@
         <tbody>
             <c:forEach items="${partidos}" var="partido">
                 <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
+                    <td style="text-align: center;">
+                        <c:out value="${partido.nombre}"/>
+                    </td>
                     <td style="text-align: center;">
                         <c:out value="${partido.getFechaParseada()}"/>
                     </td>
