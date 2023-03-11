@@ -1,27 +1,39 @@
 package org.springframework.samples.volleymate.jugador;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
 import java.util.Map;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoService;
+import org.springframework.samples.volleymate.user.UserService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class JugadorController {
+    
+    private static final String VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM = "jugadores/createOrUpdateJugadorForm";
     
     private final JugadorService jugadorService;
     
@@ -29,9 +41,8 @@ public class JugadorController {
 
     @Autowired
     public JugadorController(JugadorService jugadorService, PartidoService partidoService) {
-        this.jugadorService = jugadorService;
-        
-        this.partidoService = partidoService;
+		this.jugadorService = jugadorService;
+    	this.partidoService = partidoService;
     }
 
     @GetMapping("/jugadores")
@@ -129,4 +140,61 @@ public class JugadorController {
                 return "redirect:/partidos";
             }
     }
+
+    @GetMapping(value = "/jugadores/edit/{id}")
+	public String initEditForm(Model model, @PathVariable("id") int id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			if(auth.isAuthenticated()){
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				String user = currentUser.getUsername();
+				try{
+					Jugador player = jugadorService.findJugadorByUsername(user);
+					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+					for (GrantedAuthority usuarioR : usuario){
+					String credencial = usuarioR.getAuthority();
+						if(player.getId()==id || credencial.equals("admin")){
+							Jugador jugador = jugadorService.findJugadorById(id);
+							String username = jugador.getUser().getUsername();
+							String pass = jugador.getUser().getPassword();
+
+							model.addAttribute("pass", pass);
+							model.addAttribute("username", username);
+							
+							model.addAttribute(jugador);
+							return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+						}else{
+							return "welcome";
+						}
+					}
+				} catch (DataIntegrityViolationException ex){
+					
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+				}
+				
+				
+			}return "welcome";
+		}
+		return "welcome";
+	
+	}
+	
+	
+	@PostMapping(value = "/jugadores/edit/{id}")
+	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
+		
+		if(result.hasErrors()){
+			model.put("errors", result.getAllErrors());
+			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
+			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","user"); 
+            this.jugadorService.saveJugador(jugadorToUpdate);
+			model.put("message","Jugador editado correctamente");
+			return "redirect:/jugadores";
+		}						
+		
+	}
+
 }
