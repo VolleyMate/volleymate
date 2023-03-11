@@ -23,8 +23,6 @@
         <h4>Sexo: <b><c:out value="${jugadorVista.sexo}"/></b></h4>
     </br>
     </br>
-
-
         <tr>
             <spring:url value="/jugador/edit/{id}" var="editUrl">
                 <spring:param name="id" value="${id}"/>
