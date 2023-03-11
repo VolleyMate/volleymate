@@ -116,7 +116,7 @@ public class JugadorController {
 
     }
 
-    @GetMapping("/jugadores/solicitudes/aceptar/{solicitudId}")
+    @GetMapping("/jugadores/solicitudes/denegar/{solicitudId}")
     public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId){
         Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
         // notificar al jugador que ha sido rechazado. 
