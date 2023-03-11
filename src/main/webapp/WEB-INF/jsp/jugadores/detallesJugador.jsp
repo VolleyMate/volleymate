@@ -3,48 +3,39 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@page contentType="text/html"%>
+<%@page pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="detalleJugador">
-    <h2><c:out value="${jugadorVista.firstName} ${jugadorVista.lastName}"/></h2>
-    <h3><c:out value="${jugadorVista.user.username}"/></h3>
+
+        <div class="m-0 row justify-content-center"> 
+
+    <div class="col-auto p-5 text-center"> 
+        
+        <c:if test="${jugador.image != ''}"><img class="rounded d-block" src="${jugadorVista.image}" width="250" height="250"></c:if>
+       
+</br>
+</br>
+        <h1><c:out value="${jugadorVista.firstName}"/><c:out value="  "/><c:out value="${jugadorVista.lastName}"/></h1>
+        <h3><b>@<c:out value="${jugadorVista.user.username}"/></b></h3>
+        <h4>Ciudad: <b><c:out value="${jugadorVista.ciudad}"/></b></h4>
+        <h4>Teléfono: <b><c:out value="${jugadorVista.telephone}"/></b></h4>
+        <h4>Sexo: <b><c:out value="${jugadorVista.sexo}"/></b></h4>
+    </br>
+    </br>
 
 
-    <table class="table table-striped" summary="tabla para ver los datos del jugador">
         <tr>
-            <th>Teléfono</th>
-            <td><c:out value="${jugadorVista.telephone}"/></td>
+            <spring:url value="/jugador/edit/{id}" var="editUrl">
+                <spring:param name="id" value="${id}"/>
+            </spring:url>
+            <a href="${editUrl}" class="btn btn-default">Editar Jugador</a>
         </tr>
+   
         <tr>
-            <th>Correo electrónico</th>
-            <td><c:out value="${jugadorVista.user.correo}"/></td>
-        </tr>
-        <tr>
-            <th>Ciudad</th>
-            <td><c:out value="${jugadorVista.ciudad}"/></td>
+            <spring:url value="/jugadores/mispartidos" var="partidasURL"></spring:url>
+            <a href="${partidasURL}" class="btn btn-default">Mis partidos</a>
         </tr>
     </table>
-    
-    <h2>Partidos</h2>
-    <table class="table table-striped" summary="tabla para ver los partidos del jugador">
-        <c:forEach var="partido" items="${jugadorVista.partidos}">
-            <tr>
-                <td valign="top">
-                    <dl class="dl-horizontal">
-                        <dt>Fecha</dt>
-                        <dd><c:out value="${partido.fecha}"/></dd>
-                        <dt>Lugar</dt>
-                        <dd><c:out value="${partido.lugar}"/></dd>
-                        <dt>Número de jugadores necesarios</dt>
-                        <dd><c:out value="${partido.numJugadoresNecesarios}"/></dd>
-                    </dl>
-                </td>
-        </c:forEach>
-    </table>
 
-    <a href="" class="btn btn-default">Partidos pasados</a>
-
-    <c:if test="${!jugadorVista.equals(jugadorAutenticado)}">
-        <a href="" class="btn btn-default">Reportar jugador</a>
-    </c:if>
 </petclinic:layout>
