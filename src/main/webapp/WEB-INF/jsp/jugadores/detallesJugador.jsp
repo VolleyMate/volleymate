@@ -13,11 +13,11 @@
     <table class="table table-striped" summary="tabla para ver los datos del jugador">
         <tr>
             <th>Nombre</th>
-            <td><c:out value="${jugador.firstName}"/></td>
+            <td><c:out value="${jugadorVista.firstName}"/></td>
         </tr>
         <tr>
             <th>Apellidos</th>
-            <td><c:out value="${jugador.lastName}"/></td>
+            <td><c:out value="${jugadorVista.lastName}"/></td>
         </tr>
         <tr>
             <th>Teléfono</th>

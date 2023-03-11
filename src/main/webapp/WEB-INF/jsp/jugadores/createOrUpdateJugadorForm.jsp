@@ -22,8 +22,6 @@
             <petclinic:inputField label="Apellido" name="lastName"/>
             <petclinic:inputField label="Ciudad" name="ciudad"/>
             <petclinic:inputField label="Teléfono" name="telephone"/>
-            <input type="hidden" name="jugador.user.password" value="${pass}">
-            <input type="hidden" name="jugador.user.username" value="${username}">
             
         </div>
     

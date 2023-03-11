@@ -49,21 +49,19 @@ public class JugadorController {
     }
 
     @GetMapping("/jugadores")
-    public ModelAndView showJugadorAutenticado() {
+    public String showJugadorAutenticado(Map<String,Object> model, Principal principal) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if(auth.isAuthenticated()){
-				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String usuario = currentUser.getUsername();
-				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-                ModelAndView mav = new ModelAndView("jugadores/detallesJugadorAutenticado");
-                mav.addObject(this.jugadorService.findJugadorById(jugador.getId()));
-                return mav;
-            
-            } else {
-                ModelAndView mav = new ModelAndView("welcome");
-                return mav;
+            if(auth.isAuthenticated()){
+                org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+                String usuario = currentUser.getUsername();
+                Jugador jugador = jugadorService.findJugadorByUsername(usuario);
+                Jugador jugadorAutenticado = jugadorService.findJugadorByUsername(principal.getName());
+                model.put("jugadorAutenticado", jugadorAutenticado);
+                model.put("jugadorVista", jugador);
+                return "jugadores/detallesJugador";
+
             }
-    }
+            return "welcome";    }
 
     @GetMapping("/jugadores/{jugadorId}")
     public String showJugador(@PathVariable("jugadorId") int jugadorId, Map<String,Object> model, Principal principal) {
@@ -196,7 +194,7 @@ public class JugadorController {
     public String aceptarSolicitud(@PathVariable("solicitudId") int solicitudId, RedirectAttributes redirAttrs){
         Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
         try{
-            this.jugadorService.unirsePartida(solicitud.getJugador(), solicitud.getPartido());
+            this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
             redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
             /*
                 Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
