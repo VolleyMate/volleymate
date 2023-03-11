@@ -12,7 +12,7 @@
 
     <div class="col-auto p-5 text-center"> 
         
-        <c:if test="${jugador.image != ''}"><img class="rounded d-block" src="${jugadorVista.image}" width="250" height="250"></c:if>
+        <c:if test="${jugador.image != ''}"><img class="rounded d-block" alt="foto de perfil" src="${jugadorVista.image}" width="250" height="250"></c:if>
        
 </br>
 </br>
