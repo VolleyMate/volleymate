@@ -12,6 +12,14 @@
 
     <table class="table table-striped" summary="tabla para ver los datos del jugador">
         <tr>
+            <th>Nombre</th>
+            <td><c:out value="${jugador.firstName}"/></td>
+        </tr>
+        <tr>
+            <th>Apellidos</th>
+            <td><c:out value="${jugador.lastName}"/></td>
+        </tr>
+        <tr>
             <th>Teléfono</th>
             <td><c:out value="${jugador.telephone}"/></td>
         </tr>
@@ -43,5 +51,10 @@
     </table>
 
     <a href="" class="btn btn-default">Partidos jugados</a>
+
+    <spring:url value="/jugadores/edit/{id}" var="editUrl">
+                <spring:param name="id" value="${jugador.id}"/>
+            </spring:url>
+            <a href="${editUrl}" class="btn btn-default">Editar Jugador</a>
     
 </petclinic:layout>
