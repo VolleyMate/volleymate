@@ -1,5 +1,6 @@
 package org.springframework.samples.volleymate.jugador;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoService;
+import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -24,13 +26,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class JugadorController {
     
     private final JugadorService jugadorService;
-    
     private final PartidoService partidoService;
+
+	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
+
 
     @Autowired
     public JugadorController(JugadorService jugadorService, PartidoService partidoService) {
         this.jugadorService = jugadorService;
-        
         this.partidoService = partidoService;
     }
 
@@ -52,23 +55,14 @@ public class JugadorController {
     }
 
     @GetMapping("/jugadores/{jugadorId}")
-    public String showJugador(@PathVariable("jugadorId") int jugadorId, Map<String,Object> model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if(auth.isAuthenticated()){
-				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String usuario = currentUser.getUsername();
-				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-                Jugador jugador2 = jugadorService.findJugadorById(jugadorId);
-                if (jugador.equals(jugador2)){
-                    model.put("jugador",jugador);
-                    return "redirect:/jugadores";
-                } else {
-                    model.put("jugador",jugador2);
-                    return "jugadores/detallesJugador";
-                }
-            } else {
-                return "welcome";
-            }
+    public String showJugador(@PathVariable("jugadorId") int jugadorId, Map<String,Object> model, Principal principal) {
+				Jugador jugadorAutenticado = jugadorService.findJugadorByUsername(principal.getName());
+                Jugador jugadorVista = jugadorService.findJugadorById(jugadorId);
+                
+                model.put("jugadorAutenticado", jugadorAutenticado);
+                model.put("jugadorVista", jugadorVista);
+                
+                return "jugadores/detallesJugador";
     }
 
 
@@ -108,25 +102,48 @@ public class JugadorController {
 			}
     }
 
-    @GetMapping("/jugadores/{jugadorId}/unirse/{partidoId}")
-    public String unirsePartida(@PathVariable("jugadorId") int jugadorId, @PathVariable("partidoId") int partidoId,
-        RedirectAttributes redirAttrs) {
-            try{
-                this.jugadorService.unirsePartida(jugadorId, partidoId);
-                redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
-                /*
-                    Aqui que el de frontend que redirija donde se tenga que redirigir, provisionalmente redirige a partidos.
-                    ACORDARSE: Hay que mostrar el mensaje en la vista
-                */
-                String redirect = "redirect:/partidos";
-                return redirect;
-            }catch(YaUnidoException ex){
-                redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
-                /*
-                    Aqui que el de frontend que redirija donde se tenga que redirigir, provisionalmente redirige a partidos.
-                    ACORDARSE: Hay que mostrar el mensaje en la vista
-                */
-                return "redirect:/partidos";
-            }
+    @GetMapping("/jugadores/solicitudes/{partidoId}")
+    public String solicitudUnirse(@PathVariable("partidoId") int partidoId, Principal principal, RedirectAttributes redirect){
+        Partido partido = this.partidoService.findPartidoById(partidoId);
+        if(partido != null){
+            // redireccion con msg de error.
+            return VIEW_LISTA_PARTIDOS;
+        }        
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        this.jugadorService.crearSolicitudPartido(jugador, partido);
+        // redireccion con msg de confirmacion. 
+        return VIEW_LISTA_PARTIDOS;
+
     }
+
+    @GetMapping("/jugadores/solicitudes/denegar/{solicitudId}")
+    public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId){
+        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
+        // notificar al jugador que ha sido rechazado. 
+        this.jugadorService.eliminarSolicitud(solicitud);
+        return VIEW_LISTA_PARTIDOS;
+    }
+    
+    @GetMapping("/jugadores/solicitudes/aceptar/{solicitudId}")
+    public String aceptarSolicitud(@PathVariable("solicitudId") int solicitudId, RedirectAttributes redirAttrs){
+        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
+        try{
+            this.jugadorService.unirsePartida(solicitud.getJugador(), solicitud.getPartido());
+            redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
+            /*
+                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
+                ACORDARSE: Hay que mostrar el mensaje en la vista
+            */
+            return VIEW_LISTA_PARTIDOS;
+           
+        }catch(YaUnidoException ex){
+            redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
+            /*
+                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
+                ACORDARSE: Hay que mostrar el mensaje en la vista
+            */
+            return VIEW_LISTA_PARTIDOS;
+        }
+    }
+
 }

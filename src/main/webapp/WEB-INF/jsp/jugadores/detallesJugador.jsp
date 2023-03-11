@@ -5,29 +5,29 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<petclinic:layout pageName="jugadores">
-    <h2><c:out value="${jugador.firstName} ${jugador.lastName}"/></h2>
-    <h3><c:out value="${jugador.user.username}"/></h3>
+<petclinic:layout pageName="detalleJugador">
+    <h2><c:out value="${jugadorVista.firstName} ${jugadorVista.lastName}"/></h2>
+    <h3><c:out value="${jugadorVista.user.username}"/></h3>
 
 
     <table class="table table-striped" summary="tabla para ver los datos del jugador">
         <tr>
             <th>Teléfono</th>
-            <td><c:out value="${jugador.telephone}"/></td>
+            <td><c:out value="${jugadorVista.telephone}"/></td>
         </tr>
         <tr>
             <th>Correo electrónico</th>
-            <td><c:out value="${jugador.user.correo}"/></td>
+            <td><c:out value="${jugadorVista.user.correo}"/></td>
         </tr>
         <tr>
             <th>Ciudad</th>
-            <td><c:out value="${jugador.ciudad}"/></td>
+            <td><c:out value="${jugadorVista.ciudad}"/></td>
         </tr>
     </table>
     
     <h2>Partidos</h2>
     <table class="table table-striped" summary="tabla para ver los partidos del jugador">
-        <c:forEach var="partido" items="${jugador.partidos}">
+        <c:forEach var="partido" items="${jugadorVista.partidos}">
             <tr>
                 <td valign="top">
                     <dl class="dl-horizontal">
@@ -44,5 +44,7 @@
 
     <a href="" class="btn btn-default">Partidos pasados</a>
 
-    <a href="" class="btn btn-default">Reportar jugador</a>
+    <c:if test="${!jugadorVista.equals(jugadorAutenticado)}">
+        <a href="" class="btn btn-default">Reportar jugador</a>
+    </c:if>
 </petclinic:layout>
