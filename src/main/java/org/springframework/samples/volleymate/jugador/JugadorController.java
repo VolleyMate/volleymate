@@ -121,7 +121,7 @@ public class JugadorController {
         Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
         // notificar al jugador que ha sido rechazado. 
         this.jugadorService.eliminarSolicitud(solicitud);
-        return "redirect:/partidos";
+        return VIEW_LISTA_PARTIDOS;
     }
     
     @GetMapping("/jugadores/solicitudes/aceptar/{solicitudId}")
@@ -134,7 +134,7 @@ public class JugadorController {
                 Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
                 ACORDARSE: Hay que mostrar el mensaje en la vista
             */
-            return "redirect:/partidos";
+            return VIEW_LISTA_PARTIDOS;
            
         }catch(YaUnidoException ex){
             redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
@@ -142,7 +142,7 @@ public class JugadorController {
                 Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
                 ACORDARSE: Hay que mostrar el mensaje en la vista
             */
-            return "redirect:/partidos";
+            return VIEW_LISTA_PARTIDOS;
         }
     }
 
