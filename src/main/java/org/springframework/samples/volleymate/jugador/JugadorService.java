@@ -2,11 +2,19 @@ package org.springframework.samples.volleymate.jugador;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoRepository;
+import org.springframework.samples.volleymate.user.AuthoritiesService;
+import org.springframework.samples.volleymate.user.UserService;
+import org.springframework.samples.volleymate.solicitud.Solicitud;
+import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
@@ -14,11 +22,17 @@ public class JugadorService {
     
     private JugadorRepository jugadorRepository;
     private PartidoRepository partidoRepository;
+    private UserService userService;
+    private AuthoritiesService authoritiesService;
+    private SolicitudRepository solicitudRepository;
 
     @Autowired
-    public JugadorService(JugadorRepository jugadorRepository, PartidoRepository partidoRepository) {
+    public JugadorService(JugadorRepository jugadorRepository, PartidoRepository partidoRepository, UserService userService,AuthoritiesService authoritiesService,SolicitudRepository solicitudRepository) {
         this.jugadorRepository = jugadorRepository;
         this.partidoRepository = partidoRepository;
+        this.userService=userService;
+        this.authoritiesService=authoritiesService;
+        this.solicitudRepository = solicitudRepository;
     }
 
 
@@ -31,6 +45,14 @@ public class JugadorService {
     public Jugador findJugadorByUsername(String username) throws DataAccessException {
       return jugadorRepository.findByUsername(username);
     }
+
+
+    @Transactional
+	public void saveJugador(@Valid Jugador jugador) throws DataAccessException, DataIntegrityViolationException {
+		jugadorRepository.save(jugador);
+		userService.saveUser(jugador.getUser());
+		authoritiesService.saveAuthorities(jugador.getUser().getUsername(), "jugador");
+	}
 
 
     public void unirsePartida(int jugadorId, int partidoId) throws YaUnidoException{
@@ -60,5 +82,20 @@ public class JugadorService {
             this.jugadorRepository.save(jugador);
             this.partidoRepository.save(partido);
         }
+    }
+
+    public void crearSolicitudPartido(Jugador jugador, Partido partido) {
+        Solicitud solicitud = new Solicitud();
+        solicitud.setJugador(jugador);
+        solicitud.setPartido(partido);
+        this.solicitudRepository.save(solicitud);
+    }
+
+    public Solicitud findSolicitudById(int solicitudId) {
+        return this.solicitudRepository.findById(solicitudId).get();
+    }
+
+    public void eliminarSolicitud(Solicitud solicitud) {
+        this.solicitudRepository.delete(solicitud);
     }
 }

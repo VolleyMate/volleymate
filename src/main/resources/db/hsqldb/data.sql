@@ -11,8 +11,8 @@ INSERT INTO authorities(id,username,authority) VALUES (3,'vet1','veterinarian');
 INSERT INTO users(username,password,enabled,correo) VALUES ('jorsilman','jorsilman',TRUE,'jorge@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (2,'jorsilman','owner');
 
-INSERT INTO jugadores VALUES (1,'Jorge','Sillero','Sevilla','657236154','jorsilman');
-INSERT INTO jugadores VALUES (2,'Admin','Admin','Sevilla','666666666','admin1');
+INSERT INTO jugadores VALUES (1,'Jorge','Sillero','Sevilla','https://st1.uvnimg.com/e0/40/ab16af48465f804d56e0c2a7ccf4/gettyimages-1240189250.jpg','MASCULINO','657236154','jorsilman');
+INSERT INTO jugadores VALUES (2,'Admin','Admin','Sevilla','https://pbs.twimg.com/profile_images/478550509876686848/kv2uVzaP_400x400.jpeg','MASCULINO','666666666','admin1');
 
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (1,'Partido amistoso',0,'Vamos a jugar un partido amistoso',0,'jorsilman',3,'Sevilla','2013-01-02 17:00','2013-01-01 17:00');
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion) VALUES (2,'Partido de playa',1,'Vamos a jugar un partido amistoso',5,'admin1',3,'Sevilla','2013-01-02 17:00','2013-01-01 17:00');
