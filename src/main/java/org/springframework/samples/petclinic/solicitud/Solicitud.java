@@ -3,7 +3,7 @@ package org.springframework.samples.petclinic.solicitud;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -19,15 +19,11 @@ import lombok.Setter;
 public class Solicitud extends BaseEntity {
   
   @Column(name = "jugador")
-  @NotEmpty
+  @NotNull
   private Jugador jugador;
 
   @Column(name = "partido")
-  @NotEmpty
+  @NotNull
   private Partido partido;
-
-  @Column(name = "estado")
-  @NotEmpty
-  private EstadoSolicitud estado;
 
 }

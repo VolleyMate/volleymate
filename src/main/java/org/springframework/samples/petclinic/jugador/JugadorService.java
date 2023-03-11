@@ -5,6 +5,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.jugador.exceptions.YaUnidoException;
 import org.springframework.samples.petclinic.partido.Partido;
 import org.springframework.samples.petclinic.partido.PartidoRepository;
+import org.springframework.samples.petclinic.solicitud.Solicitud;
+import org.springframework.samples.petclinic.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,13 @@ public class JugadorService {
     
     private JugadorRepository jugadorRepository;
     private PartidoRepository partidoRepository;
+    private SolicitudRepository solicitudRepository;
 
     @Autowired
-    public JugadorService(JugadorRepository jugadorRepository, PartidoRepository partidoRepository) {
+    public JugadorService(JugadorRepository jugadorRepository, PartidoRepository partidoRepository, SolicitudRepository solicitudRepository) {
         this.jugadorRepository = jugadorRepository;
         this.partidoRepository = partidoRepository;
+        this.solicitudRepository = solicitudRepository;
     }
 
 
@@ -33,9 +37,7 @@ public class JugadorService {
     }
 
 
-    public void unirsePartida(int jugadorId, int partidoId) throws YaUnidoException{
-        Jugador jugador = this.jugadorRepository.findById(jugadorId);
-        Partido partido = this.partidoRepository.findById(partidoId);
+    public void unirsePartida(Jugador jugador, Partido partido) throws YaUnidoException{
         
         if(jugador.getPartidos().contains(partido)){
             throw new YaUnidoException();
@@ -60,5 +62,20 @@ public class JugadorService {
             this.jugadorRepository.save(jugador);
             this.partidoRepository.save(partido);
         }
+    }
+
+    public void crearSolicitudPartido(Jugador jugador, Partido partido) {
+        Solicitud solicitud = new Solicitud();
+        solicitud.setJugador(jugador);
+        solicitud.setPartido(partido);
+        this.solicitudRepository.save(solicitud);
+    }
+
+    public Solicitud findSolicitudById(int solicitudId) {
+        return this.solicitudRepository.findById(solicitudId).get();
+    }
+
+    public void eliminarSolicitud(Solicitud solicitud) {
+        this.solicitudRepository.delete(solicitud);
     }
 }
