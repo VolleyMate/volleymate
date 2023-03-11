@@ -59,7 +59,6 @@ public class JugadorController {
                 model.put("jugadorAutenticado", jugadorAutenticado);
                 model.put("jugadorVista", jugador);
                 return "jugadores/detallesJugador";
-
             }
             return "welcome";    }
 

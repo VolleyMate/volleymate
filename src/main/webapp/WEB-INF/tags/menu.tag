@@ -31,6 +31,12 @@
 					title="partidos">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Partidos</span>
+				</petclinic:menuItem>
+
+				<petclinic:menuItem active="${name eq 'crearPartido'}" url="/partidos/new"
+					title="partidos">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					<span>Crear partido</span>
 				</petclinic:menuItem>				
 
 				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
