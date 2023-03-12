@@ -20,7 +20,7 @@
 
                 <c:url value="/login" var="loginUrl"/>
 
-
+				<form>
                     <c:if test="${param.error != null}">
                         <p class="error">Username y password incorrectos, intentalo nuevamente.</p>
                     </c:if>
