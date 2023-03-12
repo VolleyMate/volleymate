@@ -17,6 +17,8 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.model.BaseEntity;
@@ -36,8 +38,8 @@ public class Partido extends BaseEntity {
     @NotBlank
     private String nombre;
 
-    @Column(name = "sexo")
-    @NotEmpty
+    @Enumerated(EnumType.STRING)
+	@Column(name = "sexo")
     private Sexo sexo;
 
     @NotBlank

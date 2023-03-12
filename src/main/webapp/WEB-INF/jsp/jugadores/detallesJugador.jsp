@@ -11,8 +11,8 @@
         <div class="m-0 row justify-content-center"> 
 
     <div class="col-auto p-5 text-center"> 
-        
-        <c:if test="${jugador.image != ''}"><img class="rounded d-block" alt="foto de perfil" src="${jugadorVista.image}" width="250" height="250"></c:if>
+        <c:if test="${jugadorVista.image == ''}"><img class="rounded d-block" src="/resources/images/perfilPorDefecto.jpg" width="250" height="250"></c:if>
+        <c:if test="${jugadorVista.image != ''}"><img class="rounded d-block" src="${jugadorVista.image}" width="250" height="250"></c:if>
        
 </br>
 </br>
@@ -24,7 +24,7 @@
     </br>
     </br>
         <tr>
-            <spring:url value="/jugador/edit/{id}" var="editUrl">
+            <spring:url value="/jugadores/edit/{id}" var="editUrl">
                 <spring:param name="id" value="${id}"/>
             </spring:url>
             <a href="${editUrl}" class="btn btn-default">Editar Jugador</a>

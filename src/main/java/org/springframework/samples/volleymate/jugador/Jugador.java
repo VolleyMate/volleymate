@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+
 
 import org.springframework.samples.volleymate.model.Person;
 import org.springframework.samples.volleymate.partido.Partido;
@@ -40,7 +40,6 @@ public class Jugador extends Person{
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "sexo")
-    @NotNull
     private Sexo sexo;
 
 	@Column(name = "image")

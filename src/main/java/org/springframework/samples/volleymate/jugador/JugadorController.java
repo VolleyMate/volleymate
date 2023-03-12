@@ -58,6 +58,7 @@ public class JugadorController {
                 Jugador jugadorAutenticado = jugadorService.findJugadorByUsername(principal.getName());
                 model.put("jugadorAutenticado", jugadorAutenticado);
                 model.put("jugadorVista", jugador);
+                model.put("id",jugadorAutenticado.getId());
                 return "jugadores/detallesJugador";
             }
             return "welcome";    }
@@ -69,6 +70,7 @@ public class JugadorController {
                 
                 model.put("jugadorAutenticado", jugadorAutenticado);
                 model.put("jugadorVista", jugadorVista);
+                model.put("id",jugadorAutenticado.getId());
                 
                 return "jugadores/detallesJugador";
     }
@@ -141,9 +143,11 @@ public class JugadorController {
 							Jugador jugador = jugadorService.findJugadorById(id);
 							String username = jugador.getUser().getUsername();
 							String pass = jugador.getUser().getPassword();
+                            Sexo sexo = jugador.getSexo();
 
 							model.addAttribute("pass", pass);
 							model.addAttribute("username", username);
+                            model.addAttribute("sexo", sexo);
 							
 							model.addAttribute(jugador);
 							return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
@@ -166,14 +170,14 @@ public class JugadorController {
 	
 	@PostMapping(value = "/jugadores/edit/{id}")
 	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
-		
+
 		if(result.hasErrors()){
 			model.put("errors", result.getAllErrors());
 			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 		}
 		else {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","user"); 
+			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","user","sexo"); 
             this.jugadorService.saveJugador(jugadorToUpdate);
 			model.put("message","Jugador editado correctamente");
 			return "redirect:/jugadores";

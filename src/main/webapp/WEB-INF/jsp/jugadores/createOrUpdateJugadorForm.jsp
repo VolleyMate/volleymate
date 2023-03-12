@@ -10,7 +10,6 @@
 
 <petclinic:layout pageName="jugadores">
     <h2>
-        <c:if test="${jugador['new']}"><p class="align-left"> Nuevo Jugador</p></c:if>
         <p class="align-left" style="font-size:1.5em;">
             <strong><u>PERFIL</u></strong>
         </p>
@@ -22,24 +21,16 @@
             <petclinic:inputField label="Apellido" name="lastName"/>
             <petclinic:inputField label="Ciudad" name="ciudad"/>
             <petclinic:inputField label="Teléfono" name="telephone"/>
+            <petclinic:inputField label="Image" name="image"/>
+            Si quieres la foto por defecto, deja este campo vacío
             
         </div>
     
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <c:choose>
-                    <c:when test="${jugador['new']}">
-                        <button class="btn btn-default" type="submit">Registrarse</button>
-                    </c:when>
-                    <c:otherwise>
-                        
+            <div class="col-sm-offset-2 col-sm-10">   
                         <button class="btn btn-default" type="submit">Actualizar datos</button>
-                        
                         <spring:url value="/jugadores" var="editUrl"></spring:url>
                         <a href="${editUrl}" class="btn btn-default">Volver</a>
-                        
-                    </c:otherwise>
-                </c:choose>
             </div>
         </div>
         <form:errors></form:errors>
