@@ -1,4 +1,5 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -8,7 +9,6 @@
 
 <petclinic:layout pageName="login">
 	<head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login Form</title>
     </head>
     <body>
@@ -20,7 +20,6 @@
 
                 <c:url value="/login" var="loginUrl"/>
 
-                <form action="${loginUrl}" method="post">
 
                     <c:if test="${param.error != null}">
                         <p class="error">Username y password incorrectos, intentalo nuevamente.</p>
