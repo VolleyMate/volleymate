@@ -29,6 +29,7 @@
 
         <spring-format.version>0.0.19</spring-format.version>
         <jacoco.version>0.8.7</jacoco.version>
+        
 
     </properties>
 
@@ -269,6 +270,25 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.gavinmogan</groupId>
+                    <artifactId>codacy-maven-plugin</artifactId>
+                    <version>1.2.0</version>
+                    <executions>
+                        <execution>
+                            <id>codacy</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>coverage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <apiToken>8fc5b0ee73fa4787bf437012d5b2ae06</apiToken>
+                        <projectToken>8fc5b0ee73fa4787bf437012d5b2ae06</projectToken>
+                        <coverageReportFile>target/site/jacoco/jacoco.xml</coverageReportFile>
+                    </configuration>
                 </plugin>
         </plugins>
     </build>
