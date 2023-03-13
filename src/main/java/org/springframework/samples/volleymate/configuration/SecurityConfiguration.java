@@ -41,13 +41,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/vets/**").authenticated()
 				.antMatchers("/partidos/**").authenticated()
 				.antMatchers("/jugadores/**").authenticated()
+				.antMatchers("/logout/**").authenticated()
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
-				 	/*.loginPage("/login")*/
+				 	.loginPage("/login").permitAll()
 				 	.failureUrl("/login-error")
 				.and()
 					.logout()
+						.logoutUrl("/logout").permitAll()
 						.logoutSuccessUrl("/"); 
                 // Configuración para que funcione la consola de administración 
                 // de la BD H2 (deshabilitar las cabeceras de protección contra
@@ -71,7 +73,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	        + "where username = ?")	      	      
 	      .passwordEncoder(passwordEncoder());	
 	}
-	
+
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {	    
 		PasswordEncoder encoder =  NoOpPasswordEncoder.getInstance();
