@@ -54,8 +54,12 @@
     <h3></h3>
     </div>
     <div style=" margin: 0 auto;">
-<button onclick="location.href='/jugadores'">Ver participantes</button>
-<button onclick="location.href='/partidos'">Unirse al partido</button>
+    <button onclick="location.href='/jugadores'">Ver participantes</button>
+
+    <spring:url value="/jugadores/solicitudes/${partido.id}" var="enviarSolicitudUrl"></spring:url>
+    <a href="${fn:escapeXml(enviarSolicitudUrl)}">
+        <p class="btn btn-success">Enviar solicitud</p>
+    </a>
 </div>
 
 </div>

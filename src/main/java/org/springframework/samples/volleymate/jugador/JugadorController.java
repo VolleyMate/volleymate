@@ -113,17 +113,48 @@ public class JugadorController {
     }
 
     @GetMapping("/jugadores/solicitudes/{partidoId}")
-    public String solicitudUnirse(@PathVariable("partidoId") int partidoId, Principal principal, RedirectAttributes redirect){
+    public String solicitudUnirse(@PathVariable("partidoId") int partidoId, Principal principal, RedirectAttributes redirectAtr){
         Partido partido = this.partidoService.findPartidoById(partidoId);
-        if(partido != null){
+        if(partido == null){
             // redireccion con msg de error.
-            return VIEW_LISTA_PARTIDOS;
+            String redirect = String.format("redirect:/partidos/%s", partidoId);
+            return redirect;
         }        
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         this.jugadorService.crearSolicitudPartido(jugador, partido);
         // redireccion con msg de confirmacion. 
-        return VIEW_LISTA_PARTIDOS;
+        String redirect = String.format("redirect:/partidos/%s", partidoId);
+        return redirect;
+    }
 
+    @GetMapping("/jugadores/solicitudes/denegar/{solicitudId}")
+    public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId){
+        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
+        // notificar al jugador que ha sido rechazado. 
+        this.jugadorService.eliminarSolicitud(solicitud);
+        return VIEW_LISTA_PARTIDOS;
+    }
+    
+    @GetMapping("/jugadores/solicitudes/aceptar/{solicitudId}")
+    public String aceptarSolicitud(@PathVariable("solicitudId") int solicitudId, RedirectAttributes redirAttrs){
+        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
+        try{
+            this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
+            redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
+            /*
+                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
+                ACORDARSE: Hay que mostrar el mensaje en la vista
+            */
+            return VIEW_LISTA_PARTIDOS;
+           
+        }catch(YaUnidoException ex){
+            redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
+            /*
+                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
+                ACORDARSE: Hay que mostrar el mensaje en la vista
+            */
+            return VIEW_LISTA_PARTIDOS;
+        }
     }
 
 
@@ -185,34 +216,6 @@ public class JugadorController {
 		
 	}
 
-    @GetMapping("/jugadores/solicitudes/denegar/{solicitudId}")
-    public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId){
-        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
-        // notificar al jugador que ha sido rechazado. 
-        this.jugadorService.eliminarSolicitud(solicitud);
-        return VIEW_LISTA_PARTIDOS;
-    }
-    
-    @GetMapping("/jugadores/solicitudes/aceptar/{solicitudId}")
-    public String aceptarSolicitud(@PathVariable("solicitudId") int solicitudId, RedirectAttributes redirAttrs){
-        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
-        try{
-            this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
-            redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
-            /*
-                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
-                ACORDARSE: Hay que mostrar el mensaje en la vista
-            */
-            return VIEW_LISTA_PARTIDOS;
-           
-        }catch(YaUnidoException ex){
-            redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
-            /*
-                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
-                ACORDARSE: Hay que mostrar el mensaje en la vista
-            */
-            return VIEW_LISTA_PARTIDOS;
-        }
-    }
+
 
 }
