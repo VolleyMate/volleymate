@@ -16,15 +16,6 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      # - name: Build with Maven
-      #   run: mvn clean package
-
-      - name: Generate JaCoCo report
-        run: mvn jacoco:report
-
-      - name: Upload coverage report to Codacy
-        uses: codacy/codacy-coverage-reporter-action@v1
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-report: ./target/site/jacoco/jacoco.xml
+      - name: Send JaCoCo report
+        run: mvn clean verify
       
