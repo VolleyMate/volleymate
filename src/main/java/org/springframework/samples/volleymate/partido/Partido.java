@@ -63,9 +63,9 @@ public class Partido extends BaseEntity {
     @NotEmpty
 	private LocalDateTime fecha;
 
-    @DecimalMin(value="0.0",inclusive = false)
-    @Digits(integer=3, fraction=2)        
-	private BigDecimal precioPersona;
+    @NotBlank
+    @Column(name = "precio_persona")        
+	private Integer precioPersona;
 
     @Column(name = "fecha_creacion", updatable = false, nullable = false)
     private LocalDateTime fechaCreacion=LocalDateTime.now();
