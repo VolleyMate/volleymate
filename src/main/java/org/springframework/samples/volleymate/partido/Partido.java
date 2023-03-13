@@ -17,6 +17,8 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.model.BaseEntity;
@@ -33,6 +35,20 @@ import lombok.Setter;
 @Setter
 public class Partido extends BaseEntity {
 
+    @NotBlank
+    private String nombre;
+
+    @Enumerated(EnumType.STRING)
+	@Column(name = "sexo")
+    private Sexo sexo;
+
+    @NotBlank
+    private String descripcion;
+
+    @Column(name = "tipo")
+    @NotEmpty
+    private Tipo tipo;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "creador", referencedColumnName = "username")
 	private Jugador creador;
@@ -47,9 +63,9 @@ public class Partido extends BaseEntity {
     @NotEmpty
 	private LocalDateTime fecha;
 
-    @DecimalMin(value="0.0",inclusive = false)
-    @Digits(integer=3, fraction=2)        
-	private BigDecimal precioPersona;
+    @NotBlank
+    @Column(name = "precio_persona")        
+	private Integer precioPersona;
 
     @Column(name = "fecha_creacion", updatable = false, nullable = false)
     private LocalDateTime fechaCreacion=LocalDateTime.now();

@@ -40,7 +40,7 @@
                         <c:out value="${partido.getFechaCreacionParseada()}"/>
                     </td>
                     <td style="text-align: center;">
-                        <button style="background-color: red; border-radius: 30px; width: 100px; height: 35px;">Ver</button>
+                        <button onclick="location.href='partidos/${partido.id}'"  background-color: red; border-radius: 30px; width: 100px; height: 35px;>Ver</button>
                     </td> 
                 </tr>
                 <tr style="height: 15px;"></tr>

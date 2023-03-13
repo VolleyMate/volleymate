@@ -38,7 +38,7 @@ public class PartidoController {
     
     //VIEWS
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
-	private static final String VIEW_PARTIDOS_CREATE_OR_UPDATE = "partidos/createOrUpdatePartidoForm";
+	private static final String VIEW_PARTIDOS_CREATE_OR_UPDATE = "partidos/crearPartido";
 	private static final String VIEW_SOLICITUDES_PARTIDO = "partidos/{partidoId}/solicitudes";
 
     @GetMapping(value = { "/partidos" })
@@ -59,7 +59,7 @@ public class PartidoController {
 	@GetMapping("/partidos/{partidoId}")
     public ModelAndView showPartido(@PathVariable("partidoId") int partidoId) {
         ModelAndView mav = new ModelAndView("partidos/partidoDetails");
-        mav.addObject(this.partidoService.findPartidoById(partidoId));
+        mav.addObject("partido", this.partidoService.findPartidoById(partidoId));
         return mav;
     }
 
