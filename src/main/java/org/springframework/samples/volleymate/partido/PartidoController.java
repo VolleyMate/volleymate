@@ -59,7 +59,7 @@ public class PartidoController {
 	@GetMapping("/partidos/{partidoId}")
     public ModelAndView showPartido(@PathVariable("partidoId") int partidoId) {
         ModelAndView mav = new ModelAndView("partidos/partidoDetails");
-        mav.addObject(this.partidoService.findPartidoById(partidoId));
+        mav.addObject("partido", this.partidoService.findPartidoById(partidoId));
         return mav;
     }
 
