@@ -37,7 +37,7 @@ public class LoginController {
     }
 
     @PostMapping(value = "/login")
-    public String login(BindingResult result,  Map<String, Object> model, @Valid User user){
+    public String login(BindingResult result,  Map<String, Object> model, User user){
         return "";	
     }
 
