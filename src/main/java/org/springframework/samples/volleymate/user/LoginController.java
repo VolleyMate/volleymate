@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.validation.BindingResult;
 
 import org.springframework.validation.BindingResult;
-import javax.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.security.core.context.SecurityContextHolder;
 import javax.servlet.http.HttpServletRequest;  
@@ -37,7 +36,7 @@ public class LoginController {
     }
 
     @PostMapping(value = "/login")
-    public String login(BindingResult result,  Map<String, Object> model, User user){
+    public String login(BindingResult result,  Map<String, Object> model){
         return "";	
     }
 
