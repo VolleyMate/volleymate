@@ -20,8 +20,10 @@
 
                 <c:url value="/login" var="loginUrl"/>
 
-				<form>
-                    <c:if test="${param.error != null}">
+
+				<form:form modelAttribute="user" class="form-horizontal " id="add-jugador-form">
+                    
+					<c:if test="${param.error != null}">
                         <p class="error">Username y password incorrectos, intentalo nuevamente.</p>
                     </c:if>
 
@@ -30,24 +32,22 @@
                     </c:if>
 
                     <div>
-                        <label for="username">User name</label>
-                        <input type="text" id="username" name="username"/>
+						<petclinic:inputField label="Username" name="username"/>
                     </div>
 
                     <div>
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password"/>
+                        <petclinic:inputField label="Password" name="password"/>
                     </div>
 
                     <button type="submit" class="btn">Log in</button>
-                </form>
+                </form:form>
 
             </div>
         </div>
 		<style>
 			div.main {    
 				font-family: Segoe UI Light;
-				font-size: 20px;
+				font-size: 11px;
 			}
 
 			div.box { 
@@ -94,5 +94,4 @@
 			form div { margin-bottom: 10px; }
 		</style>
     </body>
-</html>
 </petclinic:layout>
