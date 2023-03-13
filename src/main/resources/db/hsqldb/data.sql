@@ -21,7 +21,8 @@ INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion,precio_persona) VALUES (5,'Partido entre amigos','MASCULINO','Vamos a jugar un partido amistoso',6,'jorsilman',3,'Sevilla','2013-05-03 17:00','2013-05-02 17:00',0);
 
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,1);
-INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (2,2);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,3);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,4);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,5);
+
+INSERT INTO solicitudes(jugador_id,partido_id) VALUES (2,2);

@@ -37,6 +37,12 @@
 					title="partidos">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					<span>Crear partido</span>
+				</petclinic:menuItem>
+
+				<petclinic:menuItem active="${name eq 'notificaciones'}" url="/jugadores/notificaciones"
+					title="notificaciones">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					<span>Mis notificaciones</span>
 				</petclinic:menuItem>				
 
 				<petclinic:menuItem active="${name eq 'error'}" url="/oups"

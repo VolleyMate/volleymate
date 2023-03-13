@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import java.util.Map;
-
+import org.springframework.ui.ModelMap;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,6 +19,7 @@ import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoExceptio
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
+import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,14 +39,18 @@ public class JugadorController {
     
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
+    private final SolicitudService solicitudService;
 
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
+	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
+
 
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService) {
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
+        this.solicitudService = solicitudService;
     }
 
     @GetMapping("/jugadores")
@@ -119,7 +124,7 @@ public class JugadorController {
             // redireccion con msg de error.
             String redirect = String.format("redirect:/partidos/%s", partidoId);
             return redirect;
-        }        
+        }       
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         this.jugadorService.crearSolicitudPartido(jugador, partido);
         // redireccion con msg de confirmacion. 
@@ -155,6 +160,19 @@ public class JugadorController {
             */
             return VIEW_LISTA_PARTIDOS;
         }
+    }
+
+    @GetMapping("/jugadores/notificaciones")
+    public String showVistaNotificaciones(Principal principal, ModelMap model){
+        //seccion notificaciones
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        Set<Solicitud> solicitudesRecibidas = this.solicitudService.findSolicitudesATusPartidos(jugador);
+        model.put("solicitudesRecibidas", solicitudesRecibidas);
+        //seccion solicitudes recibidas
+        Set<Solicitud> solicitudesPendientes = this.solicitudService.findTusSolicitudes(jugador);
+        model.put("solicitudesPendientes", solicitudesPendientes);
+        
+        return VIEW_NOTIFICACIONES;
     }
 
 
