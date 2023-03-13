@@ -15,46 +15,46 @@
    
     <div style="width: 50%;">
         <h3 style="color: #FFFFFF;">Nombre: </h3>
-<h2 value="${partido.nombre}" style="background-color: #d9d9d9;"></h2>
+<h3  style="background-color: white;border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto; ">  <c:out value="${partido.nombre}"></c:out>   </h3>
 <h3 style="color: #FFFFFF;">Fecha: </h3>
-    <h3 style="background-color: #d9d9d9; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
+    <h3 style="background-color: white; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
         <c:out value="${partido.fecha}"/></h3>
         <h3></h3>
 <h3 style="color: #FFFFFF;">Sexo: </h3>
-    <h3 style="background-color: #d9d9d9; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
+    <h3 style="background-color: white; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
         <c:out value="${partido.sexo}"/></h3>
         <h3></h3>
 <h3 style="color: #FFFFFF;"> Precio:</h3>
-    <h3 style="background-color: #d9d9d9; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
+    <h3 style="background-color: white; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
         <c:out value="${partido.precioPersona}"/></h3>
         <h3></h3>
     </div>
     <div style="width: 50%;">
 <h3 style="color: #FFFFFF;">Descripción:</h3>
-<h3 style="background-color: #d9d9d9; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
+<h3 style="background-color: white; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
     <c:out value="${partido.descripcion}"/>
 </h3>
 <h3></h3>
 <h3 style="color: #FFFFFF;"> Tipo: </h3>
-   <h3 style="background-color: #d9d9d9; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
+   <h3 style="background-color: white; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
      <c:out value="${partido.tipo}"/></h3>
      <h3></h3>
 <h3 style="color: #FFFFFF;">Localización: </h3>
-   <h3 style="background-color: #d9d9d9; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;"> 
+   <h3 style="background-color: white; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;"> 
     <c:out value="${partido.lugar}"/></h3>
     <h3></h3>
     <h3 style="color: #FFFFFF;">Creador: </h3>
-   <h3 style="background-color: #d9d9d9; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;"> 
+   <h3 style="background-color: white; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;"> 
     <c:out value="${partido.creador.user.username}"/></h3>
     <h3></h3>
     <h3 style="color: #FFFFFF;">Número jugadores: </h3>
-   <h3 style="background-color: #d9d9d9; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;"> 
+   <h3 style="background-color: white; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;"> 
     <c:out value="${partido.numJugadoresNecesarios}"/></h3>
     <h3></h3>
     </div>
     <div style=" margin: 0 auto;">
-<button type="submit">Ver participantes</button>
-<button type="submit">Unirse al partido</button>
+<button onclick="location.href='/jugadores'">Ver participantes</button>
+<button onclick="location.href='/partidos'">Unirse al partido</button>
 </div>
 
 </div>
