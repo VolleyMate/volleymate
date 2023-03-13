@@ -8,11 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
+import javax.persistence.EnumType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
+
 
 import org.springframework.samples.volleymate.model.Person;
 import org.springframework.samples.volleymate.partido.Partido;
@@ -32,8 +35,15 @@ public class Jugador extends Person{
 
     @Column(name = "telephone")
 	@NotEmpty
-	@Digits(fraction = 0, integer = 10)
+	@Digits(fraction = 0, integer = 9)
 	private String telephone;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "sexo")
+    private Sexo sexo;
+
+	@Column(name = "image")
+	protected String image;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")

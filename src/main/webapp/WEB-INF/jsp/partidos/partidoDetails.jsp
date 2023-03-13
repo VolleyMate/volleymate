@@ -11,11 +11,12 @@
 <petclinic:layout pageName="detallePartido">
 
 <h1>Detalles del partido:</h1>
-<div style="background-color: #0099bc; margin: 0 auto; border-radius: 50px;  text-align: center; display: flex; flex-wrap: wrap;">
+<div style="width: 70%; background-color: #0099bc; margin: 0 auto; border-radius: 50px;  text-align: center; display: flex; flex-wrap: wrap;">
    
-    <div style="width: 50%;">
+    <div style="width: 45%;">
         <h3 style="color: #FFFFFF;">Nombre: </h3>
 <h3  style="background-color: white;border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto; ">  <c:out value="${partido.nombre}"></c:out>   </h3>
+<h3></h3>
 <h3 style="color: #FFFFFF;">Fecha: </h3>
     <h3 style="background-color: white; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
         <c:out value="${partido.fecha}"/></h3>
@@ -29,7 +30,7 @@
         <c:out value="${partido.precioPersona}"/></h3>
         <h3></h3>
     </div>
-    <div style="width: 50%;">
+    <div style="width: 45%;">
 <h3 style="color: #FFFFFF;">Descripción:</h3>
 <h3 style="background-color: white; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;">
     <c:out value="${partido.descripcion}"/>

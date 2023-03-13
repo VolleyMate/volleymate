@@ -8,19 +8,38 @@
 
 <petclinic:layout pageName="misPartidos">
     <h2>Mis Partidos</h2>
-    <table class="table table-striped" summary="tabla para ver los partidos del jugador">
-        <c:forEach var="partido" items="${partidos}">
+    <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
+        <thead>
             <tr>
-                <td valign="top">
-                    <dl class="dl-horizontal">
-                        <dt>Fecha</dt>
-                        <dd><c:out value="${partido.getFechaParseada()}"/></dd>
-                        <dt>Lugar</dt>
-                        <dd><c:out value="${partido.lugar}"/></dd>
-                        <dt>Nº jug necesarios</dt>
-                        <dd><c:out value="${partido.numJugadoresNecesarios}"/></dd>
-                    </dl>
-                </td>
-        </c:forEach>
+                <th style="width: 120px; text-align: center;">Título</th>
+                <th style="width: 120px; text-align: center;">Fecha actividad</th>
+                <th style="width: 120px; text-align: center;">Lugar</th>
+                <th style="width: 60px;"></th>
+                <th style="width: 120px; text-align: center;">Jugadores necesarios</th>
+            </tr>
+            <tr style="height: 15px;"></tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${partidos}" var="partido">
+                <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
+                    <td style="text-align: center;">
+                        <c:out value="${partido.nombre}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <c:out value="${partido.getFechaParseada()}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <c:out value="${partido.lugar}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <button class="btn btn-default">Ver</button>
+                    </td> 
+                    <td style="text-align: center;">
+                        <c:out value="${partido.numJugadoresNecesarios}"/>
+                    </td>
+                </tr>
+                <tr style="height: 15px;"></tr>
+            </c:forEach>
+        </tbody>
     </table>
 </petclinic:layout>
