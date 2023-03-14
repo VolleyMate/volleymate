@@ -27,32 +27,37 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
+				<sec:authorize access="isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'misPartidos'}" url="/jugadores/mispartidos"
+						title="misPartidos">
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span>Mis partidos</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 
-				<petclinic:menuItem active="${name eq 'misPartidos'}" url="/jugadores/mispartidos"
-					title="misPartidos">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Mis partidos</span>
-				</petclinic:menuItem>
+				<sec:authorize access="isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'partidos'}" url="/partidos"
+						title="partidos">
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span>Partidos</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 
+				<sec:authorize access="isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'crearPartido'}" url="/partidos/new"
+						title="partidos">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						<span>Crear partido</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 
-				<petclinic:menuItem active="${name eq 'partidos'}" url="/partidos"
-					title="partidos">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Partidos</span>
-				</petclinic:menuItem>
-
-				<petclinic:menuItem active="${name eq 'crearPartido'}" url="/partidos/new"
-					title="partidos">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-					<span>Crear partido</span>
-				</petclinic:menuItem>
-
-				<petclinic:menuItem active="${name eq 'notificaciones'}" url="/jugadores/notificaciones"
-					title="notificaciones">
-					<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-					<span>Mis notificaciones</span>
-				</petclinic:menuItem>				
-
+				<sec:authorize access="isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'notificaciones'}" url="/jugadores/notificaciones"
+						title="notificaciones">
+						<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+						<span>Mis notificaciones</span>
+					</petclinic:menuItem>				
+				</sec:authorize>
 			</ul>
 
 
