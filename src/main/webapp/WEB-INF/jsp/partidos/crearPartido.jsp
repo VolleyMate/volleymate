@@ -29,9 +29,10 @@
                 <form:input path="numJugadoresNecesarios" style="border-radius: 20px;" type="number" min="1" class="form-control" />
               </div>
               <div class="form-group">
-                <form:label path="precioPersona">Precio por persona:</form:label>
-                <form:input path="precioPersona" style="border-radius: 20px;" type="number" step="0.01" min="0" class="form-control" />
+                <label for="precioPersona">Precio por persona:</label>
+                <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;">150 volleys
               </div>
+              
 
             </div>
             <div class="col-md-4">
@@ -57,9 +58,9 @@
               </div>
               <br>
               <br>
-              <div style="text-align: center;">
-                <button style="background-color: #838789" type="submit" class="btn btn-primary">Crear partido</button>
-            </div>
+              <div style="text-align: center">
+                <button style="background-color: #838789" type="submit" class="btn btn-primary">Crear partido</button>                               
+              </div>
             </div>
           </div>
         </form:form>
