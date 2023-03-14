@@ -41,7 +41,7 @@
 
 				<petclinic:menuItem active="${name eq 'notificaciones'}" url="/jugadores/notificaciones"
 					title="notificaciones">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
 					<span>Mis notificaciones</span>
 				</petclinic:menuItem>				
 
