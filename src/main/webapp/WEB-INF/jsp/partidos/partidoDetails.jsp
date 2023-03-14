@@ -37,7 +37,7 @@
         <h3></h3>
 <h3 style="color: #FFFFFF;"> Precio:</h3>
     <h3 style="background-color: white; border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto;">
-        <c:out value="${partido.precioPersona}"/></h3>
+        <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;">150 volleys
         <h3></h3>
     </div>
     <div style="width: 45%;">
