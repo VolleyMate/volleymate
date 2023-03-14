@@ -79,7 +79,7 @@ public class PartidoController {
 	}
 
 	@PostMapping(value = "/partidos/new")
-	public String processCreationForm(Partido partido, Principal principal, BindingResult result, ModelMap model) {
+	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model) {
 		if (result.hasErrors()) {
 				
 			model.put("partido", partido);
