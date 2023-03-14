@@ -118,16 +118,16 @@ public class JugadorController {
     }
 
     @GetMapping("/jugadores/solicitudes/{partidoId}")
-    public String solicitudUnirse(@PathVariable("partidoId") int partidoId, Principal principal, RedirectAttributes redirectAtr){
+    public String solicitudUnirse(@PathVariable("partidoId") int partidoId, Principal principal, RedirectAttributes redirAttrs){
         Partido partido = this.partidoService.findPartidoById(partidoId);
         if(partido == null){
-            // redireccion con msg de error.
+            redirAttrs.addFlashAttribute("mensajeError", "Ups, parece que ha habido un problema!");
             String redirect = String.format("redirect:/partidos/%s", partidoId);
             return redirect;
         }       
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         this.jugadorService.crearSolicitudPartido(jugador, partido);
-        // redireccion con msg de confirmacion. 
+        redirAttrs.addFlashAttribute("mensajeExitoso", "Solicitud enviada!");
         String redirect = String.format("redirect:/partidos/%s", partidoId);
         return redirect;
     }

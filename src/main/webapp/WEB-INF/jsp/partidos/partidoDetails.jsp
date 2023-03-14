@@ -9,7 +9,16 @@
 
 
 <petclinic:layout pageName="detallePartido">
-
+<c:if test="${mensajeError != null}">
+    <div style="background-color: red;">
+        <c:out value="${mensajeError}"></c:out>
+    </div>
+</c:if>
+<c:if test="${mensajeExitoso != null}">
+    <div style="background-color: green;">
+        <c:out value="${mensajeExitoso}"></c:out>
+    </div>
+</c:if>
 <h1>Detalles del partido:</h1>
 <div style="width: 70%; background-color: #0099bc; margin: 0 auto; border-radius: 50px;  text-align: center; display: flex; flex-wrap: wrap;">
    
@@ -54,18 +63,14 @@
     <h3></h3>
     </div>
     <div style=" margin: 0 auto;">
-    <button onclick="location.href='/jugadores'">Ver participantes</button>
-    <c:choose>
-        <c:when test="${bool}">
-            Ya has enviado una solicitud.
-         </c:when>
-        <c:otherwise>
-            <spring:url value="/jugadores/solicitudes/${partido.id}" var="enviarSolicitudUrl"></spring:url>
-            <a href="${fn:escapeXml(enviarSolicitudUrl)}">
-                <p class="btn btn-success">Enviar solicitud</p>
-            </a>
-        </c:otherwise>
-    </c:choose>
+
+    <c:if test="${!partido.creador.equals(jugadorLogueado)}">
+        <spring:url value="/jugadores/solicitudes/${partido.id}" var="enviarSolicitudUrl"></spring:url>
+        <a href="${fn:escapeXml(enviarSolicitudUrl)}">
+            <p class="btn btn-success">Enviar solicitud</p>
+        </a>
+    </c:if>
+
 </div>
 
 </div>
