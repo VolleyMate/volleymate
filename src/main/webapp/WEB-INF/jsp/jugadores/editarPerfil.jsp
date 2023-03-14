@@ -29,8 +29,7 @@
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">   
                         <button class="btn btn-default" type="submit">Actualizar datos</button>
-                        <spring:url value="/jugadores" var="editUrl"></spring:url>
-                        <a href="${editUrl}" class="btn btn-default">Volver</a>
+                        <a href="/jugadores" class="btn btn-default">Volver</a>
             </div>
         </div>
         <form:errors></form:errors>
