@@ -51,7 +51,6 @@ public class Partido extends BaseEntity {
     @Column(name = "num_jugadores")
     private Integer numJugadoresNecesarios;
 
-    @NotBlank
     private String lugar;
     
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")

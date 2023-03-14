@@ -2,6 +2,7 @@ package org.springframework.samples.volleymate.partido;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.jugador.JugadorService;
+import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.security.core.Authentication;
@@ -74,19 +76,35 @@ public class PartidoController {
 		partido.setCreador(jugador);
 		partido.setFechaCreacion(LocalDateTime.now());
 		partido.setFecha(LocalDateTime.now());
+		partido.setNumJugadoresNecesarios(1);
 		model.put("partido", partido);
 		return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 	}
 
 	@PostMapping(value = "/partidos/new")
-	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model) {
-		if (result.hasErrors()) {
-				
-			model.put("partido", partido);
-			model.put("errors", result.getAllErrors());
-			return VIEW_PARTIDOS_CREATE_OR_UPDATE;
+	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model) throws YaUnidoException {
+		List<String> errores = new ArrayList<>();
+		if(partido.getFecha().isBefore(LocalDateTime.now())) {
+			errores.add("La fecha no puede ser previa al día de hoy");
 		}
-		else {
+		if(partido.getDescripcion()==null || partido.getDescripcion()=="") {
+			errores.add("La descripción no puede estar vacía");
+		}
+		if(partido.getNombre()==null || partido.getNombre()=="") {
+			errores.add("El nombre no puede estar vacío");
+		}
+		if(partido.getLugar()== null || partido.getLugar()=="") {
+			errores.add("El lugar del partido no puede estar vacío");
+		}
+		if(partido.getNumJugadoresNecesarios()==null || partido.getNumJugadoresNecesarios()<=1){
+			errores.add("El número de jugadores debe ser mayor que 1");
+		}
+		if (!errores.isEmpty()) {
+			model.put("partido", partido);
+			model.put("errors", errores);
+			return VIEW_PARTIDOS_CREATE_OR_UPDATE;
+		} else {
+			jugadorService.unirsePartida(partido.getCreador().getId(), partido.getId());
 			this.partidoService.save(partido);
 			return "redirect:/partidos/"+partido.getId();
 		}
