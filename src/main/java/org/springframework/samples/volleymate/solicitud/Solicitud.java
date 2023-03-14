@@ -8,6 +8,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.model.BaseEntity;
@@ -22,17 +23,11 @@ import lombok.Setter;
 @Setter
 public class Solicitud extends BaseEntity {
   
-  @Column(name = "jugador")
-  @NotEmpty
+  @NotNull
+  @ManyToOne
   private Jugador jugador;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinTable(name="solicitudes_partido", joinColumns = @JoinColumn(name = "solicitudId"), 
-        inverseJoinColumns = @JoinColumn(name = "partidoId"))
+  @NotNull
+  @ManyToOne
   private Partido partido;
-
-  @Column(name = "estado")
-  @NotEmpty
-  private EstadoSolicitud estado;
-
 }

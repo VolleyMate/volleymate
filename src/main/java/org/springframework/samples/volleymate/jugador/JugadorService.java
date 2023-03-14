@@ -84,6 +84,7 @@ public class JugadorService {
         }
     }
 
+    @Transactional
     public void crearSolicitudPartido(Jugador jugador, Partido partido) {
         Solicitud solicitud = new Solicitud();
         solicitud.setJugador(jugador);
@@ -91,11 +92,14 @@ public class JugadorService {
         this.solicitudRepository.save(solicitud);
     }
 
+    @Transactional
+    public void eliminarSolicitud(Solicitud solicitud) {
+        this.solicitudRepository.delete(solicitud);
+    }
+
     public Solicitud findSolicitudById(int solicitudId) {
         return this.solicitudRepository.findById(solicitudId).get();
     }
 
-    public void eliminarSolicitud(Solicitud solicitud) {
-        this.solicitudRepository.delete(solicitud);
-    }
+
 }

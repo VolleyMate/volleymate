@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import java.util.Map;
-
+import org.springframework.ui.ModelMap;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,6 +19,7 @@ import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoExceptio
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
+import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,14 +39,18 @@ public class JugadorController {
     
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
+    private final SolicitudService solicitudService;
 
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
+	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
+
 
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService) {
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
+        this.solicitudService = solicitudService;
     }
 
     @GetMapping("/jugadores")
@@ -113,17 +118,61 @@ public class JugadorController {
     }
 
     @GetMapping("/jugadores/solicitudes/{partidoId}")
-    public String solicitudUnirse(@PathVariable("partidoId") int partidoId, Principal principal, RedirectAttributes redirect){
+    public String solicitudUnirse(@PathVariable("partidoId") int partidoId, Principal principal, RedirectAttributes redirAttrs){
         Partido partido = this.partidoService.findPartidoById(partidoId);
-        if(partido != null){
-            // redireccion con msg de error.
-            return VIEW_LISTA_PARTIDOS;
-        }        
+        if(partido == null){
+            redirAttrs.addFlashAttribute("mensajeError", "Ups, parece que ha habido un problema!");
+            String redirect = String.format("redirect:/partidos/%s", partidoId);
+            return redirect;
+        }       
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         this.jugadorService.crearSolicitudPartido(jugador, partido);
-        // redireccion con msg de confirmacion. 
-        return VIEW_LISTA_PARTIDOS;
+        redirAttrs.addFlashAttribute("mensajeExitoso", "Solicitud enviada!");
+        String redirect = String.format("redirect:/partidos/%s", partidoId);
+        return redirect;
+    }
 
+    @GetMapping("/jugadores/solicitudes/denegar/{solicitudId}")
+    public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId){
+        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
+        // notificar al jugador que ha sido rechazado. 
+        this.jugadorService.eliminarSolicitud(solicitud);
+        return VIEW_LISTA_PARTIDOS;
+    }
+    
+    @GetMapping("/jugadores/solicitudes/aceptar/{solicitudId}")
+    public String aceptarSolicitud(@PathVariable("solicitudId") int solicitudId, RedirectAttributes redirAttrs){
+        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
+        try{
+            this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
+            redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
+            /*
+                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
+                ACORDARSE: Hay que mostrar el mensaje en la vista
+            */
+            return VIEW_LISTA_PARTIDOS;
+           
+        }catch(YaUnidoException ex){
+            redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
+            /*
+                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
+                ACORDARSE: Hay que mostrar el mensaje en la vista
+            */
+            return VIEW_LISTA_PARTIDOS;
+        }
+    }
+
+    @GetMapping("/jugadores/notificaciones")
+    public String showVistaNotificaciones(Principal principal, ModelMap model){
+        //seccion notificaciones
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        Set<Solicitud> solicitudesRecibidas = this.solicitudService.findSolicitudesATusPartidos(jugador);
+        model.put("solicitudesRecibidas", solicitudesRecibidas);
+        //seccion solicitudes recibidas
+        Set<Solicitud> solicitudesPendientes = this.solicitudService.findTusSolicitudes(jugador);
+        model.put("solicitudesPendientes", solicitudesPendientes);
+        
+        return VIEW_NOTIFICACIONES;
     }
 
 
@@ -185,34 +234,6 @@ public class JugadorController {
 		
 	}
 
-    @GetMapping("/jugadores/solicitudes/denegar/{solicitudId}")
-    public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId){
-        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
-        // notificar al jugador que ha sido rechazado. 
-        this.jugadorService.eliminarSolicitud(solicitud);
-        return VIEW_LISTA_PARTIDOS;
-    }
-    
-    @GetMapping("/jugadores/solicitudes/aceptar/{solicitudId}")
-    public String aceptarSolicitud(@PathVariable("solicitudId") int solicitudId, RedirectAttributes redirAttrs){
-        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
-        try{
-            this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
-            redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
-            /*
-                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
-                ACORDARSE: Hay que mostrar el mensaje en la vista
-            */
-            return VIEW_LISTA_PARTIDOS;
-           
-        }catch(YaUnidoException ex){
-            redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
-            /*
-                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
-                ACORDARSE: Hay que mostrar el mensaje en la vista
-            */
-            return VIEW_LISTA_PARTIDOS;
-        }
-    }
+
 
 }

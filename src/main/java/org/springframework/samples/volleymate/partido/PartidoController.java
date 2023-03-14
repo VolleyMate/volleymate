@@ -1,5 +1,6 @@
 package org.springframework.samples.volleymate.partido;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -29,10 +30,8 @@ public class PartidoController {
     //SERVICES
 	@Autowired
 	private PartidoService partidoService;
-
 	@Autowired
 	private JugadorService jugadorService;
-
 	@Autowired
 	private SolicitudService solicitudService;
     
@@ -57,9 +56,10 @@ public class PartidoController {
     
 
 	@GetMapping("/partidos/{partidoId}")
-    public ModelAndView showPartido(@PathVariable("partidoId") int partidoId) {
+    public ModelAndView showPartido(@PathVariable("partidoId") int partidoId, Principal principal) {
         ModelAndView mav = new ModelAndView("partidos/partidoDetails");
         mav.addObject("partido", this.partidoService.findPartidoById(partidoId));
+		mav.addObject("jugadorLogueado", this.jugadorService.findJugadorByUsername(principal.getName()));
         return mav;
     }
 
