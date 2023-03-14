@@ -35,7 +35,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class JugadorController {
     
-    private static final String VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM = "jugadores/createOrUpdateJugadorForm";
+    private static final String VIEWS_UPDATE_FORM = "jugadores/editarPerfil";
     
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
@@ -124,12 +124,21 @@ public class JugadorController {
             redirAttrs.addFlashAttribute("mensajeError", "Ups, parece que ha habido un problema!");
             String redirect = String.format("redirect:/partidos/%s", partidoId);
             return redirect;
-        }       
-        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        this.jugadorService.crearSolicitudPartido(jugador, partido);
-        redirAttrs.addFlashAttribute("mensajeExitoso", "Solicitud enviada!");
-        String redirect = String.format("redirect:/partidos/%s", partidoId);
-        return redirect;
+        } 
+        // Método servicio boolean
+        Boolean yaTieneSolicitud = solicitudService.getYaTieneSolicitud(partidoId, principal);
+        //////////////////////    
+        if(yaTieneSolicitud){
+            redirAttrs.addFlashAttribute("mensajeError", "Ya has enviado una solicitud");
+            String redirect = String.format("redirect:/partidos/%s", partidoId);
+            return redirect;
+        } else {
+            Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+            this.jugadorService.crearSolicitudPartido(jugador, partido);
+            redirAttrs.addFlashAttribute("mensajeExitoso", "Solicitud enviada!");
+            String redirect = String.format("redirect:/partidos/%s", partidoId);
+            return redirect;
+        }
     }
 
     @GetMapping("/jugadores/solicitudes/denegar/{solicitudId}")
@@ -146,11 +155,12 @@ public class JugadorController {
         try{
             this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
             redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
+            this.jugadorService.eliminarSolicitud(solicitud);
             /*
                 Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
                 ACORDARSE: Hay que mostrar el mensaje en la vista
             */
-            return VIEW_LISTA_PARTIDOS;
+            return "redirect:/jugadores/notificaciones";
            
         }catch(YaUnidoException ex){
             redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
@@ -158,7 +168,7 @@ public class JugadorController {
                 Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
                 ACORDARSE: Hay que mostrar el mensaje en la vista
             */
-            return VIEW_LISTA_PARTIDOS;
+            return "redirect:/jugadores/notificaciones";
         }
     }
 
@@ -199,14 +209,14 @@ public class JugadorController {
                             model.addAttribute("sexo", sexo);
 							
 							model.addAttribute(jugador);
-							return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+							return VIEWS_UPDATE_FORM;
 						}else{
 							return "welcome";
 						}
 					}
 				} catch (DataIntegrityViolationException ex){
 					
-					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+					return VIEWS_UPDATE_FORM;
 				}
 				
 				
@@ -222,7 +232,7 @@ public class JugadorController {
 
 		if(result.hasErrors()){
 			model.put("errors", result.getAllErrors());
-			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+			return VIEWS_UPDATE_FORM;
 		}
 		else {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());

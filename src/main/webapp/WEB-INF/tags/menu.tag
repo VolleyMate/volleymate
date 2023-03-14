@@ -45,12 +45,6 @@
 					<span>Mis notificaciones</span>
 				</petclinic:menuItem>				
 
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
-					title="trigger a RuntimeException to see how it is handled">
-					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-					<span>Error</span>
-				</petclinic:menuItem>
-
 			</ul>
 
 

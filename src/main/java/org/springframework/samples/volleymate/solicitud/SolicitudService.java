@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.stereotype.Service;
+import java.security.Principal;
 
 @Service
 public class SolicitudService {
@@ -32,5 +33,15 @@ public class SolicitudService {
         return solicitudRepository.findSolicitudesByJugador(jugador);
     }
     
+    public Boolean getYaTieneSolicitud(Integer partidoId, Principal principal){
+        Boolean yaTieneSolicitud = false;
+        Set<Solicitud> lista = solicitudRepository.findSolicitudesByPartidoId(partidoId);
+        for (Solicitud sol:lista){
+            if (sol.getJugador().getUser().getUsername().equals(principal.getName())){
+                yaTieneSolicitud = true;
+            }
+        }
+        return yaTieneSolicitud;
+    }
 
 }

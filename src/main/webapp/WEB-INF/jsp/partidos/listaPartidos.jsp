@@ -7,7 +7,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="partidos">
-    <h2>Partidos creados</h2>
+    <h2>Partidos disponibles</h2>
 
     <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
         <thead>

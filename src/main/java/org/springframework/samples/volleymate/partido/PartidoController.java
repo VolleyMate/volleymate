@@ -57,10 +57,12 @@ public class PartidoController {
 
 	@GetMapping("/partidos/{partidoId}")
     public ModelAndView showPartido(@PathVariable("partidoId") int partidoId, Principal principal) {
-        ModelAndView mav = new ModelAndView("partidos/partidoDetails");
+        Boolean estaDentro = partidoService.getJugadorDentroPartido(partidoId, principal);
+		ModelAndView mav = new ModelAndView("partidos/partidoDetails");
         mav.addObject("partido", this.partidoService.findPartidoById(partidoId));
 		mav.addObject("jugadorLogueado", this.jugadorService.findJugadorByUsername(principal.getName()));
-        return mav;
+        mav.addObject("estaDentro",estaDentro);
+		return mav;
     }
 
     //Create Partidos

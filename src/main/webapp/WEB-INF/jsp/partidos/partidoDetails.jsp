@@ -59,17 +59,40 @@
     <h3></h3>
     <h3 style="color: #FFFFFF;">Número jugadores: </h3>
    <h3 style="background-color: white; border-radius: 5px; width: fit-content; text-align: center;  margin: 0 auto;"> 
-    <c:out value="${partido.numJugadoresNecesarios}"/></h3>
+    <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/></h3>
     <h3></h3>
     </div>
     <div style=" margin: 0 auto;">
 
     <c:if test="${!partido.creador.equals(jugadorLogueado)}">
-        <spring:url value="/jugadores/solicitudes/${partido.id}" var="enviarSolicitudUrl"></spring:url>
-        <a href="${fn:escapeXml(enviarSolicitudUrl)}">
-            <p class="btn btn-success">Enviar solicitud</p>
-        </a>
+        <c:if test="${!estaDentro}">
+            <spring:url value="/jugadores/solicitudes/${partido.id}" var="enviarSolicitudUrl"></spring:url>
+            <a href="${fn:escapeXml(enviarSolicitudUrl)}">
+                <p class="btn btn-success">Enviar solicitud</p>
+            </a>
+        </c:if>
     </c:if>
+
+    <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
+        <thead>
+            <tr>
+                <th style="width: 150px; text-align: center; background-color:#FFFFFF; color: black;">Jugadores:</th>
+            </tr>
+            <tr style="height: 15px;"></tr>
+        </thead>
+        <tbody>
+            <c:forEach var="jugador" items="${partido.jugadores}">
+                <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
+                    <td style="text-align: center;">
+                        <spring:url value="/jugadores/${jugador.id}" var="verJugadorURL"></spring:url>
+                        <a href="${verJugadorURL}" class="btn" style="color: black;"><c:out value="${jugador.user.username}"/></a>
+                    </td>
+                </tr>
+                <tr style="height: 15px;"></tr>
+            </c:forEach>
+        </tbody>
+    </table>
+
 
 </div>
 
