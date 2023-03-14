@@ -68,18 +68,22 @@ public class PartidoController {
     //Create Partidos
     
 	@GetMapping(value = "/partidos/new")
-	public String initCreationForm(Jugador jugador, ModelMap model) {
+	public String initCreationForm(Principal principal, ModelMap model) {
 		Partido partido = new Partido();
+		Jugador jugador = jugadorService.findJugadorByUsername(principal.getName());
 		partido.setCreador(jugador);
 		partido.setFechaCreacion(LocalDateTime.now());
+		partido.setFecha(LocalDateTime.now());
 		model.put("partido", partido);
 		return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 	}
 
 	@PostMapping(value = "/partidos/new")
-	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model) {		
+	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model) {
 		if (result.hasErrors()) {
+				
 			model.put("partido", partido);
+			model.put("errors", result.getAllErrors());
 			return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 		}
 		else {

@@ -15,6 +15,11 @@
       <div class="container">
         <form:form modelAttribute="partido" class="form-horizontal" id="crear_partido">
           <div class="row form-row">
+          	<form:hidden path="id"/>
+          	<form:hidden path="creador"/>
+          	<form:hidden path="fechaCreacion"/>
+          </div>
+          <div class="row form-row">
             <div class="col-md-4" style="margin-right: 40px; margin-left: 20px;">
               <div class="form-group">
                 <form:label path="nombre" >Nombre actividad:</form:label>
@@ -33,7 +38,6 @@
                 <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;">150 volleys
               </div>
               
-
             </div>
             <div class="col-md-4">
               <div class="form-group">
@@ -45,13 +49,13 @@
               <div class="form-group">
                 <form:label path="tipo">Tipo:</form:label>
                 <form:select path="tipo" style="border-radius: 20px;" class="form-control">
-                  <form:options items="${tipos}" />
+                  <form:options items="${tipos}" value="${tipo}"/>
                 </form:select>
               </div>
               <div class="form-group">
-                <form:label path="fecha">Fecha y hora:</form:label>
+			  <form:label path="fecha">Fecha y hora:</form:label>
                 <form:input path="fecha" style="border-radius: 20px;" type="datetime-local" class="form-control" />
-              </div>
+              </div> 
               <div class="form-group">
                 <form:label path="lugar">Lugar:</form:label>
                 <form:input path="lugar" style="border-radius: 20px;" class="form-control" />
@@ -66,6 +70,8 @@
         </form:form>
       </div>
     </div>
-  
+  	    <c:forEach var="error" items="${errors}">
+            <c:out value="${error}"/>
+        </c:forEach>  
 
 </petclinic:layout>

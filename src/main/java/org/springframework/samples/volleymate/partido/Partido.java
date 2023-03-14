@@ -1,30 +1,26 @@
 package org.springframework.samples.volleymate.partido;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.model.BaseEntity;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
-
-import java.time.format.DateTimeFormatter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -46,25 +42,22 @@ public class Partido extends BaseEntity {
     private String descripcion;
 
     @Column(name = "tipo")
-    @NotEmpty
     private Tipo tipo;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "creador", referencedColumnName = "username")
 	private Jugador creador;
 
-    @NotBlank
     @Column(name = "num_jugadores")
     private Integer numJugadoresNecesarios;
 
     @NotBlank
     private String lugar;
     
-    @NotEmpty
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime fecha;
 
-    @NotBlank
-    @Column(name = "precio_persona")        
+    @Column(name = "precio_persona") 
 	private Integer precioPersona;
 
     @Column(name = "fecha_creacion", updatable = false, nullable = false)
