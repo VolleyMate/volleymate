@@ -32,7 +32,7 @@
                         <c:out value="${partido.lugar}"/>
                     </td>
                     <td style="text-align: center;">
-                        <button class="btn btn-default">Ver</button>
+                        <button onclick="location.href='/partidos/${partido.id}'" class="btn btn-default">Ver</button>
                     </td> 
                     <td style="text-align: center;">
                         <c:out value="${partido.numJugadoresNecesarios}"/>

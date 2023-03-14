@@ -24,5 +24,3 @@ INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,1);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,3);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,4);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,5);
-
-INSERT INTO solicitudes(jugador_id,partido_id) VALUES (2,2);

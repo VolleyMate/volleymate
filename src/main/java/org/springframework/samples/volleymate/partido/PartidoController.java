@@ -31,9 +31,6 @@ public class PartidoController {
 	private PartidoService partidoService;
 
 	@Autowired
-	private JugadorService jugadorService;
-
-	@Autowired
 	private SolicitudService solicitudService;
     
     //VIEWS
