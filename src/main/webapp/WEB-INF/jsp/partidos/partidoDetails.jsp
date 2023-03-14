@@ -96,8 +96,7 @@
                         <c:if test="${jugador.image == ''}"><img class="rounded d-block" src="/resources/images/perfilPorDefecto.jpg" width="50" height="50"></c:if>
                         <c:if test="${jugador.image != ''}"><img class="rounded d-block" src="${jugador.image}" width="50" height="50"></c:if>
                         
-                        <spring:url value="/jugadores/${jugador.id}" var="verJugadorURL"></spring:url>
-                        <a href="${verJugadorURL}" class="btn" style="color: black;">[<c:out value="${jugador.user.username}"/>]</a>
+                        <a href="/jugadores/${jugador.id}" class="btn" style="color: black;">[<c:out value="${jugador.user.username}"/>]</a>
                         <c:out value="${jugador.firstName}"/><c:out value=" "/><c:out value="${jugador.lastName}"/>
                     </td>
                 </tr>
