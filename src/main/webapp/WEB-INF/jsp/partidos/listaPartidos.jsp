@@ -13,10 +13,10 @@
         <thead>
             <tr>
                 <th style="width: 150px; text-align: center;">Creador</th>
-                <th style="width: 120px; text-align: center;">numJugadoresNecesarios</th>
+                <th style="width: 120px; text-align: center;">Jugadores</th>
                 <th style="width: 120px; text-align: center;">Lugar</th>
-                <th style="width: 120px; text-align: center;">Fecha actividad</th>
-                <th style="width: 120px; text-align: center;">Fecha creación</th>
+                <th style="width: 120px; text-align: center;">Fecha de la actividad</th>
+                <th style="width: 120px; text-align: center;">Fecha de creación</th>
                 <th style="width: 60px;"></th>
             </tr>
             <tr style="height: 15px;"></tr>
@@ -28,7 +28,7 @@
                         <c:out value="${partido.creador.user.username}"/>
                     </td>
                     <td style="text-align: center;">
-                        <c:out value="${partido.numJugadoresNecesarios}"/>
+                        <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
                     </td>
                     <td style="text-align: center;">
                         <c:out value="${partido.lugar}"/>
@@ -40,7 +40,8 @@
                         <c:out value="${partido.getFechaCreacionParseada()}"/>
                     </td>
                     <td style="text-align: center;">
-                        <button onclick="location.href='partidos/${partido.id}'"  background-color: red; border-radius: 30px; width: 100px; height: 35px;>Ver</button>
+                        <spring:url value="/partidos/${partido.id}" var="verURL"></spring:url>
+                        <a href="${verURL}" class="btn btn-default">Ver</a>
                     </td> 
                 </tr>
                 <tr style="height: 15px;"></tr>
