@@ -104,8 +104,8 @@ public class PartidoController {
 			model.put("errors", errores);
 			return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 		} else {
-			jugadorService.unirsePartida(partido.getCreador().getId(), partido.getId());
 			this.partidoService.save(partido);
+			jugadorService.unirsePartida(partido.getCreador().getId(), partido.getId());
 			return "redirect:/partidos/"+partido.getId();
 		}
 	}
