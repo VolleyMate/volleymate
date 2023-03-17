@@ -67,10 +67,18 @@
 
     <c:if test="${!partido.creador.equals(jugadorLogueado)}">
         <c:if test="${!estaDentro}">
-            <spring:url value="/jugadores/solicitudes/${partido.id}" var="enviarSolicitudUrl"></spring:url>
-            <a href="${fn:escapeXml(enviarSolicitudUrl)}">
-                <p class="btn btn-success">Enviar solicitud</p>
-            </a>
+            
+        
+            <c:choose>
+                <c:when test="${estaEnEspera}">
+                    <p class="btn btn-warning">Pendiente</p>
+                </c:when>    
+                <c:otherwise>
+                    <spring:url value="/jugadores/solicitudes/${partido.id}" var="enviarSolicitudUrl"></spring:url>
+                    <a href="${fn:escapeXml(enviarSolicitudUrl)}"><p class="btn btn-success">Enviar solicitud</p></a>
+                </c:otherwise>
+            </c:choose>
+
         </c:if>
     </c:if>
 

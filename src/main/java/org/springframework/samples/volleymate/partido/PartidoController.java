@@ -60,10 +60,12 @@ public class PartidoController {
 	@GetMapping("/partidos/{partidoId}")
     public ModelAndView showPartido(@PathVariable("partidoId") int partidoId, Principal principal) {
         Boolean estaDentro = partidoService.getJugadorDentroPartido(partidoId, principal);
+		Boolean estaEnEspera = partidoService.getJugadorEnEsperaPartido(partidoId, principal);
 		ModelAndView mav = new ModelAndView("partidos/partidoDetails");
-        mav.addObject("partido", this.partidoService.findPartidoById(partidoId));
+		mav.addObject("partido", this.partidoService.findPartidoById(partidoId));
 		mav.addObject("jugadorLogueado", this.jugadorService.findJugadorByUsername(principal.getName()));
         mav.addObject("estaDentro",estaDentro);
+		mav.addObject("estaEnEspera", estaEnEspera);
 		return mav;
     }
 
