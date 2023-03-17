@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.volleymate.jugador.Jugador;
+import org.springframework.samples.volleymate.solicitud.Solicitud;
+import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +21,11 @@ public class PartidoService {
 	
 	private PartidoRepository partidoRepository;
 
+	private SolicitudRepository solicitudRepository;
+
 	@Autowired
-	public PartidoService(PartidoRepository partidoRepository) {
+	public PartidoService(PartidoRepository partidoRepository, SolicitudRepository solicitudRepository) {
+		this.solicitudRepository = solicitudRepository;
 		this.partidoRepository = partidoRepository;
 	}
 	
@@ -61,6 +66,19 @@ public class PartidoService {
 			}
 		}
 		return estaDentro;
+	}
+
+
+	public Boolean getJugadorEnEsperaPartido(Integer partidoId, Principal principal){
+		Set<Solicitud> lista = solicitudRepository.findSolicitudesByPartidoId(partidoId);
+		Partido p = partidoRepository.findById(partidoId).get();
+		Boolean estaEnEspera = false;
+		for (Solicitud solicitud:lista){
+			if(solicitud.getJugador().getUser().getUsername().equals(principal.getName())){
+				estaEnEspera = true;
+			}
+		}
+		return estaEnEspera;
 	}
 
 }

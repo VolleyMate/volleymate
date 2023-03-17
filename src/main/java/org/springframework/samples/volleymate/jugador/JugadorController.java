@@ -145,7 +145,7 @@ public class JugadorController {
         Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
         // notificar al jugador que ha sido rechazado. 
         this.jugadorService.eliminarSolicitud(solicitud);
-        return VIEW_LISTA_PARTIDOS;
+        return "redirect:/jugadores/notificaciones";
     }
     
     @GetMapping("/jugadores/solicitudes/aceptar/{solicitudId}")
