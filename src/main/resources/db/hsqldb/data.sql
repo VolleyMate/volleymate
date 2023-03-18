@@ -32,3 +32,8 @@ INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,5);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (2,2);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (3,6);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (3,7);
+INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (3,1);
+
+INSERT INTO mensajes (id, contenido_mensaje,fecha_envio,emisor,partido) VALUES (1,'Hola, ¿alguien quiere jugar?', '2013-01-01 17:00','jorsilman',1);
+INSERT INTO mensajes (id, contenido_mensaje,fecha_envio,emisor,partido) VALUES (2,'Hola, ¿alguien quiere jugar?', '2015-01-01 17:00','barba',1);
+INSERT INTO mensajes (id, contenido_mensaje,fecha_envio,emisor,partido) VALUES (3,'Hola, ¿alguien quiere jugar?', '2017-01-01 17:00','barba',1);

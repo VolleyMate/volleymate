@@ -113,4 +113,15 @@
         </tbody>
     </table>
 </div>
+
+
+<div style="width: 70%; margin: 0 auto; border-radius: 50px;  text-align: center; display: flex; flex-wrap: wrap;">
+    <c:if test="${estaDentro}">
+        <spring:url value="/chat/{partidoId}" var="chat">
+            <spring:param value="${partido.id}" name="partidoId"/>
+        </spring:url>
+        <a href="${chat}" class="btn btn-default">Chat</a>
+    </c:if>
+</div>
+
 </petclinic:layout>

@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import java.util.Map;
 import org.springframework.ui.ModelMap;
@@ -20,6 +24,8 @@ import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
+import org.springframework.samples.volleymate.user.User;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,14 +40,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class JugadorController {
     
-    private static final String VIEWS_UPDATE_FORM = "jugadores/editarPerfil";
+    private static final String VIEW_UPDATE_FORM = "jugadores/editarPerfil";
+    private static final String VIEW_CREATE_FORM = "jugadores/crearJugador";
+	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
     
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
-
-	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
-	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
 
 
 
@@ -51,6 +56,53 @@ public class JugadorController {
     	this.partidoService = partidoService;
         this.solicitudService = solicitudService;
     }
+
+
+    @GetMapping(value = "/jugadores/new")
+	public String crearJugadorInicio(Map<String, Object> model) {
+		Jugador jugador = new Jugador();
+		model.put("jugador", jugador);
+		return VIEW_CREATE_FORM;
+	}
+
+
+    @PostMapping(value = "/jugadores/new")
+	public String processCreationForm(@Valid Jugador jugador, BindingResult result) {
+		if (result.hasErrors()) {			
+			return VIEW_CREATE_FORM;
+		}
+		else {
+			
+			User user = jugador.getUser();
+			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+			Validator validator = factory.getValidator();
+			Set<ConstraintViolation<User>> violations = validator.validate(user);
+			
+
+			if(violations.isEmpty()){
+				try{
+					UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
+					SecurityContextHolder.getContext().setAuthentication(authReq);
+					this.jugadorService.saveJugador(jugador);
+					return "redirect:/";
+				}catch (DataIntegrityViolationException ex){
+					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
+					return VIEW_CREATE_FORM;
+				}
+			}
+
+			else{
+				for(ConstraintViolation<User> v : violations){
+					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
+				}
+								
+				return VIEW_CREATE_FORM;
+			}
+		}
+	}
+
+
+
 
     @GetMapping("/jugadores")
     public String showJugadorAutenticado(Map<String,Object> model, Principal principal) {
@@ -208,14 +260,14 @@ public class JugadorController {
                             model.addAttribute("sexo", sexo);
 							
 							model.addAttribute(jugador);
-							return VIEWS_UPDATE_FORM;
+							return VIEW_UPDATE_FORM;
 						}else{
 							return "welcome";
 						}
 					}
 				} catch (DataIntegrityViolationException ex){
 					
-					return VIEWS_UPDATE_FORM;
+					return VIEW_UPDATE_FORM;
 				}
 				
 				
@@ -231,7 +283,7 @@ public class JugadorController {
 
 		if(result.hasErrors()){
 			model.put("errors", result.getAllErrors());
-			return VIEWS_UPDATE_FORM;
+			return VIEW_UPDATE_FORM;
 		}
 		else {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
