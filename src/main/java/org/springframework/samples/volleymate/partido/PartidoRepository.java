@@ -22,4 +22,8 @@ public interface PartidoRepository extends CrudRepository<Partido, Integer> {
 
     @Query("SELECT p FROM Partido p WHERE p.tipo =:tipo")
     Set<Partido> findPartidosByTipo(Tipo tipo);
+
+    @Query("SELECT p FROM Partido p WHERE p.sexo =:sexo")
+    Set<Partido> findPartidosBySexo(Sexo sexo);
+    
 }

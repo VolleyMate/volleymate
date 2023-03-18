@@ -82,9 +82,17 @@ public class PartidoService {
 		return estaEnEspera;
 	}
 
+	// Filtrar partidos
+
 	public Set<Partido> getPartidosByTipo(Tipo tipo) {
 		Set<Partido> conj = new HashSet<>();
 		conj.addAll(partidoRepository.findPartidosByTipo(tipo));
+		return conj;
+	}
+
+	public Set<Partido> getPartidosBySexo(Sexo sexo) {
+		Set<Partido> conj = new HashSet<>();
+		conj.addAll(partidoRepository.findPartidosBySexo(sexo));
 		return conj;
 	}
 
