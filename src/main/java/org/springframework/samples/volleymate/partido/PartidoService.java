@@ -3,6 +3,7 @@ package org.springframework.samples.volleymate.partido;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -79,6 +80,12 @@ public class PartidoService {
 			}
 		}
 		return estaEnEspera;
+	}
+
+	public Set<Partido> getPartidosByTipo(Tipo tipo) {
+		Set<Partido> conj = new HashSet<>();
+		conj.addAll(partidoRepository.findPartidosByTipo(tipo));
+		return conj;
 	}
 
 }

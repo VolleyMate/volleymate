@@ -39,6 +39,7 @@ public class PartidoController {
     
     //VIEWS
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
+	private static final String VIEW_LISTA_PARTIDOS_TIPO = "/partido/listaPartidos?tipo=${tipoP}";
 	private static final String VIEW_PARTIDOS_CREATE_OR_UPDATE = "partidos/crearPartido";
 	private static final String VIEW_SOLICITUDES_PARTIDO = "partidos/{partidoId}/solicitudes";
 
@@ -56,7 +57,6 @@ public class PartidoController {
 		}
 	}
     
-
 	@GetMapping("/partidos/{partidoId}")
     public ModelAndView showPartido(@PathVariable("partidoId") int partidoId, Principal principal) {
         Boolean estaDentro = partidoService.getJugadorDentroPartido(partidoId, principal);
@@ -121,6 +121,20 @@ public class PartidoController {
 		conj.addAll(solic);
 		model.put("solicitudes", conj);
 		return VIEW_SOLICITUDES_PARTIDO;
+	}
+
+	@GetMapping(value = "/partido/listaPartidos?tipo=${tipoP}")
+	public String showPartidos(Map<String, Object> model, @PathVariable("tipoP") Tipo tipoP) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (auth != null){
+			Set<Partido> partidosP = partidoService.getPartidosByTipo(tipoP);
+			model.put("partidosTipo", partidosP);
+			return VIEW_LISTA_PARTIDOS_TIPO;
+		} else {
+			return "redirect:/";
+		}
 	}
 }
 	
