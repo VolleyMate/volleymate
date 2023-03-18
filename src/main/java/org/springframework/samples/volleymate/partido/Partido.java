@@ -19,6 +19,7 @@ import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.volleymate.jugador.Jugador;
+import org.springframework.samples.volleymate.mensaje.Mensaje;
 import org.springframework.samples.volleymate.model.BaseEntity;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 
@@ -67,6 +68,9 @@ public class Partido extends BaseEntity {
 
     @ManyToMany(mappedBy = "partidos")
     private List<Jugador> jugadores;
+
+    @OneToMany(mappedBy = "partido")
+    private List<Mensaje> mensajes;
 
     public String getFechaParseada(){
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm dd'/'MM'/'yyyy");
