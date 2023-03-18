@@ -71,6 +71,8 @@ INSERT INTO users(username,password,enabled,correo) VALUES ('patriaguiro35','pat
 INSERT INTO authorities(id,username,authority) VALUES (18,'patriaguiro35','jugador');
 INSERT INTO jugadores VALUES (18,'Patricia','Aguirre','Sevilla','','FEMENINO','666666666','patriaguiro35');
 
+
+
 INSERT INTO users(username,password,enabled,correo) VALUES ('profesor1','profesor1',TRUE,'profesor1@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (19,'profesor1','jugador');
 INSERT INTO jugadores VALUES (19,'profesor1','profesor1','Sevilla','','FEMENINO','666666666','profesor1');
@@ -78,6 +80,14 @@ INSERT INTO jugadores VALUES (19,'profesor1','profesor1','Sevilla','','FEMENINO'
 INSERT INTO users(username,password,enabled,correo) VALUES ('profesor2','profesor2',TRUE,'profesor2@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (20,'profesor2','jugador');
 INSERT INTO jugadores VALUES (20,'profesor2','profesor2','Sevilla','','FEMENINO','666666666','profesor2');
+
+INSERT INTO users(username,password,enabled,correo) VALUES ('albatinajeroherrera','albatinajeroherrera',TRUE,'albatinajeroherrera@gmail.com');
+INSERT INTO authorities(id,username,authority) VALUES (21,'albatinajeroherrera','jugador');
+INSERT INTO jugadores VALUES (21,'Alba','Tinajero','Sevilla','','FEMENINO','666666666','albatinajeroherrera');
+
+INSERT INTO users(username,password,enabled,correo) VALUES ('daniel0diiaz','daniel0diiaz',TRUE,'daniel0diiaz@gmail.com');
+INSERT INTO authorities(id,username,authority) VALUES (22,'daniel0diiaz','jugador');
+INSERT INTO jugadores VALUES (22,'Daniel','Diaz','Sevilla','','MASCULINO','666666666','daniel0diiaz');
 
 
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,lugar,fecha,fecha_creacion,precio_persona) VALUES (1,'Partido amistoso','MASCULINO','Vamos a jugar un partido amistoso',0,'jorsilman',3,'Sevilla','2013-01-02 17:00','2013-01-01 17:00',0);
