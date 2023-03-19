@@ -10,20 +10,30 @@
     <h2>
         Nuevo jugador
     </h2>
-    <form:form modelAttribute="jugador" class="form-horizontal" id="añadir-jugador-form">
-        <div class="form-group has-feedback">
-            <petclinic:inputField label="Nombre" name="first_name">
-            <petclinic:inputField label="Apellido" name="last_name"/>
-            <petclinic:inputField label="Teléfono" name="telephone"/>
-            <petclinic:inputField label="Usuario" name="user.username"/>
-            <petclinic:inputField label="Contraseña" name="user.password"/>
+
+    <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
+        <div class="container"> 
+            <form:form modelAttribute="jugador" class="form-horizontal" id="añadir-jugador-form">
+                <div class="form-group has-feedback">
+                    <petclinic:inputField label="Nombre" name="first_name">
+                    <petclinic:inputField label="Apellidos" name="last_name"/>
+                    <petclinic:inputField label="Teléfono" name="telephone"/>
+                    <petclinic:inputField label="Ciudad" name="ciudad"/>
+                    <petclinic:inputField label="Usuario" name="user.username"/>
+                    <div class="control-group">
+                        <petclinic:selectField name="sexo" label="Sexo " names="${sexos}" size="3"/>
+                    </div>
+                    <petclinic:inputField label="Imagen" name="image"/>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">            
+                            
+                        <button style="background-color: #838789" class="btn btn-default" type="submit">Registrarse</button>                  
+                        
+                    </div>
+                </div>
+            </form:form>
         </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">            
-                    
-            	<button class="btn btn-default" type="submit">Registrarse</button>                  
-                
-            </div>
-        </div>
-    </form:form>
+    </div>
+
 </petclinic:layout>
