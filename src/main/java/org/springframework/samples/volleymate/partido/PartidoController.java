@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PartidoController {
@@ -124,7 +125,7 @@ public class PartidoController {
 		return VIEW_SOLICITUDES_PARTIDO;
 	}
 
-	@GetMapping(value = "/partido/listaPartidos?tipo=${tipoP}")
+	@GetMapping(value ="/partido/listaPartidos?tipo={tipoP}")
 	public String showPartidosTipo(Map<String, Object> model, @PathVariable("tipoP") Tipo tipoP) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -138,7 +139,7 @@ public class PartidoController {
 		}
 	}
 
-	@GetMapping(value = "/partido/listaPartidos?sexo=${sexoP}")
+	@GetMapping(value = "/partido/listaPartidos?sexo={sexoP}")
 	public String showPartidosSexo(Map<String, Object> model, @PathVariable("sexoP") Sexo sexoP) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
