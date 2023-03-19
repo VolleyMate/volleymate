@@ -70,7 +70,7 @@ public class MensajeController {
             }
         }
         
-        if(contenidoMensaje == ""){
+        if(contenidoMensaje.equals("")){
             mensajeVacio = true;
             return "redirect:/chat/{partidoId}";
         } else {
