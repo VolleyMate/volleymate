@@ -53,7 +53,7 @@
                 </form:select>
               </div>
               <div class="form-group">
-			  <form:label path="fecha">Fecha y hora:</form:label>
+			          <form:label path="fecha">Fecha y hora:</form:label>
                 <form:input path="fecha" style="border-radius: 20px;" type="datetime-local" class="form-control" />
               </div> 
               <div class="form-group">
