@@ -243,6 +243,21 @@ public class JugadorController {
 		
 	}
 
+    @GetMapping(value = "/listaJugadores")
+	public String buscarJugador(Model model, @PathVariable("palabraClave") String palabraClave) {
+		
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+	    if (auth != null){
+			List<Jugador> listaJugadores = jugadorService.listAll(palabraClave);
+            model.addAttribute("listaJugadores", listaJugadores);
+			model.addAttribute("palabraClave", palabraClave);
+			return "/listaJugadores";
+		} else {
+			return "redirect:/";
+		}
+	}
+
 
 
 }

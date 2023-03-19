@@ -39,8 +39,8 @@ public class PartidoController {
     
     //VIEWS
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
-	private static final String VIEW_LISTA_PARTIDOS_TIPO = "/partido/listaPartidos?tipo=${tipoP}";
-	private static final String VIEW_LISTA_PARTIDOS_SEXO = "/partido/listaPartidos?sexo=${sexoP}";
+	// private static final String VIEW_LISTA_PARTIDOS_TIPO = "/partido/listaPartidos?tipo=${tipoP}";
+	// private static final String VIEW_LISTA_PARTIDOS_SEXO = "/partido/listaPartidos?sexo=${sexoP}";
 	private static final String VIEW_PARTIDOS_CREATE_OR_UPDATE = "partidos/crearPartido";
 	private static final String VIEW_SOLICITUDES_PARTIDO = "partidos/{partidoId}/solicitudes";
 
@@ -124,33 +124,33 @@ public class PartidoController {
 		return VIEW_SOLICITUDES_PARTIDO;
 	}
 
-	@GetMapping(value = "/partido/listaPartidos?tipo=${tipoP}")
-	public String showPartidosTipo(Map<String, Object> model, @PathVariable("tipoP") Tipo tipoP) {
+	// @GetMapping(value = "/partido/listaPartidos?tipo=${tipoP}")
+	// public String showPartidosTipo(Map<String, Object> model, @PathVariable("tipoP") Tipo tipoP) {
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	// 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		if (auth != null){
-			Set<Partido> partidosT = partidoService.getPartidosByTipo(tipoP);
-			model.put("partidosTipo", partidosT);
-			return VIEW_LISTA_PARTIDOS_TIPO;
-		} else {
-			return "redirect:/";
-		}
-	}
+	// 	if (auth != null){
+	// 		Set<Partido> partidosT = partidoService.getPartidosByTipo(tipoP);
+	// 		model.put("partidosTipo", partidosT);
+	// 		return VIEW_LISTA_PARTIDOS_TIPO;
+	// 	} else {
+	// 		return "redirect:/";
+	// 	}
+	// }
 
-	@GetMapping(value = "/partido/listaPartidos?sexo=${sexoP}")
-	public String showPartidosSexo(Map<String, Object> model, @PathVariable("sexoP") Sexo sexoP) {
+	// @GetMapping(value = "/partido/listaPartidos?sexo=${sexoP}")
+	// public String showPartidosSexo(Map<String, Object> model, @PathVariable("sexoP") Sexo sexoP) {
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	// 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		if (auth != null){
-			Set<Partido> partidosS = partidoService.getPartidosBySexo(sexoP);
-			model.put("partidosSexo", partidosS);
-			return VIEW_LISTA_PARTIDOS_SEXO;
-		} else {
-			return "redirect:/";
-		}
-	}
+	// 	if (auth != null){
+	// 		Set<Partido> partidosS = partidoService.getPartidosBySexo(sexoP);
+	// 		model.put("partidosSexo", partidosS);
+	// 		return VIEW_LISTA_PARTIDOS_SEXO;
+	// 	} else {
+	// 		return "redirect:/";
+	// 	}
+	// }
 
 }
 	
