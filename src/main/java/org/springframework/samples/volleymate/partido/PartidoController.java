@@ -124,7 +124,7 @@ public class PartidoController {
 		return VIEW_SOLICITUDES_PARTIDO;
 	}
 
-	@GetMapping(value = "/partido/listaPartidos?tipo=${tipoP}")
+	/*@GetMapping(value = "/partido/listaPartidos?tipo=${tipoP}")
 	public String showPartidosTipo(Map<String, Object> model, @PathVariable("tipoP") Tipo tipoP) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -150,7 +150,7 @@ public class PartidoController {
 		} else {
 			return "redirect:/";
 		}
-	}
+	}*/
 
 }
 	
