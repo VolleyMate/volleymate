@@ -4,40 +4,50 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="partidos">
-    <h2>Partidos</h2>
+    <h2>Partidos disponibles</h2>
 
-    <table id="partidosTable" class="table table-striped">
+    <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
         <thead>
-        <tr>
-            <th style="width: 150px;">Creador</th>
-            <th>numJugadoresNecesarios</th>
-            <th>Lugar</th>
-            <th style="width: 120px">Fecha actividad</th>
-            <th style="width: 120px">Fecha creación</th>
-        </tr>
+            <tr>
+                <th style="width: 150px; text-align: center;">Creador</th>
+                <th style="width: 120px; text-align: center;">Jugadores</th>
+                <th style="width: 120px; text-align: center;">Lugar</th>
+                <th style="width: 120px; text-align: center;">Fecha de la actividad</th>
+                <th style="width: 120px; text-align: center;">Fecha de creación</th>
+                <th style="width: 60px;"></th>
+            </tr>
+            <tr style="height: 15px;"></tr>
         </thead>
         <tbody>
-        <c:forEach items="${partidos}" var="partido">
-            <tr>
-                <td>
-                    <c:out value="${partido.creador.user.username}"/></a>
-                </td>
-                <td>
-                    <c:out value="${partido.numJugadoresNecesarios}"/>
-                </td>
-                <td>
-                    <c:out value="${partido.lugar}"/>
-                </td>
-                <td>
-                    <c:out value="${partido.fecha}"/>
-                </td>
-                <td>
-                    <c:out value="${partido.fechaCreacion}"/>
-                </td>
-            </tr>
-        </c:forEach>
+            <c:forEach items="${partidos}" var="partido">
+                <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
+                    <td style="text-align: center;">
+                        <c:out value="${partido.creador.user.username}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <c:out value="${partido.lugar}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <c:out value="${partido.getFechaParseada()}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <c:out value="${partido.getFechaCreacionParseada()}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <spring:url value="/partidos/${partido.id}" var="verURL"></spring:url>
+                        <a href="${verURL}" class="btn btn-default">Ver</a>
+                    </td> 
+                </tr>
+                <tr style="height: 15px;"></tr>
+            </c:forEach>
         </tbody>
     </table>
+    
+      
 </petclinic:layout>
