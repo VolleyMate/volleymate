@@ -11,13 +11,17 @@
 <petclinic:layout pageName="chat">
     <h2>Chat</h2>
 
+    <div style="text-align: center; color: #FF0000">
+        <c:out value="${error}"/>
+    </div>
+
     <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
         <thead>
         </thead>
         <tbody>
             <c:forEach items="${mensajes}" var="mensajeEach">
-                <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
-                    <td style="text-align: center;">
+                <tr>
+                    <td>
                         <c:out value="${mensajeEach.emisor.user.username}"/>
                         <c:out value=" | "/>
                         <c:out value="${mensajeEach.contenidoMensaje}"/>
@@ -25,7 +29,7 @@
                         <c:out value="${mensajeEach.getFechaParseada()}"/>
                     </td>
                 </tr>
-                <tr style="height: 15px;"></tr>
+                <tr></tr>
             </c:forEach>
         </tbody>
     </table>   
