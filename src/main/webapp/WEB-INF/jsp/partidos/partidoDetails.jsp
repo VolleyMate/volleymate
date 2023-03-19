@@ -120,7 +120,7 @@
         <spring:url value="/chat/{partidoId}" var="chat">
             <spring:param value="${partido.id}" name="partidoId"/>
         </spring:url>
-        <a href="${chat}" class="btn btn-default">Chat</a>
+        <a href="${fn:escapeXml(chat)}" class="btn btn-default">Chat</a>
     </c:if>
 </div>
 
