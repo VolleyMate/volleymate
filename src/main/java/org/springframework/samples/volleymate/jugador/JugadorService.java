@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class JugadorService {
     
+    @Autowired
     private JugadorRepository jugadorRepository;
     private PartidoRepository partidoRepository;
     private UserService userService;
@@ -99,6 +100,13 @@ public class JugadorService {
 
     public Solicitud findSolicitudById(int solicitudId) {
         return this.solicitudRepository.findById(solicitudId).get();
+    }
+
+    public List<Jugador> listAll(String palabraClave){
+        if(palabraClave!=null){
+            return jugadorRepository.findAll(palabraClave);
+        }
+        return jugadorRepository.findAll();
     }
 
 
