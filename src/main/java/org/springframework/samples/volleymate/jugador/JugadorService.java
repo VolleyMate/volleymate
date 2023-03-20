@@ -131,6 +131,9 @@ public class JugadorService {
         if(jugadorRepository.findByUsername(jugador.getUser().getUsername()) != null){
             errores.add("El nombre de usuario ya existe");
         }
+        if(jugadorRepository.findByCorreo(jugador.getUser().getCorreo()) != null){
+            errores.add("El correo ya existe");
+        }
         return errores;
     }
 
