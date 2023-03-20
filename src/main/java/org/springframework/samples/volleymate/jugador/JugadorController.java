@@ -38,13 +38,13 @@ public class JugadorController {
     
     private static final String VIEW_UPDATE_FORM = "jugadores/editarPerfil";
     private static final String VIEW_CREATE_FORM = "jugadores/crearJugador";
-	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
-    
+	  private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
+    private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
+    private static final String HOME_TIENDA = "jugadores/tienda";
+    private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
-
-
 
     @Autowired
     public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService) {
@@ -202,18 +202,10 @@ public class JugadorController {
             jugador.setVolleys(sumVolleys);
             this.jugadorService.saveJugador(jugador);
             this.jugadorService.eliminarSolicitud(solicitud);
-            /*
-                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
-                ACORDARSE: Hay que mostrar el mensaje en la vista
-            */
             return "redirect:/jugadores/notificaciones";
            
         }catch(YaUnidoException ex){
             redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
-            /*
-                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
-                ACORDARSE: Hay que mostrar el mensaje en la vista
-            */
             return "redirect:/jugadores/notificaciones";
         }
     }
@@ -272,7 +264,6 @@ public class JugadorController {
 	
 	}
 	
-	
 	@PostMapping(value = "/jugadores/edit/{id}")
 	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
 
@@ -287,8 +278,19 @@ public class JugadorController {
 			model.put("message","Jugador editado correctamente");
 			return "redirect:/jugadores";
 		}						
-		
 	}
+
+    @GetMapping(value="/tienda")
+    public String showVistaTienda(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        model.put("jugadorRegistrado", jugador);
+        return HOME_TIENDA;
+    }
+
+    @GetMapping(value="/tienda/volleys")
+    public String showVistaTiendaVolleys(Principal principal, ModelMap model){
+        return HOME_TIENDA_VOLLEYS;
+    }
 
     @GetMapping(value = "/listaJugadores")
 	public String buscarJugador(Model model, @PathVariable("palabraClave") String palabraClave) {
@@ -305,8 +307,22 @@ public class JugadorController {
 		}
 	}
 
+    @GetMapping(value="tienda/volleys/comprar/{volleys}/{precio}")
+    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
+                                                        @PathVariable("volleys") Integer precio, RedirectAttributes redirAttrs){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        Integer sumVolleys = jugador.getVolleys() + volleys;
+        jugador.setVolleys(sumVolleys);
+        this.jugadorService.saveJugador(jugador);
+        redirAttrs.addFlashAttribute("compraAceptada", "Su pago se ha procesado correctamente!");
+        return HOME_TIENDA_VOLLEYS;
+    }
 
-
+    //Por hacer
+    @GetMapping(value="/tienda/premium")
+    public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
+        return null;
+    }
 }
 
 
