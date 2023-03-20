@@ -95,4 +95,10 @@ public class PartidoService {
 		return conj;
 	}
 
+  public Set<Partido> getPartidosByLugar(String lugar) {
+		Set<Partido> conj = new HashSet<>();
+		conj.addAll(partidoRepository.findPartidosByLugar(lugar));
+		return conj;
+	}
+
 }

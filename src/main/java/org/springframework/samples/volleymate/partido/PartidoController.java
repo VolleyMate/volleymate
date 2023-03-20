@@ -151,6 +151,20 @@ public class PartidoController {
 		}
 	}*/
 
+  @GetMapping(value = "/partido/listaPartidos?lugar=${place}")
+	public String showPartidosSexo(Map<String, Object> model, @PathVariable("place") String place) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (auth != null){
+			Set<Partido> partidosL = partidoService.getPartidosByLugar(place);
+			model.put("partidosSexo", partidosL);
+			return VIEW_LISTA_PARTIDOS;
+		} else {
+			return "redirect:/";
+		}
+	}
+
 }
 	
 	
