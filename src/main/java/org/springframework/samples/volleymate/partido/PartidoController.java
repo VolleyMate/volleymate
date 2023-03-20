@@ -149,7 +149,7 @@ public class PartidoController {
 		} else {
 			return "redirect:/";
 		}
-	}*/
+	}
 
 }
 	
