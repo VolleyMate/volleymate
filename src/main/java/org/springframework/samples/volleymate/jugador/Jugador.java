@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.volleymate.model.Person;
 import org.springframework.samples.volleymate.partido.Partido;
@@ -47,6 +48,10 @@ public class Jugador extends Person{
 
 	@Column(name = "image")
 	protected String image;
+
+	@NotNull
+	@Column(name = "volleys")
+	private Integer volleys;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
