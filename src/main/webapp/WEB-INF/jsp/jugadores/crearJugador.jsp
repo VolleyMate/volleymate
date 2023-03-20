@@ -8,11 +8,13 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="jugadores">
-    <h2>
-        <c:if test="${jugador['new']}">
-            <p style="text-align: center;">Regístrate</p>
-        </c:if>
-    </h2>
+    <div style="text-align: center;">
+        <h2>
+            <c:if test="${jugador['new']}">
+                <p>Regístrate</p>
+            </c:if>
+        </h2>
+    </div>
     <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
         <div class="container">         
             <form:form modelAttribute="jugador" class="form-horizontal " id="add-jugador-form">
@@ -46,12 +48,12 @@
                             <form:input path="user.correo" style="border-radius: 20px;" class="form-control" />
                         </div>
                         <div class="form-group">
-                            <form:label path="ciudad">Teléfono:</form:label>
-                            <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />
+                            <form:label path="telephone">Teléfono:</form:label>
+                            <form:input path="telephone" style="border-radius: 20px;" class="form-control" />
                         </div>
                         <div class="form-group">
-                            <form:label path="telephone">Ciudad:</form:label>
-                            <form:input path="telephone" style="border-radius: 20px;" class="form-control" />
+                            <form:label path="ciudad">Ciudad:</form:label>
+                            <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />
                         </div>
                         <div class="form-group">
                             <form:label path="sexo">Sexo:</form:label>

@@ -38,9 +38,8 @@ public class Jugador extends Person{
 	private String ciudad;
 
     @Column(name = "telephone")
-	@NotEmpty
-	//@Digits(fraction = 0, integer = 8)
-	private String telephone;
+	@Digits(fraction = 0, integer = 9)
+	private Integer telephone;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "sexo")
@@ -51,7 +50,7 @@ public class Jugador extends Person{
 
 	@NotNull
 	@Column(name = "volleys")
-	private Integer volleys;
+	private Integer volleys=0;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")

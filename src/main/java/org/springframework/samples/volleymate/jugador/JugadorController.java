@@ -8,11 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 import java.util.Map;
 import org.springframework.ui.ModelMap;
@@ -72,34 +68,18 @@ public class JugadorController {
 		if (result.hasErrors()) {			
             model.put("errors", result.getAllErrors());
 			return VIEW_CREATE_FORM;
-		}
-		else {
-			
-			User user = jugador.getUser();
-			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-			Validator validator = factory.getValidator();
-			Set<ConstraintViolation<User>> violations = validator.validate(user);
-			
-
-			if(violations.isEmpty()){
-				try{
-					UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
-					SecurityContextHolder.getContext().setAuthentication(authReq);
-					this.jugadorService.saveJugador(jugador);
-					return "redirect:/";
-				}catch (DataIntegrityViolationException ex){
-					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
-					return VIEW_CREATE_FORM;
-				}
-			}
-
-			else{
-				for(ConstraintViolation<User> v : violations){
-					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
-				}
-								
-				return VIEW_CREATE_FORM;
-			}
+		} else {
+            if(jugadorService.findJugadorByUsername(jugador.getUser().getUsername()) != null){
+                model.put("errors", "El nombre de usuario ya existe");
+                return VIEW_CREATE_FORM;
+            }
+            else{
+                User user = jugador.getUser();
+                UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
+                SecurityContextHolder.getContext().setAuthentication(authReq);
+                this.jugadorService.saveJugador(jugador);
+                return "redirect:/";
+            }
 		}
 	}
 

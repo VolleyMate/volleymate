@@ -1,6 +1,9 @@
 package org.springframework.samples.volleymate.mensaje;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -30,12 +33,22 @@ public class MensajeService {
 
         @Transactional()
 	    public void save(Mensaje mensaje) throws DataAccessException, IllegalArgumentException {
-            //se podría poner filtro de spam o palabras como insultos
-            // if(partido.getFecha().isBefore(LocalDateTime.now())) {
-            //     throw new IllegalArgumentException();
-            // }else {
-                mensajeRepository.save(mensaje);
-            // }   
+            mensajeRepository.save(mensaje);  
 	    }
+
+        @Transactional
+        public List<String> getParseoMensaje(String contenidoMensaje) {
+            String[] palabrasSeparadas = contenidoMensaje.split(" ");
+            List<String> palabrasLista = Arrays.asList(palabrasSeparadas);
+            List<String> palabrasEnMinuscula = palabrasLista.stream().map(String::toLowerCase).collect(Collectors.toList());
+            return palabrasEnMinuscula;
+        }
+
+        @Transactional
+        public List<String> getListaDeInsultos () {
+            // ⚠️ Hay que poner palabras en minúsculas en el array, el método getParseoMensaje hace la conversión
+            return Arrays.asList("puta", "cabron", "cabrón", "cabrona", 
+                "cabronazo", "cabronazo", "cabronazos", "cabrona", "cabronas","puto", "putos", "putas");
+        }
     
 }
