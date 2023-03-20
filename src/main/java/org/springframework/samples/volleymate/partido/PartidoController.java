@@ -120,6 +120,17 @@ public class PartidoController {
 		model.put("solicitudes", conj);
 		return VIEW_SOLICITUDES_PARTIDO;
 	}
+
+	@GetMapping(value = "partidos/{partidoId}/jugadores")
+	public ModelAndView showJugadoresPartido(@PathVariable("partidoId") int partidoId, ModelMap model) {
+		Partido partido = partidoService.findPartidoById(partidoId);
+		List<Jugador> jugadores= partido.getJugadores();
+		ModelAndView mav = new ModelAndView("partidos/jugadoresPartido");
+        mav.addObject("jugadores", jugadores);
+		return mav;
+	}
+
+
 }
 	
 	
