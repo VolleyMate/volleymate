@@ -130,8 +130,8 @@ public class PartidoController {
 		
 		if (auth != null){
 			Set<Partido> partidosT = partidoService.getPartidosByTipo(tipoP);
-			model.put("partidosTipo", partidosT);
-			return VIEW_LISTA_PARTIDOS_TIPO;
+			model.put("partidos", partidosT);
+			return VIEW_LISTA_PARTIDOS;
 		} else {
 			return "redirect:/";
 		}
@@ -144,8 +144,8 @@ public class PartidoController {
 		
 		if (auth != null){
 			Set<Partido> partidosS = partidoService.getPartidosBySexo(sexoP);
-			model.put("partidosSexo", partidosS);
-			return VIEW_LISTA_PARTIDOS_SEXO;
+			model.put("partidos", partidosS);
+			return VIEW_LISTA_PARTIDOS;
 		} else {
 			return "redirect:/";
 		}
