@@ -2,7 +2,6 @@ package org.springframework.samples.volleymate.jugador;
 
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,12 +16,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import javax.validation.constraints.NotNull;
-
 import org.springframework.samples.volleymate.model.Person;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.user.User;
 import org.springframework.samples.volleymate.valoracion.Valoracion;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,6 +45,7 @@ public class Jugador extends Person{
 	@NotNull
 	@Column(name = "volleys")
 	private Integer volleys=0;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
