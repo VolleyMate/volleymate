@@ -20,6 +20,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 public class User{
+	
 	@Id
 	String username;
 	
@@ -27,9 +28,6 @@ public class User{
 	
 	boolean enabled;
 
-	@NotNull
-	@NotEmpty
-	@Email
 	@Column(unique=true)
 	String correo;
 	

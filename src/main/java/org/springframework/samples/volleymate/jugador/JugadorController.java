@@ -21,6 +21,7 @@ import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.samples.volleymate.user.User;
+import org.springframework.samples.volleymate.user.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,14 +44,16 @@ public class JugadorController {
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
+    private final UserService userService;
 
 
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService, UserService userService) {
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
         this.solicitudService = solicitudService;
+        this.userService = userService;
     }
 
 
@@ -63,27 +66,81 @@ public class JugadorController {
 
 
     @PostMapping(value = "/jugadores/new")
-	public String processCreationForm(@Valid Jugador jugador, BindingResult result, Map<String, Object> model) {
+	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model) {
 
-		if (result.hasErrors()) {			
-            model.put("errors", result.getAllErrors());
+        List<String> errores = jugadorService.findErroresCrearJugador(jugador);
+
+		if (!errores.isEmpty()) {
+			model.put("errors", errores);
 			return VIEW_CREATE_FORM;
 		} else {
-            if(jugadorService.findJugadorByUsername(jugador.getUser().getUsername()) != null){
-                model.put("errors", "El nombre de usuario ya existe");
-                return VIEW_CREATE_FORM;
-            }
-            else{
-                User user = jugador.getUser();
-                UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
-                SecurityContextHolder.getContext().setAuthentication(authReq);
-                this.jugadorService.saveJugador(jugador);
-                return "redirect:/";
-            }
+			User user = jugador.getUser();
+            UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
+            SecurityContextHolder.getContext().setAuthentication(authReq);
+            this.jugadorService.saveJugador(jugador);
+            return "redirect:/";
 		}
+
+		
 	}
 
+@GetMapping(value = "/jugadores/edit/{id}")
+	public String initEditForm(Model model, @PathVariable("id") int id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			if(auth.isAuthenticated()){
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				String user = currentUser.getUsername();
+				try{
+					Jugador player = jugadorService.findJugadorByUsername(user);
+					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+					for (GrantedAuthority usuarioR : usuario){
+					String credencial = usuarioR.getAuthority();
+						if(player.getId()==id || credencial.equals("admin")){
+							Jugador jugador = jugadorService.findJugadorById(id);
+							String username = jugador.getUser().getUsername();
+							String pass = jugador.getUser().getPassword();
+                            Sexo sexo = jugador.getSexo();
 
+							model.addAttribute("pass", pass);
+							model.addAttribute("username", username);
+                            model.addAttribute("sexo", sexo);
+							
+							model.addAttribute(jugador);
+							return VIEW_UPDATE_FORM;
+						}else{
+							return "welcome";
+						}
+					}
+				} catch (DataIntegrityViolationException ex){
+					
+					return VIEW_UPDATE_FORM;
+				}
+				
+				
+			}return "welcome";
+		}
+		return "welcome";
+	
+	}
+	
+	
+	@PostMapping(value = "/jugadores/edit/{id}")
+	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
+
+		if(result.hasErrors()){
+			model.put("errors", result.getAllErrors());
+			return VIEW_UPDATE_FORM;
+		}
+		else {
+			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
+			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","sexo","user"); 
+            this.jugadorService.saveJugador(jugadorToUpdate);
+			model.put("message","Jugador editado correctamente");
+			return "redirect:/jugadores";
+		}						
+		
+	}
 
 
     @GetMapping("/jugadores")
@@ -230,65 +287,6 @@ public class JugadorController {
         
         return VIEW_NOTIFICACIONES;
     }
-
-
-    @GetMapping(value = "/jugadores/edit/{id}")
-	public String initEditForm(Model model, @PathVariable("id") int id) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth != null){
-			if(auth.isAuthenticated()){
-				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String user = currentUser.getUsername();
-				try{
-					Jugador player = jugadorService.findJugadorByUsername(user);
-					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
-					for (GrantedAuthority usuarioR : usuario){
-					String credencial = usuarioR.getAuthority();
-						if(player.getId()==id || credencial.equals("admin")){
-							Jugador jugador = jugadorService.findJugadorById(id);
-							String username = jugador.getUser().getUsername();
-							String pass = jugador.getUser().getPassword();
-                            Sexo sexo = jugador.getSexo();
-
-							model.addAttribute("pass", pass);
-							model.addAttribute("username", username);
-                            model.addAttribute("sexo", sexo);
-							
-							model.addAttribute(jugador);
-							return VIEW_UPDATE_FORM;
-						}else{
-							return "welcome";
-						}
-					}
-				} catch (DataIntegrityViolationException ex){
-					
-					return VIEW_UPDATE_FORM;
-				}
-				
-				
-			}return "welcome";
-		}
-		return "welcome";
-	
-	}
-	
-	
-	@PostMapping(value = "/jugadores/edit/{id}")
-	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
-
-		if(result.hasErrors()){
-			model.put("errors", result.getAllErrors());
-			return VIEW_UPDATE_FORM;
-		}
-		else {
-			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","user","sexo"); 
-            this.jugadorService.saveJugador(jugadorToUpdate);
-			model.put("message","Jugador editado correctamente");
-			return "redirect:/jugadores";
-		}						
-		
-	}
 
     @GetMapping(value = "/listaJugadores")
 	public String buscarJugador(Model model, @PathVariable("palabraClave") String palabraClave) {

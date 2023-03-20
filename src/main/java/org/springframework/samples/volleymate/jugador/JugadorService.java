@@ -113,5 +113,37 @@ public class JugadorService {
         return jugadorRepository.findAll();
     }
 
+    public List<String> findErroresCrearJugador(Jugador jugador){
+        List<String> errores = new ArrayList<>();
+        Integer digitos = (int)(Math.log10(jugador.getTelephone())+1);
+        if(!digitos.equals(9)) {
+            errores.add("El teléfono debe tener 9 cifras");
+        }
+        //Restricción de correo válido
+        if(!jugador.getUser().getCorreo().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            errores.add("El correo no es válido");
+        }
+        //Restricción de nombre
+        if(jugador.getFirstName().length() < 3 || jugador.getFirstName().length() > 20) {
+            errores.add("El nombre debe tener entre 3 y 20 caracteres");
+        }
+        //Restricción de apellidos
+        if(jugador.getLastName().length() < 3 || jugador.getLastName().length() > 20) {
+            errores.add("El apellido debe tener entre 3 y 20 caracteres");
+        }
+        //Restricción de nombre de usuario
+        if(findJugadorByUsername(jugador.getUser().getUsername()) != null){
+            errores.add("El nombre de usuario ya existe");
+        }
+        //Restricción de contraseña
+        if(jugador.getUser().getPassword().length() < 8 || jugador.getUser().getPassword().length() > 20) {
+            errores.add("La contraseña debe tener entre 8 y 20 caracteres");
+        }
+        //Restricción de ciudad
+        if(jugador.getCiudad().length() < 3 || jugador.getCiudad().length() > 20) {
+            errores.add("La ciudad debe tener entre 3 y 20 caracteres");
+        }
+        return errores;
+    }
 
 }

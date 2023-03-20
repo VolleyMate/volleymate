@@ -71,10 +71,12 @@
       </div>   
     </div>
           
-      <div style="text-align: center; color: #FF0000">
-      	<c:forEach var="error" items="${errors}">
-            <c:out value="${error} "/>
-        </c:forEach>
-      </div>
+    <div style="text-align: center; color: #FF0000">
+          <c:forEach var="error" items="${errors}">
+              <ul>    
+               <c:out value="${error} "/>
+              </ul>
+          </c:forEach>
+  </div> 
       
 </petclinic:layout>
