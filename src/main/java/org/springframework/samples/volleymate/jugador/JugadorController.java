@@ -171,9 +171,9 @@ public class JugadorController {
     @GetMapping("/jugadores/solicitudes/{partidoId}")
     public String solicitudUnirse(@PathVariable("partidoId") int partidoId, Principal principal, RedirectAttributes redirAttrs){
         Partido partido = this.partidoService.findPartidoById(partidoId);
+        String redirect = String.format("redirect:/partidos/%s", partidoId);
         if(partido == null){
             redirAttrs.addFlashAttribute("mensajeError", "Ups, parece que ha habido un problema!");
-            String redirect = String.format("redirect:/partidos/%s", partidoId);
             return redirect;
         } 
         // Método servicio boolean
@@ -181,13 +181,20 @@ public class JugadorController {
         //////////////////////    
         if(yaTieneSolicitud){
             redirAttrs.addFlashAttribute("mensajeError", "Ya has enviado una solicitud");
-            String redirect = String.format("redirect:/partidos/%s", partidoId);
             return redirect;
         } else {
             Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-            this.jugadorService.crearSolicitudPartido(jugador, partido);
-            redirAttrs.addFlashAttribute("mensajeExitoso", "Solicitud enviada!");
-            String redirect = String.format("redirect:/partidos/%s", partidoId);
+            String mensaje = "";
+            String value = "";
+            if(jugador.getVolleys()>=partido.getPrecioPersona()){
+                this.jugadorService.crearSolicitudPartido(jugador, partido);
+                mensaje += "mensajeExitoso";
+                value += "Solicitud enviada!";
+            }else{
+                mensaje += "mensajeError";
+                value += "No tienes volleys suficientes. Compralos en nuestra tienda!";
+            }
+            redirAttrs.addFlashAttribute(mensaje, value);
             return redirect;
         }
     }
@@ -207,6 +214,12 @@ public class JugadorController {
             this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
             redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
             this.jugadorService.eliminarSolicitud(solicitud);
+            Jugador jugador = solicitud.getJugador();
+            Partido partido = solicitud.getPartido();
+            Integer volleys = partido.getPrecioPersona();
+            Integer sumVolleys = jugador.getVolleys() - volleys;
+            jugador.setVolleys(sumVolleys);
+            this.jugadorService.saveJugador(jugador);
             /*
                 Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
                 ACORDARSE: Hay que mostrar el mensaje en la vista
