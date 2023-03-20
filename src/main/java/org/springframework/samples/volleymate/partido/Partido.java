@@ -58,7 +58,7 @@ public class Partido extends BaseEntity {
 	private LocalDateTime fecha;
 
     @Column(name = "precio_persona") 
-	private Integer precioPersona;
+	private Integer precioPersona=150;
 
     @Column(name = "fecha_creacion", updatable = false, nullable = false)
     private LocalDateTime fechaCreacion=LocalDateTime.now();

@@ -195,13 +195,13 @@ public class JugadorController {
         try{
             this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
             redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
-            this.jugadorService.eliminarSolicitud(solicitud);
             Jugador jugador = solicitud.getJugador();
             Partido partido = solicitud.getPartido();
             Integer volleys = partido.getPrecioPersona();
             Integer sumVolleys = jugador.getVolleys() - volleys;
             jugador.setVolleys(sumVolleys);
             this.jugadorService.saveJugador(jugador);
+            this.jugadorService.eliminarSolicitud(solicitud);
             /*
                 Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
                 ACORDARSE: Hay que mostrar el mensaje en la vista
@@ -308,3 +308,8 @@ public class JugadorController {
 
 
 }
+
+
+
+
+
