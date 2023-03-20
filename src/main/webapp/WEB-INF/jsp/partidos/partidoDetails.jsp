@@ -37,7 +37,7 @@
         <h3></h3>
 <h3 style="color: #FFFFFF;"> Precio:</h3>
     <h3 style="background-color: white; border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto;">
-        <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;">150 volleys
+        <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;"><c:out value="${partido.precioPersona}"/> volleys
         <h3></h3>
     </div>
     <div style="width: 45%;">
@@ -65,14 +65,16 @@
     </div>
     <div style=" margin: 0 auto;">
 
+
     <c:if test="${!partido.creador.equals(jugadorLogueado)}">
         <c:if test="${!estaDentro}">
-            
-        
             <c:choose>
                 <c:when test="${estaEnEspera}">
                     <p class="btn btn-warning">Pendiente</p>
-                </c:when>    
+                </c:when>
+                <c:when test="${partido.precioPersona > jugadorLogueado.volleys}">
+                    <p class="btn btn-danger">No tienes los volleys necesarios</p>
+                </c:when>
                 <c:otherwise>
                     <spring:url value="/jugadores/solicitudes/${partido.id}" var="enviarSolicitudUrl"></spring:url>
                     <a href="${fn:escapeXml(enviarSolicitudUrl)}"><p class="btn btn-success">Enviar solicitud</p></a>
@@ -113,4 +115,15 @@
         </tbody>
     </table>
 </div>
+
+
+<div style="width: 70%; margin: 0 auto; border-radius: 50px;  text-align: center; display: flex; flex-wrap: wrap;">
+    <c:if test="${estaDentro}">
+        <spring:url value="/chat/{partidoId}" var="chat">
+            <spring:param value="${partido.id}" name="partidoId"/>
+        </spring:url>
+        <a href="${fn:escapeXml(chat)}" class="btn btn-default">Chat</a>
+    </c:if>
+</div>
+
 </petclinic:layout>

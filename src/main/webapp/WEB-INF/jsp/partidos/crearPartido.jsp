@@ -20,7 +20,7 @@
           	<form:hidden path="fechaCreacion"/>
           </div>
           <div class="row form-row">
-            <div class="col-md-4" style="margin-right: 40px; margin-left: 20px;">
+            <div class="col-md-4" style="margin: 25px;">
               <div class="form-group">
                 <form:label path="nombre" >Nombre actividad:</form:label>
                 <form:input path="nombre" style="border-radius: 20px;" class="form-control" />
@@ -39,7 +39,7 @@
               </div>
               
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" style="margin: 25px;">
               <div class="form-group">
                 <form:label path="sexo">Sexo:</form:label>
                 <form:select path="sexo" style="border-radius: 20px;" class="form-control">
@@ -53,7 +53,7 @@
                 </form:select>
               </div>
               <div class="form-group">
-			  <form:label path="fecha">Fecha y hora:</form:label>
+			          <form:label path="fecha">Fecha y hora:</form:label>
                 <form:input path="fecha" style="border-radius: 20px;" type="datetime-local" class="form-control" />
               </div> 
               <div class="form-group">

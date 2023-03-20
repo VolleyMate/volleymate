@@ -72,7 +72,6 @@ public class PartidoService {
 
 	public Boolean getJugadorEnEsperaPartido(Integer partidoId, Principal principal){
 		Set<Solicitud> lista = solicitudRepository.findSolicitudesByPartidoId(partidoId);
-		Partido p = partidoRepository.findById(partidoId).get();
 		Boolean estaEnEspera = false;
 		for (Solicitud solicitud:lista){
 			if(solicitud.getJugador().getUser().getUsername().equals(principal.getName())){
