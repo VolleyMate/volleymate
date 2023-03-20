@@ -48,6 +48,10 @@
                             <form:input path="user.correo" style="border-radius: 20px;" class="form-control" />
                         </div>
                         <div class="form-group">
+                            <form:label path="telephone">Teléfono:</form:label>
+                            <form:input path="telephone" type="number" style="border-radius: 20px;" class="form-control" />
+                        </div>
+                        <div class="form-group">
                             <form:label path="ciudad">Ciudad:</form:label>
                             <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />
                         </div>
