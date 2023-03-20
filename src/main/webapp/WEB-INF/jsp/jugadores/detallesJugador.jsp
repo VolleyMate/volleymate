@@ -24,6 +24,7 @@
         <h4><b><c:out value="${jugadorVista.volleys}"/></b><c:out value=" "/><img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;"></h4>
     </br>
     </br>
+    
         <tr>
             <c:if test="${jugadorVista.equals(jugadorAutenticado)}">
                 <spring:url value="/jugadores/edit/{id}" var="editUrl">
