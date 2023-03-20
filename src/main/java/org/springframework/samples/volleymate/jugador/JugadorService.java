@@ -36,6 +36,10 @@ public class JugadorService {
         this.solicitudRepository = solicitudRepository;
     }
 
+    @Transactional(readOnly = true)
+    public List<Jugador> findAll() {
+        return jugadorRepository.findAll();
+    }
 
     @Transactional(readOnly = true)
     public Jugador findJugadorById(int id) throws DataAccessException {

@@ -1,7 +1,6 @@
 package org.springframework.samples.volleymate.mensaje;
 
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -60,10 +59,11 @@ public class MensajeController {
 
     @PostMapping(value = "/chat/enviar/{partidoId}")
     public String enviarMensaje(@PathVariable("partidoId") int partidoId, @RequestParam String contenidoMensaje, Principal principal,  Map<String, Object> model) {
-        List<String> listaInsultos = Arrays.asList("puta", "cabron", "cabrón", "cabrona", "cabronazo", "cabronazo", "cabronazos", "cabrona", "cabronas");
-        String[] palabrasSeparadas = contenidoMensaje.split(" ");
+        
+        List<String> mensajeEnMinusculas = mensajeService.getParseoMensaje(contenidoMensaje);
+        List<String> listaInsultos = mensajeService.getListaDeInsultos();
 
-        for(String palabrasDelMensaje : palabrasSeparadas){
+        for(String palabrasDelMensaje : mensajeEnMinusculas){
             if (listaInsultos.contains(palabrasDelMensaje)){
                 palabraInsulto = true;
                 return "redirect:/chat/{partidoId}";
