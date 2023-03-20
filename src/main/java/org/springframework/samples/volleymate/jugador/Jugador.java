@@ -14,8 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.EnumType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotEmpty;
+
 import javax.validation.constraints.NotNull;
 import org.springframework.samples.volleymate.model.Person;
 import org.springframework.samples.volleymate.partido.Partido;
@@ -29,13 +28,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Jugador extends Person{
+	
 	@Column(name = "ciudad")
-	@NotEmpty
 	private String ciudad;
 
     @Column(name = "telephone")
-	@Digits(fraction = 0, integer = 9)
-	private Integer telephone;
+	private Integer telephone=0;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "sexo")
