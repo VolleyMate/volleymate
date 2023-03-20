@@ -9,7 +9,6 @@
 <petclinic:layout pageName="misPartidos">
     <h2>BIENVENIDO A LA TIENDA DE VOLLEYMATE</h2>
     <h3>Comprar volleys</h3>
-    <spring:url value="/tienda/volleys" var="tiendaVolleys"></spring:url>
-    <a href="${tiendaVolleys}" class="btn btn-default">Comprar volleys</a>
+    <a href="/tienda/volleys" class="btn btn-default">Comprar volleys</a>
     <h3>Premium</h3>
 </petclinic:layout>
