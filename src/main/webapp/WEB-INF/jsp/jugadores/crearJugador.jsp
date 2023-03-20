@@ -69,5 +69,10 @@
                 <form:errors></form:errors>
             </form:form>
         </div>
-    </div>        
+    </div>     
+    <div style="text-align: center; color: #FF0000">
+        <c:forEach var="error" items="${errors}">
+          <c:out value="${error} "/>
+      </c:forEach>
+    </div>   
 </petclinic:layout>

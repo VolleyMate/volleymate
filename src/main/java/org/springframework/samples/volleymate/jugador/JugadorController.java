@@ -67,8 +67,10 @@ public class JugadorController {
 
 
     @PostMapping(value = "/jugadores/new")
-	public String processCreationForm(@Valid Jugador jugador, BindingResult result) {
+	public String processCreationForm(@Valid Jugador jugador, BindingResult result, Map<String, Object> model) {
+
 		if (result.hasErrors()) {			
+            model.put("errors", result.getAllErrors());
 			return VIEW_CREATE_FORM;
 		}
 		else {

@@ -39,7 +39,7 @@ public class Jugador extends Person{
 
     @Column(name = "telephone")
 	@NotEmpty
-	@Digits(fraction = 0, integer = 9)
+	//@Digits(fraction = 0, integer = 8)
 	private String telephone;
 
 	@Enumerated(EnumType.STRING)
