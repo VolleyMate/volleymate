@@ -98,7 +98,7 @@ public class PartidoService {
         }
         if (ciudad != null && !ciudad.isEmpty()) {
             partidos = partidos.stream()
-                    .filter(partido -> partido.getCiudad().equalsIgnoreCase(ciudad))
+                    .filter(partido -> partido.getCentro().getCiudad().equalsIgnoreCase(ciudad))
                     .collect(Collectors.toList());
         }
         return partidos;
@@ -106,7 +106,7 @@ public class PartidoService {
 
 	public Set<String> getCiudades() {
 		List<Partido> partidos = partidoRepository.findAll();
-		Set<String> ciudades = partidos.stream().map(p -> p.getCiudad())
+		Set<String> ciudades = partidos.stream().map(p -> p.getCentro().getCiudad())
 			.map(c -> c.replace("á", "a").replace("é", "e")
 			.replace("í", "i").replace("ó", "o")
 			.replace("ú", "u").toUpperCase()).collect(Collectors.toSet());
