@@ -65,7 +65,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Login</a></li>
-					<li><a href="<c:url value="/users/new" />">Register</a></li>
+					<li><a href="<c:url value="/jugadores/new" />">Register</a></li>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"data-toggle="dropdown"> 
@@ -73,24 +73,23 @@
 							<strong><sec:authentication property="name" /></strong> 
 							<span class="glyphicon glyphicon-chevron-down"></span>
 					</a>
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu" style="border-radius: 20px;">
 							<li>
 								<div class="navbar-login">
-									<div class="row">
+									<div class="row" >
 										<div class="col-6 h5">
 											<p class="text-center">
 												<a href="<c:url value="/jugadores" />"
-													class="btn btn-info btn-sm"><span class="glyphicon glyphicon-share-alt"></span> Ver perfil</a>
+													style="border-radius: 20px;" class="btn btn-info btn-md"><span class="glyphicon glyphicon-share-alt"></span> Ver perfil</a>
 											</p>
 											<p class="col-6 h5 text-center">
 												<a href="<c:url value="/logout" />"
-													class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a>
+													style="border-radius: 20px;" class="btn btn-danger btn-md"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a>
 											</p>
 										</div>
 									</div>
 								</div>
 							</li>
-							<li class="divider"></li>
 <!-- 							
                             <li> 
 								<div class="navbar-login navbar-login-session">

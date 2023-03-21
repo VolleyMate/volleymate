@@ -8,9 +8,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="crearPartido">
-    
-    <h2>Crear partido</h2>
-        
+    <h2>
+        <p style="font-size:1.5em; text-align: center;">
+            <strong>Crear partido</strong>
+        </p>
+    </h2>     
     <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
       <div class="container"> 
         <form:form modelAttribute="partido" class="form-horizontal" id="crear_partido">
@@ -20,7 +22,7 @@
           	<form:hidden path="fechaCreacion"/>
           </div>
           <div class="row form-row">
-            <div class="col-md-4" style="margin-right: 40px; margin-left: 20px;">
+            <div class="col-md-4" style="margin: 25px;">
               <div class="form-group">
                 <form:label path="nombre" >Nombre actividad:</form:label>
                 <form:input path="nombre" style="border-radius: 20px;" class="form-control" />
@@ -39,7 +41,7 @@
               </div>
               
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" style="margin: 25px;">
               <div class="form-group">
                 <form:label path="sexo">Sexo:</form:label>
                 <form:select path="sexo" style="border-radius: 20px;" class="form-control">
@@ -53,28 +55,39 @@
                 </form:select>
               </div>
               <div class="form-group">
-			  <form:label path="fecha">Fecha y hora:</form:label>
+			          <form:label path="fecha">Fecha y hora:</form:label>
                 <form:input path="fecha" style="border-radius: 20px;" type="datetime-local" class="form-control" />
               </div> 
               <div class="form-group">
-                <form:label path="lugar">Lugar:</form:label>
-                <form:input path="lugar" style="border-radius: 20px;" class="form-control" />
+                <form:label path="centro">Centro:</form:label>
+                <form:select path="centro" style="border-radius: 20px;" class="form-control">
+                  <form:options items="${centros}" value="${centro}" itemLabel="nombre"/>
+                </form:select>
               </div>
               <br>
               <br>
-              <div style="text-align: center">
-                <button style="background-color: #838789" type="submit" class="btn btn-primary">Crear partido</button>                               
-              </div>
+              <c:if test="${puedeCrear}">
+                <div style="text-align: center">
+                  <button style="background-color: #838789" type="submit" class="btn btn-primary">Crear partido</button>                               
+                </div>
+              </c:if>
+              <c:if test="${!puedeCrear}">
+                <div style="text-align: center">
+                 <a class="btn btn-danger">No tienes volleys suficientes</a>                               
+                </div>
+              </c:if>
             </div>
           </div>
         </form:form>
       </div>   
     </div>
           
-      <div style="text-align: center; color: #FF0000">
-      	<c:forEach var="error" items="${errors}">
-            <c:out value="${error} "/>
-        </c:forEach>
-      </div>
+    <div style="text-align: center; color: #FF0000">
+          <c:forEach var="error" items="${errors}">
+              <ul>    
+               <c:out value="${error} "/>
+              </ul>
+          </c:forEach>
+  </div> 
       
 </petclinic:layout>
