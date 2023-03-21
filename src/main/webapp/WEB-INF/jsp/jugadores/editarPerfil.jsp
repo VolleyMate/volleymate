@@ -14,7 +14,7 @@
             <strong>Editar mi perfil</strong>
         </p>
     </h2>
-
+ 
     <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
         <div class="container">
             <form:form modelAttribute="jugador" class="form-horizontal " id="add-jugador-form">

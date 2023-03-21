@@ -22,6 +22,7 @@ import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.mensaje.Mensaje;
 import org.springframework.samples.volleymate.model.BaseEntity;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
+import javax.persistence.ManyToOne;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -51,8 +52,6 @@ public class Partido extends BaseEntity {
 
     @Column(name = "num_jugadores")
     private Integer numJugadoresNecesarios;
-
-    private String lugar;
     
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime fecha;
@@ -71,6 +70,10 @@ public class Partido extends BaseEntity {
 
     @OneToMany(mappedBy = "partido")
     private List<Mensaje> mensajes;
+
+    @ManyToOne
+    @JoinColumn(name = "centro",referencedColumnName = "id")
+    private Centro centro;
 
     public String getFechaParseada(){
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm dd'/'MM'/'yyyy");
