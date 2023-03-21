@@ -52,7 +52,7 @@
      <h3></h3>
 <h3 style="color: #FFFFFF;">Localización: </h3>
    <h3 style="background-color: white; border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto;"> 
-    <c:out value="${partido.lugar}"/></h3>
+    <a href="${partido.centro.maps}"><c:out value="${partido.centro.nombre}"/> [<c:out value="${partido.centro.direccion}"/>, <c:out value="${partido.centro.ciudad}"/>]</h3></a>
     <h3></h3>
     <h3 style="color: #FFFFFF;">Creador: </h3>
    <h3 style="background-color: white; border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto;"> 

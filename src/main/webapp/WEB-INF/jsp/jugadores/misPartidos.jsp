@@ -29,7 +29,7 @@
                         <c:out value="${partido.getFechaParseada()}"/>
                     </td>
                     <td style="text-align: center;">
-                        <c:out value="${partido.lugar}"/>
+                        <c:out value="${partido.centro.nombre}"/>
                     </td>
                     <td style="text-align: center;">
                         <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>

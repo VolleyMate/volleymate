@@ -130,7 +130,7 @@ public class JugadorController {
 		}
 		else {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","sexo","user"); 
+			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","sexo","user","volleys","solicitudes","notificaciones","telephone"); 
             this.jugadorService.saveJugador(jugadorToUpdate);
 			model.put("message","Jugador editado correctamente");
 			return "redirect:/jugadores";
