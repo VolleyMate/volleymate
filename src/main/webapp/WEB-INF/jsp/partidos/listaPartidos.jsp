@@ -14,7 +14,8 @@
             <tr>
                 <th style="width: 150px; text-align: center;">Creador</th>
                 <th style="width: 120px; text-align: center;">Jugadores</th>
-                <th style="width: 120px; text-align: center;">Lugar</th>
+                <th style="width: 120px; text-align: center;">Ciudad</th>
+                <th style="width: 120px; text-align: center;">Dirección</th>
                 <th style="width: 120px; text-align: center;">Fecha de la actividad</th>
                 <th style="width: 120px; text-align: center;">Fecha de creación</th>
                 <th style="width: 60px;"></th>
@@ -31,7 +32,10 @@
                         <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
                     </td>
                     <td style="text-align: center;">
-                        <c:out value="${partido.lugar}"/>
+                        <c:out value="${partido.ciudad}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <c:out value="${partido.direccion}"/>
                     </td>
                     <td style="text-align: center;">
                         <c:out value="${partido.getFechaParseada()}"/>

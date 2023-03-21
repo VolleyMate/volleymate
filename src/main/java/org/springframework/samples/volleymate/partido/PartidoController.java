@@ -39,6 +39,7 @@ public class PartidoController {
     
     //VIEWS
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
+	private static final String VIEW_LISTA_PARTIDOS_FILTRADOS = "partidos/listaPartidosFiltrados";
 	private static final String VIEW_PARTIDOS_CREATE_OR_UPDATE = "partidos/crearPartido";
 	private static final String VIEW_SOLICITUDES_PARTIDO = "partidos/{partidoId}/solicitudes";
 
@@ -49,7 +50,13 @@ public class PartidoController {
 		
 		if (auth != null){
 			List<Partido> partidos = partidoService.findAllPartidos();
+			Sexo[] sexos = Sexo.values();
+			Tipo[] tipos = Tipo.values();
+			Set<String> ciudades = partidoService.getCiudades();
 			model.put("partidos", partidos);
+			model.put("sexos", sexos);
+			model.put("tipos", tipos);
+			model.put("ciudades", ciudades);
 			return VIEW_LISTA_PARTIDOS;
 		} else {
 			return "redirect:/";
@@ -94,8 +101,11 @@ public class PartidoController {
 		if(partido.getNombre()==null || partido.getNombre()=="") {
 			errores.add("El nombre no puede estar vacío");
 		}
-		if(partido.getLugar()== null || partido.getLugar()=="") {
-			errores.add("El lugar del partido no puede estar vacío");
+		if(partido.getCiudad()== null || partido.getCiudad()=="") {
+			errores.add("La ciudad del partido no puede estar vacía");
+		}
+		if(partido.getDireccion()== null || partido.getDireccion()=="") {
+			errores.add("La dirección del partido no puede estar vacía");
 		}
 		if(partido.getNumJugadoresNecesarios()==null || partido.getNumJugadoresNecesarios()<=1){
 			errores.add("El número de jugadores debe ser mayor que 1");
@@ -122,44 +132,28 @@ public class PartidoController {
 		return VIEW_SOLICITUDES_PARTIDO;
 	}
 
-
-	/*@GetMapping(value = "/partido/listaPartidos?tipo=${tipoP}")
-	public String showPartidosTipo(Map<String, Object> model, @PathVariable("tipoP") Tipo tipoP) {
+  	@GetMapping(value = "/partidos?tipo={tipoP}&sexo={sexoP}&ciudad={ciudadP}")
+	public String showPartidosFiltrados(Map<String, Object> model, @PathVariable("tipoP") String tipoP, @PathVariable("sexoP") String sexoP, @PathVariable("ciudadP") String ciudadP) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		if (auth != null){
-			Set<Partido> partidosT = partidoService.getPartidosByTipo(tipoP);
-			model.put("partidosTipo", partidosT);
-			return VIEW_LISTA_PARTIDOS_TIPO;
-		} else {
-			return "redirect:/";
-		}
-	}
-
-	@GetMapping(value = "/partido/listaPartidos?sexo=${sexoP}")
-	public String showPartidosSexo(Map<String, Object> model, @PathVariable("sexoP") Sexo sexoP) {
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		if (auth != null){
-			Set<Partido> partidosS = partidoService.getPartidosBySexo(sexoP);
-			model.put("partidosSexo", partidosS);
-			return VIEW_LISTA_PARTIDOS_SEXO;
-		} else {
-			return "redirect:/";
-		}
-	}*/
-
-  @GetMapping(value = "/partido/listaPartidos?lugar={place}")
-	public String showPartidosSexo(Map<String, Object> model, @PathVariable("place") String place) {
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		if (auth != null){
-			Set<Partido> partidosL = partidoService.getPartidosByLugar(place);
-			model.put("partidos", partidosL);
-			return VIEW_LISTA_PARTIDOS;
+			Set<Partido> conj = new HashSet<>();
+			conj.addAll(partidoService.findAllPartidos());
+			if(tipoP != null && tipoP != "") {
+				Set<Partido> partidosTipo = partidoService.getPartidosByTipoString(tipoP);
+				conj.retainAll(partidosTipo);
+			}
+			if(sexoP != null && sexoP != "") {
+				Set<Partido> partidosSexo = partidoService.getPartidosBySexoString(sexoP);
+				conj.retainAll(partidosSexo);
+			}
+			if(ciudadP != null && ciudadP != "") {
+				Set<Partido> partidosCiudad = partidoService.getPartidosByCiudad(ciudadP);
+				conj.retainAll(partidosCiudad);
+			}
+			model.put("partidosFiltrados", conj);
+			return VIEW_LISTA_PARTIDOS_FILTRADOS;
 		} else {
 			return "redirect:/";
 		}

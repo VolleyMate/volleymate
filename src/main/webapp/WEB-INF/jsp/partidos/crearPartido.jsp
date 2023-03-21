@@ -57,8 +57,12 @@
                 <form:input path="fecha" style="border-radius: 20px;" type="datetime-local" class="form-control" />
               </div> 
               <div class="form-group">
-                <form:label path="lugar">Lugar:</form:label>
-                <form:input path="lugar" style="border-radius: 20px;" class="form-control" />
+                <form:label path="ciudad">Ciudad:</form:label>
+                <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />
+              </div>
+              <div class="form-group">
+                <form:label path="direccion">Dirección:</form:label>
+                <form:input path="direccion" style="border-radius: 20px;" class="form-control" />
               </div>
               <br>
               <br>

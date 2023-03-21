@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,22 +85,33 @@ public class PartidoService {
 
 	// Filtrar partidos
 
-	public Set<Partido> getPartidosByTipo(Tipo tipo) {
+	public Set<Partido> getPartidosByTipoString(String tipo) {
+		Tipo tipoP = Tipo.valueOf(tipo);
 		Set<Partido> conj = new HashSet<>();
-		conj.addAll(partidoRepository.findPartidosByTipo(tipo));
+		conj.addAll(partidoRepository.findPartidosByTipo(tipoP));
 		return conj;
 	}
 
-	public Set<Partido> getPartidosBySexo(Sexo sexo) {
+	public Set<Partido> getPartidosBySexoString(String sexo) {
+		Sexo sexoP = Sexo.valueOf(sexo);
 		Set<Partido> conj = new HashSet<>();
-		conj.addAll(partidoRepository.findPartidosBySexo(sexo));
+		conj.addAll(partidoRepository.findPartidosBySexo(sexoP));
 		return conj;
 	}
 
-  public Set<Partido> getPartidosByLugar(String lugar) {
+  	public Set<Partido> getPartidosByCiudad(String lugar) {
 		Set<Partido> conj = new HashSet<>();
-		conj.addAll(partidoRepository.findPartidosByLugar(lugar));
+		conj.addAll(partidoRepository.findPartidosByCiudad(lugar));
 		return conj;
+	}
+
+	public Set<String> getCiudades() {
+		List<Partido> partidos = partidoRepository.findAll();
+		Set<String> ciudades = partidos.stream().map(p -> p.getCiudad())
+			.map(c -> c.replace("á", "a").replace("é", "e")
+			.replace("í", "i").replace("ó", "o")
+			.replace("ú", "u").toUpperCase()).collect(Collectors.toSet());
+		return ciudades;
 	}
 
 }
