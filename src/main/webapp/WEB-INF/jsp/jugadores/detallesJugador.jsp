@@ -32,6 +32,15 @@
                 </spring:url>
                 <a href="${editUrl}" class="btn btn-default">Editar perfil</a>
             </c:if>
+
+            <c:if test="${!jugadorVista.equals(jugadorAutenticado)}">
+                <c:if test="${!yaValorado}">
+                    <spring:url value="/valoraciones/new/{id}" var="valorarURL">
+                    <spring:param name="id" value="${valorarId}"/>
+                    </spring:url>
+                    <a href="${valorarURL}" class="btn btn-default">Valorar jugador</a>
+                </c:if>
+            </c:if>
         
         </tr>
    
