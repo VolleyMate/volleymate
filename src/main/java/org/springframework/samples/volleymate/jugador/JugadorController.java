@@ -38,13 +38,12 @@ public class JugadorController {
     
     private static final String VIEW_UPDATE_FORM = "jugadores/editarPerfil";
     private static final String VIEW_CREATE_FORM = "jugadores/crearJugador";
-	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
-    
+	  private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
+    private static final String HOME_TIENDA = "jugadores/tienda";
+    private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
-
-
 
     @Autowired
     public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService) {
@@ -63,27 +62,81 @@ public class JugadorController {
 
 
     @PostMapping(value = "/jugadores/new")
-	public String processCreationForm(@Valid Jugador jugador, BindingResult result, Map<String, Object> model) {
+	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model) {
 
-		if (result.hasErrors()) {			
-            model.put("errors", result.getAllErrors());
+        List<String> errores = jugadorService.findErroresCrearJugador(jugador);
+
+		if (!errores.isEmpty()) {
+			model.put("errors", errores);
 			return VIEW_CREATE_FORM;
 		} else {
-            if(jugadorService.findJugadorByUsername(jugador.getUser().getUsername()) != null){
-                model.put("errors", "El nombre de usuario ya existe");
-                return VIEW_CREATE_FORM;
-            }
-            else{
-                User user = jugador.getUser();
-                UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
-                SecurityContextHolder.getContext().setAuthentication(authReq);
-                this.jugadorService.saveJugador(jugador);
-                return "redirect:/";
-            }
+			User user = jugador.getUser();
+            UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
+            SecurityContextHolder.getContext().setAuthentication(authReq);
+            this.jugadorService.saveJugador(jugador);
+            return "redirect:/";
 		}
+
+		
 	}
 
+@GetMapping(value = "/jugadores/edit/{id}")
+	public String initEditForm(Model model, @PathVariable("id") int id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			if(auth.isAuthenticated()){
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				String user = currentUser.getUsername();
+				try{
+					Jugador player = jugadorService.findJugadorByUsername(user);
+					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+					for (GrantedAuthority usuarioR : usuario){
+					String credencial = usuarioR.getAuthority();
+						if(player.getId()==id || credencial.equals("admin")){
+							Jugador jugador = jugadorService.findJugadorById(id);
+							String username = jugador.getUser().getUsername();
+							String pass = jugador.getUser().getPassword();
+                            Sexo sexo = jugador.getSexo();
 
+							model.addAttribute("pass", pass);
+							model.addAttribute("username", username);
+                            model.addAttribute("sexo", sexo);
+							
+							model.addAttribute(jugador);
+							return VIEW_UPDATE_FORM;
+						}else{
+							return "welcome";
+						}
+					}
+				} catch (DataIntegrityViolationException ex){
+					
+					return VIEW_UPDATE_FORM;
+				}
+				
+				
+			}return "welcome";
+		}
+		return "welcome";
+	
+	}
+	
+	
+	@PostMapping(value = "/jugadores/edit/{id}")
+	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
+
+		if(result.hasErrors()){
+			model.put("errors", result.getAllErrors());
+			return VIEW_UPDATE_FORM;
+		}
+		else {
+			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
+			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","sexo","user","volleys","solicitudes","notificaciones","telephone"); 
+            this.jugadorService.saveJugador(jugadorToUpdate);
+			model.put("message","Jugador editado correctamente");
+			return "redirect:/jugadores";
+		}						
+		
+	}
 
 
     @GetMapping("/jugadores")
@@ -195,25 +248,17 @@ public class JugadorController {
         try{
             this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
             redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
-            this.jugadorService.eliminarSolicitud(solicitud);
             Jugador jugador = solicitud.getJugador();
             Partido partido = solicitud.getPartido();
             Integer volleys = partido.getPrecioPersona();
             Integer sumVolleys = jugador.getVolleys() - volleys;
             jugador.setVolleys(sumVolleys);
             this.jugadorService.saveJugador(jugador);
-            /*
-                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
-                ACORDARSE: Hay que mostrar el mensaje en la vista
-            */
+            this.jugadorService.eliminarSolicitud(solicitud);
             return "redirect:/jugadores/notificaciones";
            
         }catch(YaUnidoException ex){
             redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
-            /*
-                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
-                ACORDARSE: Hay que mostrar el mensaje en la vista
-            */
             return "redirect:/jugadores/notificaciones";
         }
     }
@@ -231,64 +276,19 @@ public class JugadorController {
         return VIEW_NOTIFICACIONES;
     }
 
+   
 
-    @GetMapping(value = "/jugadores/edit/{id}")
-	public String initEditForm(Model model, @PathVariable("id") int id) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth != null){
-			if(auth.isAuthenticated()){
-				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String user = currentUser.getUsername();
-				try{
-					Jugador player = jugadorService.findJugadorByUsername(user);
-					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
-					for (GrantedAuthority usuarioR : usuario){
-					String credencial = usuarioR.getAuthority();
-						if(player.getId()==id || credencial.equals("admin")){
-							Jugador jugador = jugadorService.findJugadorById(id);
-							String username = jugador.getUser().getUsername();
-							String pass = jugador.getUser().getPassword();
-                            Sexo sexo = jugador.getSexo();
+    @GetMapping(value="/tienda")
+    public String showVistaTienda(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        model.put("jugadorRegistrado", jugador);
+        return HOME_TIENDA;
+    }
 
-							model.addAttribute("pass", pass);
-							model.addAttribute("username", username);
-                            model.addAttribute("sexo", sexo);
-							
-							model.addAttribute(jugador);
-							return VIEW_UPDATE_FORM;
-						}else{
-							return "welcome";
-						}
-					}
-				} catch (DataIntegrityViolationException ex){
-					
-					return VIEW_UPDATE_FORM;
-				}
-				
-				
-			}return "welcome";
-		}
-		return "welcome";
-	
-	}
-	
-	
-	@PostMapping(value = "/jugadores/edit/{id}")
-	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
-
-		if(result.hasErrors()){
-			model.put("errors", result.getAllErrors());
-			return VIEW_UPDATE_FORM;
-		}
-		else {
-			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","user","sexo"); 
-            this.jugadorService.saveJugador(jugadorToUpdate);
-			model.put("message","Jugador editado correctamente");
-			return "redirect:/jugadores";
-		}						
-		
-	}
+    @GetMapping(value="/tienda/volleys")
+    public String showVistaTiendaVolleys(Principal principal, ModelMap model){
+        return HOME_TIENDA_VOLLEYS;
+    }
 
     @GetMapping(value = "/listaJugadores")
 	public String buscarJugador(Model model, @PathVariable("palabraClave") String palabraClave) {
@@ -305,6 +305,25 @@ public class JugadorController {
 		}
 	}
 
+    @GetMapping(value="tienda/volleys/comprar/{volleys}/{precio}")
+    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
+                                                        @PathVariable("volleys") Integer precio, RedirectAttributes redirAttrs){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        Integer sumVolleys = jugador.getVolleys() + volleys;
+        jugador.setVolleys(sumVolleys);
+        this.jugadorService.saveJugador(jugador);
+        redirAttrs.addFlashAttribute("compraAceptada", "Su pago se ha procesado correctamente!");
+        return HOME_TIENDA_VOLLEYS;
+    }
 
-
+    //Por hacer
+    @GetMapping(value="/tienda/premium")
+    public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
+        return null;
+    }
 }
+
+
+
+
+

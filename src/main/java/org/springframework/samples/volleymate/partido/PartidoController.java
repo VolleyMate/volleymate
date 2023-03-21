@@ -38,6 +38,8 @@ public class PartidoController {
 	private JugadorService jugadorService;
 	@Autowired
 	private SolicitudService solicitudService;
+	@Autowired
+	private CentroService centroService;
     
     //VIEWS
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
@@ -80,7 +82,10 @@ public class PartidoController {
 		partido.setFechaCreacion(LocalDateTime.now());
 		partido.setFecha(LocalDateTime.now());
 		partido.setNumJugadoresNecesarios(1);
+		Boolean puedeCrear = jugador.getVolleys()>=150;
+		model.put("puedeCrear", puedeCrear);
 		model.put("partido", partido);
+		model.put("centros", centroService.findAllCentros());
 		return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 	}
 
@@ -96,20 +101,17 @@ public class PartidoController {
 		if(partido.getNombre()==null || partido.getNombre()=="") {
 			errores.add("El nombre no puede estar vacío");
 		}
-		if(partido.getCiudad()== null || partido.getCiudad()=="") {
-			errores.add("La ciudad del partido no puede estar vacía");
-		}
-		if(partido.getDireccion()== null || partido.getDireccion()=="") {
-			errores.add("La dirección del partido no puede estar vacía");
-		}
 		if(partido.getNumJugadoresNecesarios()==null || partido.getNumJugadoresNecesarios()<=1){
 			errores.add("El número de jugadores debe ser mayor que 1");
 		}
 		if (!errores.isEmpty()) {
 			model.put("partido", partido);
 			model.put("errors", errores);
+			model.put("centros", centroService.findAllCentros());
 			return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 		} else {
+			Jugador jugador = jugadorService.findJugadorById(partido.getCreador().getId());
+			jugador.setVolleys(jugador.getVolleys()-150);
 			this.partidoService.save(partido);
 			jugadorService.unirsePartida(partido.getCreador().getId(), partido.getId());
 			return "redirect:/partidos/"+partido.getId();

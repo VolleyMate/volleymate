@@ -113,5 +113,28 @@ public class JugadorService {
         return jugadorRepository.findAll();
     }
 
+    public List<String> findErroresCrearJugador(Jugador jugador){
+        List<String> errores = new ArrayList<>();
+        Integer digitos = (int)(Math.log10(jugador.getTelephone())+1);
+        if(!digitos.equals(9)) {
+            errores.add("El teléfono debe tener 9 cifras");
+        }
+        if(!jugador.getUser().getCorreo().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            errores.add("El correo no es válido");
+        }
+        if(jugador.getFirstName().length() < 3) {
+            errores.add("El nombre debe tener más de 3 caracteres");
+        }
+        if(jugador.getLastName().length() < 3) {
+            errores.add("El apellido debe tener más de 3 caracteres");
+        }
+        if(jugadorRepository.findByUsername(jugador.getUser().getUsername()) != null){
+            errores.add("El nombre de usuario ya existe");
+        }
+        if(jugadorRepository.findByCorreo(jugador.getUser().getCorreo()) != null){
+            errores.add("El correo ya existe");
+        }
+        return errores;
+    }
 
 }
