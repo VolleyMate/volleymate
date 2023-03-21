@@ -8,9 +8,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="crearPartido">
-    
-    <h2>Crear partido</h2>
-        
+    <h2>
+        <p style="font-size:1.5em; text-align: center;">
+            <strong>Crear partido</strong>
+        </p>
+    </h2>     
     <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
       <div class="container"> 
         <form:form modelAttribute="partido" class="form-horizontal" id="crear_partido">
@@ -63,7 +65,7 @@
               <br>
               <br>
               <div style="text-align: center">
-                <button style="background-color: #838789" type="submit" class="btn btn-primary">Crear partido</button>                               
+                <button style="background-color: #838789" type="submit" class="btn btn-default">Crear partido</button>                               
               </div>
             </div>
           </div>
