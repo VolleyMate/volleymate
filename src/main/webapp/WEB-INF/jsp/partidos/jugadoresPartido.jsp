@@ -11,7 +11,7 @@
 <petclinic:layout pageName="jugadoresPartido">
     <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/style.css">
 <div style="width: 70%; margin: 0 auto; border-radius: 50px; text-align: center; display: flex; flex-wrap: wrap;">
-    <table id="partidosTable" class="table" summary="listadoPartidos">
+    <table id="partidosTable" class="table">
         <thead>
             <tr>
                 <th class="partidosTableHeader">Jugadores:</th>
