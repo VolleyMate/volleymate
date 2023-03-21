@@ -11,7 +11,7 @@
 <petclinic:layout pageName="jugadoresPartido">
     <link rel="stylesheet" type="text/css" href="/src/main/resources/static/css/style.css">
 <div style="width: 70%; margin: 0 auto; border-radius: 50px; text-align: center; display: flex; flex-wrap: wrap;">
-    <table id="partidosTable" class="table">
+    <table id="partidosTable" class="table" summary="Lista de jugadores">
         <thead>
             <tr>
                 <th class="partidosTableHeader">Jugadores:</th>
@@ -22,8 +22,8 @@
             <c:forEach var="jugador" items="${jugadores}">
                 <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
                     <td class="jugadorCell">
-                        <c:if test="${jugador.image == ''}"><img class="rounded d-block" src="/resources/images/perfilPorDefecto.jpg" width="50" height="50"></c:if>
-                        <c:if test="${jugador.image != ''}"><img class="rounded d-block" src="${jugador.image}" width="50" height="50"></c:if>
+                        <c:if test="${jugador.image == ''}"><img class="rounded d-block" src="/resources/images/perfilPorDefecto.jpg" width="50" height="50" alt="Foto de perfil"></c:if>
+                        <c:if test="${jugador.image != ''}"><img class="rounded d-block" src="${jugador.image}" width="50" height="50" alt="Foto de perfil"></c:if>
                         
                         <a href="/jugadores/${jugador.id}" class="btn jugadorLink">[<c:out value="${jugador.user.username}"/>]</a>
                         <c:out value="${jugador.firstName}"/><c:out value=" "/><c:out value="${jugador.lastName}"/>
