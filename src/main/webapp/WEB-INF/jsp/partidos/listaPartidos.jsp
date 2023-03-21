@@ -9,6 +9,33 @@
 <petclinic:layout pageName="partidos">
     <h2>Partidos disponibles</h2>
 
+    <form action="/partidos" method="get">
+        <label for="sexo">Sexo:</label>
+        <select id="sexo" name="sexo">
+            <option value="">Cualquiera</option>
+            <option value="MIXTO">Mixto</option>
+            <option value="MASCULINO">Masculino</option>
+            <option value="FEMENINO">Femenino</option>
+        </select>
+        <br>
+        <label for="tipo">Tipo de partido:</label>
+        <select id="tipo" name="tipo">
+            <option value="">Cualquiera</option>
+            <option value="VOLEIBOL">Voleibol</option>
+            <option value="FUTVOLEI">Futbolei</option>
+            <option value="BOSABALL">Bosaball</option>
+            <option value="SUBMARINO">Submarino</option>
+            <option value="SENTADO">Sentado</option>
+            <option value="PLAYA">Playa</option>
+            <option value="WATERVOLEY">Watervoley</option>
+        </select>
+        <br>
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" name="ciudad" />
+        <br>
+        <button type="submit">Filtrar</button>
+    </form>
+
     <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
         <thead>
             <tr>

@@ -84,26 +84,25 @@ public class PartidoService {
 	}
 
 	// Filtrar partidos
-
-	public Set<Partido> getPartidosByTipoString(String tipo) {
-		Tipo tipoP = Tipo.valueOf(tipo);
-		Set<Partido> conj = new HashSet<>();
-		conj.addAll(partidoRepository.findPartidosByTipo(tipoP));
-		return conj;
-	}
-
-	public Set<Partido> getPartidosBySexoString(String sexo) {
-		Sexo sexoP = Sexo.valueOf(sexo);
-		Set<Partido> conj = new HashSet<>();
-		conj.addAll(partidoRepository.findPartidosBySexo(sexoP));
-		return conj;
-	}
-
-  	public Set<Partido> getPartidosByCiudad(String lugar) {
-		Set<Partido> conj = new HashSet<>();
-		conj.addAll(partidoRepository.findPartidosByCiudad(lugar));
-		return conj;
-	}
+	public List<Partido> filtrarPartidos(Sexo sexo, Tipo tipoPartido, String ciudad) {
+        List<Partido> partidos = partidoRepository.findAll();
+        if (sexo != null) {
+            partidos = partidos.stream()
+                    .filter(partido -> partido.getSexo().equals(sexo))
+                    .collect(Collectors.toList());
+        }
+        if (tipoPartido != null) {
+            partidos = partidos.stream()
+                    .filter(partido -> partido.getTipo() == tipoPartido)
+                    .collect(Collectors.toList());
+        }
+        if (ciudad != null && !ciudad.isEmpty()) {
+            partidos = partidos.stream()
+                    .filter(partido -> partido.getCiudad().equalsIgnoreCase(ciudad))
+                    .collect(Collectors.toList());
+        }
+        return partidos;
+    }
 
 	public Set<String> getCiudades() {
 		List<Partido> partidos = partidoRepository.findAll();
