@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -43,14 +42,13 @@ public class PartidoController {
     
     //VIEWS
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
-	private static final String VIEW_LISTA_PARTIDOS_FILTRADOS = "partidos/listaPartidosFiltrados";
 	private static final String VIEW_PARTIDOS_CREATE_OR_UPDATE = "partidos/crearPartido";
 	private static final String VIEW_SOLICITUDES_PARTIDO = "partidos/{partidoId}/solicitudes";
 
 	@GetMapping("/partidos")
 	public String filtrarPartidos(@RequestParam(required = false) Sexo sexo, @RequestParam(required = false) Tipo tipo,
                               @RequestParam(required = false) String ciudad, Model model) {
-								Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){
     		List<Partido> partidosFiltrados = partidoService.filtrarPartidos(sexo, tipo, ciudad);
     		model.addAttribute("partidos", partidosFiltrados);
