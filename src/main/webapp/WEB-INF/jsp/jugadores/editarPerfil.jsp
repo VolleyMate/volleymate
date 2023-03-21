@@ -18,12 +18,29 @@
     <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
         <div class="container">
             <form:form modelAttribute="jugador" class="form-horizontal " id="add-jugador-form">
-                <div class="col-md-8" style="margin: 10px;">
-                    <div class="form-group has-feedback">
-                        <petclinic:inputField label="Nombre" name="firstName" />
-                        <petclinic:inputField label="Apellido" name="lastName" />
-                        <petclinic:inputField label="Ciudad" name="ciudad" />
-                        <petclinic:inputField label="Image" name="image" />
+                <div class="col-md-8" style="margin: 50px;">
+                    <div class="form-group has-feedback" >
+
+                        <div class="form-group">
+                            <form:label path="firstName" >Nombre:</form:label>
+                            <form:input path="firstName" style="border-radius: 20px;" class="form-control" />    
+                        </div>
+                       
+                        <div class="form-group">
+                            <form:label path="lastName" >Apellido:</form:label>
+                            <form:input path="lastName" style="border-radius: 20px;" class="form-control" />    
+                        </div>
+
+                        <div class="form-group">
+                            <form:label path="ciudad" >Ciudad:</form:label>
+                            <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />    
+                        </div>
+
+                        <div class="form-group">
+                            <form:label path="image" >Imagen:</form:label>
+                            <form:input path="image" style="border-radius: 20px;" class="form-control" />    
+                        </div>
+
                     </div>
                     <div class="col-md-12" style="text-align: center;">
                         <p class="mb-0 mt-2">Si quieres la foto por defecto, simplemente deja ese campo vacío</p>
