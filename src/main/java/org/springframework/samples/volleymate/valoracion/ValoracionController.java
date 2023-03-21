@@ -1,6 +1,7 @@
 package org.springframework.samples.volleymate.valoracion;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -60,6 +61,14 @@ public class ValoracionController {
 			this.vService.saveValoracion(valoracion);
 			return "redirect:/jugadores/" + valoracion.getRatedPlayer().getId();
 		}
+	}
+
+	//Ver valoraciones de un jugador
+	@GetMapping(value = "/valoraciones/{jugadorId}")
+	public String showValoracionesJugador(ModelMap model, @PathVariable("jugadorId") int jugadorId) {
+		List<Valoracion> valoraciones = this.vService.findValoracionesByJugadorId(jugadorId);
+		model.put("valoraciones", valoraciones);
+		return "valoraciones/valoracionesJugador";
 	}
     
 }

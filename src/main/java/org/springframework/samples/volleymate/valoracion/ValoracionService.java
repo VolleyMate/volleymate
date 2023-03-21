@@ -1,5 +1,7 @@
 package org.springframework.samples.volleymate.valoracion;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -23,5 +25,10 @@ public class ValoracionService {
     public boolean valoracionExiste(Integer ratingPlayerId, Integer ratedPlayerId) {
         return vRepository.valoracionExiste(ratingPlayerId, ratedPlayerId) != 0;
     }
+
+	// valoraciones de un jugador
+	public List<Valoracion> findValoracionesByJugadorId(Integer jugadorId) {
+		return vRepository.findValoracionesByJugadorId(jugadorId);
+	}
     
 }

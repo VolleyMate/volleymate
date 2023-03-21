@@ -15,6 +15,9 @@ public interface ValoracionRepository extends CrudRepository<Valoracion, Integer
 
     @Query("SELECT count(*) FROM Valoracion v WHERE v.ratedPlayer.id = ?1 and v.ratingPlayer.id = ?2")
     Integer valoracionExiste(Integer ratingPlayerId, Integer ratedPlayerId);
+
+    @Query("SELECT v FROM Valoracion v WHERE v.ratedPlayer.id = ?1")
+    List<Valoracion> findValoracionesByJugadorId(Integer jugadorId);
    
     
 }
