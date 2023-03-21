@@ -19,11 +19,13 @@ import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -41,19 +43,19 @@ public class PartidoController {
     
     //VIEWS
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
+	private static final String VIEW_LISTA_PARTIDOS_FILTRADOS = "partidos/listaPartidosFiltrados";
 	private static final String VIEW_PARTIDOS_CREATE_OR_UPDATE = "partidos/crearPartido";
 	private static final String VIEW_SOLICITUDES_PARTIDO = "partidos/{partidoId}/solicitudes";
 
-    @GetMapping(value = { "/partidos" })
-	public String showPartidos(Map<String, Object> model) {
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
+	@GetMapping("/partidos")
+	public String filtrarPartidos(@RequestParam(required = false) Sexo sexo, @RequestParam(required = false) Tipo tipo,
+                              @RequestParam(required = false) String ciudad, Model model) {
+								Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){
-			List<Partido> partidos = partidoService.findAllPartidos();
-			model.put("partidos", partidos);
-			return VIEW_LISTA_PARTIDOS;
-		} else {
+    		List<Partido> partidosFiltrados = partidoService.filtrarPartidos(sexo, tipo, ciudad);
+    		model.addAttribute("partidos", partidosFiltrados);
+    		return VIEW_LISTA_PARTIDOS;
+		}else{
 			return "redirect:/";
 		}
 	}
@@ -125,34 +127,6 @@ public class PartidoController {
 		conj.addAll(solic);
 		model.put("solicitudes", conj);
 		return VIEW_SOLICITUDES_PARTIDO;
-	}
-
-	@GetMapping(value ="/partido/listaPartidos?tipo={tipoP}")
-	public String showPartidosTipo(Map<String, Object> model, @PathVariable("tipoP") Tipo tipoP) {
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		if (auth != null){
-			Set<Partido> partidosT = partidoService.getPartidosByTipo(tipoP);
-			model.put("partidos", partidosT);
-			return VIEW_LISTA_PARTIDOS;
-		} else {
-			return "redirect:/";
-		}
-	}
-
-	@GetMapping(value = "/partido/listaPartidos?sexo={sexoP}")
-	public String showPartidosSexo(Map<String, Object> model, @PathVariable("sexoP") Sexo sexoP) {
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		if (auth != null){
-			Set<Partido> partidosS = partidoService.getPartidosBySexo(sexoP);
-			model.put("partidos", partidosS);
-			return VIEW_LISTA_PARTIDOS;
-		} else {
-			return "redirect:/";
-		}
 	}
 
 }

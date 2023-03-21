@@ -19,6 +19,7 @@ INSERT INTO users(username,password,enabled,correo) VALUES ('meriglmar','meriglm
 INSERT INTO authorities(id,username,authority) VALUES (5,'meriglmar','admin');
 INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (5,'Mercedes','Iglesias','Sevilla','666666666','FEMENINO','','meriglmar', 250);
 
+
 INSERT INTO centros(id,nombre,direccion,ciudad,maps) VALUES (1,'Mairena Voley Club','Av. de la Constitución num 2', 'Sevilla','https://goo.gl/maps/P5uyWUKnDqNLAbnE6');
 INSERT INTO centros(id,nombre,direccion,ciudad,maps) VALUES (2,'Club Deportivo Claret','C. Monzón', 'Sevilla','https://goo.gl/maps/JYErpvDCVSKuNLvF9');
 INSERT INTO centros(id,nombre,direccion,ciudad,maps) VALUES (3,'Club Voleibol Esquimo','Cl. Meñaca', 'Sevilla','https://goo.gl/maps/ZNFjetB53pX1JMcg6');
