@@ -30,7 +30,7 @@
                 <spring:url value="/jugadores/edit/{id}" var="editUrl">
                     <spring:param name="id" value="${id}"/>
                 </spring:url>
-                <a href="${editUrl}" class="btn btn-default">Editar Jugador</a>
+                <a href="${editUrl}" class="btn btn-default">Editar perfil</a>
             </c:if>
         
         </tr>
