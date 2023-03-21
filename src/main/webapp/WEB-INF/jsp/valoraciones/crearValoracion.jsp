@@ -23,6 +23,10 @@
               <form:label path="puntuacion">Valoracion</form:label>
               <form:input path="puntuacion" style="border-radius: 20px;" type="number" min="1" class="form-control" />
             </div>
+            <div class="form-control">
+              <form:label path="comentario">Comentario</form:label>
+              <form:textarea path="comentario" style="border-radius: 20px;" class="form-control" />
+            </div>
             <br>
             <br>
             <div style="text-align: center">

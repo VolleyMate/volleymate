@@ -19,5 +19,9 @@ public class ValoracionService {
 	public void saveValoracion(Valoracion valoracion) throws DataAccessException, IllegalArgumentException {
 		vRepository.save(valoracion);
 	}
+
+    public boolean valoracionExiste(Integer ratingPlayerId, Integer ratedPlayerId) {
+        return vRepository.valoracionExiste(ratingPlayerId, ratedPlayerId) != 0;
+    }
     
 }

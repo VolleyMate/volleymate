@@ -29,5 +29,7 @@ public class Valoracion extends BaseEntity{
     @NotNull
     @ManyToOne
     private Jugador ratingPlayer;
+
+    private String comentario;
     
 }
