@@ -119,7 +119,7 @@
                     class="btn btn-default">Siguiente</a></td>
             </c:if>
             <td>
-            <a style="margin-left:900px;" href="/partidos/new" class="btn btn-default">Crear nuevo partido</a>
+            <a style="margin-left:900px;" href="/partidos/new" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo partido</a>
 
         </tr>
      </table>
