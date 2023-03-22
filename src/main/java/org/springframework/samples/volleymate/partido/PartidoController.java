@@ -88,7 +88,7 @@ public class PartidoController {
 	}
 
 	@PostMapping(value = "/partidos/new")
-	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model) throws YaUnidoException {
+	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model,Principal principal) throws YaUnidoException {
 		List<String> errores = new ArrayList<>();
 		if(partido.getFecha().isBefore(LocalDateTime.now())) {
 			errores.add("La fecha no puede ser previa al día de hoy");
@@ -102,14 +102,17 @@ public class PartidoController {
 		if(partido.getNumJugadoresNecesarios()==null || partido.getNumJugadoresNecesarios()<=1){
 			errores.add("El número de jugadores debe ser mayor que 1");
 		}
+		Jugador jugador = jugadorService.findJugadorByUsername(principal.getName());
 		if (!errores.isEmpty()) {
 			model.put("partido", partido);
 			model.put("errors", errores);
 			model.put("centros", centroService.findAllCentros());
+			Boolean puedeCrear = jugador.getVolleys()>=150;
+			model.put("puedeCrear", puedeCrear);
 			return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 		} else {
-			Jugador jugador = jugadorService.findJugadorById(partido.getCreador().getId());
-			jugador.setVolleys(jugador.getVolleys()-150);
+			Jugador jugadorCreador = jugadorService.findJugadorById(partido.getCreador().getId());
+			jugadorCreador.setVolleys(jugadorCreador.getVolleys()-150);
 			this.partidoService.save(partido);
 			jugadorService.unirsePartida(partido.getCreador().getId(), partido.getId());
 			return "redirect:/partidos/"+partido.getId();

@@ -19,36 +19,55 @@
         <h1><c:out value="${jugadorVista.firstName}"/><c:out value="  "/><c:out value="${jugadorVista.lastName}"/></h1>
         <h3><b>@<c:out value="${jugadorVista.user.username}"/></b></h3>
         <h4>Ciudad: <b><c:out value="${jugadorVista.ciudad}"/></b></h4>
-        <h4>Teléfono: <b><c:out value="${jugadorVista.telephone}"/></b></h4>
         <h4>Sexo: <b><c:out value="${jugadorVista.sexo}"/></b></h4>
-        <h4><b><c:out value="${jugadorVista.volleys}"/></b><c:out value=" "/><img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;"></h4>
+        <c:if test="${jugadorVista.equals(jugadorAutenticado)}">
+            <h4>Teléfono: <b><c:out value="${jugadorVista.telephone}"/></b></h4>
+            <h4><b><c:out value="${jugadorVista.volleys}"/></b><c:out value=" "/><img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;"></h4>
+        </c:if>
     </br>
     </br>
     
         <tr>
-            <c:if test="${jugadorVista.equals(jugadorAutenticado)}">
-                <spring:url value="/jugadores/edit/{id}" var="editUrl">
-                    <spring:param name="id" value="${id}"/>
-                </spring:url>
-                <a href="${editUrl}" class="btn btn-default">Editar perfil</a>
-            </c:if>
-
             <c:if test="${!jugadorVista.equals(jugadorAutenticado)}">
+        
                 <c:if test="${!yaValorado}">
+        
                     <spring:url value="/valoraciones/new/{id}" var="valorarURL">
-                    <spring:param name="id" value="${valorarId}"/>
+                        <spring:param name="id" value="${valorarId}" />
                     </spring:url>
                     <a href="${valorarURL}" class="btn btn-default">Valorar jugador</a>
+        
                 </c:if>
+        
+                <spring:url value="/valoraciones/{id}" var="valURL">
+                    <spring:param name="id" value="${valorarId}" />
+                </spring:url>
+                <a href="${valURL}" class="btn btn-default">Valoraciones de
+                    <c:out value="${jugadorVista.user.username}" />
+                </a>
+
             </c:if>
         
         </tr>
-   
+        
         <tr>
             <c:if test="${jugadorVista.equals(jugadorAutenticado)}">
+        
+                <spring:url value="/jugadores/edit/{id}" var="editUrl">
+                    <spring:param name="id" value="${id}" />
+                </spring:url>
+                <a href="${editUrl}" class="btn btn-default">Editar perfil</a>
+        
                 <spring:url value="/jugadores/mispartidos" var="partidasURL"></spring:url>
                 <a href="${partidasURL}" class="btn btn-default">Mis partidos</a>
+        
+                <spring:url value="/valoraciones/{id}" var="valURL">
+                    <spring:param name="id" value="${id}" />
+                </spring:url>
+                <a href="${valURL}" class="btn btn-default">Mis valoraciones</a>
+        
             </c:if>
+        
         </tr>
     </table>
 

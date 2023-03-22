@@ -74,10 +74,9 @@
                 <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
             
                     <td style="text-align: center;">
-                        <a href="/jugadores/${partido.creador.id}" class="btn" >${partido.creador.user.username}</a>
+                        <a style = "color: black;" href="/jugadores/${partido.creador.id}" class="btn" >${partido.creador.user.username}</a>
                     </td>
                     
-
                     <td style="text-align: center;">
                         <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
                     </td>
