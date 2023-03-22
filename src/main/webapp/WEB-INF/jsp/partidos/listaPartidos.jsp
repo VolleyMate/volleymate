@@ -7,42 +7,62 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="partidos">
+    
     <h2>Partidos disponibles</h2>
-
     <form action="/partidos" method="get">
-        <label for="sexo">Sexo:</label>
-        <select id="sexo" name="sexo">
-            <option value="">Cualquiera</option>
-            <option value="MIXTO">Mixto</option>
-            <option value="MASCULINO">Masculino</option>
-            <option value="FEMENINO">Femenino</option>
-        </select>
-        <br>
-        <label for="tipo">Tipo de partido:</label>
-        <select id="tipo" name="tipo">
-            <option value="">Cualquiera</option>
-            <option value="VOLEIBOL">Voleibol</option>
-            <option value="FUTVOLEI">Futbolei</option>
-            <option value="BOSABALL">Bosaball</option>
-            <option value="SUBMARINO">Submarino</option>
-            <option value="SENTADO">Sentado</option>
-            <option value="PLAYA">Playa</option>
-            <option value="WATERVOLEY">Watervoley</option>
-        </select>
-        <br>
-        <label for="ciudad">Ciudad:</label>
-        <input type="text" id="ciudad" name="ciudad" />
-        <br>
-        <button type="submit">Filtrar</button>
+        <div style="display: grid; grid-template-columns: repeat(4,1fr);">
+            <div style="grid-column: 1;">
+                <div style="text-align: left;">
+                    <label for="sexo">Sexo:</label>
+                </div>
+                <select class="btn btn-default" id="sexo" name="sexo">
+                    <option value="">Cualquiera</option>
+                    <option value="MIXTO">Mixto</option>
+                    <option value="MASCULINO">Masculino</option>
+                    <option value="FEMENINO">Femenino</option>
+                </select>
+            </div>
+            <br>
+            <div style="grid-column: 2; grid-row: 1; align-items: center;">
+                <div style="text-align: left;">
+                    <label for="tipo">Tipo de partido:</label>
+                </div>
+                <select class="btn btn-default" id="tipo" name="tipo">
+                    <option value="">Cualquiera</option>
+                    <option value="VOLEIBOL">Voleibol</option>
+                    <option value="FUTVOLEI">Futbolei</option>
+                    <option value="BOSABALL">Bosaball</option>
+                    <option value="SUBMARINO">Submarino</option>
+                    <option value="SENTADO">Sentado</option>
+                    <option value="PLAYA">Playa</option>
+                    <option value="WATERVOLEY">Watervoley</option>
+                </select>
+            </div>
+            <br>
+            <div style="grid-column: 3; grid-row: 1;">
+                <div style="text-align: left;">
+                    <label for="ciudad">Ciudad:</label>
+                </div>
+                <input class="btn btn-default" type="text" id="ciudad" name="ciudad" />
+            </div>
+            <br>
+            <div style="grid-column: 4; grid-row: 1;">
+                <div style="text-align: left;">
+                    <label for=""></label>
+                </div>
+                <button class="btn btn-default" type="submit">Filtrar</button>
+            </div> 
+        </div>
     </form>
+   
 
     <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
         <thead>
             <tr>
                 <th style="width: 150px; text-align: center;">Creador</th>
                 <th style="width: 120px; text-align: center;">Jugadores</th>
-                <th style="width: 120px; text-align: center;">Ciudad</th>
                 <th style="width: 120px; text-align: center;">Dirección</th>
+                <th style="width: 120px; text-align: center;">Tipo</th>
                 <th style="width: 120px; text-align: center;">Fecha de la actividad</th>
                 <th style="width: 120px; text-align: center;">Fecha de creación</th>
                 <th style="width: 60px;"></th>
@@ -52,9 +72,12 @@
         <tbody>
             <c:forEach items="${partidos}" var="partido">
                 <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
+            
                     <td style="text-align: center;">
-                        <c:out value="${partido.creador.user.username}"/>
+                        <a href="/jugadores/${partido.creador.id}" class="btn" >${partido.creador.user.username}</a>
                     </td>
+                    
+
                     <td style="text-align: center;">
                         <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
                     </td>
@@ -62,7 +85,7 @@
                         <c:out value="${partido.centro.nombre}"/>
                     </td>
                     <td style="text-align: center;">
-                        <c:out value="${partido.getFechaParseada()}"/>
+                        <c:out value="${partido.tipo}"/>
                     </td>
                     <td style="text-align: center;">
                         <c:out value="${partido.getFechaCreacionParseada()}"/>

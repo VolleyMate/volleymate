@@ -21,7 +21,7 @@
             
             <div class="form-group">
               <form:label path="puntuacion">Valoracion</form:label>
-              <form:input path="puntuacion" style="border-radius: 20px;" type="number" min="1" class="form-control" />
+              <form:input path="puntuacion" style="border-radius: 20px;" type="number" min="1" max="5" class="form-control" />
             </div>
             <div class="form-control">
               <form:label path="comentario">Comentario</form:label>

@@ -32,32 +32,32 @@ public class ValoracionController {
     private static final String VIEW_VALORACION_CREATE_OR_UPDATE = "valoraciones/crearValoracion";
     
     //Crear valoracion
-	@GetMapping(value = "/valoraciones/{jugadorId}/new")
+	@GetMapping(value = "/valoraciones/new/{jugadorId}")
 	public String initCreationForm(Principal principal, ModelMap model, @PathVariable("jugadorId") int jugadorId) {
-        Valoracion valoracion = new Valoracion();
+		
+		Valoracion valoracion = new Valoracion();
 		Jugador jugadorValorador = jugadorService.findJugadorByUsername(principal.getName());
 		Jugador jugadorValorado = jugadorService.findJugadorById(jugadorId);
-        valoracion.setRatedPlayer(jugadorValorado);
-        valoracion.setRatingPlayer(jugadorValorador);
-		model.put("valoracion", valoracion);
-		return VIEW_VALORACION_CREATE_OR_UPDATE;
+		
+		if(jugadorValorador.equals(jugadorValorado)){
+			model.put("message", "No puedes valorarte a ti mismo");
+			return "welcome";
+		} else if (this.vService.valoracionExiste(jugadorValorado.getId(),jugadorValorador.getId())){
+			model.put("message", "Ya has valorado a este jugador");
+			return "welcome";
+		} else {
+			valoracion.setRatedPlayer(jugadorValorado);
+			valoracion.setRatingPlayer(jugadorValorador);
+			model.put("valoracion", valoracion);
+			return VIEW_VALORACION_CREATE_OR_UPDATE;
+		}
 	}
 
-	@PostMapping(value = "/valoraciones/{jugadorId}/new")
+	@PostMapping(value = "/valoraciones/new/{jugadorId}")
 	public String processCreationForm(@Valid Valoracion valoracion, BindingResult result, ModelMap model) {
 		if (result.hasErrors()) {
 			return VIEW_VALORACION_CREATE_OR_UPDATE;
-		}else if (valoracion.getRatingPlayer().equals(valoracion.getRatedPlayer())) {
-			model.put("message", "No puedes valorarte a ti mismo");
-			return VIEW_VALORACION_CREATE_OR_UPDATE;
-		}else if(this.vService.valoracionExiste(valoracion.getRatingPlayer().getId(), valoracion.getRatedPlayer().getId())) {
-			model.put("message", "Ya has valorado a este jugador");
-			return VIEW_VALORACION_CREATE_OR_UPDATE;
-		}else if(valoracion.getPuntuacion() < 1 || valoracion.getPuntuacion() > 5) {
-			model.put("message", "La valoración debe estar entre 1 y 5");
-			return VIEW_VALORACION_CREATE_OR_UPDATE;
-		}
-		else {
+		} else {
 			this.vService.saveValoracion(valoracion);
 			return "redirect:/jugadores/" + valoracion.getRatedPlayer().getId();
 		}
