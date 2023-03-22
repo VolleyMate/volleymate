@@ -57,6 +57,14 @@
 						<span>Mis notificaciones</span>
 					</petclinic:menuItem>				
 				</sec:authorize>
+
+				<sec:authorize access="isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'tienda'}" url="/jugadores/tienda"
+						title="tienda">
+						<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+						<span>Tienda</span>
+					</petclinic:menuItem>				
+				</sec:authorize>
 			</ul>
 
 

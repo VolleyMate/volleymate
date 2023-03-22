@@ -1,7 +1,6 @@
 package org.springframework.samples.volleymate.jugador;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -323,7 +322,7 @@ public class JugadorController {
 		} else {
 			return "redirect:/";
 		}
-	}
+    }
 
     @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
     public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
