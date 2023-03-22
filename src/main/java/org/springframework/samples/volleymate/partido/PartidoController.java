@@ -135,13 +135,22 @@ public class PartidoController {
 
 	// Show solicitudes
 
-	@GetMapping(value = "partidos/{partidoId}/solicitudes")
+	@GetMapping(value = "/partidos/{partidoId}/solicitudes")
 	public String showSolicitudesPartido(@PathVariable("partidoId") int partidoId, ModelMap model) {
 		Set<Solicitud> conj = new HashSet<>();
 		Set<Solicitud> solic = solicitudService.findAllSolicitudesByPartidoId(partidoId);
 		conj.addAll(solic);
 		model.put("solicitudes", conj);
 		return VIEW_SOLICITUDES_PARTIDO;
+	}
+
+	@GetMapping(value = "/jugadores/partido/{partidoId}")
+	public ModelAndView showJugadoresPartido(@PathVariable("partidoId") int partidoId, ModelMap model) {
+		Partido partido = partidoService.findPartidoById(partidoId);
+		List<Jugador> jugadores= partido.getJugadores();
+		ModelAndView mav = new ModelAndView("partidos/jugadoresPartido");
+        mav.addObject("jugadores", jugadores);
+		return mav;
 	}
 
 }

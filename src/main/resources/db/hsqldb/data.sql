@@ -1,4 +1,3 @@
--- One admin user, named admin1 with passwor 4dm1n and authority admin
 INSERT INTO users(username,password,enabled,correo) VALUES ('admin1','4dm1n',TRUE,'admin@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (2,'Admin','Admin','Sevilla','666666666','MASCULINO','','admin1', 10000000);
