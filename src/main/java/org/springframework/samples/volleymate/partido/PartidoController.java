@@ -54,8 +54,7 @@ public class PartidoController {
                               @RequestParam(required = false) String ciudad, Model model,
 							  @PageableDefault(page = 0, size = 6) @SortDefault.SortDefaults({
 								@SortDefault(sort = "id", direction = Sort.Direction.ASC), })
-								Pageable pageable 
-							  ) {
+								Pageable pageable) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){
 			Integer page = 0;
@@ -66,7 +65,6 @@ public class PartidoController {
 			model.addAttribute("hasPrevious", pageable.hasPrevious());
 			Double totalPages = Math.ceil(numResults / (pageable.getPageSize()));
 			model.addAttribute("totalPages", totalPages);
-			model.addAttribute("selections", partidosFiltrados);
 
     		return VIEW_LISTA_PARTIDOS;
 		}else{
