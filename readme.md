@@ -5,7 +5,7 @@ VolleyMate es una aplicación web en desarrollo creada para que todo tipo de per
 ## Características
 - Gestionar partidos de vóley.
 - Crear valoraciones
-- Crear juagdores
+- Crear jugadores
 
 ## Tecnologías utilizadas
 - Spring Framework
