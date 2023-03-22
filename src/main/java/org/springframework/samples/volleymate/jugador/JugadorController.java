@@ -33,6 +33,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 
 @Controller
 public class JugadorController {
@@ -174,19 +178,29 @@ public class JugadorController {
 
 
     @GetMapping("/jugadores/mispartidos")
-    public String showMisPartidos(Model model) {
+    public String showMisPartidos(Model model,
+                    @PageableDefault(page = 0, size = 6) @SortDefault.SortDefaults({
+        @SortDefault(sort = "id", direction = Sort.Direction.ASC), })
+        Pageable pageable) {
+        
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			if(auth.isAuthenticated()){
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 				String usuario = currentUser.getUsername();
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-				Set<Partido> partidos = jugador.getPartidos();
-                List<Partido> arr = new ArrayList<>();
-                arr.addAll(partidos);
+                Integer page = 0;
+                List<Partido> arr = partidoService.getPartidosDelJugador(page, pageable, jugador);
                 Comparator<Partido> comparador = Comparator.comparing(Partido::getFechaCreacion);
                 List<Partido> listaOrdenada =  arr.stream().sorted(comparador.reversed()).collect(Collectors.toList());
+
+                Integer numResults = listaOrdenada.size();
 				model.addAttribute("partidos", listaOrdenada);
+                model.addAttribute("pageNumber", pageable.getPageNumber());
+			    model.addAttribute("hasPrevious", pageable.hasPrevious());
+			    Double totalPages = Math.ceil(numResults / (pageable.getPageSize()));
+			    model.addAttribute("totalPages", totalPages);
+
 				return "jugadores/misPartidos";
 			}
 			return "redirect:/";

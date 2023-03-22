@@ -26,6 +26,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 
 @Controller
 public class PartidoController {
@@ -47,11 +51,21 @@ public class PartidoController {
 
 	@GetMapping("/partidos")
 	public String filtrarPartidos(@RequestParam(required = false) Sexo sexo, @RequestParam(required = false) Tipo tipo,
-                              @RequestParam(required = false) String ciudad, Model model) {
+                              @RequestParam(required = false) String ciudad, Model model,
+							  @PageableDefault(page = 0, size = 6) @SortDefault.SortDefaults({
+								@SortDefault(sort = "id", direction = Sort.Direction.ASC), })
+								Pageable pageable) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){
-    		List<Partido> partidosFiltrados = partidoService.filtrarPartidos(sexo, tipo, ciudad);
+			Integer page = 0;
+    		List<Partido> partidosFiltrados = partidoService.filtrarPartidos(page, pageable, sexo, tipo, ciudad);
+			Integer numResults = partidosFiltrados.size();
     		model.addAttribute("partidos", partidosFiltrados);
+			model.addAttribute("pageNumber", pageable.getPageNumber());
+			model.addAttribute("hasPrevious", pageable.hasPrevious());
+			Double totalPages = Math.ceil(numResults / (pageable.getPageSize()));
+			model.addAttribute("totalPages", totalPages);
+
     		return VIEW_LISTA_PARTIDOS;
 		}else{
 			return "redirect:/";
