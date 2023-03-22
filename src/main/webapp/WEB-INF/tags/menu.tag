@@ -43,14 +43,6 @@
 				</sec:authorize>
 
 				<sec:authorize access="isAuthenticated()">
-					<petclinic:menuItem active="${name eq 'crearPartido'}" url="/partidos/new"
-						title="partidos">
-						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-						<span>Crear partido</span>
-					</petclinic:menuItem>
-				</sec:authorize>
-
-				<sec:authorize access="isAuthenticated()">
 					<petclinic:menuItem active="${name eq 'notificaciones'}" url="/jugadores/notificaciones"
 						title="notificaciones">
 						<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
