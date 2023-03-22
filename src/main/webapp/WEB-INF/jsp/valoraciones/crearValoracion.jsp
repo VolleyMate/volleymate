@@ -12,7 +12,7 @@
     <h2 style="text-align: center; font-size: 1.5em;">
       <strong>Crear valoración</strong>
     </h2>
-    <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
+    <div style="background-color: #0099BB; padding: 20px; width: 75%; margin: 0 auto;border-radius: 20px;">
     <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8">
@@ -31,7 +31,9 @@
                 <form:textarea path="comentario" class="form-control" style="border-radius: 20px;" rows="4"></form:textarea>
               </div>
               <div class="form-group text-center">
-                <button type="submit" class="btn btn-primary" style="background-color: #838789;">Crear valoracion</button>
+                <button class="btn btn-md btn-default" style="background-color: #838789; margin: 0 5px;"
+                type="submit">Crear valoración</button>
+              
               </div>
             </form:form>
           </div>

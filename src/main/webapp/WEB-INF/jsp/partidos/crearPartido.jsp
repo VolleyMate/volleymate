@@ -36,10 +36,6 @@
                   <form:label path="numJugadoresNecesarios">Número de jugadores necesarios:</form:label>
                   <form:input path="numJugadoresNecesarios" style="border-radius: 20px;" type="number" min="1" class="form-control" />
                 </div>
-                <!-- <div class="form-group">
-                  <label for="precioPersona">Precio por persona:</label>
-                  <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;">150 volleys
-                </div> -->
                 
               </div>
               <div class="col-md-5" style="margin: 25px;">
