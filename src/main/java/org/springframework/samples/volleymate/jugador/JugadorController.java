@@ -42,9 +42,10 @@ public class JugadorController {
     
     private static final String VIEW_UPDATE_FORM = "jugadores/editarPerfil";
     private static final String VIEW_CREATE_FORM = "jugadores/crearJugador";
-	  private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
+	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
     private static final String HOME_TIENDA = "jugadores/tienda";
     private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
+    private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
@@ -247,6 +248,7 @@ public class JugadorController {
             }else{
                 mensaje += "mensajeError";
                 value += "No tienes volleys suficientes. Compralos en nuestra tienda!";
+                return HOME_TIENDA;
             }
             redirAttrs.addFlashAttribute(mensaje, value);
             return redirect;
@@ -295,17 +297,32 @@ public class JugadorController {
         return VIEW_NOTIFICACIONES;
     }
 
-   
-
     @GetMapping(value="/tienda")
-    public String showVistaTienda(Principal principal, ModelMap model){
+    public String showVistaTienda1(Principal principal, ModelMap model){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        model.put("jugadorRegistrado", jugador);
+        model.put("jugador", jugador);
         return HOME_TIENDA;
     }
 
     @GetMapping(value="/tienda/volleys")
     public String showVistaTiendaVolleys(Principal principal, ModelMap model){
+        return HOME_TIENDA_VOLLEYS;
+    }
+
+    //Por hacer
+    @GetMapping(value="/tienda/premium")
+    public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
+        return HOME_TIENDA_PREMIUM;
+    }
+
+    @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
+    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
+                                                        @PathVariable("volleys") Integer precio, RedirectAttributes redirAttrs){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        Integer sumVolleys = jugador.getVolleys() + volleys;
+        jugador.setVolleys(sumVolleys);
+        this.jugadorService.saveJugador(jugador);
+        redirAttrs.addFlashAttribute("compraAceptada", "Su pago se ha procesado correctamente!");
         return HOME_TIENDA_VOLLEYS;
     }
 
@@ -322,23 +339,6 @@ public class JugadorController {
 		} else {
 			return "redirect:/";
 		}
-    }
-
-    @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
-    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
-                                                        @PathVariable("volleys") Integer precio, RedirectAttributes redirAttrs){
-        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        Integer sumVolleys = jugador.getVolleys() + volleys;
-        jugador.setVolleys(sumVolleys);
-        this.jugadorService.saveJugador(jugador);
-        redirAttrs.addFlashAttribute("compraAceptada", "Su pago se ha procesado correctamente!");
-        return HOME_TIENDA_VOLLEYS;
-    }
-
-    //Por hacer
-    @GetMapping(value="/tienda/premium")
-    public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
-        return null;
     }
 }
 

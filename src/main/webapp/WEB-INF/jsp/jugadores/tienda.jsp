@@ -8,10 +8,9 @@
 
 <petclinic:layout pageName="tienda">
     <h2>BIENVENIDO A LA TIENDA DE VOLLEYMATE</h2>
-    <h3>Volleys disponibles: </h3>
-    <c:out value="${jugador.volleys}"/>
+    <h3><c:out value="Volleys: ${jugador.volleys}"/></h3>
     <h3>Comprar volleys</h3>
-    <a href="/tiendaVolleys" class="btn btn-default">Comprar volleys</a>
+    <a href="/tienda/volleys" class="btn btn-default">Comprar volleys</a>
     <h3>Premium</h3>
     <a href="/tienda/premium" class="btn btn-default">Suscríbete a Premium</a>
 </petclinic:layout>
