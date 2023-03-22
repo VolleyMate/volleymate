@@ -16,6 +16,7 @@ import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class PartidoService {
@@ -82,8 +83,8 @@ public class PartidoService {
 	}
 
 	// Filtrar partidos
-	public List<Partido> filtrarPartidos(Sexo sexo, Tipo tipoPartido, String ciudad) {
-        List<Partido> partidos = partidoRepository.findAll();
+	public List<Partido> filtrarPartidos(Integer page, Pageable pageable, Sexo sexo, Tipo tipoPartido, String ciudad) {
+        List<Partido> partidos = partidoRepository.findAllPageable(pageable);
         if (sexo != null) {
             partidos = partidos.stream()
                     .filter(partido -> partido.getSexo().equals(sexo))
