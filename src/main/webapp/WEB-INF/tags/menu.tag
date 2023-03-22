@@ -51,7 +51,7 @@
 				</sec:authorize>
 
 				<sec:authorize access="isAuthenticated()">
-					<petclinic:menuItem active="${name eq 'notificaciones'}" url="/jugadores/notificaciones"
+					<petclinic:menuItem active="${name eq 'misNotificaciones'}" url="/jugadores/notificaciones"
 						title="notificaciones">
 						<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
 						<span>Mis notificaciones</span>
