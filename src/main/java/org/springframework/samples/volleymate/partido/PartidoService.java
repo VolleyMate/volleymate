@@ -16,6 +16,7 @@ import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @Service
@@ -111,5 +112,11 @@ public class PartidoService {
 			.replace("ú", "u").toUpperCase()).collect(Collectors.toSet());
 		return ciudades;
 	}
+
+  public List<Partido> getPartidosDelJugador(Jugador jugador){
+    return findAllPartidos().stream()
+    .filter(p->p.getJugadores().contains(jugador))
+    .collect(Collectors.toList());
+  }
 
 }
