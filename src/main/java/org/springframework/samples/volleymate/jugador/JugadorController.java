@@ -190,9 +190,7 @@ public class JugadorController {
 				String usuario = currentUser.getUsername();
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
                 Integer page = 0;
-				Set<Partido> partidos = jugador.getPartidos();
-                List<Partido> arr = new ArrayList<>();
-                arr.addAll(partidos);
+                List<Partido> arr = partidoService.getPartidosDelJugador(page, pageable, jugador);
                 Comparator<Partido> comparador = Comparator.comparing(Partido::getFechaCreacion);
                 List<Partido> listaOrdenada =  arr.stream().sorted(comparador.reversed()).collect(Collectors.toList());
 

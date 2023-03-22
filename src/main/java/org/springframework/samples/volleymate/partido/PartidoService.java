@@ -113,10 +113,10 @@ public class PartidoService {
 		return ciudades;
 	}
 
-  public List<Partido> getPartidosDelJugador(Jugador jugador){
-    return findAllPartidos().stream()
-    .filter(p->p.getJugadores().contains(jugador))
-    .collect(Collectors.toList());
+  public List<Partido> getPartidosDelJugador(Integer page, Pageable pageable, Jugador jugador){
+    return partidoRepository.findAllPageable(pageable).stream()
+    						.filter(p->p.getJugadores().contains(jugador))
+    						.collect(Collectors.toList());
   }
 
 }
