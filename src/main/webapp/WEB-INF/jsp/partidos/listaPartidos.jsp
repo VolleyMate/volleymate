@@ -61,8 +61,8 @@
             <tr>
                 <th style="width: 150px; text-align: center;">Creador</th>
                 <th style="width: 120px; text-align: center;">Jugadores</th>
-                <th style="width: 120px; text-align: center;">Ciudad</th>
                 <th style="width: 120px; text-align: center;">Dirección</th>
+                <th style="width: 120px; text-align: center;">Tipo</th>
                 <th style="width: 120px; text-align: center;">Fecha de la actividad</th>
                 <th style="width: 120px; text-align: center;">Fecha de creación</th>
                 <th style="width: 60px;"></th>
@@ -72,9 +72,12 @@
         <tbody>
             <c:forEach items="${partidos}" var="partido">
                 <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
+            
                     <td style="text-align: center;">
-                        <c:out value="${partido.creador.user.username}"/>
+                        <a href="/jugadores/${partido.creador.id}" class="btn" >${partido.creador.user.username}</a>
                     </td>
+                    
+
                     <td style="text-align: center;">
                         <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
                     </td>
@@ -82,7 +85,7 @@
                         <c:out value="${partido.centro.nombre}"/>
                     </td>
                     <td style="text-align: center;">
-                        <c:out value="${partido.getFechaParseada()}"/>
+                        <c:out value="${partido.tipo}"/>
                     </td>
                     <td style="text-align: center;">
                         <c:out value="${partido.getFechaCreacionParseada()}"/>
