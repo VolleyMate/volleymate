@@ -5,8 +5,27 @@
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <petclinic:layout pageName="home">
-    <div class="row">
-        <spring:url value="/resources/images/VolleyMate.jpeg" htmlEscape="true" var="logoVolleyMate"/>
-        <img class="img-responsive" src="${logoVolleyMate}" style="display: block; margin: auto;" alt="logoInicio"/>
+    <style>
+        body {
+            background-image: url('/resources/images/Inicio4.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            color: #FFFFFF;
+        }.contenedor{
+            display: flex;
+        }.texto{
+            width: 300px;
+            height: 300px;
+            padding: 10px; 
+            margin: 10px;  
+            float: right; 
+        }
+    </style>
+    <div class="contenedor">
+        <spring:url value="/resources/images/VolleyMateInicio.png" htmlEscape="true" var="logoVolleyMate"/>
+        <img class="img-responsive" src="${logoVolleyMate}" alt="LogoInicio"/>
+        <spring:url value="/resources/images/pivotaltxt.png" htmlEscape="true" var="logoVolleyMate"/>
+        <img class="texto" src="${logoVolleyMate}" alt="LogoInicio"/>
     </div>
 </petclinic:layout>
