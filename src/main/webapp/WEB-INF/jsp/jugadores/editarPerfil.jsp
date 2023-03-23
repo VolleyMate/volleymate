@@ -9,6 +9,7 @@
 <%@page pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="jugadores">
+
     <h2>
         <p class="align-left" style="font-size:1.5em;">
             <strong><u>PERFIL</u></strong>

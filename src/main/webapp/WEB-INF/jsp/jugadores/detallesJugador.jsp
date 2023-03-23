@@ -8,10 +8,11 @@
 
 <petclinic:layout pageName="detalleJugador">
 
+
         <div class="m-0 row justify-content-center"> 
 
     <div class="col-auto p-5 text-center"> 
-        <c:if test="${jugadorVista.image == ''}"><img class="rounded d-block" src="/resources/images/perfilPorDefecto.jpg" width="250" height="250"></c:if>
+        <c:if test="${jugadorVista.image == ''}"><img class="rounded d-block" src="/resources/images/perfilPorDefecto.png" width="250" height="250"></c:if>
         <c:if test="${jugadorVista.image != ''}"><img class="rounded d-block" src="${jugadorVista.image}" width="250" height="250"></c:if>
        
 </br>
