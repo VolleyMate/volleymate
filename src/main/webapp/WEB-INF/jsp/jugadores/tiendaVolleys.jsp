@@ -7,6 +7,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="misPartidos">
+
     <h2>BIENVENIDO A LA TIENDA DE VOLLEYMATE</h2>
     <h3>Comprar volleys</h3>
     <a href="/tienda/volleys" class="btn btn-default">Comprar volleys</a>
