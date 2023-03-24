@@ -11,37 +11,64 @@
 <petclinic:layout pageName="jugadores">
 
     <h2>
-        <p class="align-left" style="font-size:1.5em;">
-            <strong><u>PERFIL</u></strong>
+        <p style="font-size:1.5em; text-align: center;">
+            <strong>Editar mi perfil</strong>
         </p>
     </h2>
-    
-    <form:form modelAttribute="jugador" class="form-horizontal " id="add-jugador-form">
-        <div class="form-group has-feedback">
-            <petclinic:inputField label="Nombre" name="firstName"/>
-            <petclinic:inputField label="Apellido" name="lastName"/>
-            <petclinic:inputField label="Ciudad" name="ciudad"/>
-            <petclinic:inputField label="Image" name="image"/>
+ 
+    <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
+        <div class="container">
+            <form:form modelAttribute="jugador" class="form-horizontal " id="add-jugador-form">
+                <div class="col-md-8" style="margin: 50px;">
+                    <div class="form-group has-feedback" >
 
-            Si quieres la foto por defecto, deja este campo vacío
-            
+                        <div class="form-group">
+                            <form:label path="firstName" >Nombre:</form:label>
+                            <form:input path="firstName" style="border-radius: 20px;" class="form-control" />    
+                        </div>
+                       
+                        <div class="form-group">
+                            <form:label path="lastName" >Apellido:</form:label>
+                            <form:input path="lastName" style="border-radius: 20px;" class="form-control" />    
+                        </div>
+
+                        <div class="form-group">
+                            <form:label path="ciudad" >Ciudad:</form:label>
+                            <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />    
+                        </div>
+
+                        <div class="form-group">
+                            <form:label path="image" >Imagen:</form:label>
+                            <form:input path="image" style="border-radius: 20px;" class="form-control" />    
+                        </div>
+
+                    </div>
+                    <div class="col-md-12" style="text-align: center;">
+                        <p class="mb-0 mt-2">Si quieres la foto por defecto, simplemente deja ese campo vacío</p>
+                        <br>
+                    </div>
+
+                    <div class="form-group" style="text-align: center;">
+                        <button class="btn btn-md btn-default" style="background-color: #838789; margin: 0 5px;"
+                            type="submit">Actualizar datos</button>
+                        <a href="/jugadores" class="btn btn-md btn-default"
+                            style="background-color: #838789; margin: 0 5px;">Volver atrás</a>
+                    </div>
+                </div>
+
+                <form:errors></form:errors>
+
+            </form:form>
         </div>
-    
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">   
-                        <button class="btn btn-default" type="submit">Actualizar datos</button>
-                        <a href="/jugadores" class="btn btn-default">Volver</a>
-            </div>
-        </div>
-        <form:errors></form:errors>
-    </form:form>
+    </div>
+
 
     <div style="text-align: center; color: #FF0000">
-            <c:forEach var="error" items="${errors}">
-                <ul>    
-                 <c:out value="${error} "/>
-                </ul>
-            </c:forEach>
-    </div> 
+        <c:forEach var="error" items="${errors}">
+            <ul>
+                <c:out value="${error} " />
+            </ul>
+        </c:forEach>
+    </div>
 
 </petclinic:layout>

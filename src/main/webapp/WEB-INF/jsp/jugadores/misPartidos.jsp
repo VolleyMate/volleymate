@@ -14,7 +14,8 @@
             <tr>
                 <th style="width: 120px; text-align: center;">Título</th>
                 <th style="width: 120px; text-align: center;">Fecha de la actividad</th>
-                <th style="width: 120px; text-align: center;">Lugar</th>
+                <th style="width: 120px; text-align: center;">Ciudad</th>
+                <th style="width: 120px; text-align: center;">Dirección</th>
                 <th style="width: 120px; text-align: center;">Jugadores</th>
                 <th style="width: 120px; text-align: center;"></th>
             </tr>
@@ -30,7 +31,7 @@
                         <c:out value="${partido.getFechaParseada()}"/>
                     </td>
                     <td style="text-align: center;">
-                        <c:out value="${partido.lugar}"/>
+                        <c:out value="${partido.centro.nombre}"/>
                     </td>
                     <td style="text-align: center;">
                         <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
@@ -44,4 +45,32 @@
             </c:forEach>
         </tbody>
     </table>
+
+    <table class="center" border="0">
+        <tr>
+        	<td>
+            <c:if test="${hasPrevious}">
+                <td><a
+                    style="margin-right:5px"  
+                    href="/jugadores/misPartidos?page=${pageNumber - 1}"
+                    class="btn btn-default">Anterior</a>
+            	</td>
+            </c:if>
+
+            <c:forEach begin="1" end="${totalPages+1}" var="i">
+                <td><a style="margin-left:5px; margin-right:5px;" href="/jugadores/misPartidos?page=${i-1}">${i}</a></td>
+            </c:forEach>
+
+            <c:if test="${pageNumber != totalPages}">
+                <td><a
+                	style="margin-left:5px;" 
+                    href="/jugadores/misPartidos?page=${pageNumber + 1}"
+                    class="btn btn-default">Siguiente</a></td>
+            </c:if>
+            <td>
+            <a style="margin-left:900px;" href="/partidos/new" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo partido</a>
+
+        </tr>
+     </table>
+
 </petclinic:layout>

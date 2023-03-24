@@ -21,6 +21,7 @@ import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.samples.volleymate.user.User;
+import org.springframework.samples.volleymate.valoracion.ValoracionService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,6 +33,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 
 @Controller
 public class JugadorController {
@@ -44,12 +49,14 @@ public class JugadorController {
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
+    private final ValoracionService valoracionService;
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService ) {
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
         this.solicitudService = solicitudService;
+        this.valoracionService = valoracionService;
     }
 
 
@@ -130,7 +137,7 @@ public class JugadorController {
 		}
 		else {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","sexo","user"); 
+			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","sexo","user","volleys","solicitudes","notificaciones","telephone"); 
             this.jugadorService.saveJugador(jugadorToUpdate);
 			model.put("message","Jugador editado correctamente");
 			return "redirect:/jugadores";
@@ -158,29 +165,42 @@ public class JugadorController {
     public String showJugador(@PathVariable("jugadorId") int jugadorId, Map<String,Object> model, Principal principal) {
 				Jugador jugadorAutenticado = jugadorService.findJugadorByUsername(principal.getName());
                 Jugador jugadorVista = jugadorService.findJugadorById(jugadorId);
+                Boolean yaValorado = valoracionService.valoracionExiste(jugadorVista.getId(), jugadorAutenticado.getId());
                 
                 model.put("jugadorAutenticado", jugadorAutenticado);
                 model.put("jugadorVista", jugadorVista);
                 model.put("id",jugadorAutenticado.getId());
+                model.put("valorarId",jugadorVista.getId());
+                model.put("yaValorado",yaValorado);
                 
                 return "jugadores/detallesJugador";
     }
 
 
     @GetMapping("/jugadores/mispartidos")
-    public String showMisPartidos(Model model) {
+    public String showMisPartidos(Model model,
+                    @PageableDefault(page = 0, size = 6) @SortDefault.SortDefaults({
+        @SortDefault(sort = "id", direction = Sort.Direction.ASC), })
+        Pageable pageable) {
+        
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			if(auth.isAuthenticated()){
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 				String usuario = currentUser.getUsername();
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-				Set<Partido> partidos = jugador.getPartidos();
-                List<Partido> arr = new ArrayList<>();
-                arr.addAll(partidos);
+                Integer page = 0;
+                List<Partido> arr = partidoService.getPartidosDelJugador(page, pageable, jugador);
                 Comparator<Partido> comparador = Comparator.comparing(Partido::getFechaCreacion);
                 List<Partido> listaOrdenada =  arr.stream().sorted(comparador.reversed()).collect(Collectors.toList());
+
+                Integer numResults = listaOrdenada.size();
 				model.addAttribute("partidos", listaOrdenada);
+                model.addAttribute("pageNumber", pageable.getPageNumber());
+			    model.addAttribute("hasPrevious", pageable.hasPrevious());
+			    Double totalPages = Math.ceil(numResults / (pageable.getPageSize()));
+			    model.addAttribute("totalPages", totalPages);
+
 				return "jugadores/misPartidos";
 			}
 			return "redirect:/";
@@ -305,7 +325,7 @@ public class JugadorController {
 		}
 	}
 
-    @GetMapping(value="tienda/volleys/comprar/{volleys}/{precio}")
+    @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
     public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
                                                         @PathVariable("volleys") Integer precio, RedirectAttributes redirAttrs){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());

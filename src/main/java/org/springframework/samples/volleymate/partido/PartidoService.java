@@ -3,9 +3,9 @@ package org.springframework.samples.volleymate.partido;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,8 @@ import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class PartidoService {
@@ -82,17 +84,39 @@ public class PartidoService {
 	}
 
 	// Filtrar partidos
+	public List<Partido> filtrarPartidos(Integer page, Pageable pageable, Sexo sexo, Tipo tipoPartido, String ciudad) {
+        List<Partido> partidos = partidoRepository.findAllPageable(pageable);
+        if (sexo != null) {
+            partidos = partidos.stream()
+                    .filter(partido -> partido.getSexo().equals(sexo))
+                    .collect(Collectors.toList());
+        }
+        if (tipoPartido != null) {
+            partidos = partidos.stream()
+                    .filter(partido -> partido.getTipo() == tipoPartido)
+                    .collect(Collectors.toList());
+        }
+        if (ciudad != null && !ciudad.isEmpty()) {
+            partidos = partidos.stream()
+                    .filter(partido -> partido.getCentro().getCiudad().equalsIgnoreCase(ciudad))
+                    .collect(Collectors.toList());
+        }
+        return partidos;
+    }
 
-	public Set<Partido> getPartidosByTipo(Tipo tipo) {
-		Set<Partido> conj = new HashSet<>();
-		conj.addAll(partidoRepository.findPartidosByTipo(tipo));
-		return conj;
+	public Set<String> getCiudades() {
+		List<Partido> partidos = partidoRepository.findAll();
+		Set<String> ciudades = partidos.stream().map(p -> p.getCentro().getCiudad())
+			.map(c -> c.replace("á", "a").replace("é", "e")
+			.replace("í", "i").replace("ó", "o")
+			.replace("ú", "u").toUpperCase()).collect(Collectors.toSet());
+		return ciudades;
 	}
 
-	public Set<Partido> getPartidosBySexo(Sexo sexo) {
-		Set<Partido> conj = new HashSet<>();
-		conj.addAll(partidoRepository.findPartidosBySexo(sexo));
-		return conj;
-	}
+  public List<Partido> getPartidosDelJugador(Integer page, Pageable pageable, Jugador jugador){
+    return partidoRepository.findAllPageable(pageable).stream()
+    						.filter(p->p.getJugadores().contains(jugador))
+    						.collect(Collectors.toList());
+  }
 
 }
