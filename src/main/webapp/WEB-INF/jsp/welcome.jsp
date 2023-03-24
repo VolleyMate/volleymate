@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <petclinic:layout pageName="home">
@@ -23,9 +24,9 @@
         }
     </style>
     <div class="contenedor">
-        <spring:url value="/resources/images/VolleyMateInicio.png" htmlEscape="true" var="logoVolleyMate"/>
-        <img class="img-responsive" src="${logoVolleyMate}" alt="LogoInicio"/>
-        <spring:url value="/resources/images/pivotaltxt.png" htmlEscape="true" var="logoVolleyMate"/>
-        <img class="texto" src="${logoVolleyMate}" alt="LogoInicio"/>
+        <spring:url value="/resources/images/VolleyMateInicio.png" htmlEscape="true" var="VolleyMateInicio"/>
+        <img class="img-responsive" src="${fn:escapeXml(VolleyMateInicio)}" alt="VolleyMateInicio"/>
+        <spring:url value="/resources/images/pivotaltxt.png" htmlEscape="true" var="pivotaltxt"/>
+        <img class="texto" src="${fn:escapeXml(pivotaltxt)}" alt="pivotaltxt"/>
     </div>
 </petclinic:layout>
