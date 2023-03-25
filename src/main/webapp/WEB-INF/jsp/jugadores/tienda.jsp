@@ -12,7 +12,7 @@
             <div class="col-md-6" style="padding: 2%;">
                 <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; margin: top:5%;border-radius: 20px;">
                     <h2>Comprar Volleys</h2>
-                    <p style="padding-bottom: 2%;">Compra volleys para mejorar tu experiencia en VolleyMate</p>
+                    <p style="padding-bottom: 2%;">¿Te has quedado sin Volleys? Compra algunos aquí</p>
                     <h3><c:out value="Volleys disponibles: ${jugador.volleys}"/></h3>
                     <a href="/tienda/volleys" class="btn btn-default">Comprar volleys</a>
                 </div>      
