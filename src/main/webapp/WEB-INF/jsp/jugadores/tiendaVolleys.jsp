@@ -7,13 +7,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="tiendaVolleys">
-    <h2>BIENVENIDO A LA TIENDA DE VOLLEYMATE</h2>
-    <h3>Comprar volleys</h3>
-    <a href="/tienda/volleys" class="btn btn-default">Comprar volleys</a>
-    <h3>Premium</h3>
-    <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
-        <div class="container">
-
-        </div>
-    </div> 
+    <h3>Comprar volleys</h3> 
 </petclinic:layout>
