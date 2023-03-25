@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6" style="padding: 2%;">
-                <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; margin: top:5%;border-radius: 20px;">
+                <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; margin-top: 5%; border-radius: 20px;">
                     <h2>Comprar Volleys</h2>
                     <p style="padding-bottom: 2%;">¿Te has quedado sin Volleys? Compra algunos aquí</p>
                     <h3><c:out value="Volleys disponibles: ${jugador.volleys}"/></h3>
@@ -18,7 +18,7 @@
                 </div>      
             </div>
             <div class="col-md-6" style="padding: 2%;">
-                <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; margin: top:5% ;;border-radius: 20px;">
+                <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; margin-top: 5%; border-radius: 20px;">
                     <h2>Plan Premium</h2>
                     <p style="padding-bottom: 2%;">Inscríbete al plan Premium para disfrutar de VolleyMate al completo</p>
                     <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
