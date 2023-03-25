@@ -7,7 +7,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="partidos">
-    
     <h2>Partidos disponibles</h2>
     <form action="/partidos" method="get">
         <div style="display: grid; grid-template-columns: repeat(4,1fr);">

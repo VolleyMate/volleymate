@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="jugadores">
+
     <div style="text-align: center;">
         <h2>
             <c:if test="${jugador['new']}">

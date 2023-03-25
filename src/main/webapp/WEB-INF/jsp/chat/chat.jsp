@@ -9,6 +9,7 @@
 
 
 <petclinic:layout pageName="chat">
+
     <h2>Chat</h2>
 
     <div style="text-align: center; color: #FF0000">
