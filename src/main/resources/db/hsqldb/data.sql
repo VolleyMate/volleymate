@@ -12,7 +12,7 @@ INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image,
 
 INSERT INTO users(username,password,enabled,correo) VALUES ('paomarsan','paomarsan',TRUE,'paomarsan@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (4,'paomarsan','admin');
-INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (4,'Paola','Martin','Sevilla','666666666','FEMENINO','','paomarsan', 100);
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (4,'Paola','Martin','Sevilla','666666666','FEMENINO','','paomarsan', 150);
 
 INSERT INTO users(username,password,enabled,correo) VALUES ('meriglmar','meriglmar',TRUE,'meriglmar@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (5,'meriglmar','admin');

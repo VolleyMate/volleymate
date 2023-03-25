@@ -1,6 +1,7 @@
+git pull
 target/*
 .settings/*
-.classpath
+.classpathmer
 .project
 .factorypath
 .attach_pid*
@@ -68,4 +69,5 @@ _site/
 .metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
 
 .vscode/
+src/main/resources/application.properties
 src/main/resources/application.properties
