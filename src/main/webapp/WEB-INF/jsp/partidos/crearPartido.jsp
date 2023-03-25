@@ -13,7 +13,7 @@
             <strong>Crear partido</strong>
         </p>
     </h2>     
-    <div style="background-color: #0099BB; padding: 20px; width: 70%; margin: 0 auto;border-radius: 20px;">
+    <div style="background-color: #0099bb3e; padding: 20px; width: 70%; margin: 0 auto;border-radius: 20px;">
       <div class="container"> 
         <form:form modelAttribute="partido" class="form-horizontal" id="crear_partido">
           <div class="row form-row">
