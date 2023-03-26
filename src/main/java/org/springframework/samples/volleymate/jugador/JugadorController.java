@@ -1,7 +1,6 @@
 package org.springframework.samples.volleymate.jugador;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -33,15 +32,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 
 @Controller
 public class JugadorController {
     
     private static final String VIEW_UPDATE_FORM = "jugadores/editarPerfil";
     private static final String VIEW_CREATE_FORM = "jugadores/crearJugador";
-	  private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
+	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
     private static final String HOME_TIENDA = "jugadores/tienda";
     private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
+    private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
@@ -174,19 +178,29 @@ public class JugadorController {
 
 
     @GetMapping("/jugadores/mispartidos")
-    public String showMisPartidos(Model model) {
+    public String showMisPartidos(Model model,
+                    @PageableDefault(page = 0, size = 6) @SortDefault.SortDefaults({
+        @SortDefault(sort = "id", direction = Sort.Direction.ASC), })
+        Pageable pageable) {
+        
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			if(auth.isAuthenticated()){
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 				String usuario = currentUser.getUsername();
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-				Set<Partido> partidos = jugador.getPartidos();
-                List<Partido> arr = new ArrayList<>();
-                arr.addAll(partidos);
+                Integer page = 0;
+                List<Partido> arr = partidoService.getPartidosDelJugador(page, pageable, jugador);
                 Comparator<Partido> comparador = Comparator.comparing(Partido::getFechaCreacion);
                 List<Partido> listaOrdenada =  arr.stream().sorted(comparador.reversed()).collect(Collectors.toList());
+
+                Integer numResults = listaOrdenada.size();
 				model.addAttribute("partidos", listaOrdenada);
+                model.addAttribute("pageNumber", pageable.getPageNumber());
+			    model.addAttribute("hasPrevious", pageable.hasPrevious());
+			    Double totalPages = Math.ceil(numResults / (pageable.getPageSize()));
+			    model.addAttribute("totalPages", totalPages);
+
 				return "jugadores/misPartidos";
 			}
 			return "redirect:/";
@@ -234,6 +248,7 @@ public class JugadorController {
             }else{
                 mensaje += "mensajeError";
                 value += "No tienes volleys suficientes. Compralos en nuestra tienda!";
+                return HOME_TIENDA;
             }
             redirAttrs.addFlashAttribute(mensaje, value);
             return redirect;
@@ -282,17 +297,32 @@ public class JugadorController {
         return VIEW_NOTIFICACIONES;
     }
 
-   
-
     @GetMapping(value="/tienda")
-    public String showVistaTienda(Principal principal, ModelMap model){
+    public String showVistaTienda1(Principal principal, ModelMap model){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        model.put("jugadorRegistrado", jugador);
+        model.put("jugador", jugador);
         return HOME_TIENDA;
     }
 
     @GetMapping(value="/tienda/volleys")
     public String showVistaTiendaVolleys(Principal principal, ModelMap model){
+        return HOME_TIENDA_VOLLEYS;
+    }
+
+    //Por hacer
+    @GetMapping(value="/tienda/premium")
+    public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
+        return HOME_TIENDA_PREMIUM;
+    }
+
+    @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
+    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
+                                                        @PathVariable("volleys") Integer precio, RedirectAttributes redirAttrs){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        Integer sumVolleys = jugador.getVolleys() + volleys;
+        jugador.setVolleys(sumVolleys);
+        this.jugadorService.saveJugador(jugador);
+        redirAttrs.addFlashAttribute("compraAceptada", "Su pago se ha procesado correctamente!");
         return HOME_TIENDA_VOLLEYS;
     }
 
@@ -309,23 +339,6 @@ public class JugadorController {
 		} else {
 			return "redirect:/";
 		}
-	}
-
-    @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
-    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
-                                                        @PathVariable("volleys") Integer precio, RedirectAttributes redirAttrs){
-        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        Integer sumVolleys = jugador.getVolleys() + volleys;
-        jugador.setVolleys(sumVolleys);
-        this.jugadorService.saveJugador(jugador);
-        redirAttrs.addFlashAttribute("compraAceptada", "Su pago se ha procesado correctamente!");
-        return HOME_TIENDA_VOLLEYS;
-    }
-
-    //Por hacer
-    @GetMapping(value="/tienda/premium")
-    public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
-        return null;
     }
 }
 

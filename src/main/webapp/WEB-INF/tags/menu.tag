@@ -43,18 +43,18 @@
 				</sec:authorize>
 
 				<sec:authorize access="isAuthenticated()">
-					<petclinic:menuItem active="${name eq 'crearPartido'}" url="/partidos/new"
-						title="partidos">
-						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-						<span>Crear partido</span>
-					</petclinic:menuItem>
-				</sec:authorize>
-
-				<sec:authorize access="isAuthenticated()">
-					<petclinic:menuItem active="${name eq 'notificaciones'}" url="/jugadores/notificaciones"
+					<petclinic:menuItem active="${name eq 'misNotificaciones'}" url="/jugadores/notificaciones"
 						title="notificaciones">
 						<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
 						<span>Mis notificaciones</span>
+					</petclinic:menuItem>				
+				</sec:authorize>
+
+				<sec:authorize access="isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'tienda'}" url="/tienda"
+						title="tienda">
+						<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+						<span>Tienda</span>
 					</petclinic:menuItem>				
 				</sec:authorize>
 			</ul>

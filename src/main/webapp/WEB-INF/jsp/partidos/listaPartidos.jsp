@@ -7,7 +7,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="partidos">
-    
     <h2>Partidos disponibles</h2>
     <form action="/partidos" method="get">
         <div style="display: grid; grid-template-columns: repeat(4,1fr);">
@@ -74,10 +73,9 @@
                 <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
             
                     <td style="text-align: center;">
-                        <a href="/jugadores/${partido.creador.id}" class="btn" >${partido.creador.user.username}</a>
+                        <a style = "color: black;" href="/jugadores/${partido.creador.id}" class="btn" >${partido.creador.user.username}</a>
                     </td>
                     
-
                     <td style="text-align: center;">
                         <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
                     </td>
@@ -99,6 +97,33 @@
             </c:forEach>
         </tbody>
     </table>
+
+    <table class="center" border="0">
+        <tr>
+        	<td>
+            <c:if test="${hasPrevious}">
+                <td><a
+                    style="margin-right:5px"  
+                    href="/partidos?page=${pageNumber - 1}"
+                    class="btn btn-default">Anterior</a>
+            	</td>
+            </c:if>
+
+            <c:forEach begin="1" end="${totalPages+1}" var="i">
+                <td><a style="margin-left:5px; margin-right:5px;" href="/partidos?page=${i-1}">${i}</a></td>
+            </c:forEach>
+
+            <c:if test="${pageNumber != totalPages}">
+                <td><a
+                	style="margin-left:5px;" 
+                    href="/partidos?page=${pageNumber + 1}"
+                    class="btn btn-default">Siguiente</a></td>
+            </c:if>
+            <td>
+            <a style="margin-left:900px;" href="/partidos/new" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo partido</a>
+
+        </tr>
+     </table>
     
       
 </petclinic:layout>

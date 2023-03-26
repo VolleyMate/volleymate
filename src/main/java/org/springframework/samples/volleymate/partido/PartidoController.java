@@ -26,6 +26,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 
 @Controller
 public class PartidoController {
@@ -47,11 +51,21 @@ public class PartidoController {
 
 	@GetMapping("/partidos")
 	public String filtrarPartidos(@RequestParam(required = false) Sexo sexo, @RequestParam(required = false) Tipo tipo,
-                              @RequestParam(required = false) String ciudad, Model model) {
+                              @RequestParam(required = false) String ciudad, Model model,
+							  @PageableDefault(page = 0, size = 6) @SortDefault.SortDefaults({
+								@SortDefault(sort = "id", direction = Sort.Direction.ASC), })
+								Pageable pageable) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){
-    		List<Partido> partidosFiltrados = partidoService.filtrarPartidos(sexo, tipo, ciudad);
+			Integer page = 0;
+    		List<Partido> partidosFiltrados = partidoService.filtrarPartidos(page, pageable, sexo, tipo, ciudad);
+			Integer numResults = partidosFiltrados.size();
     		model.addAttribute("partidos", partidosFiltrados);
+			model.addAttribute("pageNumber", pageable.getPageNumber());
+			model.addAttribute("hasPrevious", pageable.hasPrevious());
+			Double totalPages = Math.ceil(numResults / (pageable.getPageSize()));
+			model.addAttribute("totalPages", totalPages);
+
     		return VIEW_LISTA_PARTIDOS;
 		}else{
 			return "redirect:/";
@@ -88,7 +102,7 @@ public class PartidoController {
 	}
 
 	@PostMapping(value = "/partidos/new")
-	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model) throws YaUnidoException {
+	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model,Principal principal) throws YaUnidoException {
 		List<String> errores = new ArrayList<>();
 		if(partido.getFecha().isBefore(LocalDateTime.now())) {
 			errores.add("La fecha no puede ser previa al día de hoy");
@@ -102,14 +116,17 @@ public class PartidoController {
 		if(partido.getNumJugadoresNecesarios()==null || partido.getNumJugadoresNecesarios()<=1){
 			errores.add("El número de jugadores debe ser mayor que 1");
 		}
+		Jugador jugador = jugadorService.findJugadorByUsername(principal.getName());
 		if (!errores.isEmpty()) {
 			model.put("partido", partido);
 			model.put("errors", errores);
 			model.put("centros", centroService.findAllCentros());
+			Boolean puedeCrear = jugador.getVolleys()>=150;
+			model.put("puedeCrear", puedeCrear);
 			return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 		} else {
-			Jugador jugador = jugadorService.findJugadorById(partido.getCreador().getId());
-			jugador.setVolleys(jugador.getVolleys()-150);
+			Jugador jugadorCreador = jugadorService.findJugadorById(partido.getCreador().getId());
+			jugadorCreador.setVolleys(jugadorCreador.getVolleys()-150);
 			this.partidoService.save(partido);
 			jugadorService.unirsePartida(partido.getCreador().getId(), partido.getId());
 			return "redirect:/partidos/"+partido.getId();
@@ -118,13 +135,22 @@ public class PartidoController {
 
 	// Show solicitudes
 
-	@GetMapping(value = "partidos/{partidoId}/solicitudes")
+	@GetMapping(value = "/partidos/{partidoId}/solicitudes")
 	public String showSolicitudesPartido(@PathVariable("partidoId") int partidoId, ModelMap model) {
 		Set<Solicitud> conj = new HashSet<>();
 		Set<Solicitud> solic = solicitudService.findAllSolicitudesByPartidoId(partidoId);
 		conj.addAll(solic);
 		model.put("solicitudes", conj);
 		return VIEW_SOLICITUDES_PARTIDO;
+	}
+
+	@GetMapping(value = "/jugadores/partido/{partidoId}")
+	public ModelAndView showJugadoresPartido(@PathVariable("partidoId") int partidoId, ModelMap model) {
+		Partido partido = partidoService.findPartidoById(partidoId);
+		List<Jugador> jugadores= partido.getJugadores();
+		ModelAndView mav = new ModelAndView("partidos/jugadoresPartido");
+        mav.addObject("jugadores", jugadores);
+		return mav;
 	}
 
 }

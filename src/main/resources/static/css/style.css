@@ -1,0 +1,19 @@
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.partidosTableHeader {
+  width: 150px;
+  text-align: center;
+  background-color:#FFFFFF;
+  color: black;
+  }
+  
+  .jugadorCell {
+  text-align: center;
+  }
+  
+  .jugadorLink {
+  color: black;
+  }
