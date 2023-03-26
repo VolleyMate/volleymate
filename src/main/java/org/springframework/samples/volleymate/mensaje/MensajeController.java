@@ -40,6 +40,8 @@ public class MensajeController {
         List<Mensaje> mensajes = partido.getMensajes();
         Comparator<Mensaje> comparador = Comparator.comparing(Mensaje::getFecha_envio);
         List<Mensaje> listaOrdenada = mensajes.stream().sorted(comparador).collect(Collectors.toList());
+        String username = principal.getName();
+        model.put("username", username);
 
             if (estaDentro) {
                 model.put("mensajes", listaOrdenada);
