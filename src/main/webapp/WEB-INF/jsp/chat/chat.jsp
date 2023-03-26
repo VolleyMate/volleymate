@@ -35,7 +35,7 @@
             <c:forEach items="${mensajes}" var="mensajeEach">
                 <c:if test="${mensajeEach.emisor.user.username.equalsIgnoreCase(username)}">
                     <br>
-                    <div style="grid-column: 2" class="btn btn-default">
+                    <div style="grid-column: 2; background-color: #0099BB; border-radius: 15px; margin: 10px; text-align: center; border:1px dotted #0099; color:white">
                         <br>
                         <c:out value="${mensajeEach.contenidoMensaje}"/>
                         <c:out value=" | "/>
@@ -43,9 +43,11 @@
                     </div>
                 </c:if>
                 <c:if test="${!mensajeEach.emisor.user.username.equalsIgnoreCase(username)}">
-                    <div style="grid-column: 1;" class="btn btn-default">
-                        <c:out value="${mensajeEach.emisor.user.username}"/>
-                        <br>
+                    <div style="grid-column: 1; border-color: #0099BB; border-width: 10px; background-color: #0099; border-radius: 15px; margin: 10px; text-align: center; border:1px dotted #000; color:white"">
+                        <div style="border-radius: 15px; text-align: left; margin-left: 5%;">
+                            <c:out value="${mensajeEach.emisor.user.username}"/>
+                            <br>
+                        </div>
                         <c:out value="${mensajeEach.contenidoMensaje}"/>
                         <c:out value=" | "/>
                         <c:out value="${mensajeEach.getFechaParseada()}"/> 
