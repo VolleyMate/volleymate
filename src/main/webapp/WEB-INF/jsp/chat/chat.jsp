@@ -10,20 +10,20 @@
 
 <petclinic:layout pageName="chat">
 
-<script>
-    var refreshIntervalId = setInterval(function() {
-        if (!document.getElementById('contenidoMensaje').value) {
-            location.reload();
+    <script>
+        var refreshIntervalId = setInterval(function() {
+            if (!document.getElementById('contenidoMensaje').value) {
+                location.reload();
+            }
+        }, 3000);
+
+        function scrollDown() {
+            var chatMensajes = document.getElementById('chat-mensajes');
+            chatMensajes.scrollTop = chatMensajes.scrollHeight;
         }
-    }, 3000);
 
-    function scrollDown() {
-        var chatMensajes = document.getElementById('chat-mensajes');
-        chatMensajes.scrollTop = chatMensajes.scrollHeight;
-    }
-
-    window.onload = scrollDown;
-</script>
+        window.onload = scrollDown;
+    </script>
 
     <h2>Chat</h2>
 
@@ -35,22 +35,23 @@
             <c:forEach items="${mensajes}" var="mensajeEach">
                 <c:if test="${mensajeEach.emisor.user.username.equalsIgnoreCase(username)}">
                     <br>
-                    <div style="grid-column: 2; background-color: #0099BB; border-radius: 15px; margin: 10px; text-align: center; border:1px dotted #0099; color:white">
-                        <br>
+                    <div style="grid-column: 2; max-width: 50%; background-color: #0099BB; border-radius: 15px; padding:10px; margin: 1%; margin-left: 40%; border:2px solid black; color:white">
                         <c:out value="${mensajeEach.contenidoMensaje}"/>
-                        <c:out value=" | "/>
-                        <c:out value="${mensajeEach.getFechaParseada()}"/>
+                        <div style="font-size: small; text-align: right;">
+                            <c:out value="${mensajeEach.getFechaParseada()}"/>
+                        </div>
                     </div>
                 </c:if>
                 <c:if test="${!mensajeEach.emisor.user.username.equalsIgnoreCase(username)}">
-                    <div style="grid-column: 1; border-color: #0099BB; border-width: 10px; background-color: #0099; border-radius: 15px; margin: 10px; text-align: center; border:1px dotted #000; color:white"">
-                        <div style="border-radius: 15px; text-align: left; margin-left: 5%;">
+                    <div style="grid-column: 1; max-width: 50%; border-width: 10px; background-color: #0099; border-radius: 15px; padding:10px; margin: 1%; border:2px solid black; color:white"">
+                        <div style="border-radius: 15px; text-align: left; font-style: italic; margin-bottom: 1%;">
                             <c:out value="${mensajeEach.emisor.user.username}"/>
                             <br>
                         </div>
                         <c:out value="${mensajeEach.contenidoMensaje}"/>
-                        <c:out value=" | "/>
-                        <c:out value="${mensajeEach.getFechaParseada()}"/> 
+                        <div style="font-size: small; text-align: right;">
+                            <c:out value="${mensajeEach.getFechaParseada()}"/>
+                        </div>
                     </div>
                 </c:if>
             </c:forEach>
