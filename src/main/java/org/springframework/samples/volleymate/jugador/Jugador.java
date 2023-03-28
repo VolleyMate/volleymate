@@ -46,7 +46,7 @@ public class Jugador extends Person{
 	@Column(name = "volleys")
 	private Integer volleys=0;
 
-
+ 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
