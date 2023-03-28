@@ -11,10 +11,14 @@
         <div class="row">
             <div class="col-md-6" style="padding: 2%;">
                 <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; margin-top: 5%; border-radius: 20px;">
-                    <h2>Comprar Volleys</h2>
+                    <h2>Tienda de Volleys</h2>
+                    <p style="padding-bottom: 2%;">Dispones de: </p>
+                    <h3>
+                        <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;">
+                        <c:out value="${jugador.volleys}"/>
+                    </h3>
                     <p style="padding-bottom: 2%;">¿Te has quedado sin Volleys? Compra algunos aquí</p>
-                    <h3><c:out value="Volleys disponibles: ${jugador.volleys}"/></h3>
-                    <a href="/tienda/volleys" class="btn btn-default">Comprar volleys</a>
+                    <a href="/tienda/volleys" class="btn btn-default">Comprar</a>
                 </div>      
             </div>
             <div class="col-md-6" style="padding: 2%;">

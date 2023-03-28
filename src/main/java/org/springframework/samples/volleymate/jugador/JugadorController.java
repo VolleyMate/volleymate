@@ -306,6 +306,8 @@ public class JugadorController {
 
     @GetMapping(value="/tienda/volleys")
     public String showVistaTiendaVolleys(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        model.put("jugador", jugador);
         return HOME_TIENDA_VOLLEYS;
     }
 
