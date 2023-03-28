@@ -1,7 +1,7 @@
 package org.springframework.samples.volleymate.jugador;
 
+import java.util.List;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,17 +10,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.EnumType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotEmpty;
 
-
+import javax.validation.constraints.NotNull;
 import org.springframework.samples.volleymate.model.Person;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.user.User;
-
+import org.springframework.samples.volleymate.valoracion.Valoracion;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,14 +28,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Jugador extends Person{
+	
 	@Column(name = "ciudad")
-	@NotEmpty
 	private String ciudad;
 
     @Column(name = "telephone")
-	@NotEmpty
-	@Digits(fraction = 0, integer = 9)
-	private String telephone;
+	private Integer telephone=0;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "sexo")
@@ -45,6 +42,11 @@ public class Jugador extends Person{
 	@Column(name = "image")
 	protected String image;
 
+	@NotNull
+	@Column(name = "volleys")
+	private Integer volleys=0;
+
+ 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
@@ -54,5 +56,11 @@ public class Jugador extends Person{
 	@JoinTable(name = "jugador_partidos", joinColumns = @JoinColumn(name = "jugador_id"),
 			inverseJoinColumns = @JoinColumn(name = "partido_id"))
 	private Set<Partido> partidos;
+
+	@OneToMany(mappedBy = "ratedPlayer", cascade = CascadeType.ALL)
+    private List<Valoracion> valoracionesRecibidas;
+
+    @OneToMany(mappedBy = "ratingPlayer", cascade = CascadeType.ALL)
+    private List<Valoracion> valoracionesDadas;
     
 }

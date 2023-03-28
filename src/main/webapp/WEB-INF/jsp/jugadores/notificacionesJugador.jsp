@@ -7,6 +7,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="misNotificaciones">
+
     <h2>Mis notificaciones</h2>
             <c:if test="${solicitudesRecibidas.size() == 0}">
                 No hay notificaciones todavía.

@@ -20,6 +20,9 @@ import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
+import org.springframework.samples.volleymate.user.User;
+import org.springframework.samples.volleymate.valoracion.ValoracionService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,162 +33,62 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 
 @Controller
 public class JugadorController {
     
-    private static final String VIEWS_UPDATE_FORM = "jugadores/editarPerfil";
-    
+    private static final String VIEW_UPDATE_FORM = "jugadores/editarPerfil";
+    private static final String VIEW_CREATE_FORM = "jugadores/crearJugador";
+	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
+    private static final String HOME_TIENDA = "jugadores/tienda";
+    private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
+    private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
-
-	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
-	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
-
-
+    private final ValoracionService valoracionService;
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService ) {
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
         this.solicitudService = solicitudService;
-    }
-
-    @GetMapping("/jugadores")
-    public String showJugadorAutenticado(Map<String,Object> model, Principal principal) {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if(auth.isAuthenticated()){
-                org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-                String usuario = currentUser.getUsername();
-                Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-                Jugador jugadorAutenticado = jugadorService.findJugadorByUsername(principal.getName());
-                model.put("jugadorAutenticado", jugadorAutenticado);
-                model.put("jugadorVista", jugador);
-                model.put("id",jugadorAutenticado.getId());
-                return "jugadores/detallesJugador";
-            }
-            return "welcome";    }
-
-    @GetMapping("/jugadores/{jugadorId}")
-    public String showJugador(@PathVariable("jugadorId") int jugadorId, Map<String,Object> model, Principal principal) {
-				Jugador jugadorAutenticado = jugadorService.findJugadorByUsername(principal.getName());
-                Jugador jugadorVista = jugadorService.findJugadorById(jugadorId);
-                
-                model.put("jugadorAutenticado", jugadorAutenticado);
-                model.put("jugadorVista", jugadorVista);
-                model.put("id",jugadorAutenticado.getId());
-                
-                return "jugadores/detallesJugador";
+        this.valoracionService = valoracionService;
     }
 
 
-    @GetMapping("/jugadores/mispartidos")
-    public String showMisPartidos(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth != null){
-			if(auth.isAuthenticated()){
-				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String usuario = currentUser.getUsername();
-				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-				Set<Partido> partidos = jugador.getPartidos();
-                List<Partido> arr = new ArrayList<>();
-                arr.addAll(partidos);
-                Comparator<Partido> comparador = Comparator.comparing(Partido::getFechaCreacion);
-                List<Partido> listaOrdenada =  arr.stream().sorted(comparador.reversed()).collect(Collectors.toList());
-				model.addAttribute("partidos", listaOrdenada);
-				return "jugadores/misPartidos";
-			}
-			return "redirect:/";
+    @GetMapping(value = "/jugadores/new")
+	public String crearJugadorInicio(Map<String, Object> model) {
+		Jugador jugador = new Jugador();
+		model.put("jugador", jugador);
+		return VIEW_CREATE_FORM;
+	}
+
+
+    @PostMapping(value = "/jugadores/new")
+	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model) {
+
+        List<String> errores = jugadorService.findErroresCrearJugador(jugador);
+
+		if (!errores.isEmpty()) {
+			model.put("errors", errores);
+			return VIEW_CREATE_FORM;
+		} else {
+			User user = jugador.getUser();
+            UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
+            SecurityContextHolder.getContext().setAuthentication(authReq);
+            this.jugadorService.saveJugador(jugador);
+            return "redirect:/";
 		}
-		return "redirect:/";
-    }
-    
-    @GetMapping("/jugador/mispartidoscreados")
-    public String listMisPartidosCreados(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth == null || !auth.isAuthenticated()){
-				return "redirect:/";
-			}else {
-				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String usuario = currentUser.getUsername();
-				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-				Set<Partido> partidos = partidoService.getPartidosByCreatorId(jugador.getId());
-				model.addAttribute("partidosCreados", partidos);
-				return "jugador/misPartidosCreados";
-			}
-    }
 
-    @GetMapping("/jugadores/solicitudes/{partidoId}")
-    public String solicitudUnirse(@PathVariable("partidoId") int partidoId, Principal principal, RedirectAttributes redirAttrs){
-        Partido partido = this.partidoService.findPartidoById(partidoId);
-        if(partido == null){
-            redirAttrs.addFlashAttribute("mensajeError", "Ups, parece que ha habido un problema!");
-            String redirect = String.format("redirect:/partidos/%s", partidoId);
-            return redirect;
-        } 
-        // Método servicio boolean
-        Boolean yaTieneSolicitud = solicitudService.getYaTieneSolicitud(partidoId, principal);
-        //////////////////////    
-        if(yaTieneSolicitud){
-            redirAttrs.addFlashAttribute("mensajeError", "Ya has enviado una solicitud");
-            String redirect = String.format("redirect:/partidos/%s", partidoId);
-            return redirect;
-        } else {
-            Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-            this.jugadorService.crearSolicitudPartido(jugador, partido);
-            redirAttrs.addFlashAttribute("mensajeExitoso", "Solicitud enviada!");
-            String redirect = String.format("redirect:/partidos/%s", partidoId);
-            return redirect;
-        }
-    }
+		
+	}
 
-    @GetMapping("/jugadores/solicitudes/denegar/{solicitudId}")
-    public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId){
-        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
-        // notificar al jugador que ha sido rechazado. 
-        this.jugadorService.eliminarSolicitud(solicitud);
-        return VIEW_LISTA_PARTIDOS;
-    }
-    
-    @GetMapping("/jugadores/solicitudes/aceptar/{solicitudId}")
-    public String aceptarSolicitud(@PathVariable("solicitudId") int solicitudId, RedirectAttributes redirAttrs){
-        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
-        try{
-            this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
-            redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
-            this.jugadorService.eliminarSolicitud(solicitud);
-            /*
-                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
-                ACORDARSE: Hay que mostrar el mensaje en la vista
-            */
-            return "redirect:/jugadores/notificaciones";
-           
-        }catch(YaUnidoException ex){
-            redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
-            /*
-                Aqui que el de frontend que redirija donde este el boton conectado a este controlador, provisionalmente redirige a partidos.
-                ACORDARSE: Hay que mostrar el mensaje en la vista
-            */
-            return "redirect:/jugadores/notificaciones";
-        }
-    }
-
-    @GetMapping("/jugadores/notificaciones")
-    public String showVistaNotificaciones(Principal principal, ModelMap model){
-        //seccion notificaciones
-        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        Set<Solicitud> solicitudesRecibidas = this.solicitudService.findSolicitudesATusPartidos(jugador);
-        model.put("solicitudesRecibidas", solicitudesRecibidas);
-        //seccion solicitudes recibidas
-        Set<Solicitud> solicitudesPendientes = this.solicitudService.findTusSolicitudes(jugador);
-        model.put("solicitudesPendientes", solicitudesPendientes);
-        
-        return VIEW_NOTIFICACIONES;
-    }
-
-
-    @GetMapping(value = "/jugadores/edit/{id}")
+@GetMapping(value = "/jugadores/edit/{id}")
 	public String initEditForm(Model model, @PathVariable("id") int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
@@ -208,14 +111,14 @@ public class JugadorController {
                             model.addAttribute("sexo", sexo);
 							
 							model.addAttribute(jugador);
-							return VIEWS_UPDATE_FORM;
+							return VIEW_UPDATE_FORM;
 						}else{
 							return "welcome";
 						}
 					}
 				} catch (DataIntegrityViolationException ex){
 					
-					return VIEWS_UPDATE_FORM;
+					return VIEW_UPDATE_FORM;
 				}
 				
 				
@@ -231,11 +134,11 @@ public class JugadorController {
 
 		if(result.hasErrors()){
 			model.put("errors", result.getAllErrors());
-			return VIEWS_UPDATE_FORM;
+			return VIEW_UPDATE_FORM;
 		}
 		else {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","user","sexo"); 
+			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","sexo","user","volleys","solicitudes","notificaciones","telephone"); 
             this.jugadorService.saveJugador(jugadorToUpdate);
 			model.put("message","Jugador editado correctamente");
 			return "redirect:/jugadores";
@@ -244,5 +147,214 @@ public class JugadorController {
 	}
 
 
+    @GetMapping("/jugadores")
+    public String showJugadorAutenticado(Map<String,Object> model, Principal principal) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth.isAuthenticated()){
+                org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+                String usuario = currentUser.getUsername();
+                Jugador jugador = jugadorService.findJugadorByUsername(usuario);
+                Jugador jugadorAutenticado = jugadorService.findJugadorByUsername(principal.getName());
+                model.put("jugadorAutenticado", jugadorAutenticado);
+                model.put("jugadorVista", jugador);
+                model.put("id",jugadorAutenticado.getId());
+                return "jugadores/detallesJugador";
+            }
+            return "welcome";    }
 
+    @GetMapping("/jugadores/{jugadorId}")
+    public String showJugador(@PathVariable("jugadorId") int jugadorId, Map<String,Object> model, Principal principal) {
+				Jugador jugadorAutenticado = jugadorService.findJugadorByUsername(principal.getName());
+                Jugador jugadorVista = jugadorService.findJugadorById(jugadorId);
+                Boolean yaValorado = valoracionService.valoracionExiste(jugadorVista.getId(), jugadorAutenticado.getId());
+                
+                model.put("jugadorAutenticado", jugadorAutenticado);
+                model.put("jugadorVista", jugadorVista);
+                model.put("id",jugadorAutenticado.getId());
+                model.put("valorarId",jugadorVista.getId());
+                model.put("yaValorado",yaValorado);
+                
+                return "jugadores/detallesJugador";
+    }
+
+
+    @GetMapping("/jugadores/mispartidos")
+    public String showMisPartidos(Model model,
+                    @PageableDefault(page = 0, size = 6) @SortDefault.SortDefaults({
+        @SortDefault(sort = "id", direction = Sort.Direction.ASC), })
+        Pageable pageable) {
+        
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			if(auth.isAuthenticated()){
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				String usuario = currentUser.getUsername();
+				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
+                Integer page = 0;
+                List<Partido> arr = partidoService.getPartidosDelJugador(page, pageable, jugador);
+                Comparator<Partido> comparador = Comparator.comparing(Partido::getFechaCreacion);
+                List<Partido> listaOrdenada =  arr.stream().sorted(comparador.reversed()).collect(Collectors.toList());
+
+                Integer numResults = listaOrdenada.size();
+				model.addAttribute("partidos", listaOrdenada);
+                model.addAttribute("pageNumber", pageable.getPageNumber());
+			    model.addAttribute("hasPrevious", pageable.hasPrevious());
+			    Double totalPages = Math.ceil(numResults / (pageable.getPageSize()));
+			    model.addAttribute("totalPages", totalPages);
+
+				return "jugadores/misPartidos";
+			}
+			return "redirect:/";
+		}
+		return "redirect:/";
+    }
+     
+    @GetMapping("/jugador/mispartidoscreados")
+    public String listMisPartidosCreados(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth == null || !auth.isAuthenticated()){
+				return "redirect:/";
+			}else {
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				String usuario = currentUser.getUsername();
+				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
+				List<Partido> partidos = jugadorService.findPartidosByJugadorId(jugador.getId());
+				model.addAttribute("partidosCreados", partidos);
+				return "jugador/misPartidosCreados";
+			}
+    }
+
+    @GetMapping("/jugadores/solicitudes/{partidoId}")
+    public String solicitudUnirse(@PathVariable("partidoId") int partidoId, Principal principal, RedirectAttributes redirAttrs){
+        Partido partido = this.partidoService.findPartidoById(partidoId);
+        String redirect = String.format("redirect:/partidos/%s", partidoId);
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        if(partido == null){
+            redirAttrs.addFlashAttribute("mensajeError", "Ups, parece que ha habido un problema!");
+            return redirect;
+        }
+        // Método servicio boolean
+        Boolean yaTieneSolicitud = solicitudService.getYaTieneSolicitud(partidoId, principal);
+        //////////////////////    
+        if(yaTieneSolicitud){
+            redirAttrs.addFlashAttribute("mensajeError", "Ya has enviado una solicitud");
+            return redirect;
+        } else {
+            
+            String mensaje = "";
+            String value = "";
+            if(jugador.getVolleys()>=partido.getPrecioPersona()){
+                this.jugadorService.crearSolicitudPartido(jugador, partido);
+                mensaje += "mensajeExitoso";
+                value += "Solicitud enviada!";
+            }else{
+                mensaje += "mensajeError";
+                value += "No tienes volleys suficientes. Compralos en nuestra tienda!";
+                return HOME_TIENDA;
+            }
+            redirAttrs.addFlashAttribute(mensaje, value);
+            return redirect;
+        }
+    }
+
+    @GetMapping("/jugadores/solicitudes/denegar/{solicitudId}")
+    public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId){
+        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
+        // notificar al jugador que ha sido rechazado. 
+        this.jugadorService.eliminarSolicitud(solicitud);
+        return "redirect:/jugadores/notificaciones";
+    }
+    
+    @GetMapping("/jugadores/solicitudes/aceptar/{solicitudId}")
+    public String aceptarSolicitud(@PathVariable("solicitudId") int solicitudId, RedirectAttributes redirAttrs){
+        Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
+        try{
+                this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
+                redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
+                Jugador jugador = solicitud.getJugador();
+                Partido partido = solicitud.getPartido();
+                Integer volleys = partido.getPrecioPersona();
+                Integer sumVolleys = jugador.getVolleys() - volleys;
+                jugador.setVolleys(sumVolleys);
+                this.jugadorService.saveJugador(jugador);
+                this.jugadorService.eliminarSolicitud(solicitud);
+                return "redirect:/jugadores/notificaciones";
+        }catch(YaUnidoException ex){
+            redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
+            return "redirect:/jugadores/notificaciones";
+        }
+    }
+
+    @GetMapping("/jugadores/notificaciones")
+    public String showVistaNotificaciones(Principal principal, ModelMap model){
+        //seccion notificaciones
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        Set<Solicitud> solicitudesRecibidas = this.solicitudService.findSolicitudesATusPartidos(jugador);
+        List<Solicitud> solicitudesNuevas = new ArrayList<>();
+        for (Solicitud sol:solicitudesRecibidas){
+            if (sol.getJugador().getVolleys() - sol.getPartido().getPrecioPersona() >= 0){
+                solicitudesNuevas.add(sol);
+            } else{
+                this.jugadorService.eliminarSolicitud(sol);
+            }
+        }
+        model.put("solicitudesRecibidas", solicitudesNuevas);
+        
+        // ❗ NO SE ESTÁ MOSTRANDO POR LA VISTA
+        Set<Solicitud> solicitudesPendientes = this.solicitudService.findTusSolicitudes(jugador);
+        model.put("solicitudesPendientes", solicitudesPendientes);
+        
+        return VIEW_NOTIFICACIONES;
+    }
+
+    @GetMapping(value="/tienda")
+    public String showVistaTienda1(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        model.put("jugador", jugador);
+        return HOME_TIENDA;
+    }
+
+    @GetMapping(value="/tienda/volleys")
+    public String showVistaTiendaVolleys(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        model.put("jugador", jugador);
+        return HOME_TIENDA_VOLLEYS;
+    }
+
+    //Por hacer
+    @GetMapping(value="/tienda/premium")
+    public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
+        return HOME_TIENDA_PREMIUM;
+    }
+
+    @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
+    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
+                                                        @PathVariable("volleys") Integer precio, RedirectAttributes redirAttrs){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        Integer sumVolleys = jugador.getVolleys() + volleys;
+        jugador.setVolleys(sumVolleys);
+        this.jugadorService.saveJugador(jugador);
+        redirAttrs.addFlashAttribute("compraAceptada", "Su pago se ha procesado correctamente!");
+        return HOME_TIENDA_VOLLEYS;
+    }
+
+    @GetMapping(value = "/listaJugadores")
+	public String buscarJugador(Model model, @PathVariable("palabraClave") String palabraClave) {
+		
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+	    if (auth != null){
+			List<Jugador> listaJugadores = jugadorService.listAll(palabraClave);
+            model.addAttribute("listaJugadores", listaJugadores);
+			model.addAttribute("palabraClave", palabraClave);
+			return "/listaJugadores";
+		} else {
+			return "redirect:/";
+		}
+    }
 }
+
+
+
+
+

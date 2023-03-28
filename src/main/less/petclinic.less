@@ -44,6 +44,10 @@
 @btn-default-bg:                 @spring-blue;
 @btn-default-border:             @volleyMate-dark-blue;
 
+@btn-default-tienda-color:       @volleyMate-write;
+@btn-default-tienda-bg:          @spring-blue;
+@btn-default--tienda-border:     @volleyMate-dark-blue;
+
 @btn-red-color:                  @spring-light-grey;
 @btn-red-bg:                     @spring-red;
 @btn-red-border:                 @spring-light-red;
@@ -88,6 +92,25 @@
 }
 
 .btn-default {
+  border-width: 2px;
+  border-radius: 20px;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-color: @spring-blue;
+    border-color: @spring-blue;
+  }
+}
+
+.btn-default-tienda {
   border-width: 2px;
   transition: border 0.15s;
   -webkit-transition: border 0.15s;
@@ -274,6 +297,7 @@ table td.action-column {
 hr {
   border-top: 1px dotted @spring-blue;
 }
+
 
 @import "typography.less";
 @import "header.less";

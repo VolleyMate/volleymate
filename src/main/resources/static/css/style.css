@@ -1,0 +1,30 @@
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.partidosTableHeader {
+  width: 150px;
+  text-align: center;
+  background-color:#FFFFFF;
+  color: black;
+  }
+  
+  .jugadorCell {
+  text-align: center;
+  }
+  
+  .jugadorLink {
+  color: black;
+  }
+
+  .mensaje-chat {
+    border-width: 2px;
+    border-radius: 5px;
+    transition: border 0.15s;
+    -webkit-transition: border 0.15s;
+    -moz-transition: border 0.15s;
+    -o-transition: border 0.15s;
+    -ms-transition: border 0.15s;
+  
+  }

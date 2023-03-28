@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoRepository;
+import org.springframework.samples.volleymate.user.Authorities;
 import org.springframework.samples.volleymate.user.AuthoritiesService;
 import org.springframework.samples.volleymate.user.UserService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class JugadorService {
     
+    @Autowired
     private JugadorRepository jugadorRepository;
     private PartidoRepository partidoRepository;
     private UserService userService;
@@ -35,6 +37,10 @@ public class JugadorService {
         this.solicitudRepository = solicitudRepository;
     }
 
+    @Transactional(readOnly = true)
+    public List<Jugador> findAll() {
+        return jugadorRepository.findAll();
+    }
 
     @Transactional(readOnly = true)
     public Jugador findJugadorById(int id) throws DataAccessException {
@@ -101,5 +107,58 @@ public class JugadorService {
         return this.solicitudRepository.findById(solicitudId).get();
     }
 
+    public List<Partido> findPartidosByJugadorId(int jugadorId) {
+        List<Partido> lista = this.partidoRepository.findAll();
+        List<Partido> listaReturn = new ArrayList<>();
+        for(Partido p: lista) {
+            if(p.getJugadores().contains(this.jugadorRepository.findById(jugadorId))) {
+                listaReturn.add(p); 
+            }
+        }
+        return listaReturn;
+    }
+
+
+    public List<Jugador> listAll(String palabraClave){
+        if(palabraClave!=null){
+            return jugadorRepository.findAll(palabraClave);
+        }
+        return jugadorRepository.findAll();
+    }
+
+    public List<String> findErroresCrearJugador(Jugador jugador){
+        List<String> errores = new ArrayList<>();
+        Integer digitos = (int)(Math.log10(jugador.getTelephone())+1);
+        if(!digitos.equals(9)) {
+            errores.add("El teléfono debe tener 9 cifras");
+        }
+        if(!jugador.getUser().getCorreo().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            errores.add("El correo no es válido");
+        }
+        if(jugador.getFirstName().length() < 3) {
+            errores.add("El nombre debe tener más de 3 caracteres");
+        }
+        if(jugador.getLastName().length() < 3) {
+            errores.add("El apellido debe tener más de 3 caracteres");
+        }
+        if(jugadorRepository.findByUsername(jugador.getUser().getUsername()) != null){
+            errores.add("El nombre de usuario ya existe");
+        }
+        if(jugadorRepository.findByCorreo(jugador.getUser().getCorreo()) != null){
+            errores.add("El correo ya existe");
+        }
+        return errores;
+    }
+
+    public boolean esAdmin(Jugador jugador){
+        Boolean esAdmin = false;
+        Set<Authorities> authorities = jugador.getUser().getAuthorities();
+		for(Authorities a: authorities) {
+			if(a.getAuthority().equals("admin")) {
+				esAdmin = true;
+			}
+		}
+        return esAdmin;
+    }
 
 }
