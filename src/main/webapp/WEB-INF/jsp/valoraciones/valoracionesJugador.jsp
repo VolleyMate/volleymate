@@ -32,17 +32,20 @@
                     <tr style="height: 15px;"></tr>
                 </thead>
                 <tbody>
+                    
                     <c:forEach items= "${valoraciones}" var="valoracion">
-
-                        <td style="text-align: center;">
-                            <c:out value="${valoracion.puntuacion}"/>
-                        </td>
-                        <td style="text-align: center;">
-                            <c:out value="${valoracion.ratingPlayer.firstName}"/>
-                        </td>
-                        <td style="text-align: center;">
-                            <c:out value="${valoracion.comentario}"/>
-                        </td>
+                        <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
+                            <td style="text-align: center;">
+                                <c:out value="${valoracion.puntuacion}"/>
+                            </td>
+                            <td style="text-align: center;">
+                                <c:out value="${valoracion.ratingPlayer.firstName}"/>
+                            </td>
+                            <td style="text-align: center;">
+                                <c:out value="${valoracion.comentario}"/>
+                            </td>
+                        </tr>
+                        <tr style="height: 15px;"></tr>
                     </c:forEach>
                 </tbody>
             </table>

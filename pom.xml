@@ -20,7 +20,7 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <project.projectId>volleymate-gc</project.projectId>
+        <project.projectId>ispp-volleymate</project.projectId>
 
 		<appengine.version>1.9.80</appengine.version>        <!-- AppEngine version -->
         <gcloud.version>2.1.0</gcloud.version>        <!-- GCloud version -->
