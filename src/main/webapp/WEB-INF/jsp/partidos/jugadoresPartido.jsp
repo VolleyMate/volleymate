@@ -22,7 +22,7 @@
             <c:forEach var="jugador" items="${jugadores}">
                 <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
                     <td class="jugadorCell">
-                        <c:if test="${jugador.image == ''}"><img class="rounded d-block" src="/resources/images/perfilPorDefecto.jpg" width="50" height="50" alt="Foto de perfil"></c:if>
+                        <c:if test="${jugador.image == ''}"><img class="rounded d-block" src="/resources/images/perfilPorDefecto.png" width="50" height="50" alt="Foto de perfil"></c:if>
                         <c:if test="${jugador.image != ''}"><img class="rounded d-block" src="${jugador.image}" width="50" height="50" alt="Foto de perfil"></c:if>
                         
                         <a href="/jugadores/${jugador.id}" class="btn jugadorLink">[<c:out value="${jugador.user.username}"/>]</a>

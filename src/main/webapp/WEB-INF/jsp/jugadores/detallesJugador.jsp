@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 
@@ -47,6 +48,13 @@
                     <c:out value="${jugadorVista.user.username}" />
                 </a>
 
+                 <sec:authorize access="hasAuthority('admin')">
+                    <spring:url value="/jugadores/volleys/añadir/{id}" var="añadirURL">
+                    <spring:param name="id" value="${valorarId}" />
+                </spring:url>
+                <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
+                </sec:authorize>
+
             </c:if>
         
         </tr>
@@ -66,7 +74,14 @@
                     <spring:param name="id" value="${id}" />
                 </spring:url>
                 <a href="${valURL}" class="btn btn-default">Mis valoraciones</a>
-        
+
+                <sec:authorize access="hasAuthority('admin')">
+                    <spring:url value="/jugadores/volleys/añadir/{id}" var="añadirURL">
+                    <spring:param name="id" value="${id}" />
+                </spring:url>
+                <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
+                </sec:authorize>
+                
             </c:if>
         
         </tr>

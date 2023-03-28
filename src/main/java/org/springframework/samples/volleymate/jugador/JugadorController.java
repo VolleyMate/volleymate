@@ -1,6 +1,7 @@
 package org.springframework.samples.volleymate.jugador;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -207,7 +208,7 @@ public class JugadorController {
 		}
 		return "redirect:/";
     }
-    
+     
     @GetMapping("/jugador/mispartidoscreados")
     public String listMisPartidosCreados(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -217,7 +218,7 @@ public class JugadorController {
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 				String usuario = currentUser.getUsername();
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-				Set<Partido> partidos = partidoService.getPartidosByCreatorId(jugador.getId());
+				List<Partido> partidos = jugadorService.findPartidosByJugadorId(jugador.getId());
 				model.addAttribute("partidosCreados", partidos);
 				return "jugador/misPartidosCreados";
 			}
@@ -227,10 +228,11 @@ public class JugadorController {
     public String solicitudUnirse(@PathVariable("partidoId") int partidoId, Principal principal, RedirectAttributes redirAttrs){
         Partido partido = this.partidoService.findPartidoById(partidoId);
         String redirect = String.format("redirect:/partidos/%s", partidoId);
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         if(partido == null){
             redirAttrs.addFlashAttribute("mensajeError", "Ups, parece que ha habido un problema!");
             return redirect;
-        } 
+        }
         // Método servicio boolean
         Boolean yaTieneSolicitud = solicitudService.getYaTieneSolicitud(partidoId, principal);
         //////////////////////    
@@ -238,7 +240,7 @@ public class JugadorController {
             redirAttrs.addFlashAttribute("mensajeError", "Ya has enviado una solicitud");
             return redirect;
         } else {
-            Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+            
             String mensaje = "";
             String value = "";
             if(jugador.getVolleys()>=partido.getPrecioPersona()){
@@ -267,17 +269,16 @@ public class JugadorController {
     public String aceptarSolicitud(@PathVariable("solicitudId") int solicitudId, RedirectAttributes redirAttrs){
         Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
         try{
-            this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
-            redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
-            Jugador jugador = solicitud.getJugador();
-            Partido partido = solicitud.getPartido();
-            Integer volleys = partido.getPrecioPersona();
-            Integer sumVolleys = jugador.getVolleys() - volleys;
-            jugador.setVolleys(sumVolleys);
-            this.jugadorService.saveJugador(jugador);
-            this.jugadorService.eliminarSolicitud(solicitud);
-            return "redirect:/jugadores/notificaciones";
-           
+                this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
+                redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
+                Jugador jugador = solicitud.getJugador();
+                Partido partido = solicitud.getPartido();
+                Integer volleys = partido.getPrecioPersona();
+                Integer sumVolleys = jugador.getVolleys() - volleys;
+                jugador.setVolleys(sumVolleys);
+                this.jugadorService.saveJugador(jugador);
+                this.jugadorService.eliminarSolicitud(solicitud);
+                return "redirect:/jugadores/notificaciones";
         }catch(YaUnidoException ex){
             redirAttrs.addFlashAttribute("mensajeYaEnPartido", "Ya estás unid@ a este partido");
             return "redirect:/jugadores/notificaciones";
@@ -289,8 +290,17 @@ public class JugadorController {
         //seccion notificaciones
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         Set<Solicitud> solicitudesRecibidas = this.solicitudService.findSolicitudesATusPartidos(jugador);
-        model.put("solicitudesRecibidas", solicitudesRecibidas);
-        //seccion solicitudes recibidas
+        List<Solicitud> solicitudesNuevas = new ArrayList<>();
+        for (Solicitud sol:solicitudesRecibidas){
+            if (sol.getJugador().getVolleys() - sol.getPartido().getPrecioPersona() >= 0){
+                solicitudesNuevas.add(sol);
+            } else{
+                this.jugadorService.eliminarSolicitud(sol);
+            }
+        }
+        model.put("solicitudesRecibidas", solicitudesNuevas);
+        
+        // ❗ NO SE ESTÁ MOSTRANDO POR LA VISTA
         Set<Solicitud> solicitudesPendientes = this.solicitudService.findTusSolicitudes(jugador);
         model.put("solicitudesPendientes", solicitudesPendientes);
         

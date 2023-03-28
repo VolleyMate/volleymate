@@ -3,7 +3,6 @@ package org.springframework.samples.volleymate.partido;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +25,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -43,11 +44,11 @@ public class PartidoController {
 	private SolicitudService solicitudService;
 	@Autowired
 	private CentroService centroService;
-    
+
     //VIEWS
 	private static final String VIEW_LISTA_PARTIDOS = "partidos/listaPartidos";
 	private static final String VIEW_PARTIDOS_CREATE_OR_UPDATE = "partidos/crearPartido";
-	private static final String VIEW_SOLICITUDES_PARTIDO = "partidos/{partidoId}/solicitudes";
+	private static final String VIEW_SOLICITUDES_PARTIDO = "partidos/solicitudes";
 
 	@GetMapping("/partidos")
 	public String filtrarPartidos(@RequestParam(required = false) Sexo sexo, @RequestParam(required = false) Tipo tipo,
@@ -135,12 +136,10 @@ public class PartidoController {
 
 	// Show solicitudes
 
-	@GetMapping(value = "/partidos/{partidoId}/solicitudes")
+	@GetMapping(value = "/partidos/solicitudes/{partidoId}")
 	public String showSolicitudesPartido(@PathVariable("partidoId") int partidoId, ModelMap model) {
-		Set<Solicitud> conj = new HashSet<>();
 		Set<Solicitud> solic = solicitudService.findAllSolicitudesByPartidoId(partidoId);
-		conj.addAll(solic);
-		model.put("solicitudes", conj);
+		model.put("solicitudes", solic);
 		return VIEW_SOLICITUDES_PARTIDO;
 	}
 
@@ -151,6 +150,20 @@ public class PartidoController {
 		ModelAndView mav = new ModelAndView("partidos/jugadoresPartido");
         mav.addObject("jugadores", jugadores);
 		return mav;
+	}
+
+	@GetMapping(value = "/jugadores/volleys/añadir/{jugadorId}")
+	public String añadirVolleyString(@PathVariable("jugadorId") int jugadorId, ModelMap model, Principal principal) {
+		Jugador jugadorAut = jugadorService.findJugadorByUsername(principal.getName());
+		Boolean esAdmin = jugadorService.esAdmin(jugadorAut);
+		if(esAdmin){
+			Jugador jugador = jugadorService.findJugadorById(jugadorId);
+			jugador.setVolleys(400);
+			jugadorService.saveJugador(jugador);
+			return "redirect:/jugadores/"+jugador.getId();	
+		} else {
+			return "redirect:/";
+		}
 	}
 
 }

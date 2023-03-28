@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoRepository;
+import org.springframework.samples.volleymate.user.Authorities;
 import org.springframework.samples.volleymate.user.AuthoritiesService;
 import org.springframework.samples.volleymate.user.UserService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
@@ -106,6 +107,18 @@ public class JugadorService {
         return this.solicitudRepository.findById(solicitudId).get();
     }
 
+    public List<Partido> findPartidosByJugadorId(int jugadorId) {
+        List<Partido> lista = this.partidoRepository.findAll();
+        List<Partido> listaReturn = new ArrayList<>();
+        for(Partido p: lista) {
+            if(p.getJugadores().contains(this.jugadorRepository.findById(jugadorId))) {
+                listaReturn.add(p); 
+            }
+        }
+        return listaReturn;
+    }
+
+
     public List<Jugador> listAll(String palabraClave){
         if(palabraClave!=null){
             return jugadorRepository.findAll(palabraClave);
@@ -135,6 +148,17 @@ public class JugadorService {
             errores.add("El correo ya existe");
         }
         return errores;
+    }
+
+    public boolean esAdmin(Jugador jugador){
+        Boolean esAdmin = false;
+        Set<Authorities> authorities = jugador.getUser().getAuthorities();
+		for(Authorities a: authorities) {
+			if(a.getAuthority().equals("admin")) {
+				esAdmin = true;
+			}
+		}
+        return esAdmin;
     }
 
 }
