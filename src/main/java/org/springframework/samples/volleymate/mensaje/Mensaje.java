@@ -41,7 +41,7 @@ public class Mensaje extends BaseEntity {
     private Partido partido;
 
     public String getFechaParseada(){
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm dd'/'MM'/'yyyy");
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm");
 		return formato.format(fecha_envio);
     }
 
