@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.volleymate.centro.Centro;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.mensaje.Mensaje;
 import org.springframework.samples.volleymate.model.BaseEntity;

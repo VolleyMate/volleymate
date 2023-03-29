@@ -1,4 +1,4 @@
-package org.springframework.samples.volleymate.partido;
+package org.springframework.samples.volleymate.centro;
 
 import java.util.List;
 

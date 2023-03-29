@@ -1,6 +1,8 @@
-package org.springframework.samples.volleymate.partido;
+package org.springframework.samples.volleymate.centro;
 
 import org.springframework.samples.volleymate.model.BaseEntity;
+import org.springframework.samples.volleymate.partido.Partido;
+
 import javax.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
