@@ -346,7 +346,7 @@ public class JugadorController {
                 model = jugadorService.getValoresCompra("19.99", "1550 volleys", idCompra, model);    
                 break;
             case 6:
-                model = jugadorService.getValoresCompra("29.99", "2500 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra("49.99", "4100 volleys", idCompra, model);
                 break;
         }
         return HOME_TIENDA_CONFIRMAR_COMPRA;
