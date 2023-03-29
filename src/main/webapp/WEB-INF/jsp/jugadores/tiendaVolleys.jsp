@@ -21,9 +21,11 @@
                 <div class="col-md-4 text-center mx-auto">
                     <div class="card" style="margin: 5%;">
                         <div class="card-body p-4">
-                            <img class="card-img-top w-100 d-block fit-cover" style="width: 100px; height: 100px;" src="/resources/images/300.png"/>
                             <div class="card-body p-4">
-                                <button class="btn btn-default-tienda" style="width: 100px;" type="button">4,99€</button>
+                                <a href="/tienda/confirmaCompra/2" class="btn btn-default-tienda">
+                                    <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="/resources/images/300.png"/>
+                                    <p>4,99€</p>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -31,9 +33,11 @@
                 <div class="col-md-4 text-center mx-auto">
                     <div class="card" style="margin: 5%;">
                         <div class="card-body p-4">
-                            <img class="card-img-top w-100 d-block fit-cover" style="width: 100px; height: 100px;" src="/resources/images/450.png"/>
                             <div class="card-body p-4">
-                                <button class="btn btn-default-tienda" style="width: 100px;" type="button">6,50€</button>
+                                <a href="/tienda/confirmaCompra/3" class="btn btn-default-tienda">
+                                    <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="/resources/images/450.png"/>
+                                    <p>6,50€</p>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -41,9 +45,11 @@
                 <div class="col-md-4 text-center mx-auto">
                     <div class="card" style="margin: 5%;">
                         <div class="card-body p-4">
-                            <img class="card-img-top w-100 d-block fit-cover" style="width: 100px; height: 100px;" src="/resources/images/1100.png"/>
                             <div class="card-body p-4">
-                                <button class="btn btn-default-tienda" style="width: 100px;" type="button">14,50€</button>
+                                <a href="/tienda/confirmaCompra/4" class="btn btn-default-tienda">
+                                    <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="/resources/images/1100.png"/>
+                                    <p>14,50€</p>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -51,9 +57,11 @@
                 <div class="col-md-6 text-center mx-auto">
                     <div class="card" style="margin: 5%;">
                         <div class="card-body p-4">
-                            <img class="card-img-top w-100 d-block fit-cover" style="width: 100px; height: 100px;" src="/resources/images/1550.png"/>
                             <div class="card-body p-4">
-                                <button class="btn btn-default-tienda" style="width: 100px;" type="button">19,99€</button>
+                                <a href="/tienda/confirmaCompra/5" class="btn btn-default-tienda">
+                                    <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="/resources/images/1550.png"/>
+                                    <p>19,99€</p>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -61,9 +69,11 @@
                 <div class="col-md-6 text-center mx-auto">
                     <div class="card" style="margin: 5%;">
                         <div class="card-body p-4">
-                            <img class="card-img-top w-100 d-block fit-cover" style="width: 100px; height: 100px;" src="/resources/images/4100.png"/>
                             <div class="card-body p-4">
-                                <button class="btn btn-default-tienda" style="width: 100px;" type="button">49,99€</button>
+                                <a href="/tienda/confirmaCompra/6" class="btn btn-default-tienda">
+                                    <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="/resources/images/4100.png"/>
+                                    <p>49,99€</p>
+                                </a>
                             </div>
                         </div>
                     </div>

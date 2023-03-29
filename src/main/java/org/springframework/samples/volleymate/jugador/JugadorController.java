@@ -47,6 +47,7 @@ public class JugadorController {
     private static final String HOME_TIENDA = "jugadores/tienda";
     private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
     private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
+    private static final String HOME_TIENDA_CONFIRMAR_COMPRA = "jugadores/confirmarCompra";
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
@@ -321,10 +322,46 @@ public class JugadorController {
         return HOME_TIENDA_VOLLEYS;
     }
 
-    //Por hacer
     @GetMapping(value="/tienda/premium")
     public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
         return HOME_TIENDA_PREMIUM;
+    }
+
+    @GetMapping(value="/tienda/confirmaCompra/{idCompra}")
+    public String showVistaComfirmarCompra(Principal principal, @PathVariable("idCompra") Integer idCompra, ModelMap model){
+        switch(idCompra){
+            case 1:
+                model.put("precio", "7,99");
+                model.put("paquete" ,"paquete premium");
+                model.put("idCompra", idCompra);
+                break;
+            case 2:
+                model.put("precio", "4,99");
+                model.put("paquete" ,"300 volleys");
+                model.put("idCompra", idCompra);
+                break;
+            case 3:
+                model.put("precio", "6,50");
+                model.put("paquete" ,"450 volleys");
+                model.put("idCompra", idCompra);
+                break;
+            case 4:
+                model.put("precio", "14,50");
+                model.put("paquete" ,"1100 volleys");
+                model.put("idCompra", idCompra);
+                break;
+            case 5:
+                model.put("precio", "19,99");
+                model.put("paquete" ,"1550 volleys");
+                model.put("idCompra", idCompra);
+                break;
+            case 6:
+                model.put("precio", "49,99");
+                model.put("paquete" ,"4100 volleys");
+                model.put("idCompra", idCompra);
+                break;
+        }
+        return HOME_TIENDA_CONFIRMAR_COMPRA;
     }
 
     @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
