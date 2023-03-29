@@ -4,11 +4,13 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.volleymate.centro.CentroService;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.jugador.JugadorService;
 import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
@@ -25,8 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -51,22 +52,15 @@ public class PartidoController {
 	private static final String VIEW_SOLICITUDES_PARTIDO = "partidos/solicitudes";
 
 	@GetMapping("/partidos")
-	public String filtrarPartidos(@RequestParam(required = false) Sexo sexo, @RequestParam(required = false) Tipo tipo,
-                              @RequestParam(required = false) String ciudad, Model model,
-							  @PageableDefault(page = 0, size = 6) @SortDefault.SortDefaults({
-								@SortDefault(sort = "id", direction = Sort.Direction.ASC), })
-								Pageable pageable) {
+	public String filtrarPartidos(@RequestParam(required = false) Sexo sexo, 
+								@RequestParam(required = false) Tipo tipo,
+								Map<String,Object> model,
+								@RequestParam(defaultValue="0") int page) {
+									
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){
-			Integer page = 0;
-    		List<Partido> partidosFiltrados = partidoService.filtrarPartidos(page, pageable, sexo, tipo, ciudad);
-			Integer numResults = partidosFiltrados.size();
-    		model.addAttribute("partidos", partidosFiltrados);
-			model.addAttribute("pageNumber", pageable.getPageNumber());
-			model.addAttribute("hasPrevious", pageable.hasPrevious());
-			Double totalPages = Math.ceil(numResults / (pageable.getPageSize()));
-			model.addAttribute("totalPages", totalPages);
-
+    		Page<Partido> partidos = partidoService.filtrarPartidos(sexo,tipo,page);
+    		model.put("partidos", partidos);
     		return VIEW_LISTA_PARTIDOS;
 		}else{
 			return "redirect:/";
