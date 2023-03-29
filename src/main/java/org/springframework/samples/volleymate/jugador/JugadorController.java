@@ -3,10 +3,8 @@ package org.springframework.samples.volleymate.jugador;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -32,11 +30,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
+import org.springframework.data.domain.Page;
 
 @Controller
 public class JugadorController {
@@ -63,9 +59,14 @@ public class JugadorController {
 
     @GetMapping(value = "/jugadores/new")
 	public String crearJugadorInicio(Map<String, Object> model) {
-		Jugador jugador = new Jugador();
-		model.put("jugador", jugador);
-		return VIEW_CREATE_FORM;
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null){
+            Jugador jugador = new Jugador();
+            model.put("jugador", jugador);
+            return VIEW_CREATE_FORM;
+        } else {
+            return "redirect:/";
+        }
 	}
 
 
@@ -179,10 +180,7 @@ public class JugadorController {
 
 
     @GetMapping("/jugadores/mispartidos")
-    public String showMisPartidos(Model model,
-                    @PageableDefault(page = 0, size = 6) @SortDefault.SortDefaults({
-        @SortDefault(sort = "id", direction = Sort.Direction.ASC), })
-        Pageable pageable) {
+    public String showMisPartidos(Map<String,Object> model,@RequestParam(defaultValue="0") int page){
         
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
@@ -190,18 +188,8 @@ public class JugadorController {
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 				String usuario = currentUser.getUsername();
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-                Integer page = 0;
-                List<Partido> arr = partidoService.getPartidosDelJugador(page, pageable, jugador);
-                Comparator<Partido> comparador = Comparator.comparing(Partido::getFechaCreacion);
-                List<Partido> listaOrdenada =  arr.stream().sorted(comparador.reversed()).collect(Collectors.toList());
-
-                Integer numResults = listaOrdenada.size();
-				model.addAttribute("partidos", listaOrdenada);
-                model.addAttribute("pageNumber", pageable.getPageNumber());
-			    model.addAttribute("hasPrevious", pageable.hasPrevious());
-			    Double totalPages = Math.ceil(numResults / (pageable.getPageSize()));
-			    model.addAttribute("totalPages", totalPages);
-
+                Page<Partido> pagePartidos = partidoService.buscarPartidosPorJugador(page, jugador);
+				model.put("partidos", pagePartidos);
 				return "jugadores/misPartidos";
 			}
 			return "redirect:/";

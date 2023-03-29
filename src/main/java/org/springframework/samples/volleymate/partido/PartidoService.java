@@ -35,6 +35,8 @@ public class PartidoService {
 		this.solicitudRepository = solicitudRepository;
 		this.partidoRepository = partidoRepository;
 	}
+
+	private int tamanoPaginacionPorPagina = 5;
 	
 	@Transactional
 	public List<Partido> findAllPartidos(){
@@ -90,7 +92,7 @@ public class PartidoService {
 	// Filtrar partidos
 	public Page<Partido> filtrarPartidos(Sexo sexo, Tipo tipoPartido, int page) {
 		
-		Pageable pageable = PageRequest.of(page,4);
+		Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
 		Page<Partido> partidosSinFiltrar = partidoPageRepository.findAll(pageable);
 		
         if (sexo != null) {
@@ -122,5 +124,10 @@ public class PartidoService {
     						.filter(p->p.getJugadores().contains(jugador))
     						.collect(Collectors.toList());
   }
+
+  public Page<Partido> buscarPartidosPorJugador (int page, Jugador jugador){
+	Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
+	return partidoPageRepository.findByJugadoresId(pageable, jugador.getId());
+	}
 
 }

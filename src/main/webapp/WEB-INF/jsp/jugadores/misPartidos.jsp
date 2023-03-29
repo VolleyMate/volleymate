@@ -22,7 +22,7 @@
             <tr style="height: 15px;"></tr>
         </thead>
         <tbody>
-            <c:forEach items="${partidos}" var="partido">
+            <c:forEach items="${partidos.content}" var="partido">
                 <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
                     <td style="text-align: center;">
                         <c:out value="${partido.nombre}"/>
@@ -46,31 +46,31 @@
         </tbody>
     </table>
 
-    <table class="center" border="0">
-        <tr>
-        	<td>
-            <c:if test="${hasPrevious}">
-                <td><a
-                    style="margin-right:5px"  
-                    href="/jugadores/misPartidos?page=${pageNumber - 1}"
-                    class="btn btn-default">Anterior</a>
-            	</td>
-            </c:if>
-
-            <c:forEach begin="1" end="${totalPages+1}" var="i">
-                <td><a style="margin-left:5px; margin-right:5px;" href="/jugadores/misPartidos?page=${i-1}">${i}</a></td>
-            </c:forEach>
-
-            <c:if test="${pageNumber != totalPages}">
-                <td><a
-                	style="margin-left:5px;" 
-                    href="/jugadores/misPartidos?page=${pageNumber + 1}"
-                    class="btn btn-default">Siguiente</a></td>
-            </c:if>
-            <td>
-            <a style="margin-left:900px;" href="/partidos/new" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo partido</a>
-
-        </tr>
-     </table>
+    <div class="pagination">
+        <c:if test="${partidos.hasPrevious()}">
+          
+            <c:url var="previousPageUrl" value="/jugadores/mispartidos">
+                <c:param name="page" value="${partidos.number - 1}" />
+            </c:url>
+            <a href="${previousPageUrl}" class="previous">
+                <button class="btn btn-default">
+                    Anterior
+                </button>
+            </a>
+    
+        </c:if>
+        <c:if test="${!partidos.isLast()}">
+            <c:url var="nextPageUrl" value="/jugadores/mispartidos">
+                <c:param name="page" value="${partidos.number + 1}" />
+            </c:url>
+            <a href="${nextPageUrl}" class="next">
+                <button class="btn btn-default">
+                    Siguiente
+                </button>
+            </a>
+        </c:if>
+      </div>
+      
+      <p>Página ${partidos.number + 1} de ${partidos.totalPages}</p>
 
 </petclinic:layout>

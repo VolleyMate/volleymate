@@ -16,13 +16,8 @@ public interface PartidoPageRepository extends PagingAndSortingRepository<Partid
   
   Page<Partido> findByTipo(Pageable pageable, Tipo tipo);
 
-  //Page<Partido> findByCiudad(Pageable pageable, String ciudad);
-
   Page<Partido> findBySexoAndTipo(Pageable pageable, Sexo sexo, Tipo tipo);
 
-  //Page<Partido> findBySexoAndCiudad(Pageable pageable, Sexo sexo, String ciudad);
+  Page<Partido> findByJugadoresId(Pageable pageable, int id);
 
-  //Page<Partido> findByTipoAndCiudad(Pageable pageable, Tipo tipo, String ciudad);
-
-  //Page<Partido> findBySexoAndTipoAndCiudad(Pageable pageable, Sexo sexo, Tipo tipo, String ciudad);
 }
