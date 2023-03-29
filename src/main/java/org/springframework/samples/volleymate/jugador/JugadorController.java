@@ -328,37 +328,25 @@ public class JugadorController {
     }
 
     @GetMapping(value="/tienda/confirmaCompra/{idCompra}")
-    public String showVistaComfirmarCompra(Principal principal, @PathVariable("idCompra") Integer idCompra, ModelMap model){
+    public String showVistaComfirmarCompra(Principal principal, @PathVariable("idCompra") Integer idCompra, Map<String,Object> model){
         switch(idCompra){
             case 1:
-                model.put("precio", "7,99");
-                model.put("paquete" ,"paquete premium");
-                model.put("idCompra", idCompra);
+                model = jugadorService.getValoresCompra("7.99", "paquete premium", idCompra, model);
                 break;
             case 2:
-                model.put("precio", "4,99");
-                model.put("paquete" ,"300 volleys");
-                model.put("idCompra", idCompra);
-                break;
+                model = jugadorService.getValoresCompra("4.99", "300 volleys", idCompra, model);
+                break;    
             case 3:
-                model.put("precio", "6,50");
-                model.put("paquete" ,"450 volleys");
-                model.put("idCompra", idCompra);
+                model = jugadorService.getValoresCompra("6.50", "450 volleys", idCompra, model);
                 break;
             case 4:
-                model.put("precio", "14,50");
-                model.put("paquete" ,"1100 volleys");
-                model.put("idCompra", idCompra);
+                model = jugadorService.getValoresCompra("14.50", "1100 volleys", idCompra, model);
                 break;
             case 5:
-                model.put("precio", "19,99");
-                model.put("paquete" ,"1550 volleys");
-                model.put("idCompra", idCompra);
+                model = jugadorService.getValoresCompra("19.99", "1550 volleys", idCompra, model);    
                 break;
             case 6:
-                model.put("precio", "49,99");
-                model.put("paquete" ,"4100 volleys");
-                model.put("idCompra", idCompra);
+                model = jugadorService.getValoresCompra("29.99", "2500 volleys", idCompra, model);
                 break;
         }
         return HOME_TIENDA_CONFIRMAR_COMPRA;
