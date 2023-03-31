@@ -42,6 +42,7 @@
                                 <a style = "color: black; font-size: medium;" href="/jugadores/${valoracion.ratingPlayer.id}" class="btn" ><c:out value="${valoracion.ratingPlayer.firstName}"/></a>
                             </td>
                             <td style="text-align: center; padding-top: 1.25%;">
+
                                 <c:out value="${valoracion.comentario}"/>
                             </td>
                         </tr>
