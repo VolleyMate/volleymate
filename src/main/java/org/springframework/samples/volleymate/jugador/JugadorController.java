@@ -289,7 +289,6 @@ public class JugadorController {
         }
         model.put("solicitudesRecibidas", solicitudesNuevas);
         
-        // ❗ NO SE ESTÁ MOSTRANDO POR LA VISTA
         Set<Solicitud> solicitudesPendientes = this.solicitudService.findTusSolicitudes(jugador);
         model.put("solicitudesPendientes", solicitudesPendientes);
         
