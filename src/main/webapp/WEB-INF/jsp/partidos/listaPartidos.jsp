@@ -101,7 +101,7 @@
                 <p class="card-text">Jugadores: <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/></p>
                 <p class="card-text">Dirección: <c:out value="${partido.centro.nombre}"/></p>
                 <p class="card-text">Tipo: <c:out value="${partido.tipo}"/></p>
-                <p class="card-text">Fecha de la actividad: <c:out value="${partido.getFechaCreacionParseada()}"/></p>
+                <p class="card-text">Fecha de la actividad: <c:out value="${partido.getFechaParseada()}"/></p>
                 <a href="/partidos/${partido.id}" class="btn btn-primary">Ver</a>
               </div>
             </div>

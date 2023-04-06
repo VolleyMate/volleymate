@@ -63,26 +63,34 @@
                 <thead>
                     <tr>
                         <th style="width: 120px; text-align: center;">Nombre del partido</th>
-                        <th style="width: 120px; text-align: center;">Creador del partido</th>
+                        <th style="width: 120px; text-align: center;">Fecha</th>
+                        <th style="width: 120px; text-align: center;">Centro</th>
+                        <th style="width: 120px; text-align: center;">Creador</th>
                     </tr>
                     <tr style="height: 15px;"></tr>
                 </thead>
                 <tbody>
                     <c:forEach items="${solicitudesPendientes}" var="solicitud">
                         <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
-                        <td style="text-align: center;">
-                            <c:out value="${solicitud.partido.nombre}"/>
-                        </td>
-                        <td style="text-align: center;">
-                            <a href="/jugadores/${solicitud.partido.creador.id}">
-                                <c:out value="${solicitud.partido.creador.user.username}"/>
-                            </a>
-                        </td>
+                            <td style="text-align: center;">
+                                <c:out value="${solicitud.partido.nombre}"/>
+                            </td>
+                            <td style="text-align: center;">
+                                <c:out value="${solicitud.partido.getFechaParseada()}"/>
+                            </td>
+                            <td style="text-align: center;">
+                                <c:out value="${solicitud.partido.centro.nombre}"/>
+                            </td>
+                            <td style="text-align: center;">
+                                <a href="/jugadores/${solicitud.partido.creador.id}">
+                                    <c:out value="${solicitud.partido.creador.user.username}"/>
+                                </a>
+                            </td>   
                         </tr>
                         <tr style="height: 15px;"></tr>
-                    </tbody>
-                </table>
-            </c:forEach>
+                    </c:forEach>
+                </tbody>
+            </table>
         </c:if>
     </div>
 </petclinic:layout>
