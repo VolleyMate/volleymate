@@ -9,6 +9,7 @@ import org.springframework.samples.volleymate.partido.PartidoRepository;
 import org.springframework.samples.volleymate.user.Authorities;
 import org.springframework.samples.volleymate.user.AuthoritiesService;
 import org.springframework.samples.volleymate.user.UserService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
@@ -159,6 +160,17 @@ public class JugadorService {
 			}
 		}
         return esAdmin;
+    }
+
+    @Scheduled(cron = "0 0 12 * * MON")
+    public void volleysSemanales() throws InterruptedException{
+        List<Jugador> jugadores = jugadorRepository.findAll();
+        for(Jugador j: jugadores){
+            Integer volleys = j.getVolleys();
+            volleys += 150;
+            j.setVolleys(volleys);
+        }
+
     }
 
 }
