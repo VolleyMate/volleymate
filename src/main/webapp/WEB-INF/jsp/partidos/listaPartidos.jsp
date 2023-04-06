@@ -110,33 +110,34 @@
       </div>
 
     <div class="pagination">
-        <c:if test="${partidos.hasPrevious()}">
-          
-            <c:url var="previousPageUrl" value="/partidos">
-                <c:param name="sexo" value="${param.sexo}" />
-                <c:param name="tipo" value="${param.tipo}" />
-                <c:param name="page" value="${partidos.number - 1}" />
-            </c:url>
-            <a href="${previousPageUrl}" class="previous">
-                <button class="btn btn-default">
-                    Anterior
-                </button>
-            </a>
+        <c:if test="${numPartidos >= 6}">
+            <c:if test="${partidos.hasPrevious()}">
+                <c:url var="previousPageUrl" value="/partidos">
+                    <c:param name="sexo" value="${param.sexo}" />
+                    <c:param name="tipo" value="${param.tipo}" />
+                    <c:param name="page" value="${partidos.number - 1}" />
+                </c:url>
+                <a href="${previousPageUrl}" class="previous">
+                    <button class="btn btn-default">
+                        Anterior
+                    </button>
+                </a>
     
+            </c:if>
+            <c:if test="${!partidos.isLast()}">
+                <c:url var="nextPageUrl" value="/partidos">
+                    <c:param name="sexo" value="${param.sexo}" />
+                    <c:param name="tipo" value="${param.tipo}" />
+                    <c:param name="page" value="${partidos.number + 1}" />
+                </c:url>
+                <a href="${nextPageUrl}" class="next">
+                    <button class="btn btn-default">
+                        Siguiente
+                    </button>
+                </a>
+            </c:if>
         </c:if>
-        <c:if test="${!partidos.isLast()}">
-            <c:url var="nextPageUrl" value="/partidos">
-                <c:param name="sexo" value="${param.sexo}" />
-                <c:param name="tipo" value="${param.tipo}" />
-                <c:param name="page" value="${partidos.number + 1}" />
-            </c:url>
-            <a href="${nextPageUrl}" class="next">
-                <button class="btn btn-default">
-                    Siguiente
-                </button>
-            </a>
-        </c:if>
-      </div>
+    </div>
       
       <p>Página ${partidos.number + 1} de ${partidos.totalPages}</p>
     
