@@ -170,6 +170,7 @@ public class JugadorService {
             volleys += 150;
             j.setVolleys(volleys);
         }
+    }
 
     public Map<String,Object> getValoresCompra(String precio, String paquete, Integer idCompra, Map<String,Object> model){
         model.put("precio", precio);
