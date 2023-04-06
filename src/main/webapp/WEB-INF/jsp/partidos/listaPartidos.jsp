@@ -114,8 +114,8 @@
         </c:if>
       </div>
 
-    <div class="pagination">
-        <c:if test="${numPartidos >= 6}">
+    <div style="margin: 2%;" class="pagination">
+        <c:if test="${numPartidos != 0}">
             <c:if test="${partidos.hasPrevious()}">
                 <c:url var="previousPageUrl" value="/partidos">
                     <c:param name="sexo" value="${param.sexo}" />
@@ -141,11 +141,9 @@
                     </button>
                 </a>
             </c:if>
+            <p>Página ${partidos.number + 1} de ${partidos.totalPages}</p>
         </c:if>
-    </div>
-      
-      <p>Página ${partidos.number + 1} de ${partidos.totalPages}</p>
-    
+    </div>  
       
 </petclinic:layout>
 
