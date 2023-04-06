@@ -43,6 +43,7 @@ public class JugadorController {
     private static final String HOME_TIENDA = "jugadores/tienda";
     private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
     private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
+    private static final String HOME_TIENDA_CONFIRMAR_COMPRA = "jugadores/confirmarCompra";
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
@@ -309,10 +310,34 @@ public class JugadorController {
         return HOME_TIENDA_VOLLEYS;
     }
 
-    //Por hacer
     @GetMapping(value="/tienda/premium")
     public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
         return HOME_TIENDA_PREMIUM;
+    }
+
+    @GetMapping(value="/tienda/confirmaCompra/{idCompra}")
+    public String showVistaComfirmarCompra(Principal principal, @PathVariable("idCompra") Integer idCompra, Map<String,Object> model){
+        switch(idCompra){
+            case 1:
+                model = jugadorService.getValoresCompra("7.99", "paquete premium", idCompra, model);
+                break;
+            case 2:
+                model = jugadorService.getValoresCompra("4.99", "300 volleys", idCompra, model);
+                break;    
+            case 3:
+                model = jugadorService.getValoresCompra("6.50", "450 volleys", idCompra, model);
+                break;
+            case 4:
+                model = jugadorService.getValoresCompra("14.50", "1100 volleys", idCompra, model);
+                break;
+            case 5:
+                model = jugadorService.getValoresCompra("19.99", "1550 volleys", idCompra, model);    
+                break;
+            case 6:
+                model = jugadorService.getValoresCompra("49.99", "4100 volleys", idCompra, model);
+                break;
+        }
+        return HOME_TIENDA_CONFIRMAR_COMPRA;
     }
 
     @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
