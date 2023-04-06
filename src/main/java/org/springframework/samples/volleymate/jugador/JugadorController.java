@@ -190,7 +190,9 @@ public class JugadorController {
 				String usuario = currentUser.getUsername();
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
                 Page<Partido> pagePartidos = partidoService.buscarPartidosPorJugador(page, jugador);
+                Integer numPartidos = pagePartidos.getNumberOfElements();
 				model.put("partidos", pagePartidos);
+                model.put("numPartidos", numPartidos);
 				return "jugadores/misPartidos";
 			}
 			return "redirect:/";
