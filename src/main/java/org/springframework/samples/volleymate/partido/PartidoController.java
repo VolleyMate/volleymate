@@ -55,7 +55,9 @@ public class PartidoController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){
     		Page<Partido> partidos = partidoService.filtrarPartidos(sexo,tipo,page);
+			Integer numPartidos = partidos.getNumberOfElements();
     		model.put("partidos", partidos);
+			model.put("numPartidos", numPartidos);
     		return VIEW_LISTA_PARTIDOS;
 		}else{
 			return "redirect:/";

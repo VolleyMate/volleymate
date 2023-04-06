@@ -49,7 +49,7 @@
     </form>
    
 
-    <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
+    <!-- <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
         <thead>
             <tr>
                 <th style="width: 150px; text-align: center;">Creador</th>
@@ -90,7 +90,29 @@
                 <tr style="height: 15px;"></tr>
             </c:forEach>
         </tbody>
-    </table>
+    </table>  -->
+
+    <div class="row">
+        <c:if test="${numPartidos == 0}">
+            Aún no se ha publicado ningún partido.
+        </c:if>
+        <c:if test="${numPartidos != 0}">
+            <c:forEach items="${partidos.content}" var="partido">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">${partido.creador.user.username}</h5>
+                            <p class="card-text">Jugadores: <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/></p>
+                            <p class="card-text">Dirección: <c:out value="${partido.centro.nombre}"/></p>
+                            <p class="card-text">Tipo: <c:out value="${partido.tipo}"/></p>
+                            <p class="card-text">Fecha de la actividad: <c:out value="${partido.getFechaParseada()}"/></p>
+                            <a href="/partidos/${partido.id}" class="btn btn-primary">Ver</a>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </c:if>
+      </div>
 
     <div class="pagination">
         <c:if test="${partidos.hasPrevious()}">
@@ -125,3 +147,14 @@
     
       
 </petclinic:layout>
+
+<style>
+    .card {
+        box-shadow: 0 0 10px rgba(16, 88, 139, 0.1);
+        border-width: 2px;
+        border-style: solid;
+        border-color: #0099BB;
+        margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
+
+}
+</style>
