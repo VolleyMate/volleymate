@@ -8,7 +8,7 @@
 
 <petclinic:layout pageName="misPartidos">
 
-    <div>
+    <div class="row">
         <h2>Mis Partidos</h2>
         <c:if test="${numPartidos == 0}">
             Aún no perteneces a ningún partido.
