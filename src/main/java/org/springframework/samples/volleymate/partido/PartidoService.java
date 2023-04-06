@@ -45,11 +45,11 @@ public class PartidoService {
 
 	@Transactional(rollbackFor = IllegalArgumentException.class)
 	public void save(Partido partido) throws DataAccessException, IllegalArgumentException {
-		if(partido.getFecha().isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException();
-		}else {
+		// if(partido.getFecha().isBefore(LocalDateTime.now())) {
+		// 	throw new IllegalArgumentException();
+		// }else {
 			partidoRepository.save(partido);
-		}
+		//}
 	}
 
 	@Transactional
@@ -128,6 +128,10 @@ public class PartidoService {
   public Page<Partido> buscarPartidosPorJugador (int page, Jugador jugador){
 	Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
 	return partidoPageRepository.findByJugadoresId(pageable, jugador.getId());
+	}
+
+	public boolean puedeEditarPartido(Jugador jugador, Partido partido) {
+		return partido.getCreador().getId() == jugador.getId() && partido.getJugadores().size() == 1;
 	}
 
 }
