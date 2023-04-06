@@ -161,4 +161,11 @@ public class JugadorService {
         return esAdmin;
     }
 
+    public Map<String,Object> getValoresCompra(String precio, String paquete, Integer idCompra, Map<String,Object> model){
+        model.put("precio", precio);
+        model.put("paquete" ,paquete);
+        model.put("idCompra", idCompra);
+        return model;
+    }
+
 }
