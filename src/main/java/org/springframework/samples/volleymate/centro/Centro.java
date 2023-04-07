@@ -29,6 +29,9 @@ public class Centro extends BaseEntity {
     @Column(name = "maps")
     private String maps;
 
+    @Column(name = "estado")
+    private Boolean estado;
+
     @OneToMany(mappedBy = "centro")
     private List<Partido> partidos;
 

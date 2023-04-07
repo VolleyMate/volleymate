@@ -3,6 +3,8 @@ package org.springframework.samples.volleymate.centro;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,10 @@ public class CentroService {
 	@Transactional
 	public List<Centro> findAllCentros(){
 		return centroRepository.findAll();
+	}
+
+	public void saveCentro(@Valid Centro centro) {
+		centroRepository.save(centro);
 	}
 
 }
