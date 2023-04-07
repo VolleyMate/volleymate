@@ -101,11 +101,20 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">${partido.creador.user.username}</h5>
-                            <p class="card-text">Jugadores: <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/></p>
-                            <p class="card-text">Dirección: <c:out value="${partido.centro.nombre}"/></p>
-                            <p class="card-text">Tipo: <c:out value="${partido.tipo}"/></p>
-                            <p class="card-text">Fecha de la actividad: <c:out value="${partido.getFechaParseada()}"/></p>
+                            <a href="/jugadores/${partido.creador.id}"><h5 class="card-title">${partido.creador.user.username}</h5></a> 
+
+                            <p class="card-text">
+                                <strong>Jugadores:</strong> <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
+                              </p>                              
+                            <p class="card-text">
+                                <strong>Dirección:</strong> <c:out value="${partido.centro.nombre}"/> 
+                            </p>
+                            <p class="card-text">
+                                <strong>Tipo:</strong> <c:out value="${partido.tipo}"/>
+                            </p>
+                            <p class="card-text">
+                                <strong>Fecha de la actividad:</strong> <c:out value="${partido.getFechaParseada()}"/>
+                            </p>
                             <a href="/partidos/${partido.id}" class="btn btn-primary">Ver</a>
                         </div>
                     </div>
