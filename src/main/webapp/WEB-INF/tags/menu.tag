@@ -18,6 +18,7 @@
 		</div>
 
 		<div class="navbar-collapse collapse" id="main-navbar">
+
 			<ul class="nav navbar-nav">
 
 				<petclinic:menuItem active="${name eq 'home'}" url="/"
@@ -43,23 +44,22 @@
 				</sec:authorize>
 
 				<sec:authorize access="isAuthenticated()">
-					<petclinic:menuItem active="${name eq 'misNotificaciones'}" url="/jugadores/notificaciones"
-						title="notificaciones">
-						<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-						<span>Mis notificaciones</span>
-					</petclinic:menuItem>				
-				</sec:authorize>
-
-				<sec:authorize access="isAuthenticated()">
 					<petclinic:menuItem active="${name eq 'tienda'}" url="/tienda"
 						title="tienda">
 						<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
 						<span>Tienda</span>
 					</petclinic:menuItem>				
 				</sec:authorize>
+
+				<sec:authorize access="isAuthenticated()">
+					<form class="navbar-form navbar-left" role="search" method="get" action="/jugadores/listaJugadores">
+						<div class="form-group">
+							<input type="text" class="form-control" name="palabraClave" placeholder="Buscar jugador...">
+						</div>
+						<button type="submit" class="btn btn-default">Buscar</button>
+					</form>
+				</sec:authorize>
 			</ul>
-
-
 
 
 			<ul class="nav navbar-nav navbar-right">
@@ -73,19 +73,26 @@
 							<strong><sec:authentication property="name" /></strong> 
 							<span class="glyphicon glyphicon-chevron-down"></span>
 					</a>
-						<ul class="dropdown-menu" style="border-radius: 20px;">
+						<ul class="dropdown-menu" style="border-radius: 10px;">
 							<li>
 								<div class="navbar-login">
 									<div class="row" >
 										<div class="col-6 h5">
 											<p class="text-center">
+												<a href="<c:url value="/jugadores/notificaciones" />"
+													style="border-radius: 20px;" class="btn btn-success btn-md"><span class="glyphicon glyphicon-bell"></span> Notificaciones</a>
+											</p>
+										
+											<p class="col-6 h5 text-center">
 												<a href="<c:url value="/jugadores" />"
 													style="border-radius: 20px;" class="btn btn-info btn-md"><span class="glyphicon glyphicon-share-alt"></span> Ver perfil</a>
 											</p>
+
 											<p class="col-6 h5 text-center">
 												<a href="<c:url value="/logout" />"
 													style="border-radius: 20px;" class="btn btn-danger btn-md"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a>
-											</p>
+											</p>			
+									
 										</div>
 									</div>
 								</div>
@@ -109,8 +116,6 @@
 				</sec:authorize>
 			</ul>
 		</div>
-
-
 
 	</div>
 </nav>
