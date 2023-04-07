@@ -84,4 +84,18 @@ public class CentroController {
             return "redirect:/";
         }
     }
+
+    //Eliminar centro para administrador
+    @GetMapping(value = "/centros/delete/{centroId}")
+    public String deleteCentro(Map<String, Object> model, @PathVariable("centroId") int centroId, Principal principal) {
+        //Solo se puede eliminar el centro si el usuario es administrador
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
+            centroService.deleteCentro(centroId);
+            return "redirect:/centros";
+        }else {
+            model.put("message", "No tienes permisos para realizar esta acción");
+            return "redirect:/";
+        }
+    }
 }
