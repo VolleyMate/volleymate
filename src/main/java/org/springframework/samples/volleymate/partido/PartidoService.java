@@ -36,7 +36,7 @@ public class PartidoService {
 		this.partidoRepository = partidoRepository;
 	}
 
-	private int tamanoPaginacionPorPagina = 5;
+	private int tamanoPaginacionPorPagina = 6;
 	
 	@Transactional
 	public List<Partido> findAllPartidos(){
