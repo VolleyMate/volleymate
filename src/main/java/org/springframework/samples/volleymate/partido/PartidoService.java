@@ -125,9 +125,21 @@ public class PartidoService {
     						.collect(Collectors.toList());
   }
 
-  public Page<Partido> buscarPartidosPorJugador (int page, Jugador jugador){
-	Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
-	return partidoPageRepository.findByJugadoresId(pageable, jugador.getId());
+  	public Page<Partido> buscarPartidosPorJugador (int page, Jugador jugador){
+		Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
+		return partidoPageRepository.findByJugadoresId(pageable, jugador.getId());
+	}
+
+	public void salirPartido (Partido partido, Jugador jugador){
+		Set<Partido> partidos = jugador.getPartidos();
+		partidos.remove(partido);
+		jugador.setPartidos(partidos);
+		
+		List<Jugador> jugadores = partido.getJugadores();
+		jugadores.remove(jugador);
+		partido.setJugadores(jugadores);
+
+		partidoRepository.save(partido);
 	}
 
 }

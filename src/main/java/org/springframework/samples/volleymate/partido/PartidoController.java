@@ -157,6 +157,18 @@ public class PartidoController {
 		}
 	}
 
+	// Salirse de un partido
+	@GetMapping(value = "/partidos/salir/{partidoId}")
+	public String salirPartido(@PathVariable("partidoId") int partidoId, ModelMap model, Principal principal) throws YaUnidoException {
+		if(partidoService.getJugadorDentroPartido(partidoId, principal)) {
+			Jugador jugador = jugadorService.findJugadorByUsername(principal.getName());
+			Partido partido = partidoService.findPartidoById(partidoId);
+			partidoService.salirPartido(partido,jugador);
+			return "redirect:/partidos";
+		}else{
+			return "redirect:/";
+		}
+	}
 }
 	
 	
