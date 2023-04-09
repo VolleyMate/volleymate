@@ -57,6 +57,14 @@
 						<span>Tienda</span>
 					</petclinic:menuItem>				
 				</sec:authorize>
+
+				<sec:authorize access="hasAuthority('admin')">
+					<petclinic:menuItem active="${name eq 'centros'}" url="/centros"
+						title="centros">
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span>Centros</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 			</ul>
 
 

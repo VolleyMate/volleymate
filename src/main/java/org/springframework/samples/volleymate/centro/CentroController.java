@@ -21,6 +21,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class CentroController {
     public final CentroService centroService;
 
+    private static final String VISTA_LISTAR_CENTROS = "centros/listaCentros";
+    private static final String VISTA_EDITAR_CENTROS = "jugadores/crearJugador";
+	private static final String VISTA_ELIMINAR_CENTROS = "jugadores/notificacionesJugador";
+
     @Autowired
     public CentroController(CentroService centroService) {
         this.centroService = centroService;
@@ -49,7 +53,7 @@ public class CentroController {
     public String showCentros(Map<String, Object> model) {
         List<Centro> centros = centroService.findAcceptedCentros();
         model.put("centros", centros);
-        return "centros/centrosList";
+        return VISTA_LISTAR_CENTROS;
     }
 
     @GetMapping(value = "/centros/solitud/list")
