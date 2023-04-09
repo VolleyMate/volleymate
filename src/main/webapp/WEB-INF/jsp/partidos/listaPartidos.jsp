@@ -121,10 +121,11 @@
                 </div>
             </c:forEach>
         </c:if>
-      </div>
+    </div>
 
-    <div style="margin: 2%;" class="pagination">
-        <c:if test="${numPartidos != 0}">
+    <div class="row" style="width: 100%;">
+        <div class="col-md-6 text-left">
+            <c:if test="${numPartidos != 0}">
             <c:if test="${partidos.hasPrevious()}">
                 <c:url var="previousPageUrl" value="/partidos">
                     <c:param name="sexo" value="${param.sexo}" />
@@ -152,8 +153,13 @@
             </c:if>
             <p>Página ${partidos.number + 1} de ${partidos.totalPages}</p>
         </c:if>
+        </div>
+        <div class="col-md-6 text-right">
+            <a href="/partidos/new" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo partido
+            </a>
+        </div>
     </div>  
-      
 </petclinic:layout>
 
 <style>
