@@ -190,7 +190,9 @@ public class JugadorController {
 				String usuario = currentUser.getUsername();
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
                 Page<Partido> pagePartidos = partidoService.buscarPartidosPorJugador(page, jugador);
+                Integer numPartidos = pagePartidos.getNumberOfElements();
 				model.put("partidos", pagePartidos);
+                model.put("numPartidos", numPartidos);
 				return "jugadores/misPartidos";
 			}
 			return "redirect:/";
@@ -289,7 +291,6 @@ public class JugadorController {
         }
         model.put("solicitudesRecibidas", solicitudesNuevas);
         
-        // ❗ NO SE ESTÁ MOSTRANDO POR LA VISTA
         Set<Solicitud> solicitudesPendientes = this.solicitudService.findTusSolicitudes(jugador);
         model.put("solicitudesPendientes", solicitudesPendientes);
         
