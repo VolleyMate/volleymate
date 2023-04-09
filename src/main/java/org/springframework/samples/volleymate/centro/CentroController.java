@@ -49,7 +49,7 @@ public class CentroController {
             return VISTA_CREAR_CENTROS;
         }else {
             centroService.saveCentro(centro);
-            return VISTA_LISTAR_CENTROS;
+            return VISTA_SOLICITUD_CENTRO;
         }
     }
 
