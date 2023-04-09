@@ -157,6 +157,20 @@ public class PartidoController {
 		}
 	}
 
+	//Eliminar Partido
+	@GetMapping(value = "/partidos/eliminar/{partidoId}")
+	public String eliminarPartido(@PathVariable("partidoId") int partidoId, ModelMap model, Principal principal) {
+		Partido partido = partidoService.findPartidoById(partidoId);
+		Jugador jugadorAut = jugadorService.findJugadorByUsername(principal.getName());
+		Boolean esAdmin = jugadorService.esAdmin(jugadorAut);
+		if(esAdmin){
+			partidoService.deletePartido(partido);
+			return "redirect:/partidos";
+		} else {
+			return "redirect:/";
+		}
+	}
+
 }
 	
 	

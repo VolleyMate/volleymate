@@ -63,13 +63,13 @@ public class Partido extends BaseEntity {
     @Column(name = "fecha_creacion", updatable = false, nullable = false)
     private LocalDateTime fechaCreacion=LocalDateTime.now();
 
-    @OneToMany(mappedBy = "partido")
+    @OneToMany(mappedBy = "partido",cascade = CascadeType.ALL)
     private Set<Solicitud> solicitudes;
 
-    @ManyToMany(mappedBy = "partidos")
+    @ManyToMany(mappedBy = "partidos",cascade = CascadeType.ALL)
     private List<Jugador> jugadores;
 
-    @OneToMany(mappedBy = "partido")
+    @OneToMany(mappedBy = "partido",cascade = CascadeType.ALL)
     private List<Mensaje> mensajes;
 
     @ManyToOne

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.volleymate.jugador.Jugador;
+import org.springframework.samples.volleymate.mensaje.Mensaje;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,14 @@ public class PartidoService {
 
 	@Transactional
 	public void deletePartido(@Valid Partido partido) throws DataAccessException, DataIntegrityViolationException {
+
+		for (Jugador jugador : partido.getJugadores()) {
+			if(!partido.getCreador().equals(jugador)){
+				jugador.setVolleys(jugador.getVolleys() + 150);
+			}
+			jugador.getPartidos().remove(partido);
+		}
+
 		partidoRepository.delete(partido);
 	}
 

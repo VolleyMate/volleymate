@@ -99,6 +99,15 @@
         </spring:url>
         <a href="${fn:escapeXml(chat)}" class="btn btn-default">Chat</a>
     </c:if>
+
+    <sec:authorize access="hasAuthority('admin')">
+        <spring:url value="/partidos/eliminar/{partidoId}" var="eliminarURL">
+            <spring:param value="${partido.id}" name="partidoId"/>
+        </spring:url>
+        <a href="${eliminarURL}" class="btn btn-danger">Eliminar partido [ADMIN]</a>
+    </sec:authorize>
+
+
     
 </div>
 
