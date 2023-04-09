@@ -54,6 +54,14 @@ public class PartidoService {
 
 	@Transactional
 	public void deletePartido(@Valid Partido partido) throws DataAccessException, DataIntegrityViolationException {
+
+		for (Jugador jugador : partido.getJugadores()) {
+			if(!partido.getCreador().equals(jugador)){
+				jugador.setVolleys(jugador.getVolleys() + 150);
+			}
+			jugador.getPartidos().remove(partido);
+		}
+
 		partidoRepository.delete(partido);
 	}
 
