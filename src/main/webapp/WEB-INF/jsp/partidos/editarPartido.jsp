@@ -10,9 +10,9 @@
 <petclinic:layout pageName="partidos">
 
     <h2>
-        <p style="font-size:1.5em; text-align: center;">
+        <div style="font-size:1.5em; text-align: center;">
             <strong>Editar mi perfil</strong>
-        </p>
+        </div>
     </h2>
  
     <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
