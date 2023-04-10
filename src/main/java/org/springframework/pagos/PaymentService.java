@@ -27,14 +27,14 @@ public class PaymentService {
         return PaymentIntent.create(params);
     }
 
-    public PaymentIntent confirm(String id) throws StripeException{//
-      Stripe.apiKey = secretKey;//
-      PaymentIntent paymentIntent = PaymentIntent.retrieve(id);//
-      Map<String, Object> params = new HashMap<>();//
-      params.put("payment_method", "pm_card_visa");//
-      paymentIntent.confirm(params);//
-      return paymentIntent;//
-    }//
+    public PaymentIntent confirm(String id) throws StripeException{
+      Stripe.apiKey = secretKey;
+      PaymentIntent paymentIntent = PaymentIntent.retrieve(id);
+      Map<String, Object> params = new HashMap<>();
+      params.put("payment_method", "pm_card_visa");
+      paymentIntent.confirm(params);
+      return paymentIntent;
+    }
 
     public PaymentIntent cancel(String id) throws StripeException{
         Stripe.apiKey = secretKey;
