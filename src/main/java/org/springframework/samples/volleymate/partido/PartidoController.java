@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.volleymate.centro.CentroService;
 import org.springframework.samples.volleymate.jugador.Jugador;
@@ -73,6 +74,7 @@ public class PartidoController {
 		mav.addObject("jugadorLogueado", this.jugadorService.findJugadorByUsername(principal.getName()));
         mav.addObject("estaDentro",estaDentro);
 		mav.addObject("estaEnEspera", estaEnEspera);
+		mav.addObject("puedeEditar", partidoService.puedeEditarPartido(jugadorService.findJugadorByUsername(principal.getName()),partidoService.findPartidoById(partidoId)));
 		return mav;
     }
 
@@ -156,6 +158,42 @@ public class PartidoController {
 			return "redirect:/";
 		}
 	}
+
+	@GetMapping(value = "/partidos/edit/{id}")
+	public String initEditForm(Map<String, Object> model, @PathVariable("id") int id, Principal principal) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			Partido partido = partidoService.findPartidoById(id);
+			Jugador player = jugadorService.findJugadorByUsername(principal.getName());
+			if (partidoService.puedeEditarPartido(player, partido)){
+				model.put("partido", partido);
+				model.put("centros", centroService.findAllCentros());
+				return "partidos/editarPartido";
+			}else{
+				return "welcome";
+			}
+		}else{
+			return "welcome";
+		}
+	}
+	
+	
+	@PostMapping(value = "/partidos/edit/{id}")
+	public String processEditForm(@Valid Partido partido, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
+
+		if(result.hasErrors()){
+			model.put("errors", result.getAllErrors());
+			return "partidos/editarPartido";
+		}
+		else {
+			Partido partidoUpdate = this.partidoService.findPartidoById(partido.getId());
+			BeanUtils.copyProperties(partido,partidoUpdate,"mensajes","jugadores","solicitudes","creador","fechaCreacion","precioPersona"); 
+			this.partidoService.save(partidoUpdate);
+			return "redirect:/partidos/" + partidoUpdate.getId();
+		}						
+		
+	}
+
 
 	// Salirse de un partido
 	@GetMapping(value = "/partidos/salir/{partidoId}")
