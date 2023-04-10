@@ -45,11 +45,7 @@ public class PartidoService {
 
 	@Transactional(rollbackFor = IllegalArgumentException.class)
 	public void save(Partido partido) throws DataAccessException, IllegalArgumentException {
-		if(partido.getFecha().isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException();
-		}else {
-			partidoRepository.save(partido);
-		}
+		partidoRepository.save(partido);
 	}
 
 	@Transactional
@@ -109,9 +105,6 @@ public class PartidoService {
         } else if (tipoPartido != null) {
 			Page<Partido> partidosPorTipo = partidoPageRepository.findByTipo(pageable, tipoPartido);
 			return partidosPorTipo;
-        // } else if (ciudad != null && !ciudad.isEmpty()) {
-		// 	Page<Partido> partidosPorCiudad = partidoPageRepository.findByCiudad(pageable, ciudad);
-		// 	return partidosPorCiudad;
         } else {
 			return partidosSinFiltrar;
 		}
@@ -148,6 +141,10 @@ public class PartidoService {
 		partido.setJugadores(jugadores);
 
 		partidoRepository.save(partido);
+	}
+
+	public boolean puedeEditarPartido(Jugador jugador, Partido partido) {
+		return partido.getCreador().getId() == jugador.getId() && partido.getJugadores().size() == 1;
 	}
 
 }
