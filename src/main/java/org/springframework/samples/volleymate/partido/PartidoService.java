@@ -36,7 +36,7 @@ public class PartidoService {
 		this.partidoRepository = partidoRepository;
 	}
 
-	private int tamanoPaginacionPorPagina = 5;
+	private int tamanoPaginacionPorPagina = 6;
 	
 	@Transactional
 	public List<Partido> findAllPartidos(){
@@ -50,6 +50,14 @@ public class PartidoService {
 
 	@Transactional
 	public void deletePartido(@Valid Partido partido) throws DataAccessException, DataIntegrityViolationException {
+
+		for (Jugador jugador : partido.getJugadores()) {
+			if(!partido.getCreador().equals(jugador)){
+				jugador.setVolleys(jugador.getVolleys() + 150);
+			}
+			jugador.getPartidos().remove(partido);
+		}
+
 		partidoRepository.delete(partido);
 	}
 
@@ -118,9 +126,21 @@ public class PartidoService {
     						.collect(Collectors.toList());
   }
 
-  public Page<Partido> buscarPartidosPorJugador (int page, Jugador jugador){
-	Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
-	return partidoPageRepository.findByJugadoresId(pageable, jugador.getId());
+  	public Page<Partido> buscarPartidosPorJugador (int page, Jugador jugador){
+		Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
+		return partidoPageRepository.findByJugadoresId(pageable, jugador.getId());
+	}
+
+	public void salirPartido (Partido partido, Jugador jugador){
+		Set<Partido> partidos = jugador.getPartidos();
+		partidos.remove(partido);
+		jugador.setPartidos(partidos);
+		
+		List<Jugador> jugadores = partido.getJugadores();
+		jugadores.remove(jugador);
+		partido.setJugadores(jugadores);
+
+		partidoRepository.save(partido);
 	}
 
 	public boolean puedeEditarPartido(Jugador jugador, Partido partido) {

@@ -19,9 +19,9 @@ INSERT INTO authorities(id,username,authority) VALUES (5,'meriglmar','admin');
 INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (5,'Mercedes','Iglesias','Sevilla','666666666','FEMENINO','','meriglmar', 250);
 
 
-INSERT INTO centros(id,nombre,direccion,ciudad,maps) VALUES (1,'Mairena Voley Club','Av. de la Constitución num 2', 'Sevilla','https://goo.gl/maps/P5uyWUKnDqNLAbnE6');
-INSERT INTO centros(id,nombre,direccion,ciudad,maps) VALUES (2,'Club Deportivo Claret','C. Monzón', 'Sevilla','https://goo.gl/maps/JYErpvDCVSKuNLvF9');
-INSERT INTO centros(id,nombre,direccion,ciudad,maps) VALUES (3,'Club Voleibol Esquimo','Cl. Meñaca', 'Sevilla','https://goo.gl/maps/ZNFjetB53pX1JMcg6');
+INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (1,'Mairena Voley Club','Av. de la Constitución num 2', 'Sevilla', true, 'https://goo.gl/maps/P5uyWUKnDqNLAbnE6');
+INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (2,'Club Deportivo Claret','C. Monzón', 'Sevilla', false, 'https://goo.gl/maps/JYErpvDCVSKuNLvF9');
+INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (3,'Club Voleibol Esquimo','Cl. Meñaca', 'Sevilla', true, 'https://goo.gl/maps/ZNFjetB53pX1JMcg6');
 
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (1,'Partido amistoso','MASCULINO','Vamos a jugar un partido amistoso',0,'jorsilman',3,'2013-01-02 17:00','2013-01-01 17:00',150,1);
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (2,'Partido de playa','MASCULINO','Vamos a jugar un partido amistoso',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);

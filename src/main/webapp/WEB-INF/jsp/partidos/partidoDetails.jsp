@@ -99,8 +99,13 @@
                     </c:choose>
                 </c:if>
             </c:if>
-        </div>
-
+            <c:if test="${estaDentro}">
+                <spring:url value="/partidos/salir/${partidoId}" var="salirURL">
+                    <spring:param value="${partido.id}" name="partidoId"/>
+                </spring:url>
+                <a href="${fn:escapeXml(salirURL)}" class="btn btn-warning">Salir de partido (no se devuelven los volleys)</a>
+            </c:if>
+        </c:if>
     </div>
 
 
@@ -109,6 +114,7 @@
         <spring:url value="/jugadores/partido/${partidoId}" var="jugURL">
             <spring:param value="${partido.id}" name="partidoId" />
         </spring:url>
+
         <a href="${fn:escapeXml(jugURL)}" class="btn btn-default">Ver jugadores</a>
 
         <c:if test="${estaDentro}">
@@ -126,6 +132,17 @@
             <a href="${fn:escapeXml(edit)}" class="btn btn-default">Editar partido</a>
         </c:if>
 
-    </div>
+    
+        <a href="${fn:escapeXml(chat)}" class="btn btn-default">Chat</a>
+    </c:if>
+
+    <sec:authorize access="hasAuthority('admin')">
+        <spring:url value="/partidos/eliminar/{partidoId}" var="eliminarURL">
+            <spring:param value="${partido.id}" name="partidoId"/>
+        </spring:url>
+        <a href="${eliminarURL}" class="btn btn-danger">Eliminar partido [ADMIN]</a>
+    </sec:authorize>
+    
+</div>
 
 </petclinic:layout>

@@ -16,10 +16,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
 
 @Controller
 public class CentroController {
     public final CentroService centroService;
+
+    private static final String VISTA_LISTAR_CENTROS = "centros/listaCentros";
+    private static final String VISTA_CREAR_CENTROS = "centros/crearCentros";
+    private static final String VISTA_SOLICITUD_CENTRO = "centros/solicitudCentro";
+    private static final String VISTA_EDITAR_CENTROS = "centros/editarCentro";
+	private static final String VISTA_ELIMINAR_CENTROS = "centros/eliminarCentro";
 
     @Autowired
     public CentroController(CentroService centroService) {
@@ -31,25 +39,27 @@ public class CentroController {
         Centro centro = new Centro();
         centro.setEstado(false);
         model.put("centro", centro);
-        return "centros/solicitudCentro";
+        return VISTA_CREAR_CENTROS;
     }
 
     @PostMapping(value = "/centros/solitud/new")
     public String processCreationForm(@Valid Centro centro, BindingResult result, Map<String, Object> model) {
         if(result.hasErrors()) {
             model.put("errors", result.getAllErrors());
-            return "centros/solicitudCentro";
+            return VISTA_CREAR_CENTROS;
         }else {
             centroService.saveCentro(centro);
-            return "redirect:/";
+            return VISTA_SOLICITUD_CENTRO;
         }
     }
 
     @GetMapping(value = "/centros")
-    public String showCentros(Map<String, Object> model) {
-        List<Centro> centros = centroService.findAcceptedCentros();
+    public String showCentros(Map<String, Object> model, @RequestParam(defaultValue="0") int page) {
+        Page<Centro> centros = centroService.findAcceptedCentrosPageable(page);
+        Integer numCentros = centros.getNumberOfElements();
         model.put("centros", centros);
-        return "centros/centrosList";
+        model.put("numCentros", numCentros);
+        return VISTA_LISTAR_CENTROS;
     }
 
     @GetMapping(value = "/centros/solitud/list")
