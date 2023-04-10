@@ -18,13 +18,9 @@ public interface CentroRepository extends CrudRepository<Centro, Integer> {
     @Query("SELECT c FROM Centro c WHERE c.estado = true")
     Page<Centro> findAcceptedCentrosPageable(Pageable pageable);
 
-
     @Query("SELECT c FROM Centro c WHERE c.estado = false")
     List<Centro> getSolicitudesCentros();
 
     @Query("SELECT c FROM Centro c WHERE c.id = ?1")
     Centro getCentroById(int centroId);
-
-    @Query("DELETE FROM Centro c WHERE c.id = ?1")
-    void deleteCentroById(int centroId);
 }

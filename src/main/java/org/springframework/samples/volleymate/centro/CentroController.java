@@ -48,6 +48,7 @@ public class CentroController {
             model.put("errors", result.getAllErrors());
             return VISTA_CREAR_CENTROS;
         }else {
+            centro.setEstado(false);
             centroService.saveCentro(centro);
             return VISTA_SOLICITUD_CENTRO;
         }
@@ -57,19 +58,14 @@ public class CentroController {
     public String showCentros(Map<String, Object> model, @RequestParam(defaultValue="0") int page) {
         Page<Centro> centros = centroService.findAcceptedCentrosPageable(page);
         Integer numCentros = centros.getNumberOfElements();
+        List<Centro> centrosSol = centroService.getSolicitudesCentros();
+        model.put("centrosSol", centrosSol);
         model.put("centros", centros);
         model.put("numCentros", numCentros);
         return VISTA_LISTAR_CENTROS;
     }
 
-    @GetMapping(value = "/centros/solitud/list")
-    public String showSolicitudes(Map<String, Object> model) {
-        List<Centro> centros = centroService.getSolicitudesCentros();
-        model.put("centros", centros);
-        return "centros/solicitudesList";
-    }
-
-    @GetMapping(value = "/centros/solitud/accept/{centroId}")
+    @GetMapping(value = "/centros/solicitud/accept/{centroId}")
     public String acceptSolicitud(Map<String, Object> model, @PathVariable("centroId") int centroId, Principal principal) {
         //Solo se puede aceptar la solicitud si el usuario es administrador
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -77,20 +73,21 @@ public class CentroController {
             Centro centro = centroService.findCentroById(centroId);
             centro.setEstado(true);
             centroService.saveCentro(centro);
-            return "redirect:/centros/solitud/list";
+            return "redirect:/centros";
         }else {
             model.put("message", "No tienes permisos para realizar esta acción");
             return "redirect:/";
         }
     }
 
-    @GetMapping(value = "/centros/solitud/deny/{centroId}")
+    @GetMapping(value = "/centros/solicitud/deny/{centroId}")
     public String denySolicitud(Map<String, Object> model, @PathVariable("centroId") int centroId, Principal principal) {
         //Solo se puede denegar la solicitud si el usuario es administrador
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
-            centroService.deleteCentro(centroId);
-            return "redirect:/centros/solitud/list";
+            Centro centro = centroService.findCentroById(centroId);
+            centroService.deleteCentro(centro);
+            return "redirect:/centros";
         }else {
             model.put("message", "No tienes permisos para realizar esta acción");
             return "redirect:/";
@@ -103,7 +100,8 @@ public class CentroController {
         //Solo se puede eliminar el centro si el usuario es administrador
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
-            centroService.deleteCentro(centroId);
+            Centro centro = centroService.findCentroById(centroId);
+            centroService.deleteCentro(centro);
             return "redirect:/centros";
         }else {
             model.put("message", "No tienes permisos para realizar esta acción");

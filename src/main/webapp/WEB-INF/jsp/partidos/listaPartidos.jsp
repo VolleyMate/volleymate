@@ -9,7 +9,7 @@
 <petclinic:layout pageName="partidos">
     <h2>Partidos disponibles</h2>
     <form action="/partidos" method="get">
-        <div style="display: grid; grid-template-columns: repeat(4,1fr);">
+        <div style="display: grid; grid-template-columns: repeat(4,1fr); padding-bottom: 5%;">
             <div style="grid-column: 1;">
                 <div style="text-align: left;">
                     <label for="sexo">Sexo:</label>
@@ -169,6 +169,11 @@
         border-style: solid;
         border-color: #0099BB;
         margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
+        border-radius: 10px;
+        padding-top: 4%;
+        padding-bottom: 4%;
+        padding-left: 4%;
+        padding-right: 4%;
 
 }
 </style>

@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
@@ -21,8 +22,7 @@
     </c:if>
 
     <h1>Detalles del partido:</h1>
-    <div
-        style="width: 70%; background-color: #0099bc; margin: 0 auto; border-radius: 50px;  text-align: center; display: flex; flex-wrap: wrap;">
+    <div style="width: 70%; background-color: #0099bc; margin: 0 auto; border-radius: 50px;  text-align: center; display: flex; flex-wrap: wrap;">
 
         <div style="width: 45%;">
             <h3 style="color: #FFFFFF;">Nombre: </h3>
@@ -79,7 +79,7 @@
             <h3></h3>
         </div>
 
-        <div style=" margin: 0 auto; padding-top: 2%; padding-bottom: 5%;">
+        <div style=" margin: 0 auto; padding-top: 2%; padding-bottom: 5%; align-items: center; justify-content: center; text-align: center;">
             <c:if test="${!partido.creador.equals(jugadorLogueado)}">
                 <c:if test="${!estaDentro}">
                     <c:choose>
@@ -98,7 +98,6 @@
                         </c:otherwise>
                     </c:choose>
                 </c:if>
-            </c:if>
             <c:if test="${estaDentro}">
                 <spring:url value="/partidos/salir/${partidoId}" var="salirURL">
                     <spring:param value="${partido.id}" name="partidoId"/>
@@ -106,6 +105,8 @@
                 <a href="${fn:escapeXml(salirURL)}" class="btn btn-warning">Salir de partido (no se devuelven los volleys)</a>
             </c:if>
         </c:if>
+        </div>
+
     </div>
 
 
@@ -132,16 +133,12 @@
             <a href="${fn:escapeXml(edit)}" class="btn btn-default">Editar partido</a>
         </c:if>
 
-    
-        <a href="${fn:escapeXml(chat)}" class="btn btn-default">Chat</a>
-    </c:if>
-
-    <sec:authorize access="hasAuthority('admin')">
-        <spring:url value="/partidos/eliminar/{partidoId}" var="eliminarURL">
-            <spring:param value="${partido.id}" name="partidoId"/>
-        </spring:url>
-        <a href="${eliminarURL}" class="btn btn-danger">Eliminar partido [ADMIN]</a>
-    </sec:authorize>
+        <sec:authorize access="hasAuthority('admin')">
+            <spring:url value="/partidos/eliminar/{partidoId}" var="eliminarURL">
+                <spring:param value="${partido.id}" name="partidoId"/>
+            </spring:url>
+            <a href="${eliminarURL}" class="btn btn-danger">Eliminar partido [ADMIN]</a>
+        </sec:authorize>
     
 </div>
 

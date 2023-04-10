@@ -54,7 +54,7 @@
             </c:if>
     </div>
     <div class="row">
-        <h2 style="margin-top: 2%;">Solicitudes pendientes</h2>
+        <h2 style="margin-top: 5%;">Solicitudes pendientes</h2>
         <c:if test="${solicitudesPendientes.size() == 0}">
             No hay solicitudes pendientes.
         </c:if>

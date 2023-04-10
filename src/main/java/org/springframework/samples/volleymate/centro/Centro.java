@@ -3,6 +3,7 @@ package org.springframework.samples.volleymate.centro;
 import org.springframework.samples.volleymate.model.BaseEntity;
 import org.springframework.samples.volleymate.partido.Partido;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +33,7 @@ public class Centro extends BaseEntity {
     @Column(name = "estado")
     private Boolean estado;
 
-    @OneToMany(mappedBy = "centro")
+    @OneToMany(mappedBy = "centro", cascade = CascadeType.ALL)
     private List<Partido> partidos;
 
 }
