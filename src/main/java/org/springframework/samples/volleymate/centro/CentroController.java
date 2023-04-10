@@ -25,6 +25,7 @@ public class CentroController {
 
     private static final String VISTA_LISTAR_CENTROS = "centros/listaCentros";
     private static final String VISTA_CREAR_CENTROS = "centros/crearCentros";
+    private static final String VISTA_SOLICITUD_CENTRO = "centros/solicitudCentro";
     private static final String VISTA_EDITAR_CENTROS = "centros/editarCentro";
 	private static final String VISTA_ELIMINAR_CENTROS = "centros/eliminarCentro";
 
@@ -45,10 +46,10 @@ public class CentroController {
     public String processCreationForm(@Valid Centro centro, BindingResult result, Map<String, Object> model) {
         if(result.hasErrors()) {
             model.put("errors", result.getAllErrors());
-            return "centros/solicitudCentro";
+            return VISTA_CREAR_CENTROS;
         }else {
             centroService.saveCentro(centro);
-            return "redirect:/";
+            return VISTA_SOLICITUD_CENTRO;
         }
     }
 
