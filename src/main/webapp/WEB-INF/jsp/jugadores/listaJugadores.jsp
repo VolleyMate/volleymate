@@ -5,25 +5,26 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
+    
 
 <petclinic:layout pageName="listaJugadores">
     
     <div class="container text-center">
-        <form id = "mi-formulario" class="form-inline" th:action="@{/}">
+        <form id="mi-formulario" class="form-inline" th:action="@{/}">
             <div class="form-group mb-2">
                 <label>Filtrar : </label>
             </div>
             <div class="form-group mx-sm-3 mb-2">
-                <input type="text" class="form-control" id="input-1" name="palabraClave" th:value="${palabraClave}" placeholder="Escriba el valor a buscar" required/>
+                <input type="text" class="form-control" id="palabraClave" name="palabraClave" placeholder="Escriba el valor a buscar" required/>
             </div>
             <input type="submit" class="btn btn-info mb-2" value="Buscar">
-            <input type="submit" class="btn btn-secondary mb-2" value="Limpiar">
+            <input type="submit" class="btn btn-secondary mb-2" value="Limpiar" onclick="limpiarInput()">
         </form>
     </div>
 
    
     <h2>Jugadores</h2>
-    <div class="row">
+    <div class="row listaJugadores numJugadores">
         <c:if test="${numJugadores == 0}">
             No se encuentra ningún jugador.
         </c:if>
@@ -55,19 +56,30 @@
         
 </petclinic:layout>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js%22%3E"></script>
-    <script>
-      const formulario = document.querySelector('#mi-formulario');
-      const input = document.querySelector('#input-1');
+<script>
+
+function limpiarInput() {
+  document.getElementById("palabraClave").value = "";
+  var palabraClaveInput = document.getElementById("palabraClave").value;
+if (palabraClaveInput === "") {
+    document.getElementById("mi-formulario").submit();
+}
+}
+
+var url_string = window.location.href;
+var url = new URL(url_string);
+var palabraClave = url.searchParams.get("palabraClave");
+
+document.getElementById("palabraClave").value = palabraClave;
+
+$(document).ready(function(){
+        $('#palabraClave').on('input', function() {
+            $('#mi-formulario').submit();
+        });
+        $('#palabraClave').focus();
+
+});
     
-      input.addEventListener('change', enviarDatos);
-    
-      function enviarDatos() {
-    
-        const valor = input.value;
-    
-        $.post('/listaJugadores', {input: valor});
-      }
 </script>
 
 <style>
