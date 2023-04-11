@@ -8,7 +8,7 @@
 
 <petclinic:layout pageName="misPartidos">
 
-    <div class="row">
+    <!-- <div class="row">
         <h2>Mis Partidos</h2>
         <c:if test="${numPartidos == 0}">
             Aún no perteneces a ningún partido.
@@ -51,33 +51,88 @@
                 </tbody>
             </table>
         </c:if>
+    </div> -->
+    <h2>Mis partidos</h2>
+    <div class="row">
+        <c:if test="${numPartidos == 0}">
+            Aún no se ha publicado ningún partido.
+        </c:if>
+        <c:if test="${numPartidos != 0}">
+            <c:forEach items="${partidos.content}" var="partido">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">                  
+                            <p class="card-text">
+                                <strong>Jugadores:</strong> <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
+                              </p>                              
+                            <p class="card-text">
+                                <strong>Dirección:</strong> <c:out value="${partido.centro.nombre}"/> 
+                            </p>
+                            <p class="card-text">
+                                <strong>Tipo:</strong> <c:out value="${partido.tipo}"/>
+                            </p>
+                            <p class="card-text">
+                                <strong>Fecha de la actividad:</strong> <c:out value="${partido.getFechaParseada()}"/>
+                            </p>
+                            <a href="/partidos/${partido.id}" class="btn btn-primary">Ver</a>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </c:if>
     </div>
 
-    <div style="margin: 2%;" class="pagination">
-        <c:if test="${partidos.hasPrevious()}">
-          
-            <c:url var="previousPageUrl" value="/jugadores/mispartidos">
-                <c:param name="page" value="${partidos.number - 1}" />
-            </c:url>
-            <a href="${previousPageUrl}" class="previous">
-                <button class="btn btn-default">
-                    Anterior
-                </button>
-            </a>
+    <div class="row" style="width: 100%;">
+        <div class="col-md-6 text-left">
+            <c:if test="${numPartidos != 0}">
+            <c:if test="${partidos.hasPrevious()}">
+                <c:url var="previousPageUrl" value="/partidos">
+                    <c:param name="sexo" value="${param.sexo}" />
+                    <c:param name="tipo" value="${param.tipo}" />
+                    <c:param name="page" value="${partidos.number - 1}" />
+                </c:url>
+                <a href="${previousPageUrl}" class="previous">
+                    <button class="btn btn-default">
+                        Anterior
+                    </button>
+                </a>
     
+            </c:if>
+            <c:if test="${!partidos.isLast()}">
+                <c:url var="nextPageUrl" value="/partidos">
+                    <c:param name="sexo" value="${param.sexo}" />
+                    <c:param name="tipo" value="${param.tipo}" />
+                    <c:param name="page" value="${partidos.number + 1}" />
+                </c:url>
+                <a href="${nextPageUrl}" class="next">
+                    <button class="btn btn-default">
+                        Siguiente
+                    </button>
+                </a>
+            </c:if>
+            <p>Página ${partidos.number + 1} de ${partidos.totalPages}</p>
         </c:if>
-        <c:if test="${!partidos.isLast()}">
-            <c:url var="nextPageUrl" value="/jugadores/mispartidos">
-                <c:param name="page" value="${partidos.number + 1}" />
-            </c:url>
-            <a href="${nextPageUrl}" class="next">
-                <button class="btn btn-default">
-                    Siguiente
-                </button>
+        </div>
+        <div class="col-md-6 text-right">
+            <a href="/partidos/new" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo partido
             </a>
-        </c:if>
-      </div>
-      
-      <p>Página ${partidos.number + 1} de ${partidos.totalPages}</p>
-
+        </div>
+    </div>  
 </petclinic:layout>
+
+<style>
+    .card {
+        box-shadow: 0 0 10px rgba(16, 88, 139, 0.1);
+        border-width: 2px;
+        border-style: solid;
+        border-color: #0099BB;
+        margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
+        border-radius: 10px;
+        padding-top: 4%;
+        padding-bottom: 4%;
+        padding-left: 4%;
+        padding-right: 4%;
+
+}
+</style>

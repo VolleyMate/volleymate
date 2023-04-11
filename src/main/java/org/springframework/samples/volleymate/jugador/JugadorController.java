@@ -23,6 +23,7 @@ import org.springframework.samples.volleymate.valoracion.ValoracionService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,20 +60,25 @@ public class JugadorController {
 
 
     @GetMapping(value = "/jugadores/new")
-	public String crearJugadorInicio(Map<String, Object> model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth == null){
+	public String crearJugadorInicio(Map<String, Object> model, @AuthenticationPrincipal Authentication authentication, Principal principal) {
+		if (authentication != null ){
+            Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
+            if(jugadorService.esAdmin(jugadorLog)){
+                Jugador jugador = new Jugador();
+                model.put("jugador", jugador);
+                return VIEW_CREATE_FORM;    
+            }
+            return "redirect:/";
+        } else {
             Jugador jugador = new Jugador();
             model.put("jugador", jugador);
             return VIEW_CREATE_FORM;
-        } else {
-            return "redirect:/";
         }
 	}
 
 
     @PostMapping(value = "/jugadores/new")
-	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model) {
+	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model, Principal principal,@AuthenticationPrincipal Authentication authentication) {
 
         List<String> errores = jugadorService.findErroresCrearJugador(jugador);
 
@@ -80,11 +86,29 @@ public class JugadorController {
 			model.put("errors", errores);
 			return VIEW_CREATE_FORM;
 		} else {
-			User user = jugador.getUser();
-            UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
-            SecurityContextHolder.getContext().setAuthentication(authReq);
-            this.jugadorService.saveJugador(jugador);
-            return "redirect:/";
+			
+            User user = jugador.getUser();
+            
+            if (authentication != null) {
+                
+                Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
+                
+                if (jugadorService.esAdmin(jugadorLog)){
+                    this.jugadorService.saveJugador(jugador);
+                    return "redirect:/jugadores/" + jugador.getId();
+                } else {
+                    UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
+                    SecurityContextHolder.getContext().setAuthentication(authReq);
+                    this.jugadorService.saveJugador(jugador);
+                    return "redirect:/";
+                }
+            
+            } else {
+                UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
+                SecurityContextHolder.getContext().setAuthentication(authReq);
+                this.jugadorService.saveJugador(jugador);
+                return "redirect:/";
+            }
 		}
 
 		

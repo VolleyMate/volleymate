@@ -1,8 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 <%@ attribute name="name" required="true" rtexprvalue="true"
 	description="Name of the active menu: home, owners, vets or error"%>
@@ -52,12 +51,20 @@
 				</sec:authorize>
 
 				<sec:authorize access="isAuthenticated()">
+
 					<form class="navbar-form navbar-left" role="search" method="get" action="/jugadores/listaJugadores">
 						<div class="form-group">
 							<input type="text" class="form-control" name="palabraClave" placeholder="Buscar jugador...">
 						</div>
 						<button type="submit" class="btn btn-default">Buscar</button>
 					</form>
+
+					<petclinic:menuItem active="${name eq 'listaCentros'}" url="/centros"
+						title="listaCentros">
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span>Centros</span>
+					</petclinic:menuItem>
+
 				</sec:authorize>
 			</ul>
 
