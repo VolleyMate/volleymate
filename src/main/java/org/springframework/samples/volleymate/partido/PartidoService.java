@@ -2,7 +2,6 @@ package org.springframework.samples.volleymate.partido;
 
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,6 +15,8 @@ import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 @Service
@@ -26,10 +27,15 @@ public class PartidoService {
 	private SolicitudRepository solicitudRepository;
 
 	@Autowired
+	private PartidoPageRepository partidoPageRepository;
+
+	@Autowired
 	public PartidoService(PartidoRepository partidoRepository, SolicitudRepository solicitudRepository) {
 		this.solicitudRepository = solicitudRepository;
 		this.partidoRepository = partidoRepository;
 	}
+
+	private int tamanoPaginacionPorPagina = 6;
 	
 	@Transactional
 	public List<Partido> findAllPartidos(){
@@ -38,15 +44,18 @@ public class PartidoService {
 
 	@Transactional(rollbackFor = IllegalArgumentException.class)
 	public void save(Partido partido) throws DataAccessException, IllegalArgumentException {
-		if(partido.getFecha().isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException();
-		}else {
-			partidoRepository.save(partido);
-		}
+		partidoRepository.save(partido);
 	}
 
 	@Transactional
 	public void deletePartido(@Valid Partido partido) throws DataAccessException, DataIntegrityViolationException {
+
+		for (Jugador jugador : partido.getJugadores()) {
+			if(!partido.getCreador().equals(jugador)){
+				jugador.setVolleys(jugador.getVolleys() + 150);
+			}
+			jugador.getPartidos().remove(partido);
+		}
 		partidoRepository.delete(partido);
 	}
 
@@ -83,24 +92,21 @@ public class PartidoService {
 	}
 
 	// Filtrar partidos
-	public List<Partido> filtrarPartidos(Integer page, Pageable pageable, Sexo sexo, Tipo tipoPartido, String ciudad) {
-        List<Partido> partidos = partidoRepository.findAllPageable(pageable);
+	public Page<Partido> filtrarPartidos(Sexo sexo, Tipo tipoPartido, int page) {
+		
+		Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
+		Page<Partido> partidosSinFiltrar = partidoPageRepository.findAll(pageable);
+		
         if (sexo != null) {
-            partidos = partidos.stream()
-                    .filter(partido -> partido.getSexo().equals(sexo))
-                    .collect(Collectors.toList());
-        }
-        if (tipoPartido != null) {
-            partidos = partidos.stream()
-                    .filter(partido -> partido.getTipo() == tipoPartido)
-                    .collect(Collectors.toList());
-        }
-        if (ciudad != null && !ciudad.isEmpty()) {
-            partidos = partidos.stream()
-                    .filter(partido -> partido.getCentro().getCiudad().equalsIgnoreCase(ciudad))
-                    .collect(Collectors.toList());
-        }
-        return partidos;
+            Page<Partido> partidosPorSexo = partidoPageRepository.findBySexo(pageable, sexo);
+			return partidosPorSexo;
+        } else if (tipoPartido != null) {
+			Page<Partido> partidosPorTipo = partidoPageRepository.findByTipo(pageable, tipoPartido);
+			return partidosPorTipo;
+        } else {
+			return partidosSinFiltrar;
+		}
+        
     }
 
 	public Set<String> getCiudades() {
@@ -117,5 +123,26 @@ public class PartidoService {
     						.filter(p->p.getJugadores().contains(jugador))
     						.collect(Collectors.toList());
   }
+
+  	public Page<Partido> buscarPartidosPorJugador (int page, Jugador jugador){
+		Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
+		return partidoPageRepository.findByJugadoresId(pageable, jugador.getId());
+	}
+
+	public void salirPartido (Partido partido, Jugador jugador){
+		Set<Partido> partidos = jugador.getPartidos();
+		partidos.remove(partido);
+		jugador.setPartidos(partidos);
+		
+		List<Jugador> jugadores = partido.getJugadores();
+		jugadores.remove(jugador);
+		partido.setJugadores(jugadores);
+
+		partidoRepository.save(partido);
+	}
+
+	public boolean puedeEditarPartido(Jugador jugador, Partido partido) {
+		return partido.getCreador().getId() == jugador.getId() && partido.getJugadores().size() == 1;
+	}
 
 }

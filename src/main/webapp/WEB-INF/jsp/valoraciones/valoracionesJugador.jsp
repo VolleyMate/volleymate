@@ -25,7 +25,7 @@
                 <thead>
                     <tr>
                         <th style="width: 120px; text-align: center;">Puntuación</th>
-                        <th style="width: 120px; text-align: center;">Jugador que valora</th>
+                        <th style="width: 120px; text-align: center;">Jugador</th>
                         <th style="width: 120px; text-align: center;">Comentario</th>
                     
                     </tr>
@@ -35,13 +35,14 @@
                     
                     <c:forEach items= "${valoraciones}" var="valoracion">
                         <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
-                            <td style="text-align: center;">
+                            <td style="text-align: center; padding-top: 1.25%;">
                                 <c:out value="${valoracion.puntuacion}"/>
                             </td>
                             <td style="text-align: center;">
-                                <c:out value="${valoracion.ratingPlayer.firstName}"/>
+                                <a style = "color: black; font-size: medium;" href="/jugadores/${valoracion.ratingPlayer.id}" class="btn" ><c:out value="${valoracion.ratingPlayer.firstName}"/></a>
                             </td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; padding-top: 1.25%;">
+
                                 <c:out value="${valoracion.comentario}"/>
                             </td>
                         </tr>

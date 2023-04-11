@@ -10,19 +10,21 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6" style="padding: 2%;">
-                <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; margin-top: 5%; border-radius: 20px;">
+                <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; height: 250px; margin-top: 5%; border-radius: 20px;">
                     <h2>Tienda de Volleys</h2>
                     <p style="padding-bottom: 2%;">Dispones de: </p>
                     <h3>
                         <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;">
                         <c:out value="${jugador.volleys}"/>
                     </h3>
+                    <br>
+                    <br>
                     <p style="padding-bottom: 2%;">¿Te has quedado sin Volleys? Compra algunos aquí</p>
                     <a href="/tienda/volleys" class="btn btn-default">Comprar</a>
                 </div>      
             </div>
             <div class="col-md-6" style="padding: 2%;">
-                <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; margin-top: 5%; border-radius: 20px;">
+                <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; height: 250px; margin-top: 5%; border-radius: 20px;">
                     <h2>Plan Premium</h2>
                     <p style="padding-bottom: 2%;">Inscríbete al plan Premium para disfrutar de VolleyMate al completo</p>
                     <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
@@ -42,7 +44,7 @@
                                         <li class="d-flex mb-2"></li>
                                     </ul>
                                 </div>
-                                <button class="btn btn-default" type="button">Comprar</button>
+                                <a href="/tienda/confirmaCompra/1" class="btn btn-default">Comprar</a>
                             </div>
                         </div>
                     </div>

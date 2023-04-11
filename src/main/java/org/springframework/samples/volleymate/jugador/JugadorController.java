@@ -3,10 +3,8 @@ package org.springframework.samples.volleymate.jugador;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -25,6 +23,7 @@ import org.springframework.samples.volleymate.valoracion.ValoracionService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,11 +31,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
+import org.springframework.data.domain.Page;
 
 @Controller
 public class JugadorController {
@@ -47,6 +44,7 @@ public class JugadorController {
     private static final String HOME_TIENDA = "jugadores/tienda";
     private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
     private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
+    private static final String HOME_TIENDA_CONFIRMAR_COMPRA = "jugadores/confirmarCompra";
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
@@ -62,15 +60,25 @@ public class JugadorController {
 
 
     @GetMapping(value = "/jugadores/new")
-	public String crearJugadorInicio(Map<String, Object> model) {
-		Jugador jugador = new Jugador();
-		model.put("jugador", jugador);
-		return VIEW_CREATE_FORM;
+	public String crearJugadorInicio(Map<String, Object> model, @AuthenticationPrincipal Authentication authentication, Principal principal) {
+		if (authentication != null ){
+            Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
+            if(jugadorService.esAdmin(jugadorLog)){
+                Jugador jugador = new Jugador();
+                model.put("jugador", jugador);
+                return VIEW_CREATE_FORM;    
+            }
+            return "redirect:/";
+        } else {
+            Jugador jugador = new Jugador();
+            model.put("jugador", jugador);
+            return VIEW_CREATE_FORM;
+        }
 	}
 
 
     @PostMapping(value = "/jugadores/new")
-	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model) {
+	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model, Principal principal,@AuthenticationPrincipal Authentication authentication) {
 
         List<String> errores = jugadorService.findErroresCrearJugador(jugador);
 
@@ -78,11 +86,29 @@ public class JugadorController {
 			model.put("errors", errores);
 			return VIEW_CREATE_FORM;
 		} else {
-			User user = jugador.getUser();
-            UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
-            SecurityContextHolder.getContext().setAuthentication(authReq);
-            this.jugadorService.saveJugador(jugador);
-            return "redirect:/";
+			
+            User user = jugador.getUser();
+            
+            if (authentication != null) {
+                
+                Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
+                
+                if (jugadorService.esAdmin(jugadorLog)){
+                    this.jugadorService.saveJugador(jugador);
+                    return "redirect:/jugadores/" + jugador.getId();
+                } else {
+                    UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
+                    SecurityContextHolder.getContext().setAuthentication(authReq);
+                    this.jugadorService.saveJugador(jugador);
+                    return "redirect:/";
+                }
+            
+            } else {
+                UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
+                SecurityContextHolder.getContext().setAuthentication(authReq);
+                this.jugadorService.saveJugador(jugador);
+                return "redirect:/";
+            }
 		}
 
 		
@@ -179,10 +205,7 @@ public class JugadorController {
 
 
     @GetMapping("/jugadores/mispartidos")
-    public String showMisPartidos(Model model,
-                    @PageableDefault(page = 0, size = 6) @SortDefault.SortDefaults({
-        @SortDefault(sort = "id", direction = Sort.Direction.ASC), })
-        Pageable pageable) {
+    public String showMisPartidos(Map<String,Object> model,@RequestParam(defaultValue="0") int page){
         
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
@@ -190,18 +213,10 @@ public class JugadorController {
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 				String usuario = currentUser.getUsername();
 				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-                Integer page = 0;
-                List<Partido> arr = partidoService.getPartidosDelJugador(page, pageable, jugador);
-                Comparator<Partido> comparador = Comparator.comparing(Partido::getFechaCreacion);
-                List<Partido> listaOrdenada =  arr.stream().sorted(comparador.reversed()).collect(Collectors.toList());
-
-                Integer numResults = listaOrdenada.size();
-				model.addAttribute("partidos", listaOrdenada);
-                model.addAttribute("pageNumber", pageable.getPageNumber());
-			    model.addAttribute("hasPrevious", pageable.hasPrevious());
-			    Double totalPages = Math.ceil(numResults / (pageable.getPageSize()));
-			    model.addAttribute("totalPages", totalPages);
-
+                Page<Partido> pagePartidos = partidoService.buscarPartidosPorJugador(page, jugador);
+                Integer numPartidos = pagePartidos.getNumberOfElements();
+				model.put("partidos", pagePartidos);
+                model.put("numPartidos", numPartidos);
 				return "jugadores/misPartidos";
 			}
 			return "redirect:/";
@@ -300,7 +315,6 @@ public class JugadorController {
         }
         model.put("solicitudesRecibidas", solicitudesNuevas);
         
-        // ❗ NO SE ESTÁ MOSTRANDO POR LA VISTA
         Set<Solicitud> solicitudesPendientes = this.solicitudService.findTusSolicitudes(jugador);
         model.put("solicitudesPendientes", solicitudesPendientes);
         
@@ -321,10 +335,34 @@ public class JugadorController {
         return HOME_TIENDA_VOLLEYS;
     }
 
-    //Por hacer
     @GetMapping(value="/tienda/premium")
     public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
         return HOME_TIENDA_PREMIUM;
+    }
+
+    @GetMapping(value="/tienda/confirmaCompra/{idCompra}")
+    public String showVistaComfirmarCompra(Principal principal, @PathVariable("idCompra") Integer idCompra, Map<String,Object> model){
+        switch(idCompra){
+            case 1:
+                model = jugadorService.getValoresCompra("7.99", "paquete premium", idCompra, model);
+                break;
+            case 2:
+                model = jugadorService.getValoresCompra("4.99", "300 volleys", idCompra, model);
+                break;    
+            case 3:
+                model = jugadorService.getValoresCompra("6.50", "450 volleys", idCompra, model);
+                break;
+            case 4:
+                model = jugadorService.getValoresCompra("14.50", "1100 volleys", idCompra, model);
+                break;
+            case 5:
+                model = jugadorService.getValoresCompra("19.99", "1550 volleys", idCompra, model);    
+                break;
+            case 6:
+                model = jugadorService.getValoresCompra("49.99", "4100 volleys", idCompra, model);
+                break;
+        }
+        return HOME_TIENDA_CONFIRMAR_COMPRA;
     }
 
     @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")

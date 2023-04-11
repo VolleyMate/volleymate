@@ -4,11 +4,14 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.volleymate.centro.CentroService;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.jugador.JugadorService;
 import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
@@ -17,7 +20,6 @@ import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
+import org.springframework.data.domain.Page;
 
 @Controller
 public class PartidoController {
@@ -51,22 +48,17 @@ public class PartidoController {
 	private static final String VIEW_SOLICITUDES_PARTIDO = "partidos/solicitudes";
 
 	@GetMapping("/partidos")
-	public String filtrarPartidos(@RequestParam(required = false) Sexo sexo, @RequestParam(required = false) Tipo tipo,
-                              @RequestParam(required = false) String ciudad, Model model,
-							  @PageableDefault(page = 0, size = 6) @SortDefault.SortDefaults({
-								@SortDefault(sort = "id", direction = Sort.Direction.ASC), })
-								Pageable pageable) {
+	public String filtrarPartidos(@RequestParam(required = false) Sexo sexo, 
+								@RequestParam(required = false) Tipo tipo,
+								Map<String,Object> model,
+								@RequestParam(defaultValue="0") int page) {
+									
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){
-			Integer page = 0;
-    		List<Partido> partidosFiltrados = partidoService.filtrarPartidos(page, pageable, sexo, tipo, ciudad);
-			Integer numResults = partidosFiltrados.size();
-    		model.addAttribute("partidos", partidosFiltrados);
-			model.addAttribute("pageNumber", pageable.getPageNumber());
-			model.addAttribute("hasPrevious", pageable.hasPrevious());
-			Double totalPages = Math.ceil(numResults / (pageable.getPageSize()));
-			model.addAttribute("totalPages", totalPages);
-
+    		Page<Partido> partidos = partidoService.filtrarPartidos(sexo,tipo,page);
+			Integer numPartidos = partidos.getNumberOfElements();
+    		model.put("partidos", partidos);
+			model.put("numPartidos", numPartidos);
     		return VIEW_LISTA_PARTIDOS;
 		}else{
 			return "redirect:/";
@@ -82,6 +74,7 @@ public class PartidoController {
 		mav.addObject("jugadorLogueado", this.jugadorService.findJugadorByUsername(principal.getName()));
         mav.addObject("estaDentro",estaDentro);
 		mav.addObject("estaEnEspera", estaEnEspera);
+		mav.addObject("puedeEditar", partidoService.puedeEditarPartido(jugadorService.findJugadorByUsername(principal.getName()),partidoService.findPartidoById(partidoId)));
 		return mav;
     }
 
@@ -161,6 +154,69 @@ public class PartidoController {
 			jugador.setVolleys(400);
 			jugadorService.saveJugador(jugador);
 			return "redirect:/jugadores/"+jugador.getId();	
+		} else {
+			return "redirect:/";
+		}
+	}
+
+	@GetMapping(value = "/partidos/edit/{id}")
+	public String initEditForm(Map<String, Object> model, @PathVariable("id") int id, Principal principal) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			Partido partido = partidoService.findPartidoById(id);
+			Jugador player = jugadorService.findJugadorByUsername(principal.getName());
+			if (partidoService.puedeEditarPartido(player, partido)){
+				model.put("partido", partido);
+				model.put("centros", centroService.findAllCentros());
+				return "partidos/editarPartido";
+			}else{
+				return "welcome";
+			}
+		}else{
+			return "welcome";
+		}
+	}
+	
+	
+	@PostMapping(value = "/partidos/edit/{id}")
+	public String processEditForm(@Valid Partido partido, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
+
+		if(result.hasErrors()){
+			model.put("errors", result.getAllErrors());
+			return "partidos/editarPartido";
+		}
+		else {
+			Partido partidoUpdate = this.partidoService.findPartidoById(partido.getId());
+			BeanUtils.copyProperties(partido,partidoUpdate,"mensajes","jugadores","solicitudes","creador","fechaCreacion","precioPersona"); 
+			this.partidoService.save(partidoUpdate);
+			return "redirect:/partidos/" + partidoUpdate.getId();
+		}						
+		
+	}
+
+
+	// Salirse de un partido
+	@GetMapping(value = "/partidos/salir/{partidoId}")
+	public String salirPartido(@PathVariable("partidoId") int partidoId, ModelMap model, Principal principal) throws YaUnidoException {
+		if(partidoService.getJugadorDentroPartido(partidoId, principal)) {
+			Jugador jugador = jugadorService.findJugadorByUsername(principal.getName());
+			Partido partido = partidoService.findPartidoById(partidoId);
+			partidoService.salirPartido(partido,jugador);
+			return "redirect:/partidos";
+		}else{
+			return "redirect:/";
+		}
+	}
+
+	//Eliminar Partido
+	@GetMapping(value = "/partidos/eliminar/{partidoId}")
+	public String eliminarPartido(@PathVariable("partidoId") int partidoId, ModelMap model, Principal principal) {
+		Partido partido = partidoService.findPartidoById(partidoId);
+		Jugador jugadorAut = jugadorService.findJugadorByUsername(principal.getName());
+		Boolean esAdmin = jugadorService.esAdmin(jugadorAut);
+		if(esAdmin){
+			partidoService.deletePartido(partido);
+			return "redirect:/partidos";
 		} else {
 			return "redirect:/";
 		}
