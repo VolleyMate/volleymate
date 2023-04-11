@@ -367,7 +367,7 @@ public class JugadorController {
 
     @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
     public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
-                                                        @PathVariable("volleys") Integer precio, RedirectAttributes redirAttrs){
+                                                        @PathVariable("precio") Integer precio, RedirectAttributes redirAttrs){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         Integer sumVolleys = jugador.getVolleys() + volleys;
         jugador.setVolleys(sumVolleys);
