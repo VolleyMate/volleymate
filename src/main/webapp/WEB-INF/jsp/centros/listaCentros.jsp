@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="listaCentros">
@@ -69,11 +69,9 @@
         </div>
     </div>
 
-
-
     <sec:authorize access="hasAuthority('admin')">
         <div class="row" style="width: 100%; padding-top: 5%; font-weight: bold;">
-            <h2 class="col-md-6">ACEPTAR CENTROS [ESTO SOLO ES MOSTRADO A ADMINISTRADORES]</h2>
+            <h3 class="col-md-6">ACEPTAR CENTROS [ADMIN]</h3>
         </div>    
         <c:if test="${centrosSol.size() == 0}">
             Aún no ha ninguna solicitud de centro.
@@ -110,6 +108,10 @@
         border-style: solid;
         border-color: #0099BB;
         margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
-
+        border-radius: 10px;
+        padding-top: 4%;
+        padding-bottom: 4%;
+        padding-left: 4%;
+        padding-right: 4%;
 }
 </style>
