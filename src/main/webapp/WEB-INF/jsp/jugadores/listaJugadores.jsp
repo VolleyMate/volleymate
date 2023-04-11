@@ -9,12 +9,12 @@
 <petclinic:layout pageName="listaJugadores">
     
     <div class="container text-center">
-        <form class="form-inline" th:action="@{/}">
+        <form id = "mi-formulario" class="form-inline" th:action="@{/}">
             <div class="form-group mb-2">
                 <label>Filtrar : </label>
             </div>
             <div class="form-group mx-sm-3 mb-2">
-                <input type="text" class="form-control" id="palabraClave" name="palabraClave" th:value="${palabraClave}" placeholder="Escriba el valor a buscar" required/>
+                <input type="text" class="form-control" id="input-1" name="palabraClave" th:value="${palabraClave}" placeholder="Escriba el valor a buscar" required/>
             </div>
             <input type="submit" class="btn btn-info mb-2" value="Buscar">
             <input type="submit" class="btn btn-secondary mb-2" value="Limpiar">
@@ -54,6 +54,21 @@
 
         
 </petclinic:layout>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js%22%3E"></script>
+    <script>
+      const formulario = document.querySelector('#mi-formulario');
+      const input = document.querySelector('#input-1');
+    
+      input.addEventListener('change', enviarDatos);
+    
+      function enviarDatos() {
+    
+        const valor = input.value;
+    
+        $.post('/listaJugadores', {input: valor});
+      }
+</script>
 
 <style>
     .card {
