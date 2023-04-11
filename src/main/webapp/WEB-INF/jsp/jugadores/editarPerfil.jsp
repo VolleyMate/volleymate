@@ -16,7 +16,7 @@
         </p>
     </h2>
  
-    <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
+    <div style="background-color: #0099bb3e; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
         <div class="container">
             <form:form modelAttribute="jugador" class="form-horizontal " id="add-jugador-form">
                 <div class="col-md-8" style="margin: 50px;">
@@ -49,10 +49,10 @@
                     </div>
 
                     <div class="form-group" style="text-align: center;">
-                        <button class="btn btn-md btn-default" style="background-color: #838789; margin: 0 5px;"
+                        <button class="btn btn-md btn-default"
                             type="submit">Actualizar datos</button>
                         <a href="/jugadores" class="btn btn-md btn-default"
-                            style="background-color: #838789; margin: 0 5px;">Volver atrás</a>
+                            >Volver atrás</a>
                     </div>
                 </div>
 

@@ -8,50 +8,6 @@
 
 <petclinic:layout pageName="misPartidos">
 
-    <!-- <div class="row">
-        <h2>Mis Partidos</h2>
-        <c:if test="${numPartidos == 0}">
-            Aún no perteneces a ningún partido.
-        </c:if>
-        <c:if test="${numPartidos != 0}">
-            <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
-                <thead>
-                    <tr>
-                        <th style="width: 120px; text-align: center;">Título</th>
-                        <th style="width: 120px; text-align: center;">Fecha de la actividad</th>
-                        <th style="width: 120px; text-align: center;">Ciudad</th>
-                        <th style="width: 120px; text-align: center;">Dirección</th>
-                        <th style="width: 120px; text-align: center;">Jugadores</th>
-                        <th style="width: 120px; text-align: center;"></th>
-                        </tr>
-                    <tr style="height: 15px;"></tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${partidos.content}" var="partido">
-                        <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
-                            <td style="text-align: center;">
-                                <c:out value="${partido.nombre}"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <c:out value="${partido.getFechaParseada()}"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <c:out value="${partido.centro.nombre}"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <spring:url value="/partidos/${partido.id}" var="verURL"></spring:url>
-                                <a href="${verURL}" class="btn btn-default">Ver</a>
-                            </td> 
-                        </tr>
-                        <tr style="height: 15px;"></tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </c:if>
-    </div> -->
     <h2>Mis partidos</h2>
     <div class="row">
         <c:if test="${numPartidos == 0}">
@@ -66,7 +22,7 @@
                                 <strong>Jugadores:</strong> <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
                               </p>                              
                             <p class="card-text">
-                                <strong>Dirección:</strong> <c:out value="${partido.centro.nombre}"/> 
+                                <strong>Centro:</strong> <c:out value="${partido.centro.nombre}"/> 
                             </p>
                             <p class="card-text">
                                 <strong>Tipo:</strong> <c:out value="${partido.tipo}"/>
@@ -74,7 +30,10 @@
                             <p class="card-text">
                                 <strong>Fecha de la actividad:</strong> <c:out value="${partido.getFechaParseada()}"/>
                             </p>
-                            <a href="/partidos/${partido.id}" class="btn btn-primary">Ver</a>
+                            <br>
+                            <div class="text-center">
+                            <a href="/partidos/${partido.id}" class="btn btn-default">Ver</a>
+                            </div>
                         </div>
                     </div>
                 </div>
