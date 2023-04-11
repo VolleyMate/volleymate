@@ -31,9 +31,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 
 @Controller
 public class JugadorController {
@@ -45,6 +47,7 @@ public class JugadorController {
     private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
     private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
     private static final String HOME_TIENDA_CONFIRMAR_COMPRA = "jugadores/confirmarCompra";
+    private static final String VIEW_LISTADO_JUGADORES = "jugadores/listaJugadores";
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
@@ -376,19 +379,31 @@ public class JugadorController {
         return HOME_TIENDA_VOLLEYS;
     }
 
-    @GetMapping(value = "/listaJugadores")
-	public String buscarJugador(Model model, @PathVariable("palabraClave") String palabraClave) {
-		
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-	    if (auth != null){
-			List<Jugador> listaJugadores = jugadorService.listAll(palabraClave);
-            model.addAttribute("listaJugadores", listaJugadores);
-			model.addAttribute("palabraClave", palabraClave);
-			return "/listaJugadores";
-		} else {
-			return "redirect:/";
-		}
+    // @GetMapping(value = "/listaJugadores")
+	// public String buscarJugador(Model model, @PathVariable("palabraClave") String palabraClave) {
+	
+	// Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	
+	//     if (auth != null){
+	//     	List<Jugador> listaJugadores = jugadorService.listAll(palabraClave);
+    //         model.addAttribute("listaJugadores", listaJugadores);
+	//  		model.addAttribute("palabraClave", palabraClave);
+	//  		return "/listaJugadores";
+	//  	} else {
+	//  		return "redirect:/";
+	//  	}
+    // }
+
+    @RequestMapping(value = "/listaJugadores")
+    public String showJugadores(Model model, @Param("palabraClave") String palabraClave) {
+               
+        List<Jugador> listaJugadores = jugadorService.listAll(palabraClave);
+        Integer numJugadores = listaJugadores.size();
+
+        model.addAttribute("listaJugadores", listaJugadores);
+        model.addAttribute("numJugadores", numJugadores);
+        model.addAttribute("palabraClave", palabraClave);
+        return VIEW_LISTADO_JUGADORES;
     }
 }
 

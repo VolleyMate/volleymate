@@ -127,6 +127,11 @@ public class JugadorService {
         return jugadorRepository.findAll();
     }
 
+    public List<Jugador> listAll(){
+        
+        return jugadorRepository.findAll();
+    }
+
     public List<String> findErroresCrearJugador(Jugador jugador){
         List<String> errores = new ArrayList<>();
         Integer digitos = (int)(Math.log10(jugador.getTelephone())+1);

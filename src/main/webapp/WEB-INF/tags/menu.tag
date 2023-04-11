@@ -43,21 +43,6 @@
 				</sec:authorize>
 
 				<sec:authorize access="isAuthenticated()">
-					<petclinic:menuItem active="${name eq 'tienda'}" url="/tienda"
-						title="tienda">
-						<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-						<span>Tienda</span>
-					</petclinic:menuItem>				
-				</sec:authorize>
-
-				<sec:authorize access="isAuthenticated()">
-
-					<form class="navbar-form navbar-left" role="search" method="get" action="/jugadores/listaJugadores">
-						<div class="form-group">
-							<input type="text" class="form-control" name="palabraClave" placeholder="Buscar jugador...">
-						</div>
-						<button type="submit" class="btn btn-default">Buscar</button>
-					</form>
 
 					<petclinic:menuItem active="${name eq 'listaCentros'}" url="/centros"
 						title="listaCentros">
@@ -65,6 +50,24 @@
 						<span>Centros</span>
 					</petclinic:menuItem>
 
+				</sec:authorize>
+
+				<sec:authorize access="isAuthenticated()">
+
+					<petclinic:menuItem active="${name eq 'listaJugadores'}" url="/listaJugadores"
+						title="listaJugadores">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span>Jugadores</span>
+					</petclinic:menuItem>
+
+				</sec:authorize>
+
+				<sec:authorize access="isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'tienda'}" url="/tienda"
+						title="tienda">
+						<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+						<span>Tienda</span>
+					</petclinic:menuItem>				
 				</sec:authorize>
 			</ul>
 

@@ -7,56 +7,44 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="listaJugadores">
-    <!--
-    <h2>Jugadores disponibles</h2>
-    <form action="/listaJugadores" method="get">
-        <div style="display: grid; grid-template-columns: repeat(4,1fr);">
-            <div style="grid-column: 1;">
-                <div style="text-align: left;">
-                    <label for="sexo">Sexo:</label>
-                </div>
-                <select class="btn btn-default" id="sexo" name="sexo">
-                    <option value="MASCULINO">Masculino</option>
-                    <option value="FEMENINO">Femenino</option>
-                </select>
+    
+    <div class="container text-center">
+        <form class="form-inline" th:action="@{/}">
+            <div class="form-group mb-2">
+                <label>Filtrar : </label>
             </div>
-            <br>
-            <div style="grid-column: 2; grid-row: 1; align-items: center;">
-                <div style="text-align: left;">
-                    <label for="ciudad">Ciudad:</label>
-                </div>
-                <input type="text" class="form-control" id="ciudad" name="ciudad" value="${param.ciudad}" />
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" class="form-control" id="palabraClave" name="palabraClave" th:value="${palabraClave}" placeholder="Escriba el valor a buscar" required/>
             </div>
-            <br>
-            <br>
-            <div style="grid-column: 4; grid-row: 1;">
-                <div style="text-align: left;">
-                    <label for=""></label>
-                </div>
-                <button class="btn btn-default" type="submit">Filtrar</button>
-            </div> 
-        </div>
-    </form>
--->
+            <input type="submit" class="btn btn-info mb-2" value="Buscar">
+            <input type="submit" class="btn btn-secondary mb-2" value="Limpiar">
+        </form>
+    </div>
+
+   
+    <h2>Jugadores</h2>
     <div class="row">
         <c:if test="${numJugadores == 0}">
             No se encuentra ningún jugador.
         </c:if>
         <c:if test="${numJugadores != 0}">
-            <c:forEach items="${jugadores}" var="jugador">
+            <c:forEach items="${listaJugadores}" var="jugador">
                 <div class="col-md-4">
                     <div class="card">
-                        <div class="card-body">
-                            <a href="/jugadores/${jugador.id}"><h5 class="card-title">${jugador.nombre}</h5></a>
+                        <div class="card-body">                  
                             <p class="card-text">
-                                <strong>Usuario:</strong> <c:out value="${jugador.user.username}"/>
+                                <strong>Nombre:</strong> <c:out value="${jugador.user.username}"/>
+                              </p>                              
+                            <p class="card-text">
+                                <strong>Ciudad:</strong> <c:out value="${jugador.ciudad}"/> 
                             </p>
                             <p class="card-text">
-                                <strong>Ciudad:</strong> <c:out value="${jugador.ciudad}"/>
+                                <strong>Teléfono:</strong> <c:out value="${jugador.telephone}"/>
                             </p>
                             <p class="card-text">
                                 <strong>Sexo:</strong> <c:out value="${jugador.sexo}"/>
                             </p>
+                            <a href="/jugadores/{jugadorId}" class="btn btn-primary">Ver</a>
                         </div>
                     </div>
                 </div>
@@ -64,37 +52,7 @@
         </c:if>
     </div>
 
-    <!--
-    <div class="pagination">
-        <c:if test="${jugadores.hasPrevious()}">
-            <c:url var="previousPageUrl" value="/jugadores">
-                <c:param name="sexo" value="${param.sexo}" />
-                <c:param name="ciudad" value="${param.ciudad}" />
-                <c:param name="page" value="${currentPage - 1}" />
-            </c:url>
-            <a href="${previousPageUrl}" class="previous">
-                <button class="btn btn-default">
-                    Anterior
-                </button>
-            </a>
-        </c:if>
-        <c:if test="${!isLast}">
-            <c:url var="nextPageUrl" value="/jugadores">
-                <c:param name="sexo" value="${param.sexo}" />
-                <c:param name="tipo" value="${param.tipo}" />
-                <c:param name="page" value="${partidos.number + 1}" />
-            </c:url>
-            <a href="${nextPageUrl}" class="next">
-                <button class="btn btn-default">
-                    Siguiente
-                </button>
-            </a>
-        </c:if>
-      </div>
-      
-      <p>Página ${partidos.number + 1} de ${partidos.totalPages}</p>
-    -->
-      
+        
 </petclinic:layout>
 
 <style>
