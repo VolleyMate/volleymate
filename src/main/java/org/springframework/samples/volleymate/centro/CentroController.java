@@ -65,6 +65,7 @@ public class CentroController {
     @GetMapping(value = "/centros/solitud/list")
     public String showSolicitudes(Map<String, Object> model) {
         List<Centro> centros = centroService.getSolicitudesCentros();
+        
         model.put("centros", centros);
         return "centros/solicitudesList";
     }
