@@ -11,10 +11,10 @@
         <h2>Solicitudes de centros</h2>
 
     <div class="row">
-        <c:if test="${numCentros == 0}">
+        <c:if test="${centros.size() == 0}">
             Aún no hay solicitudes de centros.
         </c:if>
-        <c:if test="${numCentros != 0}">
+        <c:if test="${centros.size() != 0}">
             <c:forEach var="centro" items="${centros}">
                 <div class="col-md-4">
                     <div class="card">
@@ -32,15 +32,11 @@
                             <p class="card-text">
                                 <strong>Dirección en el mapa:</strong> <c:out value="${centro.maps}"/>
                             </p>
-                            <div> 
-                                <a href="/centros/solitud/accept/{centroId}" class="btn btn-default" style="background-color: green;">
+                            <div>
+                                <a href="/centros/solicitud/accept/${centro.id}" class="btn btn-default" style="background-color: green;">
                                     <span class="glyphicon" aria-hidden="true"></span> Aceptar solicitud
                                 </a>
-                            
-                            
-                            
-                                
-                                <a href="/centros/solitud/deny/{centroId}" class="btn btn-default" style="background-color: lightcoral;">
+                                <a href="/centros/solicitud/deny/${centro.id}" class="btn btn-default" style="background-color: lightcoral;">
                                     <span  aria-hidden="true"></span> Denegar solicitud
                                 </a>
                             
@@ -61,7 +57,11 @@
         border-style: solid;
         border-color: #0099BB;
         margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
-
+        border-radius: 10px;
+        padding-top: 4%;
+        padding-bottom: 4%;
+        padding-left: 4%;
+        padding-right: 4%;
 }
     
 </style>
