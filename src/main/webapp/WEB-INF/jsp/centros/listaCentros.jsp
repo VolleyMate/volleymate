@@ -28,6 +28,9 @@
                             <p class="card-text">
                                 <strong>Ciudad:</strong> <c:out value="${centro.ciudad}"/>
                             </p>
+                            <div class="text-center">
+                                <a href="/centros/${centro.id}" class="btn btn-default">Ver</a>
+                            </div>
                         </div>
                     </div>
                 </div>

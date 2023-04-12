@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.data.domain.Page;
+import org.springframework.samples.volleymate.jugador.JugadorService;
 
 @Controller
 public class CentroController {
     public final CentroService centroService;
+    public final JugadorService jugadorService;
 
     private static final String VISTA_LISTAR_CENTROS = "centros/listaCentros";
     private static final String VISTA_CREAR_CENTROS = "centros/crearCentros";
@@ -30,8 +33,9 @@ public class CentroController {
 	private static final String VISTA_ELIMINAR_CENTROS = "centros/eliminarCentro";
 
     @Autowired
-    public CentroController(CentroService centroService) {
+    public CentroController(CentroService centroService, JugadorService jugadorService) {
         this.centroService = centroService;
+        this.jugadorService = jugadorService;
     }
 
     @GetMapping(value = "/centros/solitud/new")
@@ -63,6 +67,14 @@ public class CentroController {
         model.put("centros", centros);
         model.put("numCentros", numCentros);
         return VISTA_LISTAR_CENTROS;
+    }
+
+    @GetMapping("/centros/{centroId}")
+    public ModelAndView showCentroDetails(@PathVariable("centroId") int centroId, Principal principal) {
+		ModelAndView mav = new ModelAndView("centros/centroDetails");
+		mav.addObject("centro", this.centroService.findCentroById(centroId));
+		mav.addObject("jugadorLogueado", this.jugadorService.findJugadorByUsername(principal.getName()));
+		return mav;
     }
 
     @GetMapping(value = "/centros/solicitud/list")
