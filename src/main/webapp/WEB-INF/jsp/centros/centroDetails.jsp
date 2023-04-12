@@ -25,14 +25,10 @@
     <div style="width: 70%; background-color: #0099bc; margin: 0 auto; border-radius: 50px;  text-align: center; display: flex; flex-wrap: wrap;">
 
         <div style="width: 45%;">
+            <h3></h3>
             <h3 style="color: #FFFFFF;">Nombre: </h3>
             <h3 style="background-color: white;border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto; ">
                 <c:out value="${centro.nombre}"></c:out>
-            </h3>
-            <h3></h3>
-            <h3 style="color: #FFFFFF;">Dirección: </h3>
-            <h3 style="background-color: white; border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto;">
-                <c:out value="${centro.direccion}" />
             </h3>
             <h3></h3>
             <h3 style="color: #FFFFFF;">Ciudad: </h3>
@@ -41,35 +37,39 @@
             </h3>
         </div>
         <div style="width: 45%;">
-            <h3 style="color: #FFFFFF;">Mapa:</h3>
+            <h3></h3>
+            <h3 style="color: #FFFFFF;">Dirección: </h3>
             <h3 style="background-color: white; border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto;">
-                <c:out value="${centro.maps}" />
+                <c:out value="${centro.direccion}" />
             </h3>
             <h3></h3>
-            <h3 style="color: #FFFFFF;"> Estado: </h3>
-            <h3 style="background-color: white; border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto;">
-                <c:out value="${centro.estado}" />
+            <h3 style="color: #FFFFFF;">Mapa:</h3>
+            <h3 style="background-color: white; border-radius: 5px; width: 25em; text-align: center;  margin: 0 auto;">
+                <c:out value="${centro.maps}" />
             </h3>
+            <br>
+        <h3></h3>
+        
+    
         </div>
 
-
+    </div>
 
 
     <div style="text-align: center; padding-top: 3%;">
         <sec:authorize access="hasAuthority('admin')">
-        <spring:url value="/centros/edit/{centroId}" var="editUrl">
-            <spring:param name="id" value="${id}" />
-        </spring:url>
-        <a href="${editUrl}" class="btn btn-default">Editar centro</a>
-        </sec:authorize>
+            <spring:url value="/centros/edit/{centroId}" var="editUrl">
+                <spring:param name="centroId" value="${centro.id}" />
+            </spring:url>
+            <a href="${editUrl}" class="btn btn-default">Editar centro</a>
+            
 
-        <sec:authorize access="hasAuthority('admin')">
             <spring:url value="/centros/delete/{centroId}" var="eliminarURL">
                 <spring:param value="${centro.id}" name="centroId"/>
             </spring:url>
             <a href="${eliminarURL}" class="btn btn-danger">Eliminar centro [ADMIN]</a>
         </sec:authorize>
     
-</div>
+    </div>
 
 </petclinic:layout>
