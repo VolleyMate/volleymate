@@ -62,11 +62,22 @@
             <p>Página ${centros.number + 1} de ${centros.totalPages}</p>
         </c:if>
         </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
         <div class="col-md-6 text-right">
             <a href="/centros/solitud/new" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo centro
             </a>
         </div>
+        <div class="row" style="width: 100%;">
+        <div class="col-md-6 text-left">
+            <sec:authorize access="hasAuthority('admin')">
+            <a href="/centros/solitud/list" class="btn btn-default">
+                <span  aria-hidden="true"></span> Ver solicitudes
+            </a>
+        </sec:authorize>
+        </div>
+        </div>
+    </div>
     </div>
 
     <sec:authorize access="hasAuthority('admin')">

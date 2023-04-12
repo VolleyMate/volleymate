@@ -65,6 +65,14 @@ public class CentroController {
         return VISTA_LISTAR_CENTROS;
     }
 
+    @GetMapping(value = "/centros/solitud/list")
+    public String showSolicitudes(Map<String, Object> model) {
+        List<Centro> centros = centroService.getSolicitudesCentros();
+        
+        model.put("centros", centros);
+        return "centros/solicitudesList";
+    }
+
     @GetMapping(value = "/centros/solicitud/accept/{centroId}")
     public String acceptSolicitud(Map<String, Object> model, @PathVariable("centroId") int centroId, Principal principal) {
         //Solo se puede aceptar la solicitud si el usuario es administrador
