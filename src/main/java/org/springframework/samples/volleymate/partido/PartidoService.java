@@ -2,7 +2,6 @@ package org.springframework.samples.volleymate.partido;
 
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -57,7 +56,6 @@ public class PartidoService {
 			}
 			jugador.getPartidos().remove(partido);
 		}
-
 		partidoRepository.delete(partido);
 	}
 

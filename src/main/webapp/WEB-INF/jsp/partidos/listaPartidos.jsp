@@ -9,7 +9,7 @@
 <petclinic:layout pageName="partidos">
     <h2>Partidos disponibles</h2>
     <form action="/partidos" method="get">
-        <div style="display: grid; grid-template-columns: repeat(4,1fr);">
+        <div style="display: grid; grid-template-columns: repeat(4,1fr); padding-bottom: 5%;">
             <div style="grid-column: 1;">
                 <div style="text-align: left;">
                     <label for="sexo">Sexo:</label>
@@ -37,8 +37,6 @@
                     <option value="WATERVOLEY">Watervoley</option>
                 </select>
             </div>
-            <br>
-            <br>
             <div style="grid-column: 4; grid-row: 1;">
                 <div style="text-align: left;">
                     <label for=""></label>
@@ -47,50 +45,6 @@
             </div> 
         </div>
     </form>
-   
-
-    <!-- <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
-        <thead>
-            <tr>
-                <th style="width: 150px; text-align: center;">Creador</th>
-                <th style="width: 120px; text-align: center;">Jugadores</th>
-                <th style="width: 120px; text-align: center;">Dirección</th>
-                <th style="width: 120px; text-align: center;">Tipo</th>
-                <th style="width: 120px; text-align: center;">Fecha de la actividad</th>
-                <th style="width: 120px; text-align: center;">Fecha de creación</th>
-                <th style="width: 60px;"></th>
-            </tr>
-            <tr style="height: 15px;"></tr>
-        </thead>
-        <tbody>
-            <c:forEach items="${partidos.content}" var="partido">
-                <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
-            
-                    <td style="text-align: center;">
-                        <a style = "color: black;" href="/jugadores/${partido.creador.id}" class="btn" >${partido.creador.user.username}</a>
-                    </td>
-                    
-                    <td style="text-align: center;">
-                        <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
-                    </td>
-                    <td style="text-align: center;">
-                        <c:out value="${partido.centro.nombre}"/>
-                    </td>
-                    <td style="text-align: center;">
-                        <c:out value="${partido.tipo}"/>
-                    </td>
-                    <td style="text-align: center;">
-                        <c:out value="${partido.getFechaCreacionParseada()}"/>
-                    </td>
-                    <td style="text-align: center;">
-                        <spring:url value="/partidos/${partido.id}" var="verURL"></spring:url>
-                        <a href="${verURL}" class="btn btn-default">Ver</a>
-                    </td> 
-                </tr>
-                <tr style="height: 15px;"></tr>
-            </c:forEach>
-        </tbody>
-    </table>  -->
 
     <div class="row">
         <c:if test="${numPartidos == 0}">
@@ -101,13 +55,13 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <a href="/jugadores/${partido.creador.id}"><h5 class="card-title">${partido.creador.user.username}</h5></a> 
+                            <a href="/jugadores/${partido.creador.id}"><h5 class="card-title" style="font-weight: bold;">${partido.creador.user.username}</h5></a> 
 
                             <p class="card-text">
                                 <strong>Jugadores:</strong> <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
                               </p>                              
                             <p class="card-text">
-                                <strong>Dirección:</strong> <c:out value="${partido.centro.nombre}"/> 
+                                <strong>Centro:</strong> <c:out value="${partido.centro.nombre}"/> 
                             </p>
                             <p class="card-text">
                                 <strong>Tipo:</strong> <c:out value="${partido.tipo}"/>
@@ -115,7 +69,10 @@
                             <p class="card-text">
                                 <strong>Fecha de la actividad:</strong> <c:out value="${partido.getFechaParseada()}"/>
                             </p>
-                            <a href="/partidos/${partido.id}" class="btn btn-primary">Ver</a>
+                            <br>
+                            <div class="text-center">
+                            <a href="/partidos/${partido.id}" class="btn btn-default">Ver</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -169,6 +126,11 @@
         border-style: solid;
         border-color: #0099BB;
         margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
+        border-radius: 10px;
+        padding-top: 4%;
+        padding-bottom: 4%;
+        padding-left: 4%;
+        padding-right: 4%;
 
 }
 </style>

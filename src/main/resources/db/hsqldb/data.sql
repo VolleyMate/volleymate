@@ -1,10 +1,10 @@
 INSERT INTO users(username,password,enabled,correo) VALUES ('admin1','4dm1n',TRUE,'admin@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
-INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (2,'Admin','Admin','Sevilla','666666666','MASCULINO','','admin1', 10000000);
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (1,'Admin','Admin','Sevilla','666666666','MASCULINO','','admin1', 10000000);
 
 INSERT INTO users(username,password,enabled,correo) VALUES ('jorsilman','jorsilman',TRUE,'jorge@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (2,'jorsilman','admin');
-INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (1,'Jorge','Sillero','Sevilla','657236154','MASCULINO','https://st1.uvnimg.com/e0/40/ab16af48465f804d56e0c2a7ccf4/gettyimages-1240189250.jpg','jorsilman', 1000);
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (2,'Jorge','Sillero','Sevilla','657236154','MASCULINO','https://st1.uvnimg.com/e0/40/ab16af48465f804d56e0c2a7ccf4/gettyimages-1240189250.jpg','jorsilman', 1000);
 
 INSERT INTO users(username,password,enabled,correo) VALUES ('barba','barba',TRUE,'barba@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (3,'barba','admin');
@@ -18,9 +18,12 @@ INSERT INTO users(username,password,enabled,correo) VALUES ('meriglmar','meriglm
 INSERT INTO authorities(id,username,authority) VALUES (5,'meriglmar','admin');
 INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (5,'Mercedes','Iglesias','Sevilla','666666666','FEMENINO','','meriglmar', 250);
 
+INSERT INTO users(username,password,enabled,correo) VALUES ('jugador','jugador',TRUE,'jugador@gmail.com');
+INSERT INTO authorities(id,username,authority) VALUES (6,'jugador','jugador');
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (6,'jugador','jugador','Sevilla','666666666','MASCULINO','','jugador', 10000000);
 
 INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (1,'Mairena Voley Club','Av. de la Constitución num 2', 'Sevilla', true, 'https://goo.gl/maps/P5uyWUKnDqNLAbnE6');
-INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (2,'Club Deportivo Claret','C. Monzón', 'Sevilla', false, 'https://goo.gl/maps/JYErpvDCVSKuNLvF9');
+INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (2,'Club Deportivo Claret','C. Monzón', 'Sevilla', true, 'https://goo.gl/maps/JYErpvDCVSKuNLvF9');
 INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (3,'Club Voleibol Esquimo','Cl. Meñaca', 'Sevilla', true, 'https://goo.gl/maps/ZNFjetB53pX1JMcg6');
 
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (1,'Partido amistoso','MASCULINO','Vamos a jugar un partido amistoso',0,'jorsilman',3,'2013-01-02 17:00','2013-01-01 17:00',150,1);
