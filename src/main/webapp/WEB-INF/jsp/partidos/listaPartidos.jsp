@@ -9,6 +9,14 @@
 <petclinic:layout pageName="partidos">
     <h2>Partidos disponibles</h2>
     <form action="/partidos" method="get">
+        <div class="col-md-12 text-center" style="justify-content: center;">
+            <a href="/jugadores/mispartidos" class="btn btn-default">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Mis partidos
+            </a>
+        </div>
+        <br>
+        <br>
+        <br>
         <div style="display: grid; grid-template-columns: repeat(4,1fr); padding-bottom: 3%;">
             <div style="grid-column: 1;">
                 <div style="text-align: left;">

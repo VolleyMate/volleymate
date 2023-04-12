@@ -27,11 +27,13 @@
 				</petclinic:menuItem>
 
 				<sec:authorize access="isAuthenticated()">
-					<petclinic:menuItem active="${name eq 'misPartidos'}" url="/jugadores/mispartidos"
-						title="misPartidos">
-						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-						<span>Mis partidos</span>
+
+					<petclinic:menuItem active="${name eq 'listaJugadores'}" url="/listaJugadores"
+						title="listaJugadores">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						<span>Buscar jugador</span>
 					</petclinic:menuItem>
+
 				</sec:authorize>
 
 				<sec:authorize access="isAuthenticated()">
@@ -48,16 +50,6 @@
 						title="listaCentros">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Centros</span>
-					</petclinic:menuItem>
-
-				</sec:authorize>
-
-				<sec:authorize access="isAuthenticated()">
-
-					<petclinic:menuItem active="${name eq 'listaJugadores'}" url="/listaJugadores"
-						title="listaJugadores">
-						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						<span>Jugadores</span>
 					</petclinic:menuItem>
 
 				</sec:authorize>
