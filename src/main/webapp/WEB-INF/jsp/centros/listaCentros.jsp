@@ -92,5 +92,25 @@
         padding-bottom: 4%;
         padding-left: 4%;
         padding-right: 4%;
-}
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+        background-color: #e6f4f2;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
 </style>

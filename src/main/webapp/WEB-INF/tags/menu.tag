@@ -17,6 +17,7 @@
 		</div>
 
 		<div class="navbar-collapse collapse" id="main-navbar">
+
 			<ul class="nav navbar-nav">
 
 				<petclinic:menuItem active="${name eq 'home'}" url="/"
@@ -26,11 +27,13 @@
 				</petclinic:menuItem>
 
 				<sec:authorize access="isAuthenticated()">
-					<petclinic:menuItem active="${name eq 'misPartidos'}" url="/jugadores/mispartidos"
-						title="misPartidos">
-						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-						<span>Mis partidos</span>
+
+					<petclinic:menuItem active="${name eq 'listaJugadores'}" url="/listaJugadores"
+						title="listaJugadores">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						<span>Buscar jugador</span>
 					</petclinic:menuItem>
+
 				</sec:authorize>
 
 				<sec:authorize access="isAuthenticated()">
@@ -42,11 +45,13 @@
 				</sec:authorize>
 
 				<sec:authorize access="isAuthenticated()">
-					<petclinic:menuItem active="${name eq 'misNotificaciones'}" url="/jugadores/notificaciones"
-						title="notificaciones">
-						<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-						<span>Mis notificaciones</span>
-					</petclinic:menuItem>				
+
+					<petclinic:menuItem active="${name eq 'listaCentros'}" url="/centros"
+						title="listaCentros">
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span>Centros</span>
+					</petclinic:menuItem>
+
 				</sec:authorize>
 
 				<sec:authorize access="isAuthenticated()">
@@ -56,17 +61,7 @@
 						<span>Tienda</span>
 					</petclinic:menuItem>				
 				</sec:authorize>
-
-				<sec:authorize access="isAuthenticated()">
-					<petclinic:menuItem active="${name eq 'listaCentros'}" url="/centros"
-						title="listaCentros">
-						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-						<span>Centros</span>
-					</petclinic:menuItem>
-				</sec:authorize>
 			</ul>
-
-
 
 
 			<ul class="nav navbar-nav navbar-right">
@@ -80,19 +75,26 @@
 							<strong><sec:authentication property="name" /></strong> 
 							<span class="glyphicon glyphicon-chevron-down"></span>
 					</a>
-						<ul class="dropdown-menu" style="border-radius: 20px;">
+						<ul class="dropdown-menu" style="border-radius: 10px;">
 							<li>
 								<div class="navbar-login">
 									<div class="row" >
 										<div class="col-6 h5">
 											<p class="text-center">
+												<a href="<c:url value="/jugadores/notificaciones" />"
+													style="border-radius: 20px;" class="btn btn-success btn-md"><span class="glyphicon glyphicon-bell"></span> Notificaciones</a>
+											</p>
+										
+											<p class="col-6 h5 text-center">
 												<a href="<c:url value="/jugadores" />"
 													style="border-radius: 20px;" class="btn btn-info btn-md"><span class="glyphicon glyphicon-share-alt"></span> Ver perfil</a>
 											</p>
+
 											<p class="col-6 h5 text-center">
 												<a href="<c:url value="/logout" />"
 													style="border-radius: 20px;" class="btn btn-danger btn-md"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a>
-											</p>
+											</p>			
+									
 										</div>
 									</div>
 								</div>
@@ -116,8 +118,6 @@
 				</sec:authorize>
 			</ul>
 		</div>
-
-
 
 	</div>
 </nav>
