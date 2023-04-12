@@ -174,6 +174,7 @@ public class JugadorService {
             Integer volleys = j.getVolleys();
             volleys += 150;
             j.setVolleys(volleys);
+            this.jugadorRepository.save(j);
         }
     }
 
