@@ -45,7 +45,9 @@
                             <p class="card-text">
                                 <strong>Sexo:</strong> <c:out value="${jugador.sexo}"/>
                             </p>
-                            <a href="/jugadores/{jugadorId}" class="btn btn-primary">Ver</a>
+                            <div class="text-center">
+                                <a href="/jugadores/${jugador.id}" class="btn btn-default">Ver</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -89,6 +91,30 @@ $(document).ready(function(){
         border-style: solid;
         border-color: #0099BB;
         margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
+        border-radius: 10px;
+        padding-top: 4%;
+        padding-bottom: 4%;
+        padding-left: 4%;
+        padding-right: 4%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+        background-color: #e6f4f2;
+        animation: pulse 1.5s infinite;
+    }
 
-}
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
 </style>
