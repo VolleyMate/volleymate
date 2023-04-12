@@ -37,6 +37,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.samples.volleymate.aspecto.Aspecto;
+import org.springframework.samples.volleymate.aspecto.AspectoService;
 
 @Controller
 public class JugadorController {
@@ -46,6 +48,7 @@ public class JugadorController {
 	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
     private static final String HOME_TIENDA = "jugadores/tienda";
     private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
+    private static final String HOME_TIENDA_ASPECTOS = "jugadores/tiendaAspectos";
     private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
     private static final String HOME_TIENDA_CONFIRMAR_COMPRA = "jugadores/confirmarCompra";
     private static final String VIEW_LISTADO_JUGADORES = "jugadores/listaJugadores";
@@ -53,13 +56,15 @@ public class JugadorController {
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
     private final ValoracionService valoracionService;
+    private final AspectoService aspectoService;
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService ) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService, AspectoService aspectoService ) {
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
         this.solicitudService = solicitudService;
         this.valoracionService = valoracionService;
+        this.aspectoService = aspectoService;
     }
 
 
@@ -339,6 +344,18 @@ public class JugadorController {
         return HOME_TIENDA_VOLLEYS;
     }
 
+    //AÑADIR AL MODEL LOS ASPECTOS NECESARIOS PARA LA VISTA
+    @GetMapping(value="/tienda/aspectos")
+    public String showVistaTiendaAspectos(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        List<Aspecto> aspectos = this.aspectoService.findAllAspectos();
+        Integer numAspectos = aspectos.size();
+        model.put("jugador", jugador);
+        model.put("aspectos", aspectos);
+        model.put("numAspectos", numAspectos);
+        return HOME_TIENDA_ASPECTOS;
+    }
+
     @GetMapping(value="/tienda/premium")
     public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
         return HOME_TIENDA_PREMIUM;
@@ -364,6 +381,9 @@ public class JugadorController {
                 break;
             case 6:
                 model = jugadorService.getValoresCompra("49.99", "4100 volleys", idCompra, model);
+                break;
+            case 7:
+                model = jugadorService.getValoresCompra("XXX volleys", "este aspecto", idCompra, model);
                 break;
         }
         return HOME_TIENDA_CONFIRMAR_COMPRA;
