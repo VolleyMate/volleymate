@@ -172,8 +172,9 @@ public class JugadorService {
         }
     }
 
-    public Map<String,Object> getValoresCompra(Double precio, String paquete, Integer idCompra, Map<String,Object> model){
+    public Map<String,Object> getValoresCompra(Double precio, Integer numVolleys, String paquete, Integer idCompra, Map<String,Object> model){
         model.put("precio", precio);
+        model.put("numVolleys", numVolleys);
         model.put("paquete", paquete);
         model.put("idCompra", idCompra);
         return model;

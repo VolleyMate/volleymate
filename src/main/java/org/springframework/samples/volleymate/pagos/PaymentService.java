@@ -27,7 +27,7 @@ public class PaymentService {
             Payer payer = getPayerInformation();
 
             //Redireccion a paypal
-            RedirectUrls redirectUrls = getRedirectUrls();
+            RedirectUrls redirectUrls = getRedirectUrls(orderDetail.getNumVolleys());
 
             List<Transaction> listTransaction = getTransactionInformation(orderDetail);
 
@@ -39,7 +39,6 @@ public class PaymentService {
 
             APIContext apiContext = new APIContext(CLIENT_ID, CLIENT_SECRET, "sandbox");
 
-        
             Payment approvedPayment = requestPayment.create(apiContext);
             System.out.println(approvedPayment);
             return getApprovalLink(approvedPayment);
@@ -95,11 +94,12 @@ public class PaymentService {
         return listTransaction;
     }
 
-    private RedirectUrls getRedirectUrls(){
-        
+    private RedirectUrls getRedirectUrls(String numVolleys){
         RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl("/tienda");
-        redirectUrls.setReturnUrl("/tienda");
+        //Posible cambio necesario de las urls al desplegar.
+        String url = String.format("http://localhost:8080/tienda/volleys/comprar/%s", numVolleys);
+        redirectUrls.setCancelUrl(url);
+        redirectUrls.setReturnUrl(url);
 
         return redirectUrls;
     }

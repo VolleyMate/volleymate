@@ -16,9 +16,9 @@
                 <div class="row">
                     <div class="col-md-6">
                         <form:form method="POST" action="/pagos/autorizar_pago" modelAttribute="orderDetail">
-                            <input type="text" name="descripcion" value="Description" />
-                            <input type="text" name="numVolleys" value="numVolleys" />
-                            <input type="text" name="total" value="100" />
+                            <input type="text" name="descripcion" value="${paquete}" />
+                            <input type="text" name="numVolleys" value="${numVolleys}" />
+                            <input type="text" name="total" value="${precio}" />
                             <input type="submit" value="Continuar al pago" class="btn btn-default" style="margin: 5%; background-color: green; outline-color:greenyellow;">
                         </form:form>
                     </div>
