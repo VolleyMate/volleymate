@@ -82,17 +82,17 @@
 										<div class="col-6 h5">
 											<p class="text-center">
 												<a href="<c:url value="/jugadores/notificaciones" />"
-													style="border-radius: 20px;" class="btn btn-success btn-md"><span class="glyphicon glyphicon-bell"></span> Notificaciones</a>
+													style="border-radius: 20px;" class="btn btn-green"><span class="glyphicon glyphicon-bell"></span> Notificaciones</a>
 											</p>
 										
 											<p class="col-6 h5 text-center">
 												<a href="<c:url value="/jugadores" />"
-													style="border-radius: 20px;" class="btn btn-info btn-md"><span class="glyphicon glyphicon-share-alt"></span> Ver perfil</a>
+													style="border-radius: 20px;" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span> Ver perfil</a>
 											</p>
 
 											<p class="col-6 h5 text-center">
 												<a href="<c:url value="/logout" />"
-													style="border-radius: 20px;" class="btn btn-danger btn-md"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a>
+													style="border-radius: 20px;" class="btn btn-red"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>  Cerrar sesion</a>
 											</p>			
 									
 										</div>
