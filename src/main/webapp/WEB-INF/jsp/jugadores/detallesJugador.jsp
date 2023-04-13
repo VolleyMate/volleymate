@@ -62,18 +62,25 @@
         <tr>
             <c:if test="${jugadorVista.equals(jugadorAutenticado)}">
         
+            <div>
                 <spring:url value="/jugadores/edit/{id}" var="editUrl">
                     <spring:param name="id" value="${id}" />
                 </spring:url>
-                <a href="${editUrl}" class="btn btn-default">Editar perfil</a>
-        
+                <a href="${editUrl}" class="btn btn-green"><span class="glyphicon glyphicon-pencil" style="border-radius: 20px;"></span>  Editar perfil</a>
+            </div>
+            <br>
                 <spring:url value="/jugadores/mispartidos" var="partidasURL"></spring:url>
-                <a href="${partidasURL}" class="btn btn-default">Mis partidos</a>
+                <a href="${partidasURL}" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span>  Mis partidos</a> 
         
                 <spring:url value="/valoraciones/{id}" var="valURL">
                     <spring:param name="id" value="${id}" />
                 </spring:url>
-                <a href="${valURL}" class="btn btn-default">Mis valoraciones</a>
+                <a href="${valURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Mis valoraciones</a>
+
+                <spring:url value="/valoraciones/{id}" var="aspURL"> <!--Cambiamos la URL cuando esté-->
+                    <spring:param name="id" value="${id}" />
+                </spring:url>
+                <a href="${aspURL}" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span>  Mis aspectos</a>
 
                 <sec:authorize access="hasAuthority('admin')">
                     <spring:url value="/jugadores/volleys/añadir/{id}" var="añadirURL">

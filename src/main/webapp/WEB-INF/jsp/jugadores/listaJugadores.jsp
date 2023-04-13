@@ -18,7 +18,7 @@
                 <input type="text" class="form-control" id="palabraClave" name="palabraClave" placeholder="Escriba el valor a buscar" required style="border-radius: 20px;"/>
             </div>
             <input type="submit" class="btn btn-default mb-2" value="Buscar">
-            <input type="submit" class="btn btn-secondary mb-2" value="Limpiar" style="border-radius: 20px; border-width: 2px; border-color: #0099;" onclick="limpiarInput()">
+            <input type="submit" class="btn btn-secondary mb-2" value="Limpiar" style="border-radius: 20px; border-width: 2px; border-color: #0099; font-size: 1.5rem;" onclick="limpiarInput()">
         </form>
     </div>
 
