@@ -3,6 +3,7 @@ package org.springframework.samples.volleymate.pagos;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.paypal.api.payments.Amount;
@@ -19,8 +20,11 @@ import com.stripe.model.PaymentLink.AfterCompletion.Redirect;
 
 @Service
 public class PaymentService {
-    private static final String CLIENT_ID = "AWUsDwCzxB_eVyyM8KnFEwh-H35W00l-gdpZlCpX2Ql6xSFdQmRrqgNh20KTAFP3kDWHuYUEiEII_Qaw";
-    private static final String CLIENT_SECRET = "EGoi0KD371fdgT7IKF3C9tpQh5bOyeUjF11qyX3DNUmN-W0RPcaaQYUCqTYZx93Jrbn8d4J69PQWOezB";
+    @Value("${paypal.client.id}")
+    private String CLIENT_ID;
+
+    @Value("${paypal.client.secret}")
+    private String CLIENT_SECRET;
 
     public String authorizePayment(OrderDetail orderDetail) throws PayPalRESTException{
         try{
