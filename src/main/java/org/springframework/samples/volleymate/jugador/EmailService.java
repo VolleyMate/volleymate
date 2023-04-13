@@ -21,12 +21,12 @@ public class EmailService {
     private static final String SOLICITUD_TEXT_3 = " ha sido denegada";
     private static final String SOLICITUD_TEXT_END = "Un saludo del equipo Volleymate";
 
-    public void aceptarSolicitudEmail(String email, String sender) {
+    public void aceptarSolicitudEmail(String email) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject(ACEPTACION_SUBJECT);
         message.setText(
-                GREETING_TEXT + "\n\n" + SOLICITUD_TEXT_1 + sender + SOLICITUD_TEXT_2 + "\n\n" + SOLICITUD_TEXT_END);
+                GREETING_TEXT + "\n\n" + SOLICITUD_TEXT_1 + SOLICITUD_TEXT_2 + "\n\n" + SOLICITUD_TEXT_END);
         try {
             mailSender.send(message);
 
@@ -35,7 +35,7 @@ public class EmailService {
         }
     }
 
-    public void denegarSolicitudEmail(String email, String sender) {
+    public void denegarSolicitudEmail(String email) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject(DENEGACION_SUBJECT);

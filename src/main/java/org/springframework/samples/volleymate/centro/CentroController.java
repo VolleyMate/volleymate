@@ -20,12 +20,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.data.domain.Page;
 import org.springframework.samples.volleymate.jugador.JugadorService;
+import org.springframework.samples.volleymate.jugador.EmailService;
 import org.springframework.samples.volleymate.jugador.Jugador;
+import org.springframework.samples.volleymate.user.UserService;
 
 @Controller
 public class CentroController {
     public final CentroService centroService;
     public final JugadorService jugadorService;
+    public final EmailService emailService;
+    public final UserService userService;
 
     private static final String VISTA_LISTAR_CENTROS = "centros/listaCentros";
     private static final String VISTA_CREAR_CENTROS = "centros/crearCentros";
@@ -34,31 +38,34 @@ public class CentroController {
 	private static final String VISTA_ELIMINAR_CENTROS = "centros/eliminarCentro";
 
     @Autowired
-    public CentroController(CentroService centroService, JugadorService jugadorService) {
+    public CentroController(CentroService centroService, JugadorService jugadorService, EmailService emailService, UserService userService) {
         this.centroService = centroService;
         this.jugadorService = jugadorService;
+        this.emailService = emailService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/centros/solitud/new")
-    public String initCreationForm(Principal principal, Map<String, Object> model) {
+    public String initCreationForm(Map<String, Object> model) {
         Centro centro = new Centro();
         centro.setEstado(false);
-        Jugador jugador = jugadorService.findJugadorByUsername(principal.getName());
-		centro.setCreador(jugador);
         model.put("centro", centro);
         return VISTA_CREAR_CENTROS;
     }
 
     @PostMapping(value = "/centros/solitud/new")
-    public String processCreationForm(@Valid Centro centro, BindingResult result, Map<String, Object> model) {
+    public String processCreationForm(@Valid Centro centro, BindingResult result, Map<String, Object> model, Principal principal) {
         if(result.hasErrors()) {
             model.put("errors", result.getAllErrors());
             return VISTA_CREAR_CENTROS;
         }else {
             centro.setEstado(false);
+            Jugador jugador = jugadorService.findJugadorByUsername(principal.getName());
+		    centro.setCreador(jugador);
             centroService.saveCentro(centro);
             return VISTA_SOLICITUD_CENTRO;
         }
+        
     }
 
     @GetMapping(value = "/centros")
@@ -96,6 +103,7 @@ public class CentroController {
             Centro centro = centroService.findCentroById(centroId);
             centro.setEstado(true);
             centroService.saveCentro(centro);
+            this.emailService.aceptarSolicitudEmail(centro.getCreador().getUser().getCorreo());
             return "redirect:/centros";
         }else {
             model.put("message", "No tienes permisos para realizar esta acción");
@@ -110,6 +118,7 @@ public class CentroController {
         if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
             Centro centro = centroService.findCentroById(centroId);
             centroService.deleteCentro(centro);
+            this.emailService.denegarSolicitudEmail(centro.getCreador().getUser().getCorreo());
             return "redirect:/centros";
         }else {
             model.put("message", "No tienes permisos para realizar esta acción");
