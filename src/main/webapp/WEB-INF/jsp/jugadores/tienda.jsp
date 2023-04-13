@@ -8,6 +8,9 @@
 
 <petclinic:layout pageName="tienda">
     <div class="container">
+        <c:forEach items="${errors}" var="e">
+            <c:out value="${e}"/>
+        </c:forEach>
         <div class="row">
             <div class="col-md-6" style="padding: 2%;">
                 <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; height: 250px; margin-top: 5%; border-radius: 20px;">

@@ -344,22 +344,22 @@ public class JugadorController {
     public String showVistaComfirmarCompra(Principal principal, @PathVariable("idCompra") Integer idCompra, Map<String,Object> model){
         switch(idCompra){
             case 1:
-                model = jugadorService.getValoresCompra("7.99", "paquete premium", idCompra, model);
+                model = jugadorService.getValoresCompra(7.99, "paquete premium", idCompra, model);
                 break;
             case 2:
-                model = jugadorService.getValoresCompra("4.99", "300 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(4.99, "300 volleys", idCompra, model);
                 break;    
             case 3:
-                model = jugadorService.getValoresCompra("6.50", "450 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(6.50, "450 volleys", idCompra, model);
                 break;
             case 4:
-                model = jugadorService.getValoresCompra("14.50", "1100 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(14.50, "1100 volleys", idCompra, model);
                 break;
             case 5:
-                model = jugadorService.getValoresCompra("19.99", "1550 volleys", idCompra, model);    
+                model = jugadorService.getValoresCompra(19.99, "1550 volleys", idCompra, model);    
                 break;
             case 6:
-                model = jugadorService.getValoresCompra("49.99", "4100 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(49.99, "4100 volleys", idCompra, model);
                 break;
         }
         return HOME_TIENDA_CONFIRMAR_COMPRA;
