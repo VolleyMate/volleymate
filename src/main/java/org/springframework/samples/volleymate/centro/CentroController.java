@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.data.domain.Page;
 import org.springframework.samples.volleymate.jugador.JugadorService;
+import org.springframework.samples.volleymate.jugador.Jugador;
 
 @Controller
 public class CentroController {
@@ -39,9 +40,11 @@ public class CentroController {
     }
 
     @GetMapping(value = "/centros/solitud/new")
-    public String initCreationForm(Map<String, Object> model) {
+    public String initCreationForm(Principal principal, Map<String, Object> model) {
         Centro centro = new Centro();
         centro.setEstado(false);
+        Jugador jugador = jugadorService.findJugadorByUsername(principal.getName());
+		centro.setCreador(jugador);
         model.put("centro", centro);
         return VISTA_CREAR_CENTROS;
     }
