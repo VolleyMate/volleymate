@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
@@ -383,7 +382,7 @@ public class JugadorController {
                 model = jugadorService.getValoresCompra(49.99, 4100, "4100 volleys", idCompra, model);
                 break;
             case 7:
-                model = jugadorService.getValoresCompra("XXX volleys", "este aspecto", idCompra, model);
+                model = jugadorService.getValoresCompra(1.00, 20,"este aspecto", idCompra, model);
                 break;
         }
         return HOME_TIENDA_CONFIRMAR_COMPRA;
