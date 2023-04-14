@@ -44,7 +44,7 @@ public class Jugador extends Person{
 
 	@NotNull
 	@Column(name = "volleys")
-	private Integer volleys=0;
+	private Integer volleys=150;
 
  
     @OneToOne(cascade = CascadeType.ALL)
