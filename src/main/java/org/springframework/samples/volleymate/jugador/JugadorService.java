@@ -14,6 +14,7 @@ import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -120,8 +121,14 @@ public class JugadorService {
     }
 
 
-    public List<Jugador> listAll(String palabraClave){
-        if(palabraClave!=null){
+    public List<Jugador> listAll(String palabraClave, int valoracionMedia){
+        if(palabraClave!=null && valoracionMedia != 0){
+            List<Jugador> lista = jugadorRepository.findAll(palabraClave);
+            return lista.stream().filter(jugador -> jugador.getValoracionMedia()>=valoracionMedia).collect(Collectors.toList());
+        } else if (valoracionMedia != 0 && palabraClave == null ){
+            List<Jugador> lista = jugadorRepository.findAll();
+            return lista.stream().filter(jugador -> jugador.getValoracionMedia()>=valoracionMedia).collect(Collectors.toList());
+        } else if (valoracionMedia == 0 && palabraClave != null ){
             return jugadorRepository.findAll(palabraClave);
         }
         return jugadorRepository.findAll();

@@ -63,4 +63,11 @@ public class Jugador extends Person{
     @OneToMany(mappedBy = "ratingPlayer", cascade = CascadeType.ALL)
     private List<Valoracion> valoracionesDadas;
     
+	public int getValoracionMedia (){
+		if(valoracionesRecibidas.isEmpty()){
+			return 5;
+		}else {
+			return valoracionesRecibidas.stream().mapToInt(Valoracion::getPuntuacion).sum()/valoracionesRecibidas.size();
+		}
+	}
 }

@@ -401,14 +401,15 @@ public class JugadorController {
     }
 
     @RequestMapping(value = "/listaJugadores")
-    public String showJugadores(Model model, @Param("palabraClave") String palabraClave) {
+    public String showJugadores(Model model, @Param("palabraClave") String palabraClave,@RequestParam(defaultValue = "0") int valoracionMedia) {
                
-        List<Jugador> listaJugadores = jugadorService.listAll(palabraClave);
+        List<Jugador> listaJugadores = jugadorService.listAll(palabraClave, valoracionMedia);
         Integer numJugadores = listaJugadores.size();
 
         model.addAttribute("listaJugadores", listaJugadores);
         model.addAttribute("numJugadores", numJugadores);
         model.addAttribute("palabraClave", palabraClave);
+        model.addAttribute("valoracionMedia", valoracionMedia);
         return VIEW_LISTADO_JUGADORES;
     }
 
