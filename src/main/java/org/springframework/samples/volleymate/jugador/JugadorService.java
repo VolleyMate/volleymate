@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -123,8 +124,14 @@ public class JugadorService {
     }
 
 
-    public List<Jugador> listAll(String palabraClave){
-        if(palabraClave!=null){
+    public List<Jugador> listAll(String palabraClave, int valoracionMedia){
+        if(palabraClave!=null && valoracionMedia != 0){
+            List<Jugador> lista = jugadorRepository.findAll(palabraClave);
+            return lista.stream().filter(jugador -> jugador.getValoracionMedia()>=valoracionMedia).collect(Collectors.toList());
+        } else if (valoracionMedia != 0 && palabraClave == null ){
+            List<Jugador> lista = jugadorRepository.findAll();
+            return lista.stream().filter(jugador -> jugador.getValoracionMedia()>=valoracionMedia).collect(Collectors.toList());
+        } else if (valoracionMedia == 0 && palabraClave != null ){
             return jugadorRepository.findAll(palabraClave);
         }
         return jugadorRepository.findAll();
@@ -177,12 +184,14 @@ public class JugadorService {
             Integer volleys = j.getVolleys();
             volleys += 150;
             j.setVolleys(volleys);
+            this.jugadorRepository.save(j);
         }
     }
 
-    public Map<String,Object> getValoresCompra(String precio, String paquete, Integer idCompra, Map<String,Object> model){
+    public Map<String,Object> getValoresCompra(Double precio, Integer numVolleys, String paquete, Integer idCompra, Map<String,Object> model){
         model.put("precio", precio);
-        model.put("paquete" ,paquete);
+        model.put("numVolleys", numVolleys);
+        model.put("paquete", paquete);
         model.put("idCompra", idCompra);
         return model;
     }
