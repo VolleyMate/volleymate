@@ -1,4 +1,4 @@
-package org.logro;
+package org.springframework.samples.volleymate.logro;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
