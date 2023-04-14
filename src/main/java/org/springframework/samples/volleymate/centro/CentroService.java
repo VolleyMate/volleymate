@@ -1,7 +1,10 @@
 package org.springframework.samples.volleymate.centro;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.validation.Valid;
 
@@ -69,6 +72,31 @@ public class CentroService {
 			}
 		}
 		centroRepository.delete(centro);
+	}
+
+	public List<String> validarCentro (Centro centro) {
+		List<String> errores = new ArrayList<>();
+		String regex = "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(centro.getMaps());
+
+		if(centro.getNombre().isEmpty()){
+			errores.add("El nombre no puede estar vacío");
+		}
+		if(centro.getDireccion().isEmpty()){
+			errores.add("La dirección no puede estar vacía");
+		}
+		if(centro.getCiudad().isEmpty()){
+			errores.add("La ciudad no puede estar vacía");
+		}
+		if(centro.getMaps().isEmpty()){
+			errores.add("La dirección en maps no puede estar vacía");
+		}
+		if(!matcher.matches()){
+			errores.add("La dirección en maps no es válida");
+		}
+		
+		return errores;
 	}
 
 
