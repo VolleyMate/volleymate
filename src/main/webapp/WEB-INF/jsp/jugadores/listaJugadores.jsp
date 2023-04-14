@@ -15,10 +15,10 @@
                 <label>Filtrar : </label>
             </div>
             <div class="form-group mx-sm-3 mb-2">
-                <input type="text" class="form-control" id="palabraClave" name="palabraClave" placeholder="Escriba el valor a buscar" style="border-radius: 20px;"/>
+                <input type="text" class="form-control" style="width: 100px; border-radius: 20px;" id="palabraClave" name="palabraClave" placeholder="Usuario"/>
             </div>
             <div class="form-group mx-sm-3 mb-2">
-                <input type="number" class="form-control" id="valoracionMedia" min="1" max="5" name="valoracionMedia" placeholder="Valoracion" style="border-radius: 20px;"/>
+                <input type="number" style="width: 120px; border-radius: 20px;" class="form-control" id="valoracionMedia" min="1" max="5" name="valoracionMedia" placeholder="Valoracion"/>
             </div>
             <input type="submit" class="btn btn-default mb-2" value="Buscar">
             <input type="submit" class="btn btn-secondary mb-2" value="Limpiar" style="border-radius: 20px; border-width: 2px; border-color: #0099; font-size: 1.5rem;" onclick="limpiarInput()">
