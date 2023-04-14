@@ -433,6 +433,7 @@ public class JugadorController {
         } else {
             return "redirect:/";
         }
+    }
 
     @GetMapping(value="/misAspectos")
     public String showVistaMisAspectos(Principal principal, ModelMap model){
