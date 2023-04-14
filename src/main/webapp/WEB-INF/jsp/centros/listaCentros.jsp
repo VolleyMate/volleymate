@@ -67,7 +67,7 @@
         </div>
         <div style="display: flex; justify-content: center; align-items: center;">
         <div class="col-md-6 text-right">
-            <a href="/centros/solitud/new" class="btn btn-default">
+            <a href="/centros/solicitud/new" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo centro
             </a>
         </div>

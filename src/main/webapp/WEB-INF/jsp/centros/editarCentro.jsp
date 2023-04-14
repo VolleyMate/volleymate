@@ -62,7 +62,7 @@
     </div>
 
 
-    <div style="text-align: center; color: #FF0000">
+    <div style="text-align: center; color: #FF0000; padding-top: 2%;">
         <c:forEach var="error" items="${errors}">
             <ul>
                 <c:out value="${error} " />
