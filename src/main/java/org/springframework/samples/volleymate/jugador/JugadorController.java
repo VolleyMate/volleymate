@@ -416,16 +416,23 @@ public class JugadorController {
     }
 
     @GetMapping("/jugadores/{jugadorId}/delete")
-    public String deleteJugador(Model model, @Param("clave") String clave, Principal principal, RedirectAttributes redirAttrs) {
-        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        if (clave == jugador.getUser().getPassword()) {
-            jugadorService.deleteJugador(jugador);
-            userService.deleteUser(jugador.getUser());
-            return "redirect:/";
+    public String deleteJugador(Model model, @Param("clave") String clave, Principal principal, RedirectAttributes redirAttrs, @PathVariable("jugadorId") int jugadorId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.isAuthenticated()) {
+            Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+            if (clave == jugador.getUser().getPassword() && jugadorId == jugador.getId()) {
+                SecurityContextHolder.getContext().setAuthentication(null);
+                jugadorService.deleteJugador(jugador);
+                userService.deleteUser(jugador.getUser());
+                return "redirect:/";
+            } else {
+                redirAttrs.addFlashAttribute("claveInvalida", "La clave introducida no coincide con su contraseña");
+                return "/jugadores/{jugadorId}/delete";
+            }
         } else {
-            redirAttrs.addFlashAttribute("claveInvalida", "La clave introducida no coincide con su contraseña");
-            return "/jugadores/{jugadorId}/delete";
+            return "redirect:/";
         }
+
     }
 }
 
