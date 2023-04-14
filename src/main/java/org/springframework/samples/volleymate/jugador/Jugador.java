@@ -65,7 +65,7 @@ public class Jugador extends Person{
     @OneToMany(mappedBy = "ratingPlayer", cascade = CascadeType.ALL)
     private List<Valoracion> valoracionesDadas;
 
-    @OneToMany(mappedBy = "holder", cascade = CascadeType.ALL)
-    private List<Logro> logros;
+    @OneToOne(mappedBy = "holder", cascade = CascadeType.ALL)
+    private Logro logro;
     
 }

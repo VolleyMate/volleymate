@@ -1,7 +1,7 @@
 package org.logro;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -18,16 +18,9 @@ import lombok.Setter;
 @Setter
 public class Logro extends BaseEntity {
 
-  @ManyToOne
+  @OneToOne
   private Jugador holder;
 
-  @NotBlank
-  private String nombre;
-
-  @NotBlank
-  private String descripcion;
-
-  @URL
-  private String urlImage;
+  private Valoracion valoracion;
 
 }
