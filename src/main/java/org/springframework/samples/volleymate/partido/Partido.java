@@ -10,16 +10,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.volleymate.centro.Centro;
 import org.springframework.samples.volleymate.jugador.Jugador;
@@ -50,8 +46,7 @@ public class Partido extends BaseEntity {
     @Column(name = "tipo")
     private Tipo tipo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action=OnDeleteAction.CASCADE)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "creador", referencedColumnName = "username")
 	private Jugador creador;
 
