@@ -120,8 +120,10 @@ public class CentroController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
             Centro centro = centroService.findCentroById(centroId);
-            centroService.deleteCentro(centro);
             this.emailService.denegarSolicitudEmail(centro.getCreador().getUser().getCorreo());
+            centro.setCreador(null);
+            centroService.saveCentro(centro);
+            centroService.deleteCentro(centro);
             return "redirect:/centros";
         }else {
             model.put("message", "No tienes permisos para realizar esta acción");
