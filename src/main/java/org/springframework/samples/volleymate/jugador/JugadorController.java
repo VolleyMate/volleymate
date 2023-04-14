@@ -48,6 +48,7 @@ public class JugadorController {
     private static final String HOME_TIENDA = "jugadores/tienda";
     private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
     private static final String HOME_TIENDA_ASPECTOS = "jugadores/tiendaAspectos";
+    private static final String HOME_MIS_ASPECTOS = "jugadores/listaMisAspectos";
     private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
     private static final String HOME_TIENDA_CONFIRMAR_COMPRA = "jugadores/confirmarCompra";
     private static final String VIEW_LISTADO_JUGADORES = "jugadores/listaJugadores";
@@ -409,6 +410,17 @@ public class JugadorController {
         model.addAttribute("numJugadores", numJugadores);
         model.addAttribute("palabraClave", palabraClave);
         return VIEW_LISTADO_JUGADORES;
+    }
+
+    @GetMapping(value="/misAspectos")
+    public String showVistaMisAspectos(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        List<Aspecto> aspectos = this.aspectoService.findAllAspectos();
+        Integer numAspectos = aspectos.size();
+        model.put("jugador", jugador);
+        model.put("aspectos", aspectos);
+        model.put("numAspectos", numAspectos);
+        return HOME_MIS_ASPECTOS;
     }
 }
 
