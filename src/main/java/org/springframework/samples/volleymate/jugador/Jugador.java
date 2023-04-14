@@ -20,6 +20,8 @@ import org.springframework.samples.volleymate.model.Person;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.user.User;
 import org.springframework.samples.volleymate.valoracion.Valoracion;
+import org.springframework.samples.volleymate.logros.Logro;
+
 import lombok.Getter;
 import lombok.Setter;
 
