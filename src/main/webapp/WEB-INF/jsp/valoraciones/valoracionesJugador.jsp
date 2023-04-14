@@ -30,7 +30,7 @@
                                 <spring:url value="/jugadores/${id}" var="verURL">
                                     <spring:param name="id" value="${jugador.id}" />
                                 </spring:url>
-                                <a href="${verURL}" class="btn">
+                                <a href="${fn:escapeXml(verURL)}" class="btn">
                                     <c:out value="${valoracion.ratingPlayer.user.username}"/> 
                                 </a>
                             </p>
