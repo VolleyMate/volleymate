@@ -27,12 +27,20 @@
                               </p>                              
                             <p class="card-text">
                                 <strong>Jugador:</strong> 
-                                <a href="/jugadores/${jugador.id}">
+                                <spring:url value="/jugadores/${id}" var="verURL">
+                                    <spring:param name="id" value="${jugador.id}" />
+                                </spring:url>
+                                <a href="${verURL}" class="btn">
                                     <c:out value="${valoracion.ratingPlayer.user.username}"/> 
                                 </a>
                             </p>
                             <p class="card-text">
-                                <strong>Comentario:</strong> <c:out value="${valoracion.comentario}"/>
+                                <c:if test="${valoracion.comentario == ''}">
+                                    <strong>Comentario: -</strong>
+                                </c:if>
+                                <c:if test="${valoracion.comentario != ''}">
+                                    <strong>Comentario:</strong> <c:out value="${valoracion.comentario}"/>
+                                </c:if>
                             </p>
                         </div>
                     </div>
@@ -76,5 +84,11 @@
         100% {
             transform: scale(1);
         }
+    }
+
+    a{
+        color: black;
+    }
+    a:hover{
     }
 </style>
