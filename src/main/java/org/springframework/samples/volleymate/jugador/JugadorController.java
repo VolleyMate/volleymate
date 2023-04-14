@@ -19,6 +19,7 @@ import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.samples.volleymate.user.User;
+import org.springframework.samples.volleymate.user.UserService;
 import org.springframework.samples.volleymate.valoracion.ValoracionService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -57,14 +58,16 @@ public class JugadorController {
     private final SolicitudService solicitudService;
     private final ValoracionService valoracionService;
     private final AspectoService aspectoService;
+    private final UserService userService;
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService, AspectoService aspectoService ) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService, AspectoService aspectoService, UserService userService) {
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
         this.solicitudService = solicitudService;
         this.valoracionService = valoracionService;
         this.aspectoService = aspectoService;
+        this.userService = userService;
     }
 
 
@@ -411,6 +414,25 @@ public class JugadorController {
         model.addAttribute("palabraClave", palabraClave);
         model.addAttribute("valoracionMedia", valoracionMedia);
         return VIEW_LISTADO_JUGADORES;
+    }
+    
+    @GetMapping("/jugadores/{jugadorId}/delete")
+    public String deleteJugador(Model model, @Param("clave") String clave, Principal principal, RedirectAttributes redirAttrs, @PathVariable("jugadorId") int jugadorId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.isAuthenticated()) {
+            Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+            if (clave == jugador.getUser().getPassword() && jugadorId == jugador.getId()) {
+                SecurityContextHolder.getContext().setAuthentication(null);
+                jugadorService.deleteJugador(jugador);
+                userService.deleteUser(jugador.getUser());
+                return "redirect:/";
+            } else {
+                redirAttrs.addFlashAttribute("claveInvalida", "La clave introducida no coincide con su contraseña");
+                return "/jugadores/{jugadorId}/delete";
+            }
+        } else {
+            return "redirect:/";
+        }
     }
 
     @GetMapping(value="/misAspectos")

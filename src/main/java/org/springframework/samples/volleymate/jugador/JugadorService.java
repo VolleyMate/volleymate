@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -191,6 +192,11 @@ public class JugadorService {
         model.put("paquete", paquete);
         model.put("idCompra", idCompra);
         return model;
+    }
+
+    @Transactional
+    public void deleteJugador(Jugador j) {
+        this.jugadorRepository.delete(j);
     }
 
 }
