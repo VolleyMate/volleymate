@@ -416,12 +416,19 @@ public class JugadorController {
     @GetMapping(value="/misAspectos")
     public String showVistaMisAspectos(Principal principal, ModelMap model){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        List<Aspecto> aspectos = this.aspectoService.findAllAspectos();
-        Integer numAspectos = aspectos.size();
+        List<Aspecto> aspectos = this.aspectoService.findAspectosByJugadorId(jugador.getId());
         model.put("jugador", jugador);
         model.put("aspectos", aspectos);
-        model.put("numAspectos", numAspectos);
         return HOME_MIS_ASPECTOS;
+    }
+
+    @GetMapping(value="/jugadores/setAspecto/{aspectoId}")
+    public String setAspecto(Principal principal, ModelMap model, @PathVariable("aspectoId") Integer aspectoId){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        Aspecto aspecto = aspectoService.findById(aspectoId);
+        jugador.setImage(aspecto.getImagen());
+        jugadorService.saveJugador(jugador);
+        return "redirect:/jugadores";
     }
 }
 

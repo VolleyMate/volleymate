@@ -10,15 +10,20 @@
 
 <h2>Mis aspectos</h2>
 <div class="row">
-    <c:if test="${numAspectos == 0}">
+    <c:if test="${aspectos.size() == 0}">
         No tienes aún ningún aspecto.
     </c:if>
-    <c:if test="${numAspectos  != 0}">
+    <c:if test="${aspectos.size()  != 0}">
         <c:forEach items="${aspectos}" var="aspecto">
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body square">
-                        <img src="${aspecto.imagen}" alt="Aspecto">
+                        <spring:url value="/jugadores/setAspecto/{aspectoId}" var="setURL">
+                            <spring:param name="aspectoId" value="${aspecto.id}" />
+                        </spring:url>
+                        <a href="${setURL}" class="btn btn-default">
+                            <img src="${aspecto.imagen}" alt="Aspecto">
+                        </a>
                     </div>
                 </div>
             </div>
