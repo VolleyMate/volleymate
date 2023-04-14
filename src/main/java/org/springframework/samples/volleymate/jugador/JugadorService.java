@@ -8,14 +8,12 @@ import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoRepository;
 import org.springframework.samples.volleymate.user.Authorities;
 import org.springframework.samples.volleymate.user.AuthoritiesService;
-import org.springframework.samples.volleymate.user.UserRepository;
 import org.springframework.samples.volleymate.user.UserService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
