@@ -88,7 +88,14 @@
                 </spring:url>
                 <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
                 </sec:authorize>
-                
+                <br>
+                <br>
+                <div>
+                    <spring:url value="/jugadores/edit/{id}" var="elimUrl">
+                        <spring:param name="id" value="${id}" />
+                    </spring:url>
+                    <a href="${elimUrl}" class="btn btn-red"><span class="glyphicon glyphicon-trash" ></span>  Eliminar cuenta</a>
+                </div>
             </c:if>
         
         </tr>
