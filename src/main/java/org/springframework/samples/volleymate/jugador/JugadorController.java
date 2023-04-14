@@ -48,6 +48,7 @@ public class JugadorController {
     private static final String HOME_TIENDA = "jugadores/tienda";
     private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
     private static final String HOME_TIENDA_ASPECTOS = "jugadores/tiendaAspectos";
+    private static final String HOME_MIS_ASPECTOS = "jugadores/listaMisAspectos";
     private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
     private static final String HOME_TIENDA_CONFIRMAR_COMPRA = "jugadores/confirmarCompra";
     private static final String VIEW_LISTADO_JUGADORES = "jugadores/listaJugadores";
@@ -400,15 +401,34 @@ public class JugadorController {
     }
 
     @RequestMapping(value = "/listaJugadores")
-    public String showJugadores(Model model, @Param("palabraClave") String palabraClave) {
+    public String showJugadores(Model model, @Param("palabraClave") String palabraClave,@RequestParam(defaultValue = "0") int valoracionMedia) {
                
-        List<Jugador> listaJugadores = jugadorService.listAll(palabraClave);
+        List<Jugador> listaJugadores = jugadorService.listAll(palabraClave, valoracionMedia);
         Integer numJugadores = listaJugadores.size();
 
         model.addAttribute("listaJugadores", listaJugadores);
         model.addAttribute("numJugadores", numJugadores);
         model.addAttribute("palabraClave", palabraClave);
+        model.addAttribute("valoracionMedia", valoracionMedia);
         return VIEW_LISTADO_JUGADORES;
+    }
+
+    @GetMapping(value="/misAspectos")
+    public String showVistaMisAspectos(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        List<Aspecto> aspectos = this.aspectoService.findAspectosByJugadorId(jugador.getId());
+        model.put("jugador", jugador);
+        model.put("aspectos", aspectos);
+        return HOME_MIS_ASPECTOS;
+    }
+
+    @GetMapping(value="/jugadores/setAspecto/{aspectoId}")
+    public String setAspecto(Principal principal, ModelMap model, @PathVariable("aspectoId") Integer aspectoId){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        Aspecto aspecto = aspectoService.findById(aspectoId);
+        jugador.setImage(aspecto.getImagen());
+        jugadorService.saveJugador(jugador);
+        return "redirect:/jugadores";
     }
 }
 

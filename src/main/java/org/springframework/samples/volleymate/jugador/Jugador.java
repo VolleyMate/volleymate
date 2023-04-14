@@ -16,6 +16,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import javax.validation.constraints.NotNull;
+
+import org.springframework.samples.volleymate.aspecto.Aspecto;
 import org.springframework.samples.volleymate.model.Person;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.user.User;
@@ -44,7 +46,7 @@ public class Jugador extends Person{
 
 	@NotNull
 	@Column(name = "volleys")
-	private Integer volleys=0;
+	private Integer volleys=150;
 
  
     @OneToOne(cascade = CascadeType.ALL)
@@ -63,4 +65,14 @@ public class Jugador extends Person{
     @OneToMany(mappedBy = "ratingPlayer", cascade = CascadeType.ALL)
     private List<Valoracion> valoracionesDadas;
     
+	@OneToMany(mappedBy = "jugadorAdquirido", cascade = CascadeType.ALL)
+    private List<Aspecto> aspectos;
+
+	public int getValoracionMedia (){
+		if(valoracionesRecibidas.isEmpty()){
+			return 5;
+		}else {
+			return valoracionesRecibidas.stream().mapToInt(Valoracion::getPuntuacion).sum()/valoracionesRecibidas.size();
+		}
+	}
 }

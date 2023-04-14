@@ -21,4 +21,14 @@ public class AspectoService {
 		return aspectoRepository.findAll();
 	}
     
+	@Transactional
+	public List<Aspecto> findAspectosByJugadorId(int id){
+		return aspectoRepository.findAspectosByJugadorId(id);
+	}
+
+	@Transactional
+	public Aspecto findById(int id){
+		return aspectoRepository.findById(id);
+	}
+
 }

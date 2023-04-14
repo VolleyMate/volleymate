@@ -51,5 +51,6 @@ INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (1
 INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (2,'Hola, ¿alguien quiere jugar?', '2015-01-01 17:00','barba',1);
 INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (3,'Hola, ¿alguien quiere jugar?', '2017-01-01 17:00','barba',1);
 
-INSERT INTO aspectos(imagen,precio) VALUES ("https://img.freepik.com/vector-premium/icono-perfil-avatar_188544-4755.jpg?w=2000",200);
-INSERT INTO aspectos(imagen,precio) VALUES ("https://i.pinimg.com/736x/b5/49/41/b5494197b2d462c940f88988b203d290.jpg",400);
+INSERT INTO aspectos(imagen,precio,jugador_adquirido_id) VALUES ("https://img.freepik.com/vector-premium/icono-perfil-avatar_188544-4755.jpg?w=2000",200,2);
+INSERT INTO aspectos(imagen,precio,jugador_adquirido_id) VALUES ("https://i.pinimg.com/736x/b5/49/41/b5494197b2d462c940f88988b203d290.jpg",400,2);
+INSERT INTO aspectos(imagen,precio,jugador_adquirido_id) VALUES ("https://i.pinimg.com/736x/b5/49/41/b5494197b2d462c940f88988b203d290.jpg",400,3);
