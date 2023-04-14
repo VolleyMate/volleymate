@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
@@ -365,39 +364,39 @@ public class JugadorController {
     public String showVistaComfirmarCompra(Principal principal, @PathVariable("idCompra") Integer idCompra, Map<String,Object> model){
         switch(idCompra){
             case 1:
-                model = jugadorService.getValoresCompra("7.99", "paquete premium", idCompra, model);
+                model = jugadorService.getValoresCompra(7.99, 1, "paquete premium", idCompra, model);
                 break;
             case 2:
-                model = jugadorService.getValoresCompra("4.99", "300 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(4.99, 300,"300 volleys", idCompra, model);
                 break;    
             case 3:
-                model = jugadorService.getValoresCompra("6.50", "450 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(6.50, 450, "450 volleys", idCompra, model);
                 break;
             case 4:
-                model = jugadorService.getValoresCompra("14.50", "1100 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(14.50, 1100, "1100 volleys", idCompra, model);
                 break;
             case 5:
-                model = jugadorService.getValoresCompra("19.99", "1550 volleys", idCompra, model);    
+                model = jugadorService.getValoresCompra(19.99, 1550, "1550 volleys", idCompra, model);    
                 break;
             case 6:
-                model = jugadorService.getValoresCompra("49.99", "4100 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(49.99, 4100, "4100 volleys", idCompra, model);
                 break;
             case 7:
-                model = jugadorService.getValoresCompra("XXX volleys", "este aspecto", idCompra, model);
+                model = jugadorService.getValoresCompra(1.00, 20,"este aspecto", idCompra, model);
                 break;
         }
         return HOME_TIENDA_CONFIRMAR_COMPRA;
     }
 
-    @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
-    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
-                                                        @PathVariable("volleys") Integer precio, RedirectAttributes redirAttrs){
+    @GetMapping(value="/tienda/volleys/comprar/{volleys}")
+    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, RedirectAttributes redirAttrs, ModelMap model){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         Integer sumVolleys = jugador.getVolleys() + volleys;
         jugador.setVolleys(sumVolleys);
         this.jugadorService.saveJugador(jugador);
-        redirAttrs.addFlashAttribute("compraAceptada", "Su pago se ha procesado correctamente!");
-        return HOME_TIENDA_VOLLEYS;
+        model.put("jugador", jugador);
+        model.put("mensajeExito", String.format("Su compra de %s volleys ha sido realizada con éxito!", volleys));
+        return HOME_TIENDA;
     }
 
     @RequestMapping(value = "/listaJugadores")
