@@ -77,8 +77,7 @@
                 </spring:url>
                 <a href="${valURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Mis valoraciones</a>
 
-                <spring:url value="/valoraciones/{id}" var="aspURL"> <!--Cambiamos la URL cuando esté-->
-                    <spring:param name="id" value="${id}" />
+                <spring:url value="/misAspectos" var="aspURL"> <!--Cambiamos la URL cuando esté-->
                 </spring:url>
                 <a href="${aspURL}" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span>  Mis aspectos</a>
 
