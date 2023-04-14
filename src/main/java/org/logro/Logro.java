@@ -3,10 +3,9 @@ package org.logro;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
-import org.hibernate.validator.constraints.URL;
 import org.springframework.samples.volleymate.jugador.Jugador;
+import org.springframework.samples.volleymate.valoracion.Valoracion;
 import org.springframework.samples.volleymate.model.BaseEntity;
 
 import lombok.Getter;
