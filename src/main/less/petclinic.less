@@ -22,6 +22,8 @@
 @spring-red:        #a70000;
 @volleyMate-write: #ffffff;
 @volleyMate-write-black: #000000;
+@boton-green: #33c55c;
+@boton-dark-green:  #328449;
 
 @body-bg:                           @volleyMate-write;
 @text-color:                        @spring-blue;
@@ -99,25 +101,7 @@
   -moz-transition: border 0.15s;
   -o-transition: border 0.15s;
   -ms-transition: border 0.15s;
-
-  &:hover,
-  &:focus,
-  &:active,
-  &.active,
-  .open .dropdown-toggle& {
-    background-color: @spring-blue;
-    border-color: @spring-blue;
-  }
-}
-
-.btn-default-tienda {
-  border-width: 2px;
-  transition: border 0.15s;
-  -webkit-transition: border 0.15s;
-  -moz-transition: border 0.15s;
-  -o-transition: border 0.15s;
-  -ms-transition: border 0.15s;
-  transform: scale(1.1);
+  font-size: 1.5rem; 
 
   &:hover,
   &:focus,
@@ -131,11 +115,16 @@
 
 .btn-red {
   border-width: 2px;
+  border-radius: 20px;
   transition: border 0.15s;
   -webkit-transition: border 0.15s;
   -moz-transition: border 0.15s;
   -o-transition: border 0.15s;
   -ms-transition: border 0.15s;
+  font-size: 1.5rem; 
+  background-color: @spring-light-red;
+  border-color: @spring-red;
+  color:white;
 
   &:hover,
   &:focus,
@@ -144,6 +133,29 @@
   .open .dropdown-toggle& {
     background-color: @spring-red;
     border-color: @spring-light-red;
+  }
+}
+
+.btn-green {
+  border-width: 2px;
+  border-radius: 20px;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+  font-size: 1.5rem; 
+  background-color: @boton-green;
+  border-color: @boton-dark-green;
+  color:white;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-color: @boton-dark-green;
+    border-color: @boton-green;
   }
 }
 

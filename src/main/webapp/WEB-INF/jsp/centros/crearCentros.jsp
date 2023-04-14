@@ -40,7 +40,7 @@
               </div>
               <div class="col-md-12">
                   <div style="text-align: center;">
-                    <button class="btn btn-md btn-default" style="background-color: #838789; margin: 0 5px;"
+                    <button class="btn btn-lg btn-default" style="background-color: #838789; margin: 0 5px;"
                             type="submit">Solicitar
                     </button>
                   </div>

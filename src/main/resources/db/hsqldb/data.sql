@@ -18,9 +18,13 @@ INSERT INTO users(username,password,enabled,correo) VALUES ('meriglmar','meriglm
 INSERT INTO authorities(id,username,authority) VALUES (5,'meriglmar','admin');
 INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (5,'Mercedes','Iglesias','Sevilla','666666666','FEMENINO','','meriglmar', 250);
 
+INSERT INTO users(username,password,enabled,correo) VALUES ('alecarnun','alecarnun',TRUE,'alejcn01@gmail.com');
+INSERT INTO authorities(id,username,authority) VALUES (6,'alecarnun','admin');
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (6,'Alejandro','Carrasco','Sevilla','666666666','MASCULINO','','alecarnun', 250);
+
 INSERT INTO users(username,password,enabled,correo) VALUES ('jugador','jugador',TRUE,'jugador@gmail.com');
-INSERT INTO authorities(id,username,authority) VALUES (6,'jugador','jugador');
-INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (6,'jugador','jugador','Sevilla','666666666','MASCULINO','','jugador', 10000000);
+INSERT INTO authorities(id,username,authority) VALUES (7,'jugador','jugador');
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys) VALUES (7,'jugador','jugador','Sevilla','666666666','MASCULINO','','jugador', 10000000);
 
 INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (1,'Mairena Voley Club','Av. de la Constitución num 2', 'Sevilla', true, 'https://goo.gl/maps/P5uyWUKnDqNLAbnE6');
 INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (2,'Club Deportivo Claret','C. Monzón', 'Sevilla', true, 'https://goo.gl/maps/JYErpvDCVSKuNLvF9');
@@ -46,3 +50,6 @@ INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (3,1);
 INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (1,'Hola, ¿alguien quiere jugar?', '2013-01-01 17:00','jorsilman',1);
 INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (2,'Hola, ¿alguien quiere jugar?', '2015-01-01 17:00','barba',1);
 INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (3,'Hola, ¿alguien quiere jugar?', '2017-01-01 17:00','barba',1);
+
+INSERT INTO aspectos(imagen,precio) VALUES ("https://img.freepik.com/vector-premium/icono-perfil-avatar_188544-4755.jpg?w=2000",200);
+INSERT INTO aspectos(imagen,precio) VALUES ("https://i.pinimg.com/736x/b5/49/41/b5494197b2d462c940f88988b203d290.jpg",400);
