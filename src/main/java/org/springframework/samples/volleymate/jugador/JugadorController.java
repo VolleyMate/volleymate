@@ -75,12 +75,14 @@ public class JugadorController {
 
     @GetMapping(value = "/jugadores/new")
 	public String crearJugadorInicio(Map<String, Object> model, @AuthenticationPrincipal Authentication authentication, Principal principal) {
-		if (authentication != null ){
+        List<Aspecto> aspectos = this.aspectoService.findAllAspectosGratuitos();
+        if (authentication != null ){
             Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
             if(jugadorService.esAdmin(jugadorLog)){
                 Jugador jugador = new Jugador();
                 jugador.setPremium(false);
                 model.put("jugador", jugador);
+                model.put("aspectos", aspectos);
                 return VIEW_CREATE_FORM;    
             }
             return "redirect:/";
@@ -88,6 +90,7 @@ public class JugadorController {
             Jugador jugador = new Jugador();
             jugador.setPremium(false);
             model.put("jugador", jugador);
+            model.put("aspectos", aspectos);
             return VIEW_CREATE_FORM;
         }
 	}
@@ -305,8 +308,12 @@ public class JugadorController {
                 Jugador jugador = solicitud.getJugador();
                 Partido partido = solicitud.getPartido();
                 Integer volleys = partido.getPrecioPersona();
-                Integer sumVolleys = jugador.getVolleys() - volleys;
-                jugador.setVolleys(sumVolleys);
+                
+                if(!jugador.getPremium()){
+                    Integer sumVolleys = jugador.getVolleys() - volleys;
+                    jugador.setVolleys(sumVolleys);
+                }
+                
                 this.jugadorService.saveJugador(jugador);
                 this.jugadorService.eliminarSolicitud(solicitud);
                 return "redirect:/jugadores/notificaciones";

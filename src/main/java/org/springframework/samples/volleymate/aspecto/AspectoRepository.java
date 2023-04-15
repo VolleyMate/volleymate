@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface AspectoRepository extends CrudRepository<Aspecto, Integer> {
     
     @Query("SELECT a FROM Aspecto a WHERE a.precio = 0")
-    List<Aspecto> findAspectosGratuitos();
+    public List<Aspecto> findAspectosGratuitos();
 }

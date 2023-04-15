@@ -29,5 +29,9 @@ public class AspectoService {
     public Aspecto findById(Integer aspectoId) {
         return this.aspectoRepository.findById(aspectoId).get();
     }
+
+    public List<Aspecto> findAllAspectosGratuitos() {
+        return this.aspectoRepository.findAspectosGratuitos();
+    }
     
 }
