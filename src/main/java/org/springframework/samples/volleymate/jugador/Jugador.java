@@ -65,7 +65,10 @@ public class Jugador extends Person{
     @OneToMany(mappedBy = "ratingPlayer", cascade = CascadeType.ALL)
     private List<Valoracion> valoracionesDadas;
 
-    @OneToOne(mappedBy = "holder", cascade = CascadeType.ALL)
-    private Logro logro;
+    @ManyToMany
+	@JoinTable(name="logros_jugador",
+				joinColumns = @JoinColumn(name="id_jugador"),
+				inverseJoinColumns = @JoinColumn(name="id_logro"))
+    private List<Logro> logros;
     
 }

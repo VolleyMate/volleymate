@@ -1,11 +1,16 @@
 package org.springframework.samples.volleymate.logro;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.URL;
 import org.springframework.samples.volleymate.jugador.Jugador;
-import org.springframework.samples.volleymate.valoracion.Valoracion;
 import org.springframework.samples.volleymate.model.BaseEntity;
 
 import lombok.Getter;
@@ -17,9 +22,23 @@ import lombok.Setter;
 @Setter
 public class Logro extends BaseEntity {
 
-  @OneToOne
-  private Jugador holder;
+  @Column(name = "descripcion")
+    @NotBlank
+    private String descripcion;
 
-  private Valoracion valoracion;
+    @Column(name = "imagen")
+    @URL
+    private String imagen;
+
+    @Column(name = "threshold")
+    @NotNull
+    private Double threshold;
+	
+    @Column(name= "metrica")
+    @NotBlank
+	private String metrica;
+
+    @ManyToMany(mappedBy="logros")
+    private List<Jugador> jugadores;
 
 }
