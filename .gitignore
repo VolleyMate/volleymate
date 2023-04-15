@@ -71,3 +71,4 @@ _site/
 .vscode/
 src/main/resources/application.properties
 src/main/resources/application.properties
+src/main/resources/application.properties
