@@ -13,6 +13,11 @@
                 <c:out value="${mensajeExito}" />
             </div>
         </c:if>
+        <c:if test="${mensajeError!=null}">
+            <div style="background-color: red;">
+                <c:out value="${mensajeError}" ></c:out>
+            </div>
+        </c:if>
 
         <div class="row">
             <div class="col-md-6" style="padding: 2%;">

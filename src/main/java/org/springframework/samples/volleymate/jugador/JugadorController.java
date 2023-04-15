@@ -62,7 +62,8 @@ public class JugadorController {
     private final UserService userService;
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService, AspectoService aspectoService, UserService userService) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,
+        ValoracionService valoracionService, AspectoService aspectoService, UserService userService) {
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
         this.solicitudService = solicitudService;
@@ -425,9 +426,29 @@ public class JugadorController {
         return HOME_TIENDA;
     }
 
-    @GetMapping(value="/tienda/aspectos/comprar/")
-    public String comprarAspecto(Principal principal, ModelMap model){
-        return null;
+    @GetMapping(value="/tienda/aspectos/comprar/{aspectoId}")
+    public String comprarAspecto(Principal principal, @PathVariable("aspectoId") int aspectoId,ModelMap model){
+        Aspecto aspecto = this.aspectoService.findById(aspectoId);
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        int volleys = jugador.getVolleys();
+        int precio = aspecto.getPrecio();
+
+        if(!jugador.getPremium() && volleys>= precio){
+            int volleysRestantes  = volleys - precio;
+            jugador.setVolleys(volleysRestantes);
+        } else if(volleys < precio){
+            model.put("mensajeError", String.format("No tienes suficientes volleys!!"));
+            model.put("jugador", jugador);
+            return HOME_TIENDA;
+        }
+
+        jugador.getAspectos().add(aspecto);
+        jugador.setAspectos(jugador.getAspectos());
+        this.jugadorService.saveJugador(jugador);
+
+        model.put("jugador", jugador);
+        model.put("mensajeExito", String.format("Enhorabuena, ahora cuentas con un nuevo aspecto!"));
+        return HOME_TIENDA;
     }
 
     @RequestMapping(value = "/listaJugadores")

@@ -6,7 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<petclinic:layout pageName="tiendaAspectos">
+<petclinic:layout pageName="tiendaAspectos">  
     <div class="container" style="background-color: #0099bb3e; padding: 20px; width: 100%; margin-top: 5%; border-radius: 20px;">
         <div class="row">
             <div class="col-md-12 col-xl-6 text-center mx-auto" >
@@ -26,12 +26,33 @@
                     <div class="card">
                         <div class="card-body">
                             <p class="card-text">
-                                <strong>Imagen:</strong> <c:out value="${aspecto.imagen}"/>
+                                <img src="${aspecto.imagen}" style="height: 100px; width: 100px;">
                               </p>                              
                             <p class="card-text">
-                                <strong>Precio:</strong> <c:out value="${aspecto.precio}"/> 
+                                <c:choose>
+                                    <c:when test="${jugador.premium}">
+                                        <strong>Precio:</strong> <c:out value="Incluido con premium!"/> 
+                                    </c:when>
+                                    <c:otherwise>
+                                        <strong>Precio:</strong> <c:out value="${aspecto.precio}"/> 
+                                    </c:otherwise>
+                                </c:choose>
                             </p>
                         </div>
+                        <c:choose>
+                            <c:when test="${jugador.aspectos.contains(aspecto)}">
+                                <c:out value="Ya lo tienes!"></c:out>
+                            </c:when>
+                            <c:otherwise>
+                                <spring:url value="/tienda/aspectos/comprar/{aspectoId}" var="comprarAspectoUrl">
+                                    <spring:param name="aspectoId" value="${aspecto.id}"/>
+                                </spring:url>
+                                <a href="${fn:escapeXml(comprarAspectoUrl)}">
+                                    <p style="color: darkgoldenrod;">Comprar</p>
+                                </a>   
+                            </c:otherwise>
+                        </c:choose>
+                                             
                     </div>
                 </div>
                 </c:forEach>
