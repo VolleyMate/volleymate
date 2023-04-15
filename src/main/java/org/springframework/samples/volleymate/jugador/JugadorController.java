@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import java.util.Map;
 import org.springframework.ui.ModelMap;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -77,12 +78,14 @@ public class JugadorController {
             Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
             if(jugadorService.esAdmin(jugadorLog)){
                 Jugador jugador = new Jugador();
+                jugador.setPremium(false);
                 model.put("jugador", jugador);
                 return VIEW_CREATE_FORM;    
             }
             return "redirect:/";
         } else {
             Jugador jugador = new Jugador();
+            jugador.setPremium(false);
             model.put("jugador", jugador);
             return VIEW_CREATE_FORM;
         }
@@ -392,6 +395,15 @@ public class JugadorController {
         return HOME_TIENDA_CONFIRMAR_COMPRA;
     }
 
+    @GetMapping(value="/tienda/confirmaCompra")
+    public String confirmarCompraPremium(Principal principal, ModelMap model){
+        model.put("precio", 7.99);
+        model.put("numVolleys", 0);
+        model.put("paquete", "Comprar paquete premium");
+        
+        return HOME_TIENDA_CONFIRMAR_COMPRA;
+    }
+
     @GetMapping(value="/tienda/volleys/comprar/{volleys}")
     public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, RedirectAttributes redirAttrs, ModelMap model){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
@@ -401,6 +413,21 @@ public class JugadorController {
         model.put("jugador", jugador);
         model.put("mensajeExito", String.format("Su compra de %s volleys ha sido realizada con éxito!", volleys));
         return HOME_TIENDA;
+    }
+
+    @GetMapping(value="/tienda/premium/comprar")
+    public String comprarPremium(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        jugador.setPremium(true);
+        this.jugadorService.saveJugador(jugador);
+        model.put("jugador", jugador);
+        model.put("mensajeExito", String.format("Ahora eres premium y disfrutas todas sus ventajas!"));
+        return HOME_TIENDA;
+    }
+
+    @GetMapping(value="/tienda/aspectos/comprar/")
+    public String comprarAspecto(Principal principal, ModelMap model){
+        return null;
     }
 
     @RequestMapping(value = "/listaJugadores")
@@ -438,7 +465,7 @@ public class JugadorController {
     @GetMapping(value="/misAspectos")
     public String showVistaMisAspectos(Principal principal, ModelMap model){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        List<Aspecto> aspectos = this.aspectoService.findAspectosByJugadorId(jugador.getId());
+        List<Aspecto> aspectos = jugador.getAspectos();
         model.put("jugador", jugador);
         model.put("aspectos", aspectos);
         return HOME_MIS_ASPECTOS;

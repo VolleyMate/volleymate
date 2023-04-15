@@ -48,6 +48,9 @@ public class Jugador extends Person{
 	@Column(name = "volleys")
 	private Integer volleys=150;
 
+	@Column(name = "premium")
+	private boolean premium;
+
  
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
@@ -65,7 +68,11 @@ public class Jugador extends Person{
     @OneToMany(mappedBy = "ratingPlayer", cascade = CascadeType.ALL)
     private List<Valoracion> valoracionesDadas;
     
-	@OneToMany(mappedBy = "jugadorAdquirido", cascade = CascadeType.ALL)
+	@ManyToMany
+	@JoinTable(
+		name = "aspectos_jugador", 
+		joinColumns = @JoinColumn(name = "jugador_id"), 
+		inverseJoinColumns = @JoinColumn(name = "aspecto_id"))
     private List<Aspecto> aspectos;
 
 	public int getValoracionMedia (){

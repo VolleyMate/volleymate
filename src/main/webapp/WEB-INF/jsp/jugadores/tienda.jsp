@@ -60,7 +60,7 @@
                                         <li class="d-flex mb-2"></li>
                                     </ul>
                                 </div>
-                                <a href="/tienda/confirmaCompra/1" class="btn btn-default">Comprar</a>
+                                <a href="/tienda/confirmaCompra" class="btn btn-default">Comprar</a>
                             </div>
                         </div>
                     </div>
