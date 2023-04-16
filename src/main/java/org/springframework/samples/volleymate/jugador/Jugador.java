@@ -48,7 +48,6 @@ public class Jugador extends Person{
 	@Column(name = "volleys")
 	private Integer volleys=150;
 
-	@NotNull
 	@Column(name = "premium")
 	private Boolean premium;
 

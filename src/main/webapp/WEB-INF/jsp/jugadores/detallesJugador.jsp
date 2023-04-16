@@ -10,9 +10,11 @@
 <petclinic:layout pageName="detalleJugador">
 
 
-        <div class="m-0 row justify-content-center"> 
+        <div class="m-0 row justify-content-center col-auto text-center"> 
+            <c:if test="${jugadorVista.premium == true}"><img class="rounded d-block" style="padding-top: 2%;" src="/resources/images/corona.png" width="100" height="100" alt="jugador"></c:if>
 
-    <div class="col-auto p-5 text-center"> 
+    <div class="col-auto p-5 text-center">
+        
         <c:if test="${jugadorVista.image == ''}"><img class="rounded d-block" src="/resources/images/perfilPorDefecto.png" width="250" height="250" alt="jugador"></c:if>
         <c:if test="${jugadorVista.image != ''}"><img class="rounded d-block" src="${jugadorVista.image}" width="250" height="250" alt="jugador"></c:if>
        
