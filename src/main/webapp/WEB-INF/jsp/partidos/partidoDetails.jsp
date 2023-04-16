@@ -44,8 +44,15 @@
             <h3 style="background-color: white; border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto;">
                 <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys"
                     style="width: 20px; height: 20px; margin-right: 10px;">
-                <c:out value="${partido.precioPersona}" /> volleys
-                <h3></h3>
+                <c:choose>
+                    <c:when test="${jugadorLogueado.premium}">
+                        <c:out value="Gratis con tu suscripción premium!" /> 
+                    </c:when>
+                    <c:otherwise>
+                        <c:out value="${partido.precioPersona}" /> volleys
+                    </c:otherwise>
+                </c:choose>
+               
         </div>
         <div style="width: 45%;">
             <h3 style="color: #FFFFFF;">Descripción:</h3>

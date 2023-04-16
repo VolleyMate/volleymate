@@ -22,6 +22,7 @@
         <h3><b>@<c:out value="${jugadorVista.user.username}"/></b></h3>
         <h4>Ciudad: <b><c:out value="${jugadorVista.ciudad}"/></b></h4>
         <h4>Sexo: <b><c:out value="${jugadorVista.sexo}"/></b></h4>
+        <h4>Premium: <b><c:out value="${jugadorVista.premium}"/></b></h4>
         <c:if test="${jugadorVista.equals(jugadorAutenticado)}">
             <h4>Teléfono: <b><c:out value="${jugadorVista.telephone}"/></b></h4>
             <h4><b><c:out value="${jugadorVista.volleys}"/></b><c:out value=" "/><img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;"></h4>
