@@ -53,3 +53,5 @@ INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (3
 
 INSERT INTO aspectos(imagen,precio) VALUES ("https://img.freepik.com/vector-premium/icono-perfil-avatar_188544-4755.jpg?w=2000",200);
 INSERT INTO aspectos(imagen,precio) VALUES ("https://i.pinimg.com/736x/b5/49/41/b5494197b2d462c940f88988b203d290.jpg",400);
+
+INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Primer partido","Ha jugado un partido en la aplicacion",null,1,"partidos");

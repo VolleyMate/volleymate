@@ -47,8 +47,8 @@
                               <a href="${fn:escapeXml(editUrl)}" class="glyphicon glyphicon-pencil"></a>
                             </td>
                             <td>
-                              <spring:url value="/statistics/achievements/delete/{achievementId}" var="deleteUrl">
-                                <spring:param name="achievementId" value="${achievement.id}" />
+                              <spring:url value="/logro/delete/{achievementId}" var="deleteUrl">
+                                <spring:param name="achievementId" value="${logro.id}" />
                               </spring:url>
                               <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash"></a>
                             </td>
@@ -60,7 +60,7 @@
                   </table>
 
                   <c:if test="${esAdmin}">
-                    <a href="/statistics/achievements/new" class="btn btn-default">Add Achievement</a>
+                    <a href="/logro/new" class="btn btn-default">Nuevo Logro</a>
                   </c:if>
 
 
