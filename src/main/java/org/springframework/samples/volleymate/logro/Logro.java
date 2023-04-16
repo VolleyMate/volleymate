@@ -22,7 +22,11 @@ import lombok.Setter;
 @Setter
 public class Logro extends BaseEntity {
 
-  @Column(name = "descripcion")
+    @Column(name = "nombre")
+    @NotBlank
+    private String nombre;
+
+   @Column(name = "descripcion")
     @NotBlank
     private String descripcion;
 
@@ -36,7 +40,7 @@ public class Logro extends BaseEntity {
 	
     @Column(name= "metrica")
     @NotBlank
-	private String metrica;
+	  private String metrica;
 
     @ManyToMany(mappedBy="logros")
     private List<Jugador> jugadores;

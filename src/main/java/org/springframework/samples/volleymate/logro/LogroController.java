@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/logros")
+@RequestMapping("/logro")
 public class LogroController {
 
-  private String CREATE_OR_UPDATE_ACHIEVEMENT_FORM = "/achievements/AchievementCreateOrUpdateForm";
-    private String ACHIEVEMENTS_LISTING = "/achievements/AchievementsListing";
+  private String CREATE_OR_UPDATE_ACHIEVEMENT_FORM = "/logro/crearOActualizar";
+    private String ACHIEVEMENTS_LISTING = "/logro/listado";
     
     private final LogroService achievementService;
     private final JugadorService playerService;
@@ -42,8 +42,8 @@ public class LogroController {
         Collection<Logro> achievements = achievementService.getAllAchievements();
         Boolean isAdmin = playerService.esAdmin(playerService.findJugadorByUsername(principal.getName()));
         
-        model.put("achievements", achievements);
-        model.put("isAdmin", isAdmin);
+        model.put("logros", achievements);
+        model.put("esAdmin", isAdmin);
         
         return ACHIEVEMENTS_LISTING;
     }
@@ -53,14 +53,14 @@ public class LogroController {
         
     	achievementService.deleteAchievementById(id);
        
-    	return "redirect:/logros";
+    	return "redirect:/logro";
     }
     
     @GetMapping("/edit/{id}")
     public String initUpdateForm(@PathVariable("id") int id, Map<String, Object> model) {
        
     	Logro achievement = this.achievementService.getAchievementById(id);
-        model.put("achievement", achievement);
+        model.put("logro", achievement);
         
         return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
     }
@@ -71,7 +71,7 @@ public class LogroController {
         
     	if(result.hasErrors()){
         	
-            model.put("achievement", achievement);
+            model.put("logro", achievement);
             return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
             
         } else{
@@ -81,7 +81,7 @@ public class LogroController {
             
             achievementService.saveAchievement(achievement2Update);
         }
-        return "redirect:/statistics/achievements/";
+        return "redirect:/logro/";
     }
     
 	public ModelAndView showAll(){
@@ -96,7 +96,7 @@ public class LogroController {
 	public String create(Map<String, Object> model) {
 		
 		Logro a = new Logro();
-        model.put("achievement", a);
+        model.put("logro", a);
         
         return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
 	}
@@ -107,13 +107,13 @@ public class LogroController {
 		
 		if(result.hasErrors()){
 			
-            model.put("achievement", a);
+            model.put("logro", a);
             return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
             
         } else
         	achievementService.saveAchievement(a);
         
-        return "redirect:/statistics/achievements/";
+        return "redirect:/logro/";
 	}
   
 }
