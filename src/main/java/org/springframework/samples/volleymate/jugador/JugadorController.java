@@ -135,6 +135,17 @@ public class JugadorController {
 				String user = currentUser.getUsername();
 				try{
 					Jugador player = jugadorService.findJugadorByUsername(user);
+                    if(jugadorService.esAdmin(player)){
+                        Jugador jugador = jugadorService.findJugadorById(id);
+                        String username = jugador.getUser().getUsername();
+                        String pass = jugador.getUser().getPassword();
+                        Sexo sexo = jugador.getSexo();
+                        model.addAttribute("pass", pass);
+                        model.addAttribute("username", username);
+                        model.addAttribute("sexo", sexo);
+                        model.addAttribute(jugador);
+                        return VIEW_UPDATE_FORM;   
+                    }
 					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
 					for (GrantedAuthority usuarioR : usuario){
 					String credencial = usuarioR.getAuthority();
@@ -421,6 +432,12 @@ public class JugadorController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.isAuthenticated()) {
             Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+            if(jugadorService.esAdmin(jugador)){
+                Jugador cuentaJugador = this.jugadorService.findJugadorById(jugadorId);
+                jugadorService.deleteJugador(cuentaJugador);
+                userService.deleteUser(cuentaJugador.getUser());
+                return "redirect:/";    
+            }
             if (clave == jugador.getUser().getPassword() && jugadorId == jugador.getId()) {
                 SecurityContextHolder.getContext().setAuthentication(null);
                 jugadorService.deleteJugador(jugador);
