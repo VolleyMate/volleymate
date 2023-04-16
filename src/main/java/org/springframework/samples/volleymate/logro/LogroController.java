@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.jugador.JugadorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -39,11 +40,13 @@ public class LogroController {
     public String getAllAchievements(Map<String, Object> model,
     		Principal principal) {
     	
+        Jugador player = playerService.findJugadorByUsername(principal.getName());
         Collection<Logro> achievements = achievementService.getAllAchievements();
-        Boolean isAdmin = playerService.esAdmin(playerService.findJugadorByUsername(principal.getName()));
+        Boolean isAdmin = playerService.esAdmin(player);
         
         model.put("logros", achievements);
         model.put("esAdmin", isAdmin);
+        model.put("jugador", player);
         
         return ACHIEVEMENTS_LISTING;
     }

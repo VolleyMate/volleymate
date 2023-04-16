@@ -60,3 +60,5 @@ INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Diez pa
 INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Aprobado","Ha alcanzado un aprobado",null,3,"valoracion");
 INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Notable","Ha llegado al notable",null,4,"valoracion");
 INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Sobresaliente","Ha llegado a la maxima puntuacion",null,5,"valoracion");
+
+INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (1,1);

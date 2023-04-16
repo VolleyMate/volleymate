@@ -18,7 +18,7 @@
                         <th>Imagen</th>
                         <th>Threshold</th>
                         <th>Metrica</th>
-                        <th>Jugadores</th>
+                        <th>Lo tengo</th>
                         <th></th>
                         <th></th>
                       </tr>
@@ -42,7 +42,7 @@
                             <c:out value="${logro.metrica}" />
                           </td>
                           <td>
-                            <c:out value="${logro.jugadores}" />
+                            <c:out value="${logro.jugadores.contains(jugador)}" />
                           </td>
 
                           <c:if test="${esAdmin}">
