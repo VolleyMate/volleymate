@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
+<h1%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="tienda">
     <div class="container">
@@ -47,10 +47,11 @@
             <div class="col-md-6" style="padding: 2%;">
                 <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; height: 350px; margin-top: 5%; border-radius: 20px;">
                     <h2>Plan Premium</h2>
-                    <p style="padding-bottom: 2%;">Inscríbete al plan Premium para disfrutar de VolleyMate al completo</p>
-                    <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+                    <c:if test="${jugador.premium != true}">
+                        <p style="padding-bottom: 2%;">Inscríbete al plan Premium para disfrutar de VolleyMate al completo</p>
+                        <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
                         <div class="card h-100">
-                            <div class="card-body flex-grow-0 p-4"><span class="badge bg-primary text-uppercase mb-2">pREMIUM</span>
+                            <div class="card-body flex-grow-0 p-4"><span class="badge bg-primary text-uppercase mb-2">PREMIUM</span>
                                 <h4 class="display-4 fw-bold card-title">7,99€<span class="fs-3 fw-normal text-muted">/mes</span></h4>
                             </div>
                             <div class="card-footer d-flex flex-column flex-grow-1 justify-content-between p-4">
@@ -68,7 +69,11 @@
                                 <a href="/tienda/confirmaCompra" class="btn btn-default">Comprar</a>
                             </div>
                         </div>
-                    </div>
+                        </div>
+                    </c:if>
+                    <c:if test="${jugador.premium == true}">
+                        <h1 style="text-align: center; padding-top: 15%;">YA ERES USUARIO PREMIUM</h1>
+                    </c:if>
                 </div>
             </div>
         </div>

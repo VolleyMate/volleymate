@@ -1,6 +1,8 @@
 package org.springframework.samples.volleymate.jugador;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -182,7 +184,7 @@ public class JugadorController {
 		}
 		else {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","sexo","user","volleys","solicitudes","premium","notificaciones","telephone"); 
+			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","image","sexo","fechaInicioPremium","fechaFinPremium","user","volleys","solicitudes","premium","notificaciones","telephone"); 
             this.jugadorService.saveJugador(jugadorToUpdate);
 			model.put("message","Jugador editado correctamente");
 			return "redirect:/jugadores";
@@ -199,6 +201,12 @@ public class JugadorController {
                 String usuario = currentUser.getUsername();
                 Jugador jugador = jugadorService.findJugadorByUsername(usuario);
                 Jugador jugadorAutenticado = jugadorService.findJugadorByUsername(principal.getName());
+                if(jugadorAutenticado.getPremium() == true && jugadorAutenticado.getFechaFinPremium().toLocalDate().isBefore(LocalDate.now())){
+                    jugadorAutenticado.setPremium(false);
+                    jugadorAutenticado.setFechaInicioPremium(null);
+                    jugadorAutenticado.setFechaFinPremium(null);
+                    jugadorService.saveJugador(jugadorAutenticado);
+                }
                 model.put("jugadorAutenticado", jugadorAutenticado);
                 model.put("jugadorVista", jugador);
                 model.put("id",jugadorAutenticado.getId());
@@ -426,6 +434,8 @@ public class JugadorController {
     public String comprarPremium(Principal principal, ModelMap model){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         jugador.setPremium(true);
+        jugador.setFechaInicioPremium(LocalDateTime.now());
+        jugador.setFechaFinPremium(LocalDateTime.now().plusDays(30));
         this.jugadorService.saveJugador(jugador);
         model.put("jugador", jugador);
         model.put("mensajeExito", String.format("Ahora eres premium y disfrutas todas sus ventajas!"));
