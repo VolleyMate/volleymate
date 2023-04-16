@@ -24,7 +24,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <c:forEach items="${logros}" var="logros">
+                      <c:forEach items="${logros}" var="logro">
                         <tr>
                           <td>
                             <c:out value="${logro.nombre}" />
@@ -37,6 +37,12 @@
                           </td>
                           <td>
                             <c:out value="${logro.threshold}" />
+                          </td>
+                          <td>
+                            <c:out value="${logro.metrica}" />
+                          </td>
+                          <td>
+                            <c:out value="${logro.jugadores}" />
                           </td>
 
                           <c:if test="${esAdmin}">

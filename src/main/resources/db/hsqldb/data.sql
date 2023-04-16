@@ -55,3 +55,8 @@ INSERT INTO aspectos(imagen,precio) VALUES ("https://img.freepik.com/vector-prem
 INSERT INTO aspectos(imagen,precio) VALUES ("https://i.pinimg.com/736x/b5/49/41/b5494197b2d462c940f88988b203d290.jpg",400);
 
 INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Primer partido","Ha jugado un partido en la aplicacion",null,1,"partidos");
+INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Cinco partido","Ha jugado cinco partidos en la aplicacion",null,5,"partidos");
+INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Diez partidos","Ha jugado diez partidos en la aplicacion",null,10,"partidos");
+INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Aprobado","Ha alcanzado un aprobado",null,3,"valoracion");
+INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Notable","Ha llegado al notable",null,4,"valoracion");
+INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Sobresaliente","Ha llegado a la maxima puntuacion",null,5,"valoracion");

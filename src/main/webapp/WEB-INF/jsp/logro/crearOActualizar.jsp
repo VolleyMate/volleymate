@@ -22,14 +22,17 @@
                   <petclinic:inputField name="nombre" label=""></petclinic:inputField>
 
                   <p>Descripcion</p>
-                  <sieteislas:inputField name="descripcion" label="">
-                    </petclinic:inputField>
+                  <petclinic:inputField name="descripcion" label="">
+                  </petclinic:inputField>
 
-                    <p>Imagen</p>
-                    <petclinic:inputField name="imagen" label=""></petclinic:inputField>
+                  <p>Imagen</p>
+                  <petclinic:inputField name="imagen" label=""></petclinic:inputField>
 
-                    <p>Meta</p>
-                    <petclinic:inputField name="threshold" label=""></petclinic:inputField>
+                  <p>Metrica</p>
+                  <petclinic:inputField name="metrica" label=""></petclinic:inputField>
+
+                  <p>Meta</p>
+                  <petclinic:inputField name="threshold" label=""></petclinic:inputField>
 
                 </div>
 
