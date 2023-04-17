@@ -45,6 +45,7 @@
                 <c:if test="${!mensajeEach.emisor.user.username.equalsIgnoreCase(username)}">
                     <div style="grid-column: 1; max-width: 50%; border-width: 10px; background-color: #0099; border-radius: 15px; padding:10px; margin: 1%; border:2px solid black; color:white"">
                         <div style="border-radius: 15px; text-align: left; font-style: italic; margin-bottom: 1%;">
+                            <img src="${mensajeEach.emisor.image}" width="25" height="25" style="border-radius:5px">
                             <c:out value="${mensajeEach.emisor.user.username}"/>
                             <br>
                         </div>
