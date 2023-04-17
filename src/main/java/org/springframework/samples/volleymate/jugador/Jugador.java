@@ -1,5 +1,7 @@
 package org.springframework.samples.volleymate.jugador;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -16,10 +18,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import javax.validation.constraints.NotNull;
+
+import org.springframework.samples.volleymate.aspecto.Aspecto;
 import org.springframework.samples.volleymate.model.Person;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.user.User;
 import org.springframework.samples.volleymate.valoracion.Valoracion;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -44,8 +49,16 @@ public class Jugador extends Person{
 
 	@NotNull
 	@Column(name = "volleys")
-	private Integer volleys=0;
+	private Integer volleys=150;
 
+	@Column(name = "premium")
+	private Boolean premium;
+
+	@Column(name = "fecha_inicio_premium")
+	private LocalDateTime fechaInicioPremium;
+
+	@Column(name = "fecha_fin_premium")
+	private LocalDateTime fechaFinPremium;
  
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
@@ -63,4 +76,18 @@ public class Jugador extends Person{
     @OneToMany(mappedBy = "ratingPlayer", cascade = CascadeType.ALL)
     private List<Valoracion> valoracionesDadas;
     
+	@ManyToMany
+	@JoinTable(
+		name = "aspectos_jugador", 
+		joinColumns = @JoinColumn(name = "jugador_id"), 
+		inverseJoinColumns = @JoinColumn(name = "aspecto_id"))
+    private List<Aspecto> aspectos;
+
+	public int getValoracionMedia (){
+		if(valoracionesRecibidas.isEmpty()){
+			return 5;
+		}else {
+			return valoracionesRecibidas.stream().mapToInt(Valoracion::getPuntuacion).sum()/valoracionesRecibidas.size();
+		}
+	}
 }

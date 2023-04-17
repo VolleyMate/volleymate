@@ -91,7 +91,7 @@ public class PartidoController {
 		Boolean puedeCrear = jugador.getVolleys()>=150;
 		model.put("puedeCrear", puedeCrear);
 		model.put("partido", partido);
-		model.put("centros", centroService.findAllCentros());
+		model.put("centros", centroService.findAcceptedCentros());
 		return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 	}
 
@@ -114,7 +114,7 @@ public class PartidoController {
 		if (!errores.isEmpty()) {
 			model.put("partido", partido);
 			model.put("errors", errores);
-			model.put("centros", centroService.findAllCentros());
+			model.put("centros", centroService.findAcceptedCentros());
 			Boolean puedeCrear = jugador.getVolleys()>=150;
 			model.put("puedeCrear", puedeCrear);
 			return VIEW_PARTIDOS_CREATE_OR_UPDATE;
@@ -167,7 +167,7 @@ public class PartidoController {
 			Jugador player = jugadorService.findJugadorByUsername(principal.getName());
 			if (partidoService.puedeEditarPartido(player, partido)){
 				model.put("partido", partido);
-				model.put("centros", centroService.findAllCentros());
+				model.put("centros", centroService.findAcceptedCentros());
 				return "partidos/editarPartido";
 			}else{
 				return "welcome";

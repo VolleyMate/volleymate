@@ -2,7 +2,6 @@
 
 <br/>
 <br/>
-
 <footer>
   <div class="container">
       <head>
@@ -13,6 +12,19 @@
             padding: 10px;
             height: 100 px;
         }
+        /* media queries para pantallas pequeñas */
+        @media (max-width: 767px) {
+          footer {
+            position: static;
+            height: auto;
+          }
+          .row {
+            margin-bottom: 20px;
+          }
+          .col-12 {
+            text-align: center;
+          }
+        }
         </style>
     </head>
       <div class="row">
@@ -21,8 +33,8 @@
           </div>
       </div>
       <br/>
-      <div class="row text-center"  style="background-color: #D8D8D8;>
-      <div class="col-12 text-center">
+      <div class="row text-center"  style="background-color: #D8D8D8;">
+      <div class="col-12">
         <a href="https://www.instagram.com/volleymate.es/">
           <img src="<spring:url value="/resources/images/instagram.png" htmlEscape="true" />" alt="Instagram de VolleyMate" style="max-width:40px;">
         </a>
