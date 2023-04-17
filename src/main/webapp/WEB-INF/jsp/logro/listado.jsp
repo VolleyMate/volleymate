@@ -9,7 +9,6 @@
 
                 <petclinic:layout pageName="logro">
                   <h2>Logros</h2>
-                  <p>"${partidos.size()}"</p>
                   <table id="logrosTabla" class="table table-striped">
                     <thead>
                       <tr>
@@ -42,7 +41,14 @@
                             <c:out value="${logro.metrica}" />
                           </td>
                           <td>
-                            <c:out value="${logro.jugadores.contains(jugador)}" />
+                            <c:choose>
+                              <c:when test="${conseguido.contains(logro)}">
+                                <p class="glyphicon glyphicon-ok"></p>
+                              </c:when>
+                              <c:otherwise>
+                                <p class="glyphicon glyphicon-remove"></p>
+                              </c:otherwise>
+                            </c:choose>
                           </td>
 
                           <c:if test="${esAdmin}">

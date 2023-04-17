@@ -42,8 +42,6 @@ public class LogroController {
     public String getAllAchievements(Map<String, Object> model,
     		Principal principal) {
 
-          updateLogros(principal);
-
         Jugador player = playerService.findJugadorByUsername(principal.getName());
         Collection<Logro> achievements = achievementService.getAllAchievements();
         Boolean isAdmin = playerService.esAdmin(player);
@@ -51,12 +49,12 @@ public class LogroController {
         model.put("logros", achievements);
         model.put("esAdmin", isAdmin);
         model.put("jugador", player);
-        model.put("partidos", player.getPartidos());
+        model.put("conseguido", updateLogros(principal));
         
         return ACHIEVEMENTS_LISTING;
     }
 
-    private void updateLogros(Principal principal){
+    private List<Logro> updateLogros(Principal principal){
 
        Jugador player = playerService.findJugadorByUsername(principal.getName());
       Collection<Logro> achievements = achievementService.getAllAchievements();
@@ -64,6 +62,8 @@ public class LogroController {
       for(Logro a:achievements){
         if(!a.getJugadores().contains(player)){ checkLogro(a, player); }
       }
+
+      return player.getLogros();
     }
 
     private void checkLogro(Logro l, Jugador j){
