@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +44,7 @@ public class CentroController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/centros/solitud/new")
+    @GetMapping(value = "/centros/solicitud/new")
     public String initCreationForm(Map<String, Object> model) {
         Centro centro = new Centro();
         centro.setEstado(false);
@@ -53,12 +52,16 @@ public class CentroController {
         return VISTA_CREAR_CENTROS;
     }
 
-    @PostMapping(value = "/centros/solitud/new")
+    @PostMapping(value = "/centros/solicitud/new")
     public String processCreationForm(@Valid Centro centro, BindingResult result, Map<String, Object> model, Principal principal) {
+        List<String> errores = centroService.validarCentro(centro);
         if(result.hasErrors()) {
             model.put("errors", result.getAllErrors());
             return VISTA_CREAR_CENTROS;
-        }else {
+        } else if (!errores.isEmpty()) {
+            model.put("errors", errores);
+            return VISTA_CREAR_CENTROS;
+        } else {
             centro.setEstado(false);
             Jugador jugador = jugadorService.findJugadorByUsername(principal.getName());
 		    centro.setCreador(jugador);
@@ -117,8 +120,10 @@ public class CentroController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
             Centro centro = centroService.findCentroById(centroId);
-            centroService.deleteCentro(centro);
             this.emailService.denegarSolicitudEmail(centro.getCreador().getUser().getCorreo());
+            centro.setCreador(null);
+            centroService.saveCentro(centro);
+            centroService.deleteCentro(centro);
             return "redirect:/centros";
         }else {
             model.put("message", "No tienes permisos para realizar esta acción");
@@ -177,7 +182,7 @@ public class CentroController {
         if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))){
 			Centro centro = centroService.findCentroById(centroId);
 			model.put("centro", centro);
-			return "centros/editarCentro";
+			return VISTA_EDITAR_CENTROS;
 			
 		}else{
 			return "welcome";
@@ -187,13 +192,14 @@ public class CentroController {
 	
 	@PostMapping(value = "/centros/edit/{centroId}")
 	public String processEditForm(@Valid Centro centro, BindingResult result, @PathVariable("centroId") int centroId, Map<String, Object> model){
-
+        List<String> errores = centroService.validarCentro(centro);
 		if(result.hasErrors()){
 			model.put("errors", result.getAllErrors());
-			return "centros/editarCentro";
-		}
-		else {
-			Centro centroUpdate = this.centroService.findCentroById(centroId);
+			return VISTA_EDITAR_CENTROS;
+        } else if (!errores.isEmpty()) {
+            model.put("errors", errores);
+            return VISTA_EDITAR_CENTROS;
+        } else {            Centro centroUpdate = this.centroService.findCentroById(centroId);
 			BeanUtils.copyProperties(centro,centroUpdate,"nombre","ciudad","direccion","maps","estado"); 
 			this.centroService.saveCentro(centro);
 			return "redirect:/centros/";
