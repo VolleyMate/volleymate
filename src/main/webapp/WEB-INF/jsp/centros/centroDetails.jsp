@@ -67,7 +67,7 @@
             <spring:url value="/centros/delete/{centroId}" var="eliminarURL">
                 <spring:param value="${centro.id}" name="centroId"/>
             </spring:url>
-            <a href="${eliminarURL}" class="btn btn-danger">Eliminar centro [ADMIN]</a>
+            <a href="/centros/delete/${centro.id}" class="btn btn-danger">Eliminar centro [ADMIN]</a>
         </sec:authorize>
     
     </div>
