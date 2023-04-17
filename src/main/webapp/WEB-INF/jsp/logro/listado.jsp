@@ -15,7 +15,7 @@
                         <th>Nombre</th>
                         <th>Descripcion</th>
                         <th>Imagen</th>
-                        <th>Threshold</th>
+                        <th>Progreso</th>
                         <th>Metrica</th>
                         <th>Lo tengo</th>
                         <th></th>
@@ -35,7 +35,7 @@
                             <img src="${logro.imagen}" style="width: 80px; height:auto" />
                           </td>
                           <td>
-                            <c:out value="${logro.threshold}" />
+                            <c:out value="${progreso.get(logro.metrica)} / ${logro.threshold}" />
                           </td>
                           <td>
                             <c:out value="${logro.metrica}" />

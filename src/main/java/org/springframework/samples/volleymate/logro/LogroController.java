@@ -2,6 +2,7 @@ package org.springframework.samples.volleymate.logro;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,41 +49,48 @@ public class LogroController {
         model.put("logros", achievements);
         model.put("esAdmin", isAdmin);
         model.put("jugador", player);
-        model.put("conseguido", updateLogros(principal));
+        model.put("conseguido", updateLogros(principal, model));
         
         return ACHIEVEMENTS_LISTING;
     }
 
     
-    private List<Logro> updateLogros(Principal principal){
+    private List<Logro> updateLogros(Principal principal, Map<String, Object> model){
 
        Jugador player = playerService.findJugadorByUsername(principal.getName());
       Collection<Logro> achievements = achievementService.getAllAchievements();
 
+       Map<String,Double> mem = new HashMap<>();
+
       for(Logro a:achievements){
-        if(!a.getJugadores().contains(player)){ checkLogro(a, player); }
+        if(!a.getJugadores().contains(player)){ checkLogro(a, player, mem); }
       }
+
+      model.put("progreso", mem);
 
       return player.getLogros();
     }
 
-    private void checkLogro(Logro l, Jugador j){
+    private void checkLogro(Logro l, Jugador j, Map<String,Double> mem){
 
       List<Logro> lj = j.getLogros();
-      int v = 0;
+      Double v = .0;
 
-      if(l.getMetrica().equals("partidos")){ v = j.getPartidos().size(); }
-      else if (l.getMetrica().equals("valoracion")){
+      if(l.getMetrica().equals("partidos")){
+        v = j.getPartidos().size() * 1.;
+        mem.put("partidos", v);
+      } else if (l.getMetrica().equals("valoracion")){
 
         int n = j.getValoracionesRecibidas().size();
-        int vj = 0;
+        Double vj = .0;
 
         if(0 < n){
           for(Valoracion val:j.getValoracionesRecibidas()){ vj += val.getPuntuacion(); }
           v = vj/n;
         }
 
-      } else { v = 100000000; }
+        mem.put("valoracion", vj);
+      } else { v = 100000000.; }
 
       if(l.getThreshold() <= v){ lj.add(l); }
 
