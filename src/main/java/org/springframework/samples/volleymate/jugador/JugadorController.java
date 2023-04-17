@@ -422,7 +422,7 @@ public class JugadorController {
     }
     
     @GetMapping("/jugadores/{jugadorId}/delete")
-    public String deleteJugador(Model model, @Param("clave") String clave, Principal principal, RedirectAttributes redirAttrs, @PathVariable("jugadorId") int jugadorId) {
+    public String deleteJugador(@Param("clave") String clave, Principal principal, RedirectAttributes redirAttrs, @PathVariable("jugadorId") int jugadorId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.isAuthenticated()) {
             Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
@@ -442,6 +442,22 @@ public class JugadorController {
         } else {
             return "redirect:/";
         }
+    }
+
+    @GetMapping("/jugadores/{jugadorId}/delete/admin")
+    public String deleteJugadorAdmin(RedirectAttributes redirAttrs, @PathVariable("jugadorId") int jugadorId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Jugador jugador = this.jugadorService.findJugadorById(jugadorId);
+        if(auth.isAuthenticated() && jugador.getUser().getAuthorities().contains("admin")) {
+            SecurityContextHolder.getContext().setAuthentication(null);
+            jugadorService.deleteJugador(jugador);
+            List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugador.getUser());
+            for(Authorities a:authorities) {
+               authoritiesService.deleteAuthorities(a);
+            }
+            userService.deleteUser(jugador.getUser());
+        }
+        return "redirect:/";
     }
 
     @GetMapping(value="/misAspectos")
