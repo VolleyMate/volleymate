@@ -216,7 +216,7 @@ public class PartidoController {
 		Boolean esAdmin = jugadorService.esAdmin(jugadorAut);
 		if(esAdmin){
 			partidoService.deletePartido(partido);
-			return "redirect:/partidos";
+			return "partidos/deletePartido";
 		} else {
 			return "redirect:/";
 		}
