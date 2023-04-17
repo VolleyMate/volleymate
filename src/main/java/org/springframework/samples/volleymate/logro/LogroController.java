@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/logro")
 public class LogroController {
 
   private String CREATE_OR_UPDATE_ACHIEVEMENT_FORM = "/logro/crearOActualizar";
@@ -38,7 +37,7 @@ public class LogroController {
         this.playerService = playerService;
     }
     
-    @GetMapping("/")
+    @GetMapping("/logro")
     public String getAllAchievements(Map<String, Object> model,
     		Principal principal) {
 
@@ -54,6 +53,7 @@ public class LogroController {
         return ACHIEVEMENTS_LISTING;
     }
 
+    
     private List<Logro> updateLogros(Principal principal){
 
        Jugador player = playerService.findJugadorByUsername(principal.getName());
@@ -90,7 +90,7 @@ public class LogroController {
       playerService.saveJugador(j);
     }
     
-    @GetMapping("/delete/{achievementId}")
+    @GetMapping("/logro/delete/{achievementId}")
     public String deleteAchievement(@PathVariable("achievementId") int id){
         
     	achievementService.deleteAchievementById(id);
@@ -98,7 +98,7 @@ public class LogroController {
     	return "redirect:/logro";
     }
     
-    @GetMapping("/edit/{id}")
+    @GetMapping("/logro/edit/{id}")
     public String initUpdateForm(@PathVariable("id") int id, Map<String, Object> model) {
        
     	Logro achievement = this.achievementService.getAchievementById(id);
@@ -107,7 +107,7 @@ public class LogroController {
         return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
     }
     
-    @PostMapping("/edit/{id}")
+    @PostMapping("/logro/edit/{id}")
     public String processUpdateForm(@Valid Logro achievement, BindingResult result,
                             @PathVariable("id") int id, Map<String, Object> model){
         
@@ -134,7 +134,7 @@ public class LogroController {
 		return res;
 	}
     
-	@GetMapping(value = "/new")
+	@GetMapping("/logro/new")
 	public String create(Map<String, Object> model) {
 		
 		Logro a = new Logro();
@@ -143,7 +143,7 @@ public class LogroController {
         return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
 	}
 	
-	@PostMapping(value = "/new")
+	@PostMapping("/logro/new")
 	public String post(@Valid Logro a, Map<String, Object> model,
 			BindingResult result) {
 		
