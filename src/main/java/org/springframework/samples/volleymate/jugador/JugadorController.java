@@ -19,7 +19,6 @@ import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.samples.volleymate.user.Authorities;
-import org.springframework.samples.volleymate.user.AuthoritiesRepository;
 import org.springframework.samples.volleymate.user.AuthoritiesService;
 import org.springframework.samples.volleymate.user.User;
 import org.springframework.samples.volleymate.user.UserService;
@@ -421,20 +420,32 @@ public class JugadorController {
         return VIEW_LISTADO_JUGADORES;
     }
     
-    @GetMapping("/jugadores/{jugadorId}/delete")
-    public String deleteJugador(@Param("clave") String clave, Principal principal, RedirectAttributes redirAttrs, @PathVariable("jugadorId") int jugadorId) {
+    @GetMapping("/jugadores/delete/{jugadorId}")
+    public String deleteJugador(Principal principal, RedirectAttributes redirAttrs, @PathVariable("jugadorId") int jugadorId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.isAuthenticated()) {
-            Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-            if (clave == jugador.getUser().getPassword() && jugadorId == jugador.getId()) {
+            Jugador jugadorLogeado = this.jugadorService.findJugadorByUsername(principal.getName());
+            Jugador jugadorVista = this.jugadorService.findJugadorById(jugadorId);
+            
+            //Elimina las cuentas bien, pero no elimina las cuentas con partidos asociados, revisar
+
+            if (jugadorId == jugadorLogeado.getId()) {
                 SecurityContextHolder.getContext().setAuthentication(null);
-                jugadorService.deleteJugador(jugador);
-                List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugador.getUser());
+                jugadorService.deleteJugador(jugadorLogeado);
+                List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorLogeado.getUser());
                 for(Authorities a:authorities) {
                     authoritiesService.deleteAuthorities(a);
                 }
-                userService.deleteUser(jugador.getUser());
+                userService.deleteUser(jugadorLogeado.getUser());
                 return "redirect:/";
+            } else if (jugadorService.esAdmin(jugadorLogeado) && jugadorId != jugadorLogeado.getId()){
+                jugadorService.deleteJugador(jugadorVista);
+                List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorVista.getUser());
+                for(Authorities a:authorities) {
+                    authoritiesService.deleteAuthorities(a);
+                }
+                userService.deleteUser(jugadorVista.getUser());
+                return "redirect:/listaJugadores";
             } else {
                 redirAttrs.addFlashAttribute("claveInvalida", "La clave introducida no coincide con su contraseña");
                 return "/jugadores/{jugadorId}/delete";
@@ -442,22 +453,6 @@ public class JugadorController {
         } else {
             return "redirect:/";
         }
-    }
-
-    @GetMapping("/jugadores/{jugadorId}/delete/admin")
-    public String deleteJugadorAdmin(RedirectAttributes redirAttrs, @PathVariable("jugadorId") int jugadorId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Jugador jugador = this.jugadorService.findJugadorById(jugadorId);
-        if(auth.isAuthenticated() && jugador.getUser().getAuthorities().contains("admin")) {
-            SecurityContextHolder.getContext().setAuthentication(null);
-            jugadorService.deleteJugador(jugador);
-            List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugador.getUser());
-            for(Authorities a:authorities) {
-               authoritiesService.deleteAuthorities(a);
-            }
-            userService.deleteUser(jugador.getUser());
-        }
-        return "redirect:/";
     }
 
     @GetMapping(value="/misAspectos")
