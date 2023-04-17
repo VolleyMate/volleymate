@@ -55,10 +55,14 @@ INSERT INTO aspectos(imagen,precio) VALUES ("https://img.freepik.com/vector-prem
 INSERT INTO aspectos(imagen,precio) VALUES ("https://i.pinimg.com/736x/b5/49/41/b5494197b2d462c940f88988b203d290.jpg",400);
 
 INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Primer partido","Ha jugado un partido en la aplicacion",null,1,"partidos");
-INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Cinco partido","Ha jugado cinco partidos en la aplicacion",null,5,"partidos");
+INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Cinco partidos","Ha jugado cinco partidos en la aplicacion",null,5,"partidos");
 INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Diez partidos","Ha jugado diez partidos en la aplicacion",null,10,"partidos");
 INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Aprobado","Ha alcanzado un aprobado",null,3,"valoracion");
 INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Notable","Ha llegado al notable",null,4,"valoracion");
 INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Sobresaliente","Ha llegado a la maxima puntuacion",null,5,"valoracion");
 
-INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (1,1);
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (8,'Test1','MASCULINO','Testeando1',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (9,'Test2','MASCULINO','Testeando2',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (10,'Test3','MASCULINO','Testeando3',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (11,'Test4','MASCULINO','Testeando4',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (12,'Test5','MASCULINO','Testeando5',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);

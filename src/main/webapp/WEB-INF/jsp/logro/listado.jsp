@@ -9,7 +9,7 @@
 
                 <petclinic:layout pageName="logro">
                   <h2>Logros</h2>
-
+                  <p>"${partidos.size()}"</p>
                   <table id="logrosTabla" class="table table-striped">
                     <thead>
                       <tr>
