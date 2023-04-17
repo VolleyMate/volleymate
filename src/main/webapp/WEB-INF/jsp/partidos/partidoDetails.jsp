@@ -21,10 +21,13 @@
         </div>
     </c:if>
 
-    <h1>Detalles del partido:</h1>
-    <div style="width: 70%; background-color: #0099bc; margin: 0 auto; border-radius: 50px;  text-align: center; display: flex; flex-wrap: wrap;">
-
-        <div style="width: 45%;">
+    <h1 style="margin: 20px 0;">Detalles del partido:</h1>
+    
+        
+    <div class="container" style="background-color: #0099bc; margin: 0 auto; border-radius: 50px;  text-align: center; display: flex; flex-wrap: wrap;">
+        <div class="row" style="display: flex; flex-wrap: wrap; justify-content: center; text-align: center;">
+            <div class="col-md-6" style="flex: 1; margin: 10px; text-align: center; justify-content: center;">
+        
             <h3 style="color: #FFFFFF;">Nombre: </h3>
             <h3 style="background-color: white;border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto; ">
                 <c:out value="${partido.nombre}"></c:out>
@@ -44,10 +47,17 @@
             <h3 style="background-color: white; border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto;">
                 <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys"
                     style="width: 20px; height: 20px; margin-right: 10px;">
-                <c:out value="${partido.precioPersona}" /> volleys
-                <h3></h3>
+                <c:choose>
+                    <c:when test="${jugadorLogueado.premium}">
+                        <c:out value="Gratis con tu suscripción premium!" /> 
+                    </c:when>
+                    <c:otherwise>
+                        <c:out value="${partido.precioPersona}" /> volleys
+                    </c:otherwise>
+                </c:choose>
+               
         </div>
-        <div style="width: 45%;">
+        <div class="col-md-6" style="flex: 1; margin: 10px; text-align: center; justify-content: center;">
             <h3 style="color: #FFFFFF;">Descripción:</h3>
             <h3 style="background-color: white; border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto;">
                 <c:out value="${partido.descripcion}" />
@@ -78,6 +88,8 @@
             </h3>
             <h3></h3>
         </div>
+        </div>
+        </div>
 
         <div style=" margin: 0 auto; padding-top: 2%; padding-bottom: 5%; align-items: center; justify-content: center; text-align: center;">
             <c:if test="${!partido.creador.equals(jugadorLogueado)}">
@@ -107,7 +119,7 @@
         </c:if>
         </div>
 
-    </div>
+   
 
 
     <div style="text-align: center; padding-top: 3%;">
@@ -142,4 +154,26 @@
     
 </div>
 
+
 </petclinic:layout>
+
+<style>
+
+.container {
+  max-width: 800px;
+  margin: 0 auto; /* Centra el contenedor en la página */
+  
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centra las columnas horizontalmente */
+}
+
+.col {
+  flex: 1;
+  margin: 10px;
+  text-align: center;
+}
+</style>
