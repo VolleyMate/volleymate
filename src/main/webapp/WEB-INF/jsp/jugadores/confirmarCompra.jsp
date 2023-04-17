@@ -23,11 +23,8 @@
                         </form:form>
                     </div>
                     <div class="col-md-6">
-                        <c:if test="${idCompra == 1}">
-                            <a href="/tienda" class="btn btn-default" style="margin: 5%;">Cancelar</a>
-                        </c:if>
                         <c:if test="${idCompra != 1}">
-                            <a href="/tienda/volleys" class="btn btn-default" style="margin: 5%;">Cancelar</a>
+                            <a href="/tienda" class="btn btn-default" style="margin: 5%;">Cancelar</a>
                         </c:if>
                         
                     </div>
