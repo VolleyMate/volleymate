@@ -91,11 +91,20 @@ public class LogroController {
     }
     
     @GetMapping("/logro/delete/{achievementId}")
-    public String deleteAchievement(@PathVariable("achievementId") int id){
-        
+    public String deleteAchievement(@PathVariable("achievementId") int id, Principal principal){
+      
+      Logro a = achievementService.getAchievementById(id);
+      Jugador j = playerService.findJugadorByUsername(principal.getName());
+
+      List<Logro> logrosJugador = j.getLogros();
+      logrosJugador.remove(a);
+
+      j.setLogros(logrosJugador);
+
+      playerService.saveJugador(j);
     	achievementService.deleteAchievementById(id);
        
-    	return "redirect:/logro";
+    	return "redirect:/logro/";
     }
     
     @GetMapping("/logro/edit/{id}")
