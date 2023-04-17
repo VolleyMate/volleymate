@@ -79,6 +79,13 @@
                         </div>
                     </div> 
             </div> 
+            <div class="row" style="width: 100%;">
+            <div class="col-md-12 col-xl-6 text-center mx-auto">
+                <sec:authorize access="hasAuthority('admin')">
+                <a href="/tienda/aspectos/nuevo" class="btn btn-default"> <span  aria-hidden="true"></span> Agregar nuevo aspecto</a>
+            </sec:authorize>
+            </div>
+            </div>
         </div> 
     </div>
 </petclinic:layout>

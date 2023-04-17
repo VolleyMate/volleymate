@@ -1,8 +1,11 @@
 package org.springframework.samples.volleymate.aspecto;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.appengine.repackaged.com.google.protobuf.Empty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,11 @@ public class AspectoService {
     @Autowired
 	public AspectoService(AspectoRepository aspectoRepository) {
 		this.aspectoRepository = aspectoRepository;
+	}
+
+	@Transactional(rollbackFor = IllegalArgumentException.class)
+	public void save(Aspecto aspecto) throws DataAccessException, IllegalArgumentException {
+		aspectoRepository.save(aspecto);
 	}
 	
 	@Transactional
@@ -34,4 +42,16 @@ public class AspectoService {
         return this.aspectoRepository.findAspectosGratuitos();
     }
     
+	public List<String> validarAspecto (Aspecto aspecto) {
+		List<String> errores = new ArrayList<>();
+		Integer digitos = (int)(Math.log10(aspecto.getPrecio())+1);
+
+		if(aspecto.getImagen().isEmpty()){
+			errores.add("La imagen no puede estar vacía");
+		}
+		if(digitos == null){
+			errores.add("El precio no puede estar vacío");
+		}
+		return errores;
+	}
 }
