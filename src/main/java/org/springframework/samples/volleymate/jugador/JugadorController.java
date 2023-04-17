@@ -114,18 +114,17 @@ public class JugadorController {
                 Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
                 
                 if (jugadorService.esAdmin(jugadorLog)){
+                    jugador.setPremium(false);
                     this.jugadorService.saveJugador(jugador);
                     return "redirect:/jugadores/" + jugador.getId();
                 } else {
-                    UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
-                    SecurityContextHolder.getContext().setAuthentication(authReq);
-                    this.jugadorService.saveJugador(jugador);
                     return "redirect:/";
                 }
             
             } else {
                 UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
                 SecurityContextHolder.getContext().setAuthentication(authReq);
+                jugador.setPremium(false);
                 this.jugadorService.saveJugador(jugador);
                 return "redirect:/";
             }
