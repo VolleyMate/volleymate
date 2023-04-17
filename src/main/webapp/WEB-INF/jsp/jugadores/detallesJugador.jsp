@@ -80,7 +80,7 @@
                 </spring:url>
                 <a href="${valURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Mis valoraciones</a>
 
-                <spring:url value="/misAspectos" var="aspURL"> <!--Cambiamos la URL cuando esté-->
+                <spring:url value="/misAspectos" var="aspURL"> 
                 </spring:url>
                 <a href="${aspURL}" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span>  Mis aspectos</a>
 
@@ -93,7 +93,7 @@
                 <br>
                 <br>
                 <div>
-                    <spring:url value="/jugadores/edit/{id}" var="elimUrl">
+                    <spring:url value="/jugadores/{id}/delete" var="elimUrl">
                         <spring:param name="id" value="${id}" />
                     </spring:url>
                     <a href="${elimUrl}" class="btn btn-red"><span class="glyphicon glyphicon-trash" ></span>  Eliminar cuenta</a>

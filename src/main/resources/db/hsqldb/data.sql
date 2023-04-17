@@ -26,6 +26,10 @@ INSERT INTO users(username,password,enabled,correo) VALUES ('jugador','jugador',
 INSERT INTO authorities(id,username,authority) VALUES (7,'jugador','jugador');
 INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (7,'jugador','jugador','Sevilla','666666666','MASCULINO','','jugador', 10000000, FALSE);
 
+INSERT INTO users(username,password,enabled,correo) VALUES ('angy','angy',TRUE,'angy@gmail.com');
+INSERT INTO authorities(id,username,authority) VALUES (8,'angy','admin');
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (8,'Angela','Bernal','Sevilla','666666666','FEMENINO','','angy', 250, FALSE);
+
 INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (1,'Mairena Voley Club','Av. de la Constitución num 2', 'Sevilla', true, 'https://goo.gl/maps/P5uyWUKnDqNLAbnE6');
 INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (2,'Club Deportivo Claret','C. Monzón', 'Sevilla', true, 'https://goo.gl/maps/JYErpvDCVSKuNLvF9');
 INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (3,'Club Voleibol Esquimo','Cl. Meñaca', 'Sevilla', true, 'https://goo.gl/maps/ZNFjetB53pX1JMcg6');

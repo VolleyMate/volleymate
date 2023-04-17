@@ -492,7 +492,7 @@ public class JugadorController {
                 return "redirect:/";
             } else {
                 redirAttrs.addFlashAttribute("claveInvalida", "La clave introducida no coincide con su contraseña");
-                return "/jugadores/{jugadorId}/delete";
+                return VIEW_CREATE_FORM;
             }
         } else {
             return "redirect:/";
