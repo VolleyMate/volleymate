@@ -18,6 +18,9 @@ import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
+import org.springframework.samples.volleymate.user.Authorities;
+import org.springframework.samples.volleymate.user.AuthoritiesRepository;
+import org.springframework.samples.volleymate.user.AuthoritiesService;
 import org.springframework.samples.volleymate.user.User;
 import org.springframework.samples.volleymate.user.UserService;
 import org.springframework.samples.volleymate.valoracion.ValoracionService;
@@ -59,15 +62,17 @@ public class JugadorController {
     private final ValoracionService valoracionService;
     private final AspectoService aspectoService;
     private final UserService userService;
+    private final AuthoritiesService authoritiesService;
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService, AspectoService aspectoService, UserService userService) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService, AspectoService aspectoService, UserService userService, AuthoritiesService authoritiesService) {
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
         this.solicitudService = solicitudService;
         this.valoracionService = valoracionService;
         this.aspectoService = aspectoService;
         this.userService = userService;
+        this.authoritiesService = authoritiesService;
     }
 
 
@@ -424,6 +429,10 @@ public class JugadorController {
             if (clave == jugador.getUser().getPassword() && jugadorId == jugador.getId()) {
                 SecurityContextHolder.getContext().setAuthentication(null);
                 jugadorService.deleteJugador(jugador);
+                List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugador.getUser());
+                for(Authorities a:authorities) {
+                    authoritiesService.deleteAuthorities(a);
+                }
                 userService.deleteUser(jugador.getUser());
                 return "redirect:/";
             } else {
