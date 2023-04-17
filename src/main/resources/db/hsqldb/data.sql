@@ -69,12 +69,16 @@ INSERT INTO aspectos_jugador(jugador_id, aspecto_id) VALUES (5,5);
 INSERT INTO aspectos_jugador(jugador_id, aspecto_id) VALUES (6,6);
 INSERT INTO aspectos_jugador(jugador_id, aspecto_id) VALUES (7,7);
 
-INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Primer partido","Ha jugado un partido en la aplicacion","https://cdn.pixabay.com/photo/2017/03/21/21/06/medal-2163351_1280.png",1,"partidos");
-INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Cinco partidos","Ha jugado cinco partidos en la aplicacion","https://img.freepik.com/vector-premium/medalla-plata-2do-lugar-plata_87720-2497.jpg?w=2000",5,"partidos");
-INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Diez partidos","Ha jugado diez partidos en la aplicacion","https://img.freepik.com/vector-premium/medalla-oro-al-primer-lugar-insignia-oro-1er-lugar-medalla-oro-imagen-numero-1-rama-olivo-ilustracion_255498-64.jpg",10,"partidos");
-INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Aprobado","Ha alcanzado un aprobado","https://cdn.pixabay.com/photo/2017/03/21/21/06/medal-2163351_1280.png",3,"valoracion");
-INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Notable","Ha llegado al notable","https://img.freepik.com/vector-premium/medalla-plata-2do-lugar-plata_87720-2497.jpg?w=2000",4,"valoracion");
-INSERT INTO logros(nombre,descripcion,imagen,threshold,metrica) VALUES ("Sobresaliente","Ha llegado a la maxima puntuacion","https://img.freepik.com/vector-premium/medalla-oro-al-primer-lugar-insignia-oro-1er-lugar-medalla-oro-imagen-numero-1-rama-olivo-ilustracion_255498-64.jpg",5,"valoracion");
+INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (1,'Primer partido','Ha jugado un partido en la aplicacion','https://cdn.pixabay.com/photo/2017/03/21/21/06/medal-2163351_1280.png',1,'partidos');
+INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (2,'Cinco partidos','Ha jugado cinco partidos en la aplicacion','https://img.freepik.com/vector-premium/medalla-plata-2do-lugar-plata_87720-2497.jpg?w=2000',5,'partidos');
+INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (3,'Diez partidos','Ha jugado diez partidos en la aplicacion','https://img.freepik.com/vector-premium/medalla-oro-al-primer-lugar-insignia-oro-1er-lugar-medalla-oro-imagen-numero-1-rama-olivo-ilustracion_255498-64.jpg',10,'partidos');
+INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (4,'Aprobado','Ha alcanzado un aprobado','https://cdn.pixabay.com/photo/2017/03/21/21/06/medal-2163351_1280.png',3,'valoracion');
+
+INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (1,1);
+INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (1,3);
+INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (2,2);
+INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (3,4);
+
 
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (8,'Test1','MASCULINO','Testeando1',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (9,'Test2','MASCULINO','Testeando2',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
