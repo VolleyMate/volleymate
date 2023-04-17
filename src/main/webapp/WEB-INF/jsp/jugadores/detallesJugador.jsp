@@ -51,6 +51,8 @@
                     <c:out value="${jugadorVista.user.username}" />
                 </a>
 
+
+                
                  <sec:authorize access="hasAuthority('admin')">
                     <spring:url value="/jugadores/volleys/añadir/{id}" var="añadirURL">
                     <spring:param name="id" value="${valorarId}" />
@@ -80,9 +82,15 @@
                 </spring:url>
                 <a href="${valURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Mis valoraciones</a>
 
+
+                <spring:url value="/jugadores/delete/{idEl}" var="eliminarURL">
+                    <spring:param name="idEl" value="${jugadorVista.id}" />
+                </spring:url>
+                <a href="${eliminarURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Eliminar cuenta</a>
+
                 <spring:url value="/misAspectos" var="aspURL"> <!--Cambiamos la URL cuando esté-->
                 </spring:url>
-                <a href="${aspURL}" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span>  Mis aspectos</a>
+                <a href="${aspURL}" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span> Mis aspectos</a>
 
                 <sec:authorize access="hasAuthority('admin')">
                     <spring:url value="/jugadores/volleys/añadir/{id}" var="añadirURL">
@@ -92,7 +100,13 @@
                 </sec:authorize>
                 
             </c:if>
-        
+
+            <sec:authorize access="hasAuthority('admin')">
+            <spring:url value="/jugadores/delete/{idEl}" var="eliminarURL">
+                    <spring:param name="idEl" value="${jugadorVista.id}" />
+                </spring:url>
+                <a href="${eliminarURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Eliminar cuenta</a>
+            </sec:authorize>
         </tr>
     </table>
 

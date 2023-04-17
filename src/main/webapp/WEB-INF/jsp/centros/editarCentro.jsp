@@ -15,7 +15,7 @@
         </div>
     </h2>
  
-    <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
+    <div style="background-color: #0099bb3e; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
         <div class="container">
             
         <form:form modelAttribute="centro" class="form-horizontal" id="crear_centro">
