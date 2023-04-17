@@ -20,6 +20,8 @@ import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
+import org.springframework.samples.volleymate.user.Authorities;
+import org.springframework.samples.volleymate.user.AuthoritiesService;
 import org.springframework.samples.volleymate.user.User;
 import org.springframework.samples.volleymate.user.UserService;
 import org.springframework.samples.volleymate.valoracion.ValoracionService;
@@ -61,16 +63,18 @@ public class JugadorController {
     private final ValoracionService valoracionService;
     private final AspectoService aspectoService;
     private final UserService userService;
+    private final AuthoritiesService authoritiesService;
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,
-        ValoracionService valoracionService, AspectoService aspectoService, UserService userService) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService, AspectoService aspectoService, UserService userService, AuthoritiesService authoritiesService) {
+
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
         this.solicitudService = solicitudService;
         this.valoracionService = valoracionService;
         this.aspectoService = aspectoService;
         this.userService = userService;
+        this.authoritiesService = authoritiesService;
     }
 
 
@@ -114,18 +118,17 @@ public class JugadorController {
                 Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
                 
                 if (jugadorService.esAdmin(jugadorLog)){
+                    jugador.setPremium(false);
                     this.jugadorService.saveJugador(jugador);
                     return "redirect:/jugadores/" + jugador.getId();
                 } else {
-                    UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
-                    SecurityContextHolder.getContext().setAuthentication(authReq);
-                    this.jugadorService.saveJugador(jugador);
                     return "redirect:/";
                 }
             
             } else {
                 UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
                 SecurityContextHolder.getContext().setAuthentication(authReq);
+                jugador.setPremium(false);
                 this.jugadorService.saveJugador(jugador);
                 return "redirect:/";
             }
@@ -143,6 +146,17 @@ public class JugadorController {
 				String user = currentUser.getUsername();
 				try{
 					Jugador player = jugadorService.findJugadorByUsername(user);
+                    if(jugadorService.esAdmin(player)){
+                        Jugador jugador = jugadorService.findJugadorById(id);
+                        String username = jugador.getUser().getUsername();
+                        String pass = jugador.getUser().getPassword();
+                        Sexo sexo = jugador.getSexo();
+                        model.addAttribute("pass", pass);
+                        model.addAttribute("username", username);
+                        model.addAttribute("sexo", sexo);
+                        model.addAttribute(jugador);
+                        return VIEW_UPDATE_FORM;   
+                    }
 					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
 					for (GrantedAuthority usuarioR : usuario){
 					String credencial = usuarioR.getAuthority();
@@ -480,16 +494,33 @@ public class JugadorController {
         return VIEW_LISTADO_JUGADORES;
     }
     
-    @GetMapping("/jugadores/{jugadorId}/delete")
-    public String deleteJugador(Model model, @Param("clave") String clave, Principal principal, RedirectAttributes redirAttrs, @PathVariable("jugadorId") int jugadorId) {
+    @GetMapping("/jugadores/delete/{jugadorId}")
+    public String deleteJugador(Principal principal, RedirectAttributes redirAttrs, @PathVariable("jugadorId") int jugadorId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.isAuthenticated()) {
-            Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-            if (clave == jugador.getUser().getPassword() && jugadorId == jugador.getId()) {
+
+            Jugador jugadorLogeado = this.jugadorService.findJugadorByUsername(principal.getName());
+            Jugador jugadorVista = this.jugadorService.findJugadorById(jugadorId);
+            
+            //Elimina las cuentas bien, pero no elimina las cuentas con partidos asociados, revisar
+
+            if (jugadorId == jugadorLogeado.getId()) {
                 SecurityContextHolder.getContext().setAuthentication(null);
-                jugadorService.deleteJugador(jugador);
-                userService.deleteUser(jugador.getUser());
+                jugadorService.deleteJugador(jugadorLogeado);
+                List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorLogeado.getUser());
+                for(Authorities a:authorities) {
+                    authoritiesService.deleteAuthorities(a);
+                }
+                userService.deleteUser(jugadorLogeado.getUser());
                 return "redirect:/";
+            } else if (jugadorService.esAdmin(jugadorLogeado) && jugadorId != jugadorLogeado.getId()){
+                jugadorService.deleteJugador(jugadorVista);
+                List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorVista.getUser());
+                for(Authorities a:authorities) {
+                    authoritiesService.deleteAuthorities(a);
+                }
+                userService.deleteUser(jugadorVista.getUser());
+                return "redirect:/listaJugadores";
             } else {
                 redirAttrs.addFlashAttribute("claveInvalida", "La clave introducida no coincide con su contraseña");
                 return VIEW_CREATE_FORM;

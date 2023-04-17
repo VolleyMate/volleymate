@@ -68,7 +68,7 @@
                 <c:out value="${partido.tipo}" />
             </h3>
             <h3></h3>
-            <h3 style="color: #FFFFFF;">Ciudad: </h3>
+            <h3 style="color: #FFFFFF;">Centro: </h3>
             <h3 style="background-color: white; border-radius: 5px; width: 20em; text-align: center;  margin: 0 auto;">
                 <a href="${partido.centro.maps}">
                     <c:out value="${partido.centro.nombre}" /> [

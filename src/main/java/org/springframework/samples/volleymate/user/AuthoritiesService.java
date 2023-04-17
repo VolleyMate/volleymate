@@ -16,6 +16,7 @@
 package org.springframework.samples.volleymate.user;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,16 @@ public class AuthoritiesService {
 			authoritiesRepository.save(authority);
 		}else
 			throw new DataAccessException("User '"+username+"' not found!") {};
+	}
+
+	@Transactional
+	public void deleteAuthorities(Authorities authorities) {
+		authoritiesRepository.delete(authorities);
+	}
+
+	@Transactional(readOnly = true)
+	public List<Authorities> findAuthoritiesByUser(User user) {
+		return authoritiesRepository.findAuthoritiesByUser(user);
 	}
 
 
