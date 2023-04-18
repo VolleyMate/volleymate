@@ -64,7 +64,7 @@
                     <a href="/partidos/${partido.id}" class="card-link">
                     <div class="card">
                         <div class="card-body">
-                            <a href="/jugadores/${partido.creador.id}"><h5 class="card-title" style="font-weight: bold;">${partido.creador.user.username}</h5></a> 
+                            <a href="/jugadores/${partido.creador.id}"> <h5 class="card-title" style="font-weight: bold;"> <img src="${partido.creador.image}" width="25" height="25" style="border-radius:5px"> ${partido.creador.user.username}</h5></a> 
 
                             <p class="card-text">
                                 <strong>Jugadores:</strong> <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>

@@ -502,7 +502,7 @@ public class JugadorController {
             Jugador jugadorLogeado = this.jugadorService.findJugadorByUsername(principal.getName());
             Jugador jugadorVista = this.jugadorService.findJugadorById(jugadorId);
             
-            //Elimina las cuentas bien, pero no elimina las cuentas con partidos asociados, revisar
+            //Elimina siendo jugador logeado
 
             if (jugadorId == jugadorLogeado.getId()) {
                 SecurityContextHolder.getContext().setAuthentication(null);
@@ -513,6 +513,8 @@ public class JugadorController {
                 }
                 userService.deleteUser(jugadorLogeado.getUser());
                 return "redirect:/";
+
+                //Elimina siendo admin cualquier jugador
             } else if (jugadorService.esAdmin(jugadorLogeado) && jugadorId != jugadorLogeado.getId()){
                 jugadorService.deleteJugador(jugadorVista);
                 List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorVista.getUser());
@@ -546,6 +548,11 @@ public class JugadorController {
         jugador.setImage(aspecto.getImagen());
         jugadorService.saveJugador(jugador);
         return "redirect:/jugadores";
+    }
+
+    @GetMapping(value = "/terminos")
+    public String showTerminos(){
+        return "jugadores/terminos";
     }
 }
 

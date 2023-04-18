@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="tiendaAspectos">  
@@ -16,7 +17,7 @@
                     <c:out value="${jugador.volleys}"/>
                 </h3>
                 <p style="padding-bottom: 2%;">¡Personaliza tu aspecto!</p>
-            </div> 
+            </div>
             <c:if test="${numAspectos == 0}">
             No hay ningún aspecto disponible.
             </c:if>
@@ -52,6 +53,14 @@
                                 <a href="${fn:escapeXml(comprarAspectoUrl)}">
                                     <p style="color: darkgoldenrod;">Comprar</p>
                                 </a>   
+                                <sec:authorize access="hasAuthority('admin')">
+                                    <spring:url value="/tienda/aspectos/edit/{aspectoId}" var="editUrl">
+                                         <spring:param name="aspectoId" value="${aspecto.id}" />
+                                    </spring:url>
+                                    <a href="${fn:escapeXml(editUrl)}">
+                                        <p style="color: darkgoldenrod;">Editar aspecto</p>
+                                    </a>
+                                </sec:authorize>    
                             </c:otherwise>
                         </c:choose>
                                              
@@ -59,6 +68,35 @@
                 </div>
                 </c:forEach>
             </c:if> 
+            <div class="col-md-12 col-xl-6 text-center mx-auto" >
+                <h2>Tienda de aspectos</h2>
+                <h3>
+                    <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;">
+                    <c:out value="${jugador.volleys}"/>
+                </h3>
+                <p style="padding-bottom: 2%;">¡Personaliza tu aspecto!</p>
+            </div> 
+            <div class="container">
+                    <div class="col-md-4 text-center mx-auto">
+                        <div class="card" style="margin: 5%;">
+                            <div class="card-body p-4">
+                                <div class="card-body p-4">
+                                    <a href="/tienda/confirmaCompra/7">
+                                        <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="/resources/images/perfilPorDefecto.png"/>
+                                        <h3>Precio</h3>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div> 
+            <div class="row" style="width: 100%;">
+                <div class="col-md-12 col-xl-6 text-center mx-auto">
+                    <sec:authorize access="hasAuthority('admin')">
+                        <a href="/tienda/aspectos/nuevo" class="btn btn-default"> <span  aria-hidden="true"></span> Agregar nuevo aspecto</a>
+                    </sec:authorize>
+            </div>
+            </div>
         </div> 
     </div>
 </petclinic:layout>

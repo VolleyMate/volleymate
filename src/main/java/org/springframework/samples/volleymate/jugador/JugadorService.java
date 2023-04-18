@@ -6,6 +6,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.volleymate.aspecto.Aspecto;
 import org.springframework.samples.volleymate.aspecto.AspectoRepository;
 import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
+import org.springframework.samples.volleymate.logro.Logro;
+import org.springframework.samples.volleymate.logro.LogroRepository;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoRepository;
 import org.springframework.samples.volleymate.partido.PartidoService;
@@ -29,29 +31,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class JugadorService {
     
-    @Autowired
     private JugadorRepository jugadorRepository;
     private PartidoRepository partidoRepository;
     private UserService userService;
     private AuthoritiesService authoritiesService;
     private SolicitudRepository solicitudRepository;
-
-    @Autowired
+    private LogroRepository logroRepository;
     private AspectoRepository aspectoRepository;
-
-    @Autowired
     private ValoracionRepository valoracionRepository;
-
-    @Autowired
     private PartidoService partidoService;
 
     @Autowired
-    public JugadorService(JugadorRepository jugadorRepository, PartidoRepository partidoRepository, UserService userService,AuthoritiesService authoritiesService,SolicitudRepository solicitudRepository) {
+    public JugadorService(JugadorRepository jugadorRepository, PartidoRepository partidoRepository, 
+            UserService userService,AuthoritiesService authoritiesService,SolicitudRepository solicitudRepository,
+            LogroRepository logroRepository, AspectoRepository aspectoRepository, ValoracionRepository valoracionRepository,
+            PartidoService partidoService) {
+        
         this.jugadorRepository = jugadorRepository;
         this.partidoRepository = partidoRepository;
         this.userService=userService;
         this.authoritiesService=authoritiesService;
         this.solicitudRepository = solicitudRepository;
+        this.logroRepository = logroRepository;
+        this.aspectoRepository = aspectoRepository;
+        this.valoracionRepository = valoracionRepository;
+        this.partidoService = partidoService;
     }
 
     @Transactional(readOnly = true)
@@ -120,10 +124,12 @@ public class JugadorService {
         this.solicitudRepository.delete(solicitud);
     }
 
+    @Transactional
     public Solicitud findSolicitudById(int solicitudId) {
         return this.solicitudRepository.findById(solicitudId).get();
     }
 
+    @Transactional
     public List<Partido> findPartidosByJugadorId(int jugadorId) {
         List<Partido> lista = this.partidoRepository.findAll();
         List<Partido> listaReturn = new ArrayList<>();
@@ -135,7 +141,7 @@ public class JugadorService {
         return listaReturn;
     }
 
-
+    @Transactional
     public List<Jugador> listAll(String palabraClave, int valoracionMedia){
         if(palabraClave!=null && valoracionMedia != 0){
             List<Jugador> lista = jugadorRepository.findAll(palabraClave);
@@ -148,12 +154,12 @@ public class JugadorService {
         }
         return jugadorRepository.findAll();
     }
-
+    @Transactional
     public List<Jugador> listAll(){
         
         return jugadorRepository.findAll();
     }
-
+    @Transactional
     public List<String> findErroresCrearJugador(Jugador jugador){
         List<String> errores = new ArrayList<>();
         Integer digitos = (int)(Math.log10(jugador.getTelephone())+1);
@@ -177,7 +183,7 @@ public class JugadorService {
         }
         return errores;
     }
-
+    @Transactional
     public boolean esAdmin(Jugador jugador){
         Boolean esAdmin = false;
         Set<Authorities> authorities = jugador.getUser().getAuthorities();
@@ -234,8 +240,16 @@ public class JugadorService {
 
         List<Aspecto> aspectos = j.getAspectos();
         for(Aspecto a: aspectos){
-            aspectoRepository.delete(a);
+            a.getJugadores().remove(j);
+            this.aspectoRepository.save(a);
         }
+
+        List<Logro> logros = j.getLogros();
+        for(Logro l: logros){
+            l.getJugadores().remove(j);
+            this.logroRepository.save(l);
+        }
+
         this.jugadorRepository.delete(j);
     }
 
