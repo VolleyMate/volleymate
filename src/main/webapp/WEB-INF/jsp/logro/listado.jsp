@@ -32,7 +32,7 @@
                             <c:out value="${logro.descripcion}" />
                           </td>
                           <td>
-                            <img src="${logro.imagen}" style="width: 80px; height:auto" alt="Imagen"/>
+                            <img src="${logro.imagen}" style="width: 80px; height:auto" alt="Imagen" />
                           </td>
                           <td>
                             <c:out value="${progreso.get(logro.metrica)} / ${logro.threshold}" />

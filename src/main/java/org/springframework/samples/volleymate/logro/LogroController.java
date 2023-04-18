@@ -25,6 +25,7 @@ public class LogroController {
 
   private String CREATE_OR_UPDATE_ACHIEVEMENT_FORM = "/logro/crearOActualizar";
     private String ACHIEVEMENTS_LISTING = "/logro/listado";
+    private String ACHIEVEMENTS_SIMPLE_LISTING = "/logro/listadoSimple";
     
     private final LogroService achievementService;
     private final JugadorService playerService;
@@ -53,7 +54,17 @@ public class LogroController {
         return ACHIEVEMENTS_LISTING;
     }
 
-    
+    @GetMapping("/logro/player/{id}")
+    public String seeOtherPlayerAchievements(@PathVariable("id") int playerId, Map<String, Object> model){
+
+      Jugador player = playerService.findJugadorById(playerId);
+
+      model.put("jugador", player);
+      model.put("logros", player.getLogros());
+
+       return ACHIEVEMENTS_SIMPLE_LISTING;
+    }
+
     private List<Logro> updateLogros(Principal principal, Map<String, Object> model){
 
        Jugador player = playerService.findJugadorByUsername(principal.getName());
@@ -112,7 +123,7 @@ public class LogroController {
 
         playerService.saveJugador(j);
       }
-      
+
     	achievementService.deleteAchievementById(id);
        
     	return "redirect:/logro/";
