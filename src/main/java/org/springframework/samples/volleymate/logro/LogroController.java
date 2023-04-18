@@ -30,7 +30,6 @@ public class LogroController {
   private String CREATE_ACHIEVEMENT_FORM = "logro/crearLogro";
   private String UPDATE_ACHIEVEMENT_FORM = "logro/actualizarLogro";
     private String ACHIEVEMENTS_LISTING = "logro/listado";
-
     
     private final LogroService achievementService;
     private final JugadorService playerService;
@@ -73,7 +72,6 @@ public class LogroController {
         Map<String,Double> mem = new HashMap<>();
 
         model.put("logros", achievements);
-        model.put("esAdmin", isAdmin);
         model.put("jugador", player);
 
       for(Logro a:achievements){
