@@ -50,7 +50,8 @@ public class AspectoController {
 
     @PostMapping(value = "/tienda/aspectos/nuevo")
     public String processCreationForm(@Valid Aspecto aspecto, BindingResult result, Map<String, Object> model, Principal principal) {
-        List<String> errores = aspectoService.validarAspecto(aspecto);
+        Aspecto aspc = aspecto;
+        List<String> errores = aspectoService.validarAspecto(aspc);
         if(result.hasErrors()) {
             model.put("errors", result.getAllErrors());
             return VISTA_CREAR_ASPECTO;
@@ -58,7 +59,7 @@ public class AspectoController {
             model.put("errors", errores);
             return VISTA_CREAR_ASPECTO;
         } else{
-            this.aspectoService.save(aspecto);
+            this.aspectoService.save(aspc);
             return VISTA_TIENDA;  
         }
     }
@@ -79,7 +80,8 @@ public class AspectoController {
 	
 	@PostMapping(value = "/tienda/aspectos/edit/{aspectoId}")
 	public String processEditForm(@Valid Aspecto aspecto, BindingResult result, @PathVariable("aspectoId") int aspectoId, Map<String, Object> model){
-        List<String> errores = aspectoService.validarAspecto(aspecto);
+        Aspecto aspc = aspecto;
+        List<String> errores = aspectoService.validarAspecto(aspc);
 		if(result.hasErrors()){
 			model.put("errors", result.getAllErrors());
 			return VISTA_EDITAR_ASPECTOS;
@@ -87,7 +89,7 @@ public class AspectoController {
             model.put("errors", errores);
             return VISTA_EDITAR_ASPECTOS;
         } else {            Aspecto aspectoUpdate = this.aspectoService.findById(aspectoId);
-			BeanUtils.copyProperties(aspecto,aspectoUpdate,"Imagen","Precio"); 
+			BeanUtils.copyProperties(aspc,aspectoUpdate,"Imagen","Precio"); 
 			this.aspectoService.saveAspecto(aspecto);
 			return "redirect:/tienda/";
 		}						
