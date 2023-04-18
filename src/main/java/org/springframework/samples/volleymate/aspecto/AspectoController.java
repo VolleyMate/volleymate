@@ -32,7 +32,8 @@ public class AspectoController {
 
 
     private static final String VISTA_CREAR_ASPECTO = "jugadores/crearAspecto";
-    private static final String VISTA_TIENDA_ASPECTO = "jugadores/tiendaAspectos";
+    private static final String VISTA_TIENDA = "jugadores/tienda";
+    private static final String VISTA_EDITAR_ASPECTOS = "jugadores/editarAspecto";
 
 
     @Autowired
@@ -58,7 +59,38 @@ public class AspectoController {
             return VISTA_CREAR_ASPECTO;
         } else{
             this.aspectoService.save(aspecto);
-            return VISTA_TIENDA_ASPECTO;  
+            return VISTA_TIENDA;  
         }
     }
+
+    @GetMapping(value = "/tienda/aspectos/edit/{aspectoId}")
+	public String initEditForm(Map<String, Object> model, @PathVariable("aspectoId") int aspectoId, Principal principal) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))){
+			Aspecto aspecto = aspectoService.findById(aspectoId);
+			model.put("aspecto", aspecto);
+			return VISTA_EDITAR_ASPECTOS;
+			
+		}else{
+			return "welcome";
+		}
+	}
+	
+	
+	@PostMapping(value = "/tienda/aspectos/edit/{aspectoId}")
+	public String processEditForm(@Valid Aspecto aspecto, BindingResult result, @PathVariable("aspectoId") int aspectoId, Map<String, Object> model){
+        List<String> errores = aspectoService.validarAspecto(aspecto);
+		if(result.hasErrors()){
+			model.put("errors", result.getAllErrors());
+			return VISTA_EDITAR_ASPECTOS;
+        } else if (!errores.isEmpty()) {
+            model.put("errors", errores);
+            return VISTA_EDITAR_ASPECTOS;
+        } else {            Aspecto aspectoUpdate = this.aspectoService.findById(aspectoId);
+			BeanUtils.copyProperties(aspecto,aspectoUpdate,"Imagen","Precio"); 
+			this.aspectoService.saveAspecto(aspecto);
+			return "redirect:/tienda/";
+		}						
+		
+	}
 }

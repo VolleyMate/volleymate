@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="tiendaAspectos">  
@@ -16,7 +17,7 @@
                     <c:out value="${jugador.volleys}"/>
                 </h3>
                 <p style="padding-bottom: 2%;">¡Personaliza tu aspecto!</p>
-            </div> 
+            </div>
             <c:if test="${numAspectos == 0}">
             No hay ningún aspecto disponible.
             </c:if>
@@ -50,6 +51,14 @@
                                 <a href="${fn:escapeXml(comprarAspectoUrl)}">
                                     <p style="color: darkgoldenrod;">Comprar</p>
                                 </a>   
+                                <sec:authorize access="hasAuthority('admin')">
+                                    <spring:url value="/tienda/aspectos/edit/{aspectoId}" var="editUrl">
+                                         <spring:param name="aspectoId" value="${aspecto.id}" />
+                                    </spring:url>
+                                    <a href="${fn:escapeXml(editUrl)}">
+                                        <p style="color: darkgoldenrod;">Editar aspecto</p>
+                                    </a>
+                                </sec:authorize>    
                             </c:otherwise>
                         </c:choose>
                                              
@@ -78,12 +87,12 @@
                             </div>
                         </div>
                     </div> 
-            </div> 
+                </div> 
             <div class="row" style="width: 100%;">
-            <div class="col-md-12 col-xl-6 text-center mx-auto">
-                <sec:authorize access="hasAuthority('admin')">
-                <a href="/tienda/aspectos/nuevo" class="btn btn-default"> <span  aria-hidden="true"></span> Agregar nuevo aspecto</a>
-            </sec:authorize>
+                <div class="col-md-12 col-xl-6 text-center mx-auto">
+                    <sec:authorize access="hasAuthority('admin')">
+                        <a href="/tienda/aspectos/nuevo" class="btn btn-default"> <span  aria-hidden="true"></span> Agregar nuevo aspecto</a>
+                    </sec:authorize>
             </div>
             </div>
         </div> 

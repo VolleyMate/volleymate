@@ -2,10 +2,12 @@ package org.springframework.samples.volleymate.aspecto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.appengine.repackaged.com.google.protobuf.Empty;
+import javax.validation.Valid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,11 @@ public class AspectoService {
 		return result;
 	}
 
+	@Transactional
+	public void saveAspecto(@Valid Aspecto aspecto) {
+		aspectoRepository.save(aspecto);
+	}
+
     public Aspecto findById(Integer aspectoId) {
         return this.aspectoRepository.findById(aspectoId).get();
     }
@@ -49,9 +56,10 @@ public class AspectoService {
 		if(aspecto.getImagen().isEmpty()){
 			errores.add("La imagen no puede estar vacía");
 		}
-		if(digitos == null){
+		if(digitos.toString().isEmpty()){
 			errores.add("El precio no puede estar vacío");
 		}
 		return errores;
 	}
+
 }

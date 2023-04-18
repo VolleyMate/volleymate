@@ -24,9 +24,9 @@
                   <form:input path="imagen" style="border-radius: 20px;" class="form-control" />
                 </div>  
                 <div class="form-group">
-                    <form:label path="precio" >Precio:</form:label>
-                    <form:input path="precio" style="border-radius: 20px;" class="form-control" />
-                  </div>              
+                  <form:label path="precio">Precio:</form:label>
+                  <form:input path="precio" style="border-radius: 20px;" type="number" min="0" class="form-control" />
+                </div>              
               </div>
               <div class="col-md-12">
                   <div style="text-align: center;">
