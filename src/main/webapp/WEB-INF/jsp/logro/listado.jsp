@@ -9,7 +9,7 @@
 
                 <petclinic:layout pageName="logro">
                   <h2>Logros</h2>
-                  <table id="logrosTabla" class="table table-striped">
+                  <table id="logrosTabla" class="table table-striped" summary="Tabla de logros">
                     <thead>
                       <tr>
                         <th>Nombre</th>
@@ -32,7 +32,7 @@
                             <c:out value="${logro.descripcion}" />
                           </td>
                           <td>
-                            <img src="${logro.imagen}" style="width: 80px; height:auto" />
+                            <img src="${logro.imagen}" style="width: 80px; height:auto" alt="Imagen"/>
                           </td>
                           <td>
                             <c:out value="${progreso.get(logro.metrica)} / ${logro.threshold}" />

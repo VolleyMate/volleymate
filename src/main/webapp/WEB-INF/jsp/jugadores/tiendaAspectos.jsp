@@ -25,9 +25,11 @@
                 <div class="col-md-4 text-center mx-auto">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-text" style="margin: 2.5%;">
+                            <div style="margin: 2,5%;">
+                            <p class="card-text">
                                 <img src="${aspecto.imagen}" style="height: 100px; width: 100px;">
-                              </p>                              
+                              </p>
+                            </div>                              
                             <p class="card-text">
                                 <c:choose>
                                     <c:when test="${jugador.premium}">
