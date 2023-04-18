@@ -43,14 +43,9 @@ public class LogroController {
     		Principal principal) {
 
         Jugador player = playerService.findJugadorByUsername(principal.getName());
-        Collection<Logro> achievements = achievementService.getAllAchievements();
-        Boolean isAdmin = playerService.esAdmin(player);
-        
-        model.put("logros", achievements);
-        model.put("esAdmin", isAdmin);
-        model.put("jugador", player);
-        model.put("conseguido", updateLogros(player, model));
-        
+
+        updateLogros(player, model);
+
         return ACHIEVEMENTS_LISTING;
     }
 
@@ -60,21 +55,26 @@ public class LogroController {
       Jugador player = playerService.findJugadorById(playerId);
 
       updateLogros(player, model);
-      model.put("jugador", player);
 
        return ACHIEVEMENTS_SIMPLE_LISTING;
     }
 
     private List<Logro> updateLogros(Jugador player, Map<String, Object> model){
 
-      Collection<Logro> achievements = achievementService.getAllAchievements();
+        Collection<Logro> achievements = achievementService.getAllAchievements();
+        Boolean isAdmin = playerService.esAdmin(player);
+        Map<String,Double> mem = new HashMap<>();
 
-       Map<String,Double> mem = new HashMap<>();
+        model.put("logros", achievements);
+        model.put("esAdmin", isAdmin);
+        model.put("jugador", player);
 
       for(Logro a:achievements){
+        updateProgreso(a, player, mem);
         if(!a.getJugadores().contains(player)){ checkLogro(a, player, mem); }
       }
 
+      model.put("conseguido", player.getLogros());
       model.put("progreso", mem);
 
       return player.getLogros();
@@ -83,12 +83,20 @@ public class LogroController {
     private void checkLogro(Logro l, Jugador j, Map<String,Double> mem){
 
       List<Logro> lj = j.getLogros();
+      Double v = mem.get(l.getMetrica());
+
+      if(l.getThreshold() <= v){ lj.add(l); }
+
+      j.setLogros(lj);
+      playerService.saveJugador(j);
+    }
+
+    private void updateProgreso(Logro l, Jugador j, Map<String,Double> mem){
       Double v = .0;
 
       if(l.getMetrica().equals("partidos")){
 
         v = j.getPartidos().size() * 1.;
-        mem.put("partidos", v);
 
       } else if (l.getMetrica().equals("valoracion")){
 
@@ -100,13 +108,9 @@ public class LogroController {
           v = vj/n;
         }
 
-        mem.put("valoracion", vj);
-      } else { v = 100000000.; }
+      } else { v = 0.; }
 
-      if(l.getThreshold() <= v){ lj.add(l); }
-
-      j.setLogros(lj);
-      playerService.saveJugador(j);
+      mem.put(l.getMetrica(), v);
     }
     
     @GetMapping("/logro/delete/{achievementId}")
