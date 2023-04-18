@@ -50,10 +50,12 @@ public class LogroController {
         Jugador player = playerService.findJugadorByUsername(principal.getName());
         Collection<Logro> achievements = achievementService.getAllAchievements();
         Boolean isAdmin = playerService.esAdmin(player);
+        Jugador jugadorAutenticado = playerService.findJugadorByUsername(principal.getName());
         
         model.put("logros", achievements);
         model.put("esAdmin", isAdmin);
         model.put("jugador", player);
+        model.put("jugadorAutenticado", jugadorAutenticado);
         model.put("conseguido", updateLogros(player, model));
         
         return ACHIEVEMENTS_LISTING;

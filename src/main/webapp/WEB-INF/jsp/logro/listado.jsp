@@ -9,6 +9,7 @@
               <%@ page contentType="text/html; charset=UTF-8" %>
 
                 <petclinic:layout pageName="logro">
+                <c:if test="${jugador.equals(jugadorAutenticado)}">
                   <h2>Logros</h2>
                   <div>
                     <c:forEach items="${logros}" var="logro">
@@ -52,11 +53,55 @@
                           </div>
                       </div>
                     </c:forEach>
+                  </c:if>
+                  <c:if test="${!jugador.equals(jugadorAutenticado)}">
+                    <h2>Logros de <c:out value="${jugador.user.username}"/></h2>
+                  <div>
+                    <c:forEach items="${jugador.logros}" var="logro">
+                      <div class="col-md-3">
+                          <div class="card">
+                              <div>
+                                <img style="width: 50px; height: 50px;" src="${logro.imagen}"/>
+                              </div>
+                              <div class="card-body">                  
+                                  <p class="card-text">
+                                      <strong>Nombre:</strong> <c:out value="${logro.nombre}"/>
+                                    </p>                              
+                                  <p class="card-text">
+                                      <strong>Descripción:</strong> <c:out value="${logro.descripcion}"/> 
+                                  </p>
+                                  
+                                  <c:if test="${esAdmin}">
+                                  <p class="card-text">
+                                      <strong>Progreso:</strong> <c:out value="${progreso.get(logro.metrica)} / ${logro.threshold}"/>
+                                  </p>
+
+                                  
+                                    <br>
+                                    
+                                      <spring:url value="/logro/edit/{achievementId}" var="editUrl">
+                                        <spring:param name="achievementId" value="${logro.id}" />
+                                      </spring:url>
+                                      <a href="${fn:escapeXml(editUrl)}" class="glyphicon glyphicon-pencil"></a>
+                                    
+                                      <spring:url value="/logro/delete/{achievementId}" var="deleteUrl">
+                                        <spring:param name="achievementId" value="${logro.id}" />
+                                      </spring:url>
+                                      <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash"></a>
+                                  
+                                  </c:if>
+                              </div>
+                          </div>
+                      </div>
+                    </c:forEach>
+                  </c:if>
                     
                   </div>
-                  <div class="text-right">
-                    <a href="/logro/new" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo logro</a>
-                 </div>
+                  <c:if test="${esAdmin}">
+                    <div class="text-right">
+                      <a href="/logro/new" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo logro</a>
+                  </div>
+                </c:if>
                 </petclinic:layout>
   
 <style>
