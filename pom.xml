@@ -193,6 +193,12 @@
             <artifactId>stripe-java</artifactId>
             <version>22.16.0</version>
         </dependency>
+        <!-- Aviso de Cookies-->
+		<dependency>
+		    <groupId>org.apache.tomcat.embed</groupId>
+		    <artifactId>tomcat-embed-jasper</artifactId>
+		    <scope>provided</scope>
+		</dependency>
     </dependencies>
 
     <build>
