@@ -10,7 +10,7 @@
 <petclinic:layout pageName="crearLogro">
     <h2>
         <p style="font-size:1.5em; text-align: center;">
-            <strong>Crear logro</strong>
+            <strong>Guardar logro</strong>
         </p>
     </h2>     
     <div style="background-color: #0099bb3e; padding: 20px; width: 70%; margin: 0 auto;border-radius: 20px;">
@@ -50,7 +50,7 @@
                 </div>
               </div>
               <div class="col-md-12">
-                <button class="btn btn-md btn-default" style="background-color: #838789; margin: 0 5px;" type="submit">Crear</button>
+                <button class="btn btn-md btn-default" style="background-color: #838789; margin: 0 5px;" type="submit">Guardar</button>
               </div>
              
             

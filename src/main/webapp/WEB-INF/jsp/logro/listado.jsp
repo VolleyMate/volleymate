@@ -77,18 +77,7 @@
                                   </p>
 
                                   
-                                    <br>
-                                    
-                                      <spring:url value="/logro/edit/{achievementId}" var="editUrl">
-                                        <spring:param name="achievementId" value="${logro.id}" />
-                                      </spring:url>
-                                      <a href="${fn:escapeXml(editUrl)}" class="glyphicon glyphicon-pencil"></a>
-                                    
-                                      <spring:url value="/logro/delete/{achievementId}" var="deleteUrl">
-                                        <spring:param name="achievementId" value="${logro.id}" />
-                                      </spring:url>
-                                      <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash"></a>
-                                  
+                                     
                                   </c:if>
                               </div>
                           </div>
@@ -100,8 +89,8 @@
                   <c:if test="${esAdmin}">
                     <div class="text-right">
                       <a href="/logro/new" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo logro</a>
-                  </div>
-                </c:if>
+                    </div>
+                  </c:if>
                 </petclinic:layout>
   
 <style>

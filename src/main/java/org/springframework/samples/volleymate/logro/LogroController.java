@@ -28,8 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class LogroController {
 
   private String CREATE_ACHIEVEMENT_FORM = "logro/crearLogro";
-  private String UPDATE_ACHIEVEMENT_FORM = "logro/actualizarLogro";
-    private String ACHIEVEMENTS_LISTING = "logro/listado";
+  private String ACHIEVEMENTS_LISTING = "logro/listado";
     
     private final LogroService achievementService;
     private final JugadorService playerService;
@@ -48,8 +47,10 @@ public class LogroController {
 
         Jugador player = playerService.findJugadorByUsername(principal.getName());
         Jugador jugadorAutenticado = playerService.findJugadorByUsername(principal.getName());
+        Boolean isAdmin = playerService.esAdmin(player);
 
         model.put("jugadorAutenticado", jugadorAutenticado);
+        model.put("esAdmin", isAdmin);
         updateLogros(player, model);
 
         return ACHIEVEMENTS_LISTING;
@@ -68,7 +69,6 @@ public class LogroController {
     private List<Logro> updateLogros(Jugador player, Map<String, Object> model){
 
         Collection<Logro> achievements = achievementService.getAllAchievements();
-        Boolean isAdmin = playerService.esAdmin(player);
         Map<String,Double> mem = new HashMap<>();
 
         model.put("logros", achievements);
@@ -145,7 +145,7 @@ public class LogroController {
     	Logro achievement = this.achievementService.getAchievementById(id);
         model.put("logro", achievement);
         
-        return UPDATE_ACHIEVEMENT_FORM;
+        return CREATE_ACHIEVEMENT_FORM;
     }
     
     @PostMapping("/logro/edit/{id}")
@@ -155,7 +155,7 @@ public class LogroController {
     	if(result.hasErrors()){
         	
             model.put("logro", achievement);
-            return UPDATE_ACHIEVEMENT_FORM;
+            return CREATE_ACHIEVEMENT_FORM;
             
         } else{
         	
