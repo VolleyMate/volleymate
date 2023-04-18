@@ -86,5 +86,7 @@
         <img class="img-responsive" src="${fn:escapeXml(VolleyMateInicio)}" alt="VolleyMateInicio"/>
         <spring:url value="/resources/images/pivotaltxt.png" htmlEscape="true" var="pivotaltxt"/>
         <img class="texto" src="${fn:escapeXml(pivotaltxt)}" alt="pivotaltxt"/>
+        <spring:url value="/terminos" htmlEscape="true" var="terminos"/>
+        <a href="${fn:escapeXml(terminos)}">Terminos y condiciones</a>
     </div>
 </petclinic:layout>

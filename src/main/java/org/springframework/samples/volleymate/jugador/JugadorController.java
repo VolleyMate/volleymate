@@ -549,6 +549,11 @@ public class JugadorController {
         jugadorService.saveJugador(jugador);
         return "redirect:/jugadores";
     }
+
+    @GetMapping(value = "/terminos")
+    public String showTerminos(){
+        return "jugadores/terminos";
+    }
 }
 
 
