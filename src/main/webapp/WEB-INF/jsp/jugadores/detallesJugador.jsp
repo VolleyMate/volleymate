@@ -15,8 +15,7 @@
 
     <div class="col-auto p-5 text-center">
         
-        <c:if test="${jugadorVista.image == ''}"><img class="rounded d-block" src="/resources/images/perfilPorDefecto.png" width="250" height="250" alt="jugador"></c:if>
-        <c:if test="${jugadorVista.image != ''}"><img class="rounded d-block" src="${jugadorVista.image}" width="250" height="250" alt="jugador"></c:if>
+        <img class="rounded d-block" src="${jugadorVista.image}" width="250" height="250" alt="jugador">
        
 </br>
 </br>
@@ -92,12 +91,6 @@
                 <spring:url value="/logro" var="LogURL">
                 </spring:url>
                 <a href="${LogURL}" class="btn btn-default"><span class="glyphicon glyphicon-certificate"></span> Ver logros</a>
-
-                <spring:url value="/jugadores/delete/{idEl}" var="eliminarURL">
-                    <spring:param name="idEl" value="${jugadorVista.id}" />
-                </spring:url>
-                <a href="${eliminarURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Eliminar cuenta</a>
-
             
                 <spring:url value="/misAspectos" var="aspURL"> <!--Cambiamos la URL cuando esté-->
                 </spring:url>
@@ -116,7 +109,7 @@
             <spring:url value="/jugadores/delete/{idEl}" var="eliminarURL">
                     <spring:param name="idEl" value="${jugadorVista.id}" />
                 </spring:url>
-                <a href="${eliminarURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Eliminar cuenta</a>
+                <a href="${eliminarURL}" class="btn btn-danger"><span class="glyphicon glyphicon-star"></span>  Eliminar cuenta</a>
             </sec:authorize>
         </tr>
     </table>

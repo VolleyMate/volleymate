@@ -46,7 +46,7 @@ public class Jugador extends Person{
     private Sexo sexo;
 
 	@Column(name = "image")
-	protected String image;
+	protected String image="/resources/images/perfilPorDefecto.png";
 
 	@NotNull
 	@Column(name = "volleys")
