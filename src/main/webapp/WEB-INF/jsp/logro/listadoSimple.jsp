@@ -8,7 +8,7 @@
               <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
                 <petclinic:layout pageName="logro">
-                  <h2>Logros</h2>
+                  <h2>Logros de ${jugador.user.username}</h2>
                   <table id="logrosTabla" class="table table-striped" summary="Tabla de logros">
                     <thead>
                       <tr>
@@ -20,7 +20,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <c:forEach items="${conseguidos}" var="logro">
+                      <c:forEach items="${jugador.logros}" var="logro">
                         <tr>
                           <td>
                             <c:out value="${logro.nombre}" />

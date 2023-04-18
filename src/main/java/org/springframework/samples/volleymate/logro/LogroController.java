@@ -59,8 +59,8 @@ public class LogroController {
 
       Jugador player = playerService.findJugadorById(playerId);
 
+      updateLogros(player, model);
       model.put("jugador", player);
-      model.put("conseguido", updateLogros(player, model));
 
        return ACHIEVEMENTS_SIMPLE_LISTING;
     }
@@ -86,8 +86,10 @@ public class LogroController {
       Double v = .0;
 
       if(l.getMetrica().equals("partidos")){
+
         v = j.getPartidos().size() * 1.;
         mem.put("partidos", v);
+
       } else if (l.getMetrica().equals("valoracion")){
 
         int n = j.getValoracionesRecibidas().size();
