@@ -110,7 +110,7 @@
                 
             </c:if>
 
-            <c:if test="${admin || jugadorVista.id != jugadorAutenticado.id}">
+            <c:if test="${admin || jugadorVista.id == jugadorAutenticado.id}">
                 <spring:url value="/jugadores/delete/{id}" var="eliminarURL">
                     <spring:param name="id" value="${jugadorVista.id}" />
                 </spring:url>
