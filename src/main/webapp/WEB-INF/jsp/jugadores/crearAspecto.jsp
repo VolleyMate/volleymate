@@ -9,9 +9,9 @@
 
 <petclinic:layout pageName="crearAspecto">
     <h2>
-        <p style="font-size:1.5em; text-align: center;">
-            <strong>Agregar nuevo aspecto</strong>
-        </p>
+        <div style="font-size:1.5em; text-align: center;">
+          <p><strong>Agregar nuevo aspecto</strong></p>
+        </div>
     </h2>     
     <div style="background-color: #0099bb3e; padding: 20px; width: 70%; margin: 0 auto;border-radius: 20px;">
       <div class="container"> 
