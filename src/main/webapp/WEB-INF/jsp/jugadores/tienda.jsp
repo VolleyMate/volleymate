@@ -48,7 +48,7 @@
                 <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; height: 350px; margin-top: 5%; border-radius: 20px;">
                     <h2>Plan Premium</h2>
                     <c:if test="${jugador.premium != true}">
-                        <p style="padding-bottom: 2%;">Inscríbete al plan Premium para disfrutar de VolleyMate al completo</p>
+                        <p style="padding-bottom: 2%; margin-top: 10%;">Inscríbete al plan Premium para disfrutar de VolleyMate al completo</p>
                         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
                         <div class="card h-100">
                             <div class="card-body flex-grow-0 p-4"><span class="badge bg-primary text-uppercase mb-2">PREMIUM</span>

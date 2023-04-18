@@ -24,6 +24,7 @@ import org.springframework.samples.volleymate.model.Person;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.user.User;
 import org.springframework.samples.volleymate.valoracion.Valoracion;
+import org.springframework.samples.volleymate.logro.Logro;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -75,6 +76,12 @@ public class Jugador extends Person{
 
     @OneToMany(mappedBy = "ratingPlayer", cascade = CascadeType.ALL)
     private List<Valoracion> valoracionesDadas;
+
+    @ManyToMany
+	@JoinTable(name="logros_jugador",
+				joinColumns = @JoinColumn(name="id_jugador"),
+				inverseJoinColumns = @JoinColumn(name="id_logro"))
+    private List<Logro> logros;
     
 	@ManyToMany
 	@JoinTable(

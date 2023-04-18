@@ -61,8 +61,13 @@
                 </spring:url>
                 <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
                 </sec:authorize>
+                <spring:url value="/logro" var="LogURL">
+                </spring:url>
+                <a href="${LogURL}" class="btn btn-default"><span class="glyphicon glyphicon-certificate"></span> Ver logros</a>
 
             </c:if>
+
+            
         
         </tr>
         
@@ -84,12 +89,16 @@
                 </spring:url>
                 <a href="${valURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Mis valoraciones</a>
 
+                <spring:url value="/logro" var="LogURL">
+                </spring:url>
+                <a href="${LogURL}" class="btn btn-default"><span class="glyphicon glyphicon-certificate"></span> Ver logros</a>
 
                 <spring:url value="/jugadores/delete/{idEl}" var="eliminarURL">
                     <spring:param name="idEl" value="${jugadorVista.id}" />
                 </spring:url>
                 <a href="${eliminarURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Eliminar cuenta</a>
 
+            
                 <spring:url value="/misAspectos" var="aspURL"> <!--Cambiamos la URL cuando esté-->
                 </spring:url>
                 <a href="${aspURL}" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span> Mis aspectos</a>
