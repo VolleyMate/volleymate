@@ -1,6 +1,7 @@
 package org.springframework.samples.volleymate.logro;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.jugador.JugadorService;
 import org.springframework.samples.volleymate.valoracion.Valoracion;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +27,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LogroController {
 
-  private String CREATE_OR_UPDATE_ACHIEVEMENT_FORM = "/logro/crearOActualizar";
-    private String ACHIEVEMENTS_LISTING = "/logro/listado";
+  private String CREATE_ACHIEVEMENT_FORM = "logro/crearLogro";
+  private String ACHIEVEMENTS_LISTING = "logro/listado";
     
     private final LogroService achievementService;
     private final JugadorService playerService;
@@ -42,29 +46,40 @@ public class LogroController {
     		Principal principal) {
 
         Jugador player = playerService.findJugadorByUsername(principal.getName());
-        Collection<Logro> achievements = achievementService.getAllAchievements();
+        Jugador jugadorAutenticado = playerService.findJugadorByUsername(principal.getName());
         Boolean isAdmin = playerService.esAdmin(player);
-        
-        model.put("logros", achievements);
+
+        model.put("jugadorAutenticado", jugadorAutenticado);
         model.put("esAdmin", isAdmin);
-        model.put("jugador", player);
-        model.put("conseguido", updateLogros(principal, model));
-        
+        updateLogros(player, model);
+
         return ACHIEVEMENTS_LISTING;
     }
 
-    
-    private List<Logro> updateLogros(Principal principal, Map<String, Object> model){
+    @GetMapping("/logro/player/{id}")
+    public String seeOtherPlayerAchievements(@PathVariable("id") int playerId, Map<String, Object> model){
 
-       Jugador player = playerService.findJugadorByUsername(principal.getName());
-      Collection<Logro> achievements = achievementService.getAllAchievements();
+      Jugador player = playerService.findJugadorById(playerId);
 
-       Map<String,Double> mem = new HashMap<>();
+      updateLogros(player, model);
+
+       return ACHIEVEMENTS_LISTING;
+    }
+
+    private List<Logro> updateLogros(Jugador player, Map<String, Object> model){
+
+        Collection<Logro> achievements = achievementService.getAllAchievements();
+        Map<String,Double> mem = new HashMap<>();
+
+        model.put("logros", achievements);
+        model.put("jugador", player);
 
       for(Logro a:achievements){
+        updateProgreso(a, player, mem);
         if(!a.getJugadores().contains(player)){ checkLogro(a, player, mem); }
       }
 
+      model.put("conseguido", player.getLogros());
       model.put("progreso", mem);
 
       return player.getLogros();
@@ -73,11 +88,21 @@ public class LogroController {
     private void checkLogro(Logro l, Jugador j, Map<String,Double> mem){
 
       List<Logro> lj = j.getLogros();
+      Double v = mem.get(l.getMetrica());
+
+      if(l.getThreshold() <= v){ lj.add(l); }
+
+      j.setLogros(lj);
+      playerService.saveJugador(j);
+    }
+
+    private void updateProgreso(Logro l, Jugador j, Map<String,Double> mem){
       Double v = .0;
 
       if(l.getMetrica().equals("partidos")){
+
         v = j.getPartidos().size() * 1.;
-        mem.put("partidos", v);
+
       } else if (l.getMetrica().equals("valoracion")){
 
         int n = j.getValoracionesRecibidas().size();
@@ -88,27 +113,27 @@ public class LogroController {
           v = vj/n;
         }
 
-        mem.put("valoracion", vj);
-      } else { v = 100000000.; }
+      } else { v = 0.; }
 
-      if(l.getThreshold() <= v){ lj.add(l); }
-
-      j.setLogros(lj);
-      playerService.saveJugador(j);
+      mem.put(l.getMetrica(), v);
     }
     
     @GetMapping("/logro/delete/{achievementId}")
     public String deleteAchievement(@PathVariable("achievementId") int id, Principal principal){
       
       Logro a = achievementService.getAchievementById(id);
-      Jugador j = playerService.findJugadorByUsername(principal.getName());
+      List<Jugador> jugadoresConLogro = a.getJugadores();
 
-      List<Logro> logrosJugador = j.getLogros();
-      logrosJugador.remove(a);
+      for(Jugador j:jugadoresConLogro){
 
-      j.setLogros(logrosJugador);
+        List<Logro> logrosJugador = j.getLogros();
+        logrosJugador.remove(a);
 
-      playerService.saveJugador(j);
+        j.setLogros(logrosJugador);
+
+        playerService.saveJugador(j);
+      }
+
     	achievementService.deleteAchievementById(id);
        
     	return "redirect:/logro/";
@@ -120,7 +145,7 @@ public class LogroController {
     	Logro achievement = this.achievementService.getAchievementById(id);
         model.put("logro", achievement);
         
-        return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
+        return CREATE_ACHIEVEMENT_FORM;
     }
     
     @PostMapping("/logro/edit/{id}")
@@ -130,7 +155,7 @@ public class LogroController {
     	if(result.hasErrors()){
         	
             model.put("logro", achievement);
-            return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
+            return CREATE_ACHIEVEMENT_FORM;
             
         } else{
         	
@@ -150,28 +175,43 @@ public class LogroController {
 		return res;
 	}
     
-	@GetMapping("/logro/new")
-	public String create(Map<String, Object> model) {
-		
-		Logro a = new Logro();
-        model.put("logro", a);
-        
-        return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
+	@GetMapping(value = "/logro/new")
+	public String initCreationForm(Principal principal, ModelMap model) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
+          Logro logro = new Logro();
+		      model.put("logro", logro);
+		      return CREATE_ACHIEVEMENT_FORM;
+        }else{
+          model.put("message", "No tienes permisos para realizar esta acción");
+            return "redirect:/logro/";
+        }
+
 	}
-	
-	@PostMapping("/logro/new")
-	public String post(@Valid Logro a, Map<String, Object> model,
-			BindingResult result) {
-		
-		if(result.hasErrors()){
-			
-            model.put("logro", a);
-            return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
-            
-        } else
-        	achievementService.saveAchievement(a);
-        
-        return "redirect:/logro/";
+
+	@PostMapping(value = "/logro/new")
+	public String processCreationForm(@Valid Logro logro, BindingResult result, ModelMap model,Principal principal) {
+		List<String> errores = new ArrayList<>();
+		if(logro.getMetrica() == null) {
+			errores.add("La métrica no puede ser nula");
+		}
+		if(logro.getDescripcion()==null || logro.getDescripcion()=="") {
+			errores.add("La descripción no puede estar vacía");
+		}
+		if(logro.getNombre()==null || logro.getNombre()=="") {
+			errores.add("El nombre no puede estar vacío");
+		}
+		if(logro.getThreshold()==null || logro.getThreshold()<1){
+			errores.add("El número de meta no puede ser menor que 1");
+		}
+		if (!errores.isEmpty()) {
+			model.put("logro", logro);
+			model.put("errors", errores);
+			return CREATE_ACHIEVEMENT_FORM;
+		} else {
+			this.achievementService.saveAchievement(logro);
+			return "redirect:/logro";
+		}
 	}
   
 }

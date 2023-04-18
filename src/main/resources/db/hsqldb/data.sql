@@ -78,10 +78,6 @@ INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (2,'Ci
 INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (3,'Diez partidos','Ha jugado diez partidos en la aplicacion','https://img.freepik.com/vector-premium/medalla-oro-al-primer-lugar-insignia-oro-1er-lugar-medalla-oro-imagen-numero-1-rama-olivo-ilustracion_255498-64.jpg',10,'partidos');
 INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (4,'Aprobado','Ha alcanzado un aprobado','https://cdn.pixabay.com/photo/2017/03/21/21/06/medal-2163351_1280.png',3,'valoracion');
 
-INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (1,1);
-INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (1,3);
-INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (2,2);
-INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (3,4);
 
 
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (8,'Test1','MASCULINO','Testeando1',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
