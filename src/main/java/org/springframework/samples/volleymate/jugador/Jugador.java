@@ -46,7 +46,7 @@ public class Jugador extends Person{
     private Sexo sexo;
 
 	@Column(name = "image")
-	protected String image;
+	protected String image="/resources/images/perfilPorDefecto.png";
 
 	@NotNull
 	@Column(name = "volleys")
@@ -90,11 +90,11 @@ public class Jugador extends Person{
 		inverseJoinColumns = @JoinColumn(name = "aspecto_id"))
     private List<Aspecto> aspectos;
 
-	public int getValoracionMedia (){
+	public Double getValoracionMedia (){
 		if(valoracionesRecibidas.isEmpty()){
-			return 5;
+			return 0.0;
 		}else {
-			return valoracionesRecibidas.stream().mapToInt(Valoracion::getPuntuacion).sum()/valoracionesRecibidas.size();
+			return valoracionesRecibidas.stream().mapToDouble(Valoracion::getPuntuacion).sum()/valoracionesRecibidas.size();
 		}
 	}
 }

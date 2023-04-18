@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-md-6 tienda">
                             <a href="/tienda/aspectos">
-                                <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="/resources/images/perfilPorDefecto.png"/>
+                                <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="${jugador.image}"/>
                                 <h3>Comprar aspectos</h3>
                             </a>
                         </div>

@@ -8,23 +8,27 @@ INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image,
 
 INSERT INTO users(username,password,enabled,correo) VALUES ('barba','barba',TRUE,'barba@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (3,'barba','admin');
-INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (3,'Francisco Javier','Barba','Sevilla','666666666','MASCULINO','','barba', 250, FALSE);
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (3,'Francisco Javier','Barba','Sevilla','666666666','MASCULINO','/resources/images/perfilPorDefecto.png','barba', 250, FALSE);
 
 INSERT INTO users(username,password,enabled,correo) VALUES ('paomarsan','paomarsan',TRUE,'paomarsan@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (4,'paomarsan','admin');
-INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (4,'Paola','Martin','Sevilla','666666666','FEMENINO','','paomarsan', 150, FALSE);
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (4,'Paola','Martin','Sevilla','666666666','FEMENINO','/resources/images/perfilPorDefecto.png','paomarsan', 150, FALSE);
 
 INSERT INTO users(username,password,enabled,correo) VALUES ('meriglmar','meriglmar',TRUE,'meriglmar@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (5,'meriglmar','admin');
-INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (5,'Mercedes','Iglesias','Sevilla','666666666','FEMENINO','','meriglmar', 250, FALSE);
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (5,'Mercedes','Iglesias','Sevilla','666666666','FEMENINO','/resources/images/perfilPorDefecto.png','meriglmar', 250, FALSE);
 
 INSERT INTO users(username,password,enabled,correo) VALUES ('alecarnun','alecarnun',TRUE,'alejcn01@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (6,'alecarnun','admin');
-INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (6,'Alejandro','Carrasco','Sevilla','666666666','MASCULINO','','alecarnun', 250, FALSE);
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (6,'Alejandro','Carrasco','Sevilla','666666666','MASCULINO','/resources/images/perfilPorDefecto.png','alecarnun', 250, FALSE);
 
 INSERT INTO users(username,password,enabled,correo) VALUES ('jugador','jugador',TRUE,'jugador@gmail.com');
 INSERT INTO authorities(id,username,authority) VALUES (7,'jugador','jugador');
-INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (7,'jugador','jugador','Sevilla','666666666','MASCULINO','','jugador', 10000000, FALSE);
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (7,'jugador','jugador','Sevilla','666666666','MASCULINO','/resources/images/perfilPorDefecto.png','jugador', 10000000, FALSE);
+
+INSERT INTO users(username,password,enabled,correo) VALUES ('robpazriv','robpazriv',TRUE,'robertopazrivera00@gmail.com');
+INSERT INTO authorities(id,username,authority) VALUES (8,'robpazriv','jugador');
+INSERT INTO jugadores(id, first_name, last_name, ciudad, telephone, sexo, image, username, volleys, premium) VALUES (8,'robpazriv','robpazriv','Sevilla','628587130','MASCULINO','/resources/images/perfilPorDefecto.png','robpazriv', 10000000, FALSE);
 
 INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (1,'Mairena Voley Club','Av. de la Constitución num 2', 'Sevilla', true, 'https://goo.gl/maps/P5uyWUKnDqNLAbnE6');
 INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (2,'Club Deportivo Claret','C. Monzón', 'Sevilla', true, 'https://goo.gl/maps/JYErpvDCVSKuNLvF9');
@@ -74,10 +78,6 @@ INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (2,'Ci
 INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (3,'Diez partidos','Ha jugado diez partidos en la aplicacion','https://img.freepik.com/vector-premium/medalla-oro-al-primer-lugar-insignia-oro-1er-lugar-medalla-oro-imagen-numero-1-rama-olivo-ilustracion_255498-64.jpg',10,'partidos');
 INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (4,'Aprobado','Ha alcanzado un aprobado','https://cdn.pixabay.com/photo/2017/03/21/21/06/medal-2163351_1280.png',3,'valoracion');
 
-INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (1,1);
-INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (1,3);
-INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (2,2);
-INSERT INTO logros_jugador(id_jugador,id_logro) VALUES (3,4);
 
 
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (8,'Test1','MASCULINO','Testeando1',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
