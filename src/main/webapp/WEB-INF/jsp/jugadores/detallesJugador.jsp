@@ -8,7 +8,9 @@
 <%@page pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="detalleJugador">
-
+    <div style="text-align: center; color: #000000; padding-top: 2%;">
+        <c:out value="${jugadorConPartidos}"/>
+    </div>
 
         <div class="m-0 row justify-content-center col-auto text-center"> 
             <c:if test="${jugadorVista.premium == true}"><img class="rounded d-block" style="padding-top: 2%;" src="/resources/images/corona.png" width="100" height="100" alt="jugador"></c:if>
