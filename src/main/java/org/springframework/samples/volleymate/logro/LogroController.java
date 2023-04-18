@@ -101,14 +101,18 @@ public class LogroController {
     public String deleteAchievement(@PathVariable("achievementId") int id, Principal principal){
       
       Logro a = achievementService.getAchievementById(id);
-      Jugador j = playerService.findJugadorByUsername(principal.getName());
+      List<Jugador> jugadoresConLogro = a.getJugadores();
 
-      List<Logro> logrosJugador = j.getLogros();
-      logrosJugador.remove(a);
+      for(Jugador j:jugadoresConLogro){
 
-      j.setLogros(logrosJugador);
+        List<Logro> logrosJugador = j.getLogros();
+        logrosJugador.remove(a);
 
-      playerService.saveJugador(j);
+        j.setLogros(logrosJugador);
+
+        playerService.saveJugador(j);
+      }
+      
     	achievementService.deleteAchievementById(id);
        
     	return "redirect:/logro/";
