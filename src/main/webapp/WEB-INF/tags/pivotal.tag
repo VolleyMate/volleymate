@@ -41,6 +41,7 @@
         <a href="https://twitter.com/volleymatees">
           <img src="<spring:url value="/resources/images/twitter.png" htmlEscape="true" />" alt="Twitter de VolleyMate" style="max-width:50px;">
         </a>
+        <a href="<spring:url value="/terminos" htmlEscape="true"/>"> Terminos y condiciones </a>
         
       </div>
     </div>
