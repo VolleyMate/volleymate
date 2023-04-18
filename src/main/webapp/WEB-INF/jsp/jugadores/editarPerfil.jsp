@@ -37,15 +37,6 @@
                             <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />    
                         </div>
 
-                        <div class="form-group">
-                            <form:label path="image" >Imagen:</form:label>
-                            <form:input path="image" style="border-radius: 20px;" class="form-control" />    
-                        </div>
-
-                    </div>
-                    <div class="col-md-12" style="text-align: center;">
-                        <p class="mb-0 mt-2">Si quieres la foto por defecto, simplemente deja ese campo vacío</p>
-                        <br>
                     </div>
 
                     <div class="form-group" style="text-align: center;">

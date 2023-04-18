@@ -28,6 +28,9 @@
                             <p class="card-text">
                                 <strong>Ciudad:</strong> <c:out value="${centro.ciudad}"/>
                             </p>
+                            <div class="text-center">
+                                <a href="/centros/${centro.id}" class="btn btn-default">Ver</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -62,43 +65,22 @@
             <p>Página ${centros.number + 1} de ${centros.totalPages}</p>
         </c:if>
         </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
         <div class="col-md-6 text-right">
-            <a href="/centros/solitud/new" class="btn btn-default">
+            <a href="/centros/solicitud/new" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo centro
             </a>
         </div>
+        <div class="row" style="width: 100%;">
+        <div class="col-md-6 text-left">
+            <sec:authorize access="hasAuthority('admin')">
+            <a href="/centros/solicitud/list" class="btn btn-default"> <span  aria-hidden="true"></span> Ver solicitudes [ADMIN]</a>
+        </sec:authorize>
+        </div>
+        </div>
+    </div>
     </div>
 
-    <sec:authorize access="hasAuthority('admin')">
-        <div class="row" style="width: 100%; padding-top: 5%; font-weight: bold;">
-            <h3 class="col-md-6">ACEPTAR CENTROS [ADMIN]</h3>
-        </div>    
-        <c:if test="${centrosSol.size() == 0}">
-            Aún no ha ninguna solicitud de centro.
-        </c:if>
-        <c:if test="${centrosSol.size() != 0}">
-        
-            <c:forEach items="${centrosSol}" var="centro">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">
-                                <strong>Nombre:</strong> <c:out value="${centro.nombre}"/>
-                              </p>                              
-                            <p class="card-text">
-                                <strong>Dirección:</strong> <c:out value="${centro.direccion}"/> 
-                            </p>
-                            <p class="card-text">
-                                <strong>Ciudad:</strong> <c:out value="${centro.ciudad}"/>
-                            </p>
-                            <a href="/centros/solicitud/accept/${centro.id}" class="btn btn-primary">Aceptar</a>
-                            <a href="/centros/solicitud/deny/${centro.id}" class="btn btn-primary">Denegar</a>
-                        </div>
-                    </div>
-                </div>
-            </c:forEach>
-        </c:if>
-    </sec:authorize>
 </petclinic:layout>
 
 <style>
@@ -113,5 +95,25 @@
         padding-bottom: 4%;
         padding-left: 4%;
         padding-right: 4%;
-}
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+        background-color: #e6f4f2;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
 </style>

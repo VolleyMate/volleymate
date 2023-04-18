@@ -1,6 +1,8 @@
 package org.springframework.samples.volleymate.jugador;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,7 +20,10 @@ import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
+import org.springframework.samples.volleymate.user.Authorities;
+import org.springframework.samples.volleymate.user.AuthoritiesService;
 import org.springframework.samples.volleymate.user.User;
+import org.springframework.samples.volleymate.user.UserService;
 import org.springframework.samples.volleymate.valoracion.ValoracionService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,9 +36,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
+import org.springframework.samples.volleymate.aspecto.Aspecto;
+import org.springframework.samples.volleymate.aspecto.AspectoService;
 
 @Controller
 public class JugadorController {
@@ -43,35 +52,50 @@ public class JugadorController {
 	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
     private static final String HOME_TIENDA = "jugadores/tienda";
     private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
+    private static final String HOME_TIENDA_ASPECTOS = "jugadores/tiendaAspectos";
+    private static final String HOME_MIS_ASPECTOS = "jugadores/listaMisAspectos";
     private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
     private static final String HOME_TIENDA_CONFIRMAR_COMPRA = "jugadores/confirmarCompra";
+    private static final String VIEW_LISTADO_JUGADORES = "jugadores/listaJugadores";
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
     private final SolicitudService solicitudService;
     private final ValoracionService valoracionService;
+    private final AspectoService aspectoService;
+    private final UserService userService;
+    private final AuthoritiesService authoritiesService;
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService ) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService, AspectoService aspectoService, UserService userService, AuthoritiesService authoritiesService) {
+
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
         this.solicitudService = solicitudService;
         this.valoracionService = valoracionService;
+        this.aspectoService = aspectoService;
+        this.userService = userService;
+        this.authoritiesService = authoritiesService;
     }
 
 
     @GetMapping(value = "/jugadores/new")
 	public String crearJugadorInicio(Map<String, Object> model, @AuthenticationPrincipal Authentication authentication, Principal principal) {
-		if (authentication != null ){
+        List<Aspecto> aspectos = this.aspectoService.findAllAspectosGratuitos();
+        if (authentication != null ){
             Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
             if(jugadorService.esAdmin(jugadorLog)){
                 Jugador jugador = new Jugador();
+                jugador.setPremium(false);
                 model.put("jugador", jugador);
+                model.put("aspectos", aspectos);
                 return VIEW_CREATE_FORM;    
             }
             return "redirect:/";
         } else {
             Jugador jugador = new Jugador();
+            jugador.setPremium(false);
             model.put("jugador", jugador);
+            model.put("aspectos", aspectos);
             return VIEW_CREATE_FORM;
         }
 	}
@@ -94,18 +118,17 @@ public class JugadorController {
                 Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
                 
                 if (jugadorService.esAdmin(jugadorLog)){
+                    jugador.setPremium(false);
                     this.jugadorService.saveJugador(jugador);
                     return "redirect:/jugadores/" + jugador.getId();
                 } else {
-                    UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
-                    SecurityContextHolder.getContext().setAuthentication(authReq);
-                    this.jugadorService.saveJugador(jugador);
                     return "redirect:/";
                 }
             
             } else {
                 UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
                 SecurityContextHolder.getContext().setAuthentication(authReq);
+                jugador.setPremium(false);
                 this.jugadorService.saveJugador(jugador);
                 return "redirect:/";
             }
@@ -123,6 +146,17 @@ public class JugadorController {
 				String user = currentUser.getUsername();
 				try{
 					Jugador player = jugadorService.findJugadorByUsername(user);
+                    if(jugadorService.esAdmin(player)){
+                        Jugador jugador = jugadorService.findJugadorById(id);
+                        String username = jugador.getUser().getUsername();
+                        String pass = jugador.getUser().getPassword();
+                        Sexo sexo = jugador.getSexo();
+                        model.addAttribute("pass", pass);
+                        model.addAttribute("username", username);
+                        model.addAttribute("sexo", sexo);
+                        model.addAttribute(jugador);
+                        return VIEW_UPDATE_FORM;   
+                    }
 					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
 					for (GrantedAuthority usuarioR : usuario){
 					String credencial = usuarioR.getAuthority();
@@ -164,7 +198,7 @@ public class JugadorController {
 		}
 		else {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","sexo","user","volleys","solicitudes","notificaciones","telephone"); 
+			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","image","sexo","fechaInicioPremium","fechaFinPremium","user","volleys","solicitudes","premium","notificaciones","telephone"); 
             this.jugadorService.saveJugador(jugadorToUpdate);
 			model.put("message","Jugador editado correctamente");
 			return "redirect:/jugadores";
@@ -181,6 +215,12 @@ public class JugadorController {
                 String usuario = currentUser.getUsername();
                 Jugador jugador = jugadorService.findJugadorByUsername(usuario);
                 Jugador jugadorAutenticado = jugadorService.findJugadorByUsername(principal.getName());
+                if(jugadorAutenticado.getPremium() == true && jugadorAutenticado.getFechaFinPremium().toLocalDate().isBefore(LocalDate.now())){
+                    jugadorAutenticado.setPremium(false);
+                    jugadorAutenticado.setFechaInicioPremium(null);
+                    jugadorAutenticado.setFechaFinPremium(null);
+                    jugadorService.saveJugador(jugadorAutenticado);
+                }
                 model.put("jugadorAutenticado", jugadorAutenticado);
                 model.put("jugadorVista", jugador);
                 model.put("id",jugadorAutenticado.getId());
@@ -289,8 +329,12 @@ public class JugadorController {
                 Jugador jugador = solicitud.getJugador();
                 Partido partido = solicitud.getPartido();
                 Integer volleys = partido.getPrecioPersona();
-                Integer sumVolleys = jugador.getVolleys() - volleys;
-                jugador.setVolleys(sumVolleys);
+                
+                if(!jugador.getPremium()){
+                    Integer sumVolleys = jugador.getVolleys() - volleys;
+                    jugador.setVolleys(sumVolleys);
+                }
+                
                 this.jugadorService.saveJugador(jugador);
                 this.jugadorService.eliminarSolicitud(solicitud);
                 return "redirect:/jugadores/notificaciones";
@@ -335,6 +379,18 @@ public class JugadorController {
         return HOME_TIENDA_VOLLEYS;
     }
 
+    //AÑADIR AL MODEL LOS ASPECTOS NECESARIOS PARA LA VISTA
+    @GetMapping(value="/tienda/aspectos")
+    public String showVistaTiendaAspectos(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        List<Aspecto> aspectos = this.aspectoService.findAllAspectos();
+        Integer numAspectos = aspectos.size();
+        model.put("jugador", jugador);
+        model.put("aspectos", aspectos);
+        model.put("numAspectos", numAspectos);
+        return HOME_TIENDA_ASPECTOS;
+    }
+
     @GetMapping(value="/tienda/premium")
     public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
         return HOME_TIENDA_PREMIUM;
@@ -344,51 +400,159 @@ public class JugadorController {
     public String showVistaComfirmarCompra(Principal principal, @PathVariable("idCompra") Integer idCompra, Map<String,Object> model){
         switch(idCompra){
             case 1:
-                model = jugadorService.getValoresCompra("7.99", "paquete premium", idCompra, model);
+                model = jugadorService.getValoresCompra(7.99, 1, "paquete premium", idCompra, model);
                 break;
             case 2:
-                model = jugadorService.getValoresCompra("4.99", "300 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(4.99, 300,"300 volleys", idCompra, model);
                 break;    
             case 3:
-                model = jugadorService.getValoresCompra("6.50", "450 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(6.50, 450, "450 volleys", idCompra, model);
                 break;
             case 4:
-                model = jugadorService.getValoresCompra("14.50", "1100 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(14.50, 1100, "1100 volleys", idCompra, model);
                 break;
             case 5:
-                model = jugadorService.getValoresCompra("19.99", "1550 volleys", idCompra, model);    
+                model = jugadorService.getValoresCompra(19.99, 1550, "1550 volleys", idCompra, model);    
                 break;
             case 6:
-                model = jugadorService.getValoresCompra("49.99", "4100 volleys", idCompra, model);
+                model = jugadorService.getValoresCompra(49.99, 4100, "4100 volleys", idCompra, model);
+                break;
+            case 7:
+                model = jugadorService.getValoresCompra(1.00, 20,"este aspecto", idCompra, model);
                 break;
         }
         return HOME_TIENDA_CONFIRMAR_COMPRA;
     }
 
-    @GetMapping(value="/tienda/volleys/comprar/{volleys}/{precio}")
-    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, 
-                                                        @PathVariable("volleys") Integer precio, RedirectAttributes redirAttrs){
+    @GetMapping(value="/tienda/confirmaCompra")
+    public String confirmarCompraPremium(Principal principal, ModelMap model){
+        model.put("precio", 7.99);
+        model.put("numVolleys", 0);
+        model.put("paquete", "Comprar paquete premium");
+        
+        return HOME_TIENDA_CONFIRMAR_COMPRA;
+    }
+
+    @GetMapping(value="/tienda/volleys/comprar/{volleys}")
+    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, RedirectAttributes redirAttrs, ModelMap model){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         Integer sumVolleys = jugador.getVolleys() + volleys;
         jugador.setVolleys(sumVolleys);
         this.jugadorService.saveJugador(jugador);
-        redirAttrs.addFlashAttribute("compraAceptada", "Su pago se ha procesado correctamente!");
-        return HOME_TIENDA_VOLLEYS;
+        model.put("jugador", jugador);
+        model.put("mensajeExito", String.format("Su compra de %s volleys ha sido realizada con éxito!", volleys));
+        return HOME_TIENDA;
     }
 
-    @GetMapping(value = "/listaJugadores")
-	public String buscarJugador(Model model, @PathVariable("palabraClave") String palabraClave) {
-		
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-	    if (auth != null){
-			List<Jugador> listaJugadores = jugadorService.listAll(palabraClave);
-            model.addAttribute("listaJugadores", listaJugadores);
-			model.addAttribute("palabraClave", palabraClave);
-			return "/listaJugadores";
-		} else {
-			return "redirect:/";
-		}
+    @GetMapping(value="/tienda/premium/comprar")
+    public String comprarPremium(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        jugador.setPremium(true);
+        jugador.setFechaInicioPremium(LocalDateTime.now());
+        jugador.setFechaFinPremium(LocalDateTime.now().plusDays(30));
+        this.jugadorService.saveJugador(jugador);
+        model.put("jugador", jugador);
+        model.put("mensajeExito", String.format("Ahora eres premium y disfrutas todas sus ventajas!"));
+        return HOME_TIENDA;
+    }
+
+    @GetMapping(value="/tienda/aspectos/comprar/{aspectoId}")
+    public String comprarAspecto(Principal principal, @PathVariable("aspectoId") int aspectoId,ModelMap model){
+        Aspecto aspecto = this.aspectoService.findById(aspectoId);
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        int volleys = jugador.getVolleys();
+        int precio = aspecto.getPrecio();
+
+        if(!jugador.getPremium() && volleys>= precio){
+            int volleysRestantes  = volleys - precio;
+            jugador.setVolleys(volleysRestantes);
+        } else if(volleys < precio){
+            model.put("mensajeError", String.format("No tienes suficientes volleys!!"));
+            model.put("jugador", jugador);
+            return HOME_TIENDA;
+        }
+
+        jugador.getAspectos().add(aspecto);
+        jugador.setAspectos(jugador.getAspectos());
+        this.jugadorService.saveJugador(jugador);
+
+        model.put("jugador", jugador);
+        model.put("mensajeExito", String.format("Enhorabuena, ahora cuentas con un nuevo aspecto!"));
+        return HOME_TIENDA;
+    }
+
+    @RequestMapping(value = "/listaJugadores")
+    public String showJugadores(Model model, @Param("palabraClave") String palabraClave,@RequestParam(defaultValue = "0") int valoracionMedia) {
+               
+        List<Jugador> listaJugadores = jugadorService.listAll(palabraClave, valoracionMedia);
+        Integer numJugadores = listaJugadores.size();
+
+        model.addAttribute("listaJugadores", listaJugadores);
+        model.addAttribute("numJugadores", numJugadores);
+        model.addAttribute("palabraClave", palabraClave);
+        model.addAttribute("valoracionMedia", valoracionMedia);
+        return VIEW_LISTADO_JUGADORES;
+    }
+    
+    @GetMapping("/jugadores/delete/{jugadorId}")
+    public String deleteJugador(Principal principal, RedirectAttributes redirAttrs, @PathVariable("jugadorId") int jugadorId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.isAuthenticated()) {
+
+            Jugador jugadorLogeado = this.jugadorService.findJugadorByUsername(principal.getName());
+            Jugador jugadorVista = this.jugadorService.findJugadorById(jugadorId);
+            
+            //Elimina siendo jugador logeado
+
+            if (jugadorId == jugadorLogeado.getId()) {
+                SecurityContextHolder.getContext().setAuthentication(null);
+                jugadorService.deleteJugador(jugadorLogeado);
+                List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorLogeado.getUser());
+                for(Authorities a:authorities) {
+                    authoritiesService.deleteAuthorities(a);
+                }
+                userService.deleteUser(jugadorLogeado.getUser());
+                return "redirect:/";
+
+                //Elimina siendo admin cualquier jugador
+            } else if (jugadorService.esAdmin(jugadorLogeado) && jugadorId != jugadorLogeado.getId()){
+                jugadorService.deleteJugador(jugadorVista);
+                List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorVista.getUser());
+                for(Authorities a:authorities) {
+                    authoritiesService.deleteAuthorities(a);
+                }
+                userService.deleteUser(jugadorVista.getUser());
+                return "redirect:/listaJugadores";
+            } else {
+                redirAttrs.addFlashAttribute("claveInvalida", "La clave introducida no coincide con su contraseña");
+                return "/jugadores/{jugadorId}/delete";
+            }
+        } else {
+            return "redirect:/";
+        }
+    }
+
+    @GetMapping(value="/misAspectos")
+    public String showVistaMisAspectos(Principal principal, ModelMap model){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        List<Aspecto> aspectos = jugador.getAspectos();
+        model.put("jugador", jugador);
+        model.put("aspectos", aspectos);
+        return HOME_MIS_ASPECTOS;
+    }
+
+    @GetMapping(value="/jugadores/setAspecto/{aspectoId}")
+    public String setAspecto(Principal principal, ModelMap model, @PathVariable("aspectoId") Integer aspectoId){
+        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        Aspecto aspecto = aspectoService.findById(aspectoId);
+        jugador.setImage(aspecto.getImagen());
+        jugadorService.saveJugador(jugador);
+        return "redirect:/jugadores";
+    }
+
+    @GetMapping(value = "/terminos")
+    public String showTerminos(){
+        return "jugadores/terminos";
     }
 }
 

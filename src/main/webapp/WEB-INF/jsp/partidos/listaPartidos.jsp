@@ -9,7 +9,15 @@
 <petclinic:layout pageName="partidos">
     <h2>Partidos disponibles</h2>
     <form action="/partidos" method="get">
-        <div style="display: grid; grid-template-columns: repeat(4,1fr); padding-bottom: 5%;">
+        <div class="col-md-12 text-center" style="justify-content: center;">
+            <a href="/jugadores/mispartidos" class="btn btn-default">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Mis partidos
+            </a>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div style="display: grid; grid-template-columns: repeat(4,1fr); padding-bottom: 3%;">
             <div style="grid-column: 1;">
                 <div style="text-align: left;">
                     <label for="sexo">Sexo:</label>
@@ -53,9 +61,10 @@
         <c:if test="${numPartidos != 0}">
             <c:forEach items="${partidos.content}" var="partido">
                 <div class="col-md-4">
+                    <a href="/partidos/${partido.id}" class="card-link">
                     <div class="card">
                         <div class="card-body">
-                            <a href="/jugadores/${partido.creador.id}"><h5 class="card-title" style="font-weight: bold;">${partido.creador.user.username}</h5></a> 
+                            <a href="/jugadores/${partido.creador.id}"> <h5 class="card-title" style="font-weight: bold;"> <img src="${partido.creador.image}" width="25" height="25" style="border-radius:5px"> ${partido.creador.user.username}</h5></a> 
 
                             <p class="card-text">
                                 <strong>Jugadores:</strong> <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
@@ -131,6 +140,25 @@
         padding-bottom: 4%;
         padding-left: 4%;
         padding-right: 4%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+        background-color: #e6f4f2;
+        animation: pulse 1.5s infinite;
+    }
 
-}
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
 </style>

@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="confirmarCompra">
@@ -14,14 +15,16 @@
                 <p style="padding-bottom: 2%;">¿Está seguro de que desea comprar ${paquete} por ${precio}€?</p>
                 <div class="row">
                     <div class="col-md-6">
-                        <a href="redirect:/" class="btn btn-default" style="margin: 5%; background-color: green; outline-color:greenyellow;">Comprar</a>
+                        <form:form method="POST" action="/pagos/autorizar_pago" modelAttribute="orderDetail">
+                            <input type="text" name="descripcion" value="${fn:escapeXml(paquete)}" />
+                            <input type="text" name="numVolleys" value="${fn:escapeXml(numVolleys)}" />
+                            <input type="text" name="total" value="${fn:escapeXml(precio)}" />
+                            <input type="submit" value="Continuar al pago" class="btn btn-default" style="margin: 5%; background-color: green; outline-color:greenyellow;">
+                        </form:form>
                     </div>
                     <div class="col-md-6">
-                        <c:if test="${idCompra == 1}">
-                            <a href="/tienda" class="btn btn-default" style="margin: 5%;">Cancelar</a>
-                        </c:if>
                         <c:if test="${idCompra != 1}">
-                            <a href="/tienda/volleys" class="btn btn-default" style="margin: 5%;">Cancelar</a>
+                            <a href="/tienda" class="btn btn-default" style="margin: 5%;">Cancelar</a>
                         </c:if>
                         
                     </div>

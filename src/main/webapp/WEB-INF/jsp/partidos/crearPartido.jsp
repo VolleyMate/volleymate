@@ -65,7 +65,7 @@
               <div class="col-md-12">
                 <c:if test="${puedeCrear}">
                   <div style="text-align: center;">
-                    <button class="btn btn-md btn-default" style="background-color: #838789; margin: 0 5px;"
+                    <button class="btn btn-lg btn-default"
                             type="submit">150 volleys
                             <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys"
                         style="width: 20px; height: 20px; margin-right: 10px;">

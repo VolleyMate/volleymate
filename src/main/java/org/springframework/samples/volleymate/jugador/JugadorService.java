@@ -3,17 +3,26 @@ package org.springframework.samples.volleymate.jugador;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.samples.volleymate.aspecto.Aspecto;
+import org.springframework.samples.volleymate.aspecto.AspectoRepository;
 import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
+import org.springframework.samples.volleymate.logro.Logro;
+import org.springframework.samples.volleymate.logro.LogroRepository;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoRepository;
+import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.user.Authorities;
 import org.springframework.samples.volleymate.user.AuthoritiesService;
 import org.springframework.samples.volleymate.user.UserService;
+import org.springframework.samples.volleymate.valoracion.Valoracion;
+import org.springframework.samples.volleymate.valoracion.ValoracionRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -22,20 +31,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class JugadorService {
     
-    @Autowired
     private JugadorRepository jugadorRepository;
     private PartidoRepository partidoRepository;
     private UserService userService;
     private AuthoritiesService authoritiesService;
     private SolicitudRepository solicitudRepository;
+    private LogroRepository logroRepository;
+    private AspectoRepository aspectoRepository;
+    private ValoracionRepository valoracionRepository;
+    private PartidoService partidoService;
 
     @Autowired
-    public JugadorService(JugadorRepository jugadorRepository, PartidoRepository partidoRepository, UserService userService,AuthoritiesService authoritiesService,SolicitudRepository solicitudRepository) {
+    public JugadorService(JugadorRepository jugadorRepository, PartidoRepository partidoRepository, 
+            UserService userService,AuthoritiesService authoritiesService,SolicitudRepository solicitudRepository,
+            LogroRepository logroRepository, AspectoRepository aspectoRepository, ValoracionRepository valoracionRepository,
+            PartidoService partidoService) {
+        
         this.jugadorRepository = jugadorRepository;
         this.partidoRepository = partidoRepository;
         this.userService=userService;
         this.authoritiesService=authoritiesService;
         this.solicitudRepository = solicitudRepository;
+        this.logroRepository = logroRepository;
+        this.aspectoRepository = aspectoRepository;
+        this.valoracionRepository = valoracionRepository;
+        this.partidoService = partidoService;
     }
 
     @Transactional(readOnly = true)
@@ -104,10 +124,12 @@ public class JugadorService {
         this.solicitudRepository.delete(solicitud);
     }
 
+    @Transactional
     public Solicitud findSolicitudById(int solicitudId) {
         return this.solicitudRepository.findById(solicitudId).get();
     }
 
+    @Transactional
     public List<Partido> findPartidosByJugadorId(int jugadorId) {
         List<Partido> lista = this.partidoRepository.findAll();
         List<Partido> listaReturn = new ArrayList<>();
@@ -119,14 +141,25 @@ public class JugadorService {
         return listaReturn;
     }
 
-
-    public List<Jugador> listAll(String palabraClave){
-        if(palabraClave!=null){
+    @Transactional
+    public List<Jugador> listAll(String palabraClave, int valoracionMedia){
+        if(palabraClave!=null && valoracionMedia != 0){
+            List<Jugador> lista = jugadorRepository.findAll(palabraClave);
+            return lista.stream().filter(jugador -> jugador.getValoracionMedia()>=valoracionMedia).collect(Collectors.toList());
+        } else if (valoracionMedia != 0 && palabraClave == null ){
+            List<Jugador> lista = jugadorRepository.findAll();
+            return lista.stream().filter(jugador -> jugador.getValoracionMedia()>=valoracionMedia).collect(Collectors.toList());
+        } else if (valoracionMedia == 0 && palabraClave != null ){
             return jugadorRepository.findAll(palabraClave);
         }
         return jugadorRepository.findAll();
     }
-
+    @Transactional
+    public List<Jugador> listAll(){
+        
+        return jugadorRepository.findAll();
+    }
+    @Transactional
     public List<String> findErroresCrearJugador(Jugador jugador){
         List<String> errores = new ArrayList<>();
         Integer digitos = (int)(Math.log10(jugador.getTelephone())+1);
@@ -150,7 +183,7 @@ public class JugadorService {
         }
         return errores;
     }
-
+    @Transactional
     public boolean esAdmin(Jugador jugador){
         Boolean esAdmin = false;
         Set<Authorities> authorities = jugador.getUser().getAuthorities();
@@ -169,14 +202,55 @@ public class JugadorService {
             Integer volleys = j.getVolleys();
             volleys += 150;
             j.setVolleys(volleys);
+            this.jugadorRepository.save(j);
         }
     }
 
-    public Map<String,Object> getValoresCompra(String precio, String paquete, Integer idCompra, Map<String,Object> model){
+    public Map<String,Object> getValoresCompra(Double precio, Integer numVolleys, String paquete, Integer idCompra, Map<String,Object> model){
         model.put("precio", precio);
-        model.put("paquete" ,paquete);
+        model.put("numVolleys", numVolleys);
+        model.put("paquete", paquete);
         model.put("idCompra", idCompra);
         return model;
+    }
+
+    @Transactional
+    public void deleteJugador(Jugador j) {
+        
+        Set<Partido> partidos = j.getPartidos();
+        if(partidos.size() != 0){
+            for(Partido p: partidos){
+                if(p.getCreador().equals(j)){
+                    partidoService.deletePartido(p);
+                } else {
+                    p.getJugadores().remove(j);
+                    this.partidoRepository.save(p);
+                }
+            }
+        }
+        List<Valoracion> valoracionesRecibidas = j.getValoracionesRecibidas();
+        for(Valoracion v: valoracionesRecibidas){
+            valoracionRepository.delete(v);
+        }
+
+        List<Valoracion> valoracionesDadas = j.getValoracionesDadas();
+        for(Valoracion v: valoracionesDadas){
+            valoracionRepository.delete(v);
+        }
+
+        List<Aspecto> aspectos = j.getAspectos();
+        for(Aspecto a: aspectos){
+            a.getJugadores().remove(j);
+            this.aspectoRepository.save(a);
+        }
+
+        List<Logro> logros = j.getLogros();
+        for(Logro l: logros){
+            l.getJugadores().remove(j);
+            this.logroRepository.save(l);
+        }
+
+        this.jugadorRepository.delete(j);
     }
 
 }
