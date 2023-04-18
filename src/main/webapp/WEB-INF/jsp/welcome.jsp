@@ -75,7 +75,7 @@
         <div class="col-md-4 text-center">
             <div class="card">
                 <div class="card-body">
-                    <img class="img-responsive" src="/resources/images/qr.png" style="width: 30%; margin-left: 33.3%; margin-bottom: 2%;"/> 
+                    <img class="img-responsive" src="/resources/images/qr.png" style="width: 30%; margin-left: 33.3%; margin-bottom: 2%;" alt="QR Landign Page"/> 
                     <h3>¡Disfruta aquí de nuestra
                         <a href="https://volleymate.vercel.app">LANDING PAGE!</a>
                     </h3>
