@@ -22,9 +22,11 @@
 </br>
         <h1><c:out value="${jugadorVista.firstName}"/><c:out value="  "/><c:out value="${jugadorVista.lastName}"/></h1>
         <h3><b>@<c:out value="${jugadorVista.user.username}"/></b></h3>
+        <c:if test="${jugadorVista.premium == true}"><h4>Premium</h4></c:if>
+        <c:if test="${jugadorVista.premium == false}"><h4>No premium</h4></c:if>
         <h4>Ciudad: <b><c:out value="${jugadorVista.ciudad}"/></b></h4>
         <h4>Sexo: <b><c:out value="${jugadorVista.sexo}"/></b></h4>
-        <h4>Premium: <b><c:out value="${jugadorVista.premium}"/></b></h4>
+        <h4>Valoración Media: <b><c:out value= "${jugadorVista.getValoracionMedia()}"/></b></h4>
         <c:if test="${jugadorVista.equals(jugadorAutenticado)}">
             <h4>Teléfono: <b><c:out value="${jugadorVista.telephone}"/></b></h4>
             <h4><b><c:out value="${jugadorVista.volleys}"/></b><c:out value=" "/><img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;"></h4>
@@ -51,14 +53,21 @@
                     <c:out value="${jugadorVista.user.username}" />
                 </a>
 
+
+                
                  <sec:authorize access="hasAuthority('admin')">
                     <spring:url value="/jugadores/volleys/añadir/{id}" var="añadirURL">
                     <spring:param name="id" value="${valorarId}" />
                 </spring:url>
                 <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
                 </sec:authorize>
+                <spring:url value="/logro" var="LogURL">
+                </spring:url>
+                <a href="${LogURL}" class="btn btn-default"><span class="glyphicon glyphicon-certificate"></span> Ver logros</a>
 
             </c:if>
+
+            
         
         </tr>
         
@@ -80,9 +89,19 @@
                 </spring:url>
                 <a href="${valURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Mis valoraciones</a>
 
+                <spring:url value="/logro" var="LogURL">
+                </spring:url>
+                <a href="${LogURL}" class="btn btn-default"><span class="glyphicon glyphicon-certificate"></span> Ver logros</a>
+
+                <spring:url value="/jugadores/delete/{idEl}" var="eliminarURL">
+                    <spring:param name="idEl" value="${jugadorVista.id}" />
+                </spring:url>
+                <a href="${eliminarURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Eliminar cuenta</a>
+
+            
                 <spring:url value="/misAspectos" var="aspURL"> <!--Cambiamos la URL cuando esté-->
                 </spring:url>
-                <a href="${aspURL}" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span>  Mis aspectos</a>
+                <a href="${aspURL}" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span> Mis aspectos</a>
 
                 <sec:authorize access="hasAuthority('admin')">
                     <spring:url value="/jugadores/volleys/añadir/{id}" var="añadirURL">
@@ -92,7 +111,13 @@
                 </sec:authorize>
                 
             </c:if>
-        
+
+            <sec:authorize access="hasAuthority('admin')">
+            <spring:url value="/jugadores/delete/{idEl}" var="eliminarURL">
+                    <spring:param name="idEl" value="${jugadorVista.id}" />
+                </spring:url>
+                <a href="${eliminarURL}" class="btn btn-default"><span class="glyphicon glyphicon-star"></span>  Eliminar cuenta</a>
+            </sec:authorize>
         </tr>
     </table>
 

@@ -23,12 +23,14 @@
             </c:if>
             <c:if test="${numAspectos != 0}">
                 <c:forEach items="${aspectos}" var="aspecto">
-                <div class="col-md-4">
+                <div class="col-md-4 text-center mx-auto">
                     <div class="card">
                         <div class="card-body">
+                            <div style="margin: 2,5%;">
                             <p class="card-text">
                                 <img src="${aspecto.imagen}" style="height: 100px; width: 100px;">
-                              </p>                              
+                              </p>
+                            </div>                              
                             <p class="card-text">
                                 <c:choose>
                                     <c:when test="${jugador.premium}">

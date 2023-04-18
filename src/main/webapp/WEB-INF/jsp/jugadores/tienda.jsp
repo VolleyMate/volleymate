@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
-<h1%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="tienda">
     <div class="container">
@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-md-6 tienda">
                             <a href="/tienda/aspectos">
-                                <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="/resources/images/perfilPorDefecto.png"/>
+                                <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="${jugador.image}"/>
                                 <h3>Comprar aspectos</h3>
                             </a>
                         </div>
@@ -48,7 +48,7 @@
                 <div class="col-md-8 col-xl-6 text-center mx-auto" style="background-color: #0099bb3e; padding: 20px; width: 100%; height: 350px; margin-top: 5%; border-radius: 20px;">
                     <h2>Plan Premium</h2>
                     <c:if test="${jugador.premium != true}">
-                        <p style="padding-bottom: 2%;">Inscríbete al plan Premium para disfrutar de VolleyMate al completo</p>
+                        <p style="padding-bottom: 2%; margin-top: 10%;">Inscríbete al plan Premium para disfrutar de VolleyMate al completo</p>
                         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
                         <div class="card h-100">
                             <div class="card-body flex-grow-0 p-4"><span class="badge bg-primary text-uppercase mb-2">PREMIUM</span>

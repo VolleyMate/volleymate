@@ -32,7 +32,7 @@ public class CentroController {
 
     private static final String VISTA_LISTAR_CENTROS = "centros/listaCentros";
     private static final String VISTA_CREAR_CENTROS = "centros/crearCentros";
-    private static final String VISTA_SOLICITUD_CENTRO = "centros/solicitudCentro";
+    private static final String VISTA_SOLICITUD_CENTRO = "centros/mensaje";
     private static final String VISTA_EDITAR_CENTROS = "centros/editarCentro";
 	private static final String VISTA_ELIMINAR_CENTROS = "centros/eliminarCentro";
 
@@ -107,7 +107,7 @@ public class CentroController {
             centro.setEstado(true);
             centroService.saveCentro(centro);
             this.emailService.aceptarSolicitudEmail(centro.getCreador().getUser().getCorreo());
-            return "redirect:/centros";
+            return "centros/accept";
         }else {
             model.put("message", "No tienes permisos para realizar esta acción");
             return "redirect:/";
@@ -124,7 +124,7 @@ public class CentroController {
             centro.setCreador(null);
             centroService.saveCentro(centro);
             centroService.deleteCentro(centro);
-            return "redirect:/centros";
+            return "centros/deny";
         }else {
             model.put("message", "No tienes permisos para realizar esta acción");
             return "redirect:/";
@@ -139,7 +139,7 @@ public class CentroController {
         if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
             Centro centro = centroService.findCentroById(centroId);
             centroService.deleteCentro(centro);
-            return "redirect:/centros";
+            return "centros/delete";
         }else {
             model.put("message", "No tienes permisos para realizar esta acción");
             return "redirect:/";
