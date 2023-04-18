@@ -44,4 +44,8 @@ public class SolicitudService {
         return yaTieneSolicitud;
     }
 
+    public void deleteSolicitud(Solicitud solicitud) {
+        solicitudRepository.delete(solicitud);
+    }
+
 }

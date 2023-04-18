@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
+import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
@@ -26,13 +27,16 @@ public class PartidoService {
 
 	private SolicitudRepository solicitudRepository;
 
+	private SolicitudService solicitudService;
+
 	@Autowired
 	private PartidoPageRepository partidoPageRepository;
 
 	@Autowired
-	public PartidoService(PartidoRepository partidoRepository, SolicitudRepository solicitudRepository) {
+	public PartidoService(PartidoRepository partidoRepository, SolicitudRepository solicitudRepository, SolicitudService solicitudService) {
 		this.solicitudRepository = solicitudRepository;
 		this.partidoRepository = partidoRepository;
+		this.solicitudService = solicitudService;
 	}
 
 	private int tamanoPaginacionPorPagina = 6;
@@ -146,6 +150,22 @@ public class PartidoService {
 
 	public boolean puedeEditarPartido(Jugador jugador, Partido partido) {
 		return partido.getCreador().getId() == jugador.getId() && partido.getJugadores().size() == 1;
+	}
+
+	public List<Partido> getPartidosByCreadorId(Integer id) {
+		return partidoRepository.getPartidosByCreadorId(id);
+	}
+
+	@Transactional
+	public void deletePartidosByCreador(Jugador j) {
+		List<Partido> partidos = getPartidosByCreadorId(j.getId());
+		Set<Solicitud> solicituds = solicitudService.findSolicitudesATusPartidos(j);
+		for (Solicitud solicitud : solicituds) {
+			solicitudService.deleteSolicitud(solicitud);
+		}
+		for (Partido partido : partidos) {
+			deletePartido(partido);
+		}
 	}
 
 }

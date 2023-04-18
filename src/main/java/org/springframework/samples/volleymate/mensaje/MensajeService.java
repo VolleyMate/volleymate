@@ -50,5 +50,11 @@ public class MensajeService {
             return Arrays.asList("puta", "cabron", "cabrón", "cabrona", 
                 "cabronazo", "cabronazo", "cabronazos", "cabrona", "cabronas","puto", "putos", "putas");
         }
+
+        @Transactional
+        public void deleteMensajesByJugador(Jugador jugador) {
+            Set<Mensaje> mensajes = findTusMensajes(jugador);
+            mensajeRepository.deleteAll(mensajes);
+        }
     
 }

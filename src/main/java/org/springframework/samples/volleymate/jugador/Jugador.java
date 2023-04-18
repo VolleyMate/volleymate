@@ -66,7 +66,7 @@ public class Jugador extends Person{
 	private User user;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "jugador_partidos", joinColumns = @JoinColumn(name = "jugador_id"),
 			inverseJoinColumns = @JoinColumn(name = "partido_id"))
 	private Set<Partido> partidos;
@@ -77,13 +77,13 @@ public class Jugador extends Person{
     @OneToMany(mappedBy = "ratingPlayer", cascade = CascadeType.ALL)
     private List<Valoracion> valoracionesDadas;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name="logros_jugador",
 				joinColumns = @JoinColumn(name="id_jugador"),
 				inverseJoinColumns = @JoinColumn(name="id_logro"))
     private List<Logro> logros;
     
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 		name = "aspectos_jugador", 
 		joinColumns = @JoinColumn(name = "jugador_id"), 

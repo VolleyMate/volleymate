@@ -8,6 +8,8 @@ import org.springframework.samples.volleymate.aspecto.AspectoRepository;
 import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
 import org.springframework.samples.volleymate.logro.Logro;
 import org.springframework.samples.volleymate.logro.LogroRepository;
+import org.springframework.samples.volleymate.mensaje.Mensaje;
+import org.springframework.samples.volleymate.mensaje.MensajeService;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoRepository;
 import org.springframework.samples.volleymate.partido.PartidoService;
@@ -40,12 +42,13 @@ public class JugadorService {
     private AspectoRepository aspectoRepository;
     private ValoracionRepository valoracionRepository;
     private PartidoService partidoService;
+    private MensajeService mensajeService;
 
     @Autowired
     public JugadorService(JugadorRepository jugadorRepository, PartidoRepository partidoRepository, 
             UserService userService,AuthoritiesService authoritiesService,SolicitudRepository solicitudRepository,
             LogroRepository logroRepository, AspectoRepository aspectoRepository, ValoracionRepository valoracionRepository,
-            PartidoService partidoService) {
+            PartidoService partidoService, MensajeService mensajeService) {
         
         this.jugadorRepository = jugadorRepository;
         this.partidoRepository = partidoRepository;
@@ -56,6 +59,7 @@ public class JugadorService {
         this.aspectoRepository = aspectoRepository;
         this.valoracionRepository = valoracionRepository;
         this.partidoService = partidoService;
+        this.mensajeService = mensajeService;
     }
 
     @Transactional(readOnly = true)
@@ -216,41 +220,19 @@ public class JugadorService {
 
     @Transactional
     public void deleteJugador(Jugador j) {
-        
+
+        partidoService.deletePartidosByCreador(j);
         Set<Partido> partidos = j.getPartidos();
-        if(partidos.size() != 0){
-            for(Partido p: partidos){
-                if(p.getCreador().equals(j)){
-                    partidoService.deletePartido(p);
-                } else {
-                    p.getJugadores().remove(j);
-                    this.partidoRepository.save(p);
-                }
-            }
+        for(Partido p: partidos) {
+            partidoService.salirPartido(p, j);;
         }
-        List<Valoracion> valoracionesRecibidas = j.getValoracionesRecibidas();
-        for(Valoracion v: valoracionesRecibidas){
-            valoracionRepository.delete(v);
-        }
+        //mensajeService.deleteMensajesByJugador(j);
+        
+        
+        
 
-        List<Valoracion> valoracionesDadas = j.getValoracionesDadas();
-        for(Valoracion v: valoracionesDadas){
-            valoracionRepository.delete(v);
-        }
 
-        List<Aspecto> aspectos = j.getAspectos();
-        for(Aspecto a: aspectos){
-            a.getJugadores().remove(j);
-            this.aspectoRepository.save(a);
-        }
-
-        List<Logro> logros = j.getLogros();
-        for(Logro l: logros){
-            l.getJugadores().remove(j);
-            this.logroRepository.save(l);
-        }
-
-        this.jugadorRepository.delete(j);
+        //this.jugadorRepository.delete(j);
     }
 
 }
