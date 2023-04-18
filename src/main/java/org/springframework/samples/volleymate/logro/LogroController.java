@@ -1,6 +1,7 @@
 package org.springframework.samples.volleymate.logro;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.jugador.JugadorService;
 import org.springframework.samples.volleymate.valoracion.Valoracion;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,9 +27,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LogroController {
 
-  private String CREATE_ACHIEVEMENT_FORM = "/logro/crearLogro";
-  private String UPDATE_ACHIEVEMENT_FORM = "/logro/actualizarLogro";
-    private String ACHIEVEMENTS_LISTING = "/logro/listado";
+  private String CREATE_ACHIEVEMENT_FORM = "logro/crearLogro";
+  private String UPDATE_ACHIEVEMENT_FORM = "logro/actualizarLogro";
+    private String ACHIEVEMENTS_LISTING = "logro/listado";
 
     
     private final LogroService achievementService;
@@ -167,28 +171,43 @@ public class LogroController {
 		return res;
 	}
     
-	@GetMapping("/logro/new")
-	public String create(Map<String, Object> model) {
-		
-		Logro a = new Logro();
-        model.put("logro", a);
-        
-        return CREATE_ACHIEVEMENT_FORM;
+	@GetMapping(value = "/logro/new")
+	public String initCreationForm(Principal principal, ModelMap model) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
+          Logro logro = new Logro();
+		      model.put("logro", logro);
+		      return CREATE_ACHIEVEMENT_FORM;
+        }else{
+          model.put("message", "No tienes permisos para realizar esta acción");
+            return "redirect:/logro/";
+        }
+
 	}
-	
-	@PostMapping("/logro/new")
-	public String post(@Valid Logro a, Map<String, Object> model,
-			BindingResult result) {
-		
-		if(result.hasErrors()){
-			
-            model.put("logro", a);
-            return CREATE_ACHIEVEMENT_FORM;
-            
-        } else
-        	achievementService.saveAchievement(a);
-        
-        return "redirect:/logro/";
+
+	@PostMapping(value = "/logro/new")
+	public String processCreationForm(@Valid Logro logro, BindingResult result, ModelMap model,Principal principal) {
+		List<String> errores = new ArrayList<>();
+		if(logro.getMetrica() == null) {
+			errores.add("La métrica no puede ser nula");
+		}
+		if(logro.getDescripcion()==null || logro.getDescripcion()=="") {
+			errores.add("La descripción no puede estar vacía");
+		}
+		if(logro.getNombre()==null || logro.getNombre()=="") {
+			errores.add("El nombre no puede estar vacío");
+		}
+		if(logro.getThreshold()==null || logro.getThreshold()<1){
+			errores.add("El número de meta no puede ser menor que 1");
+		}
+		if (!errores.isEmpty()) {
+			model.put("logro", logro);
+			model.put("errors", errores);
+			return CREATE_ACHIEVEMENT_FORM;
+		} else {
+			this.achievementService.saveAchievement(logro);
+			return "redirect:/logro";
+		}
 	}
   
 }
