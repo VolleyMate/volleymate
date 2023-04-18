@@ -20,7 +20,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <c:forEach items="${logros}" var="logro">
+                      <c:forEach items="${conseguidos}" var="logro">
                         <tr>
                           <td>
                             <c:out value="${logro.nombre}" />

@@ -49,7 +49,7 @@ public class LogroController {
         model.put("logros", achievements);
         model.put("esAdmin", isAdmin);
         model.put("jugador", player);
-        model.put("conseguido", updateLogros(principal, model));
+        model.put("conseguido", updateLogros(player, model));
         
         return ACHIEVEMENTS_LISTING;
     }
@@ -60,14 +60,13 @@ public class LogroController {
       Jugador player = playerService.findJugadorById(playerId);
 
       model.put("jugador", player);
-      model.put("logros", player.getLogros());
+      model.put("conseguido", updateLogros(player, model));
 
        return ACHIEVEMENTS_SIMPLE_LISTING;
     }
 
-    private List<Logro> updateLogros(Principal principal, Map<String, Object> model){
+    private List<Logro> updateLogros(Jugador player, Map<String, Object> model){
 
-       Jugador player = playerService.findJugadorByUsername(principal.getName());
       Collection<Logro> achievements = achievementService.getAllAchievements();
 
        Map<String,Double> mem = new HashMap<>();
