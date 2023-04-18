@@ -35,7 +35,8 @@
             <c:forEach items="${listaJugadores}" var="jugador">
                 <div class="col-md-4">
                     <div class="card">
-                        <div class="card-body">                  
+                        <div class="card-body"> 
+                            <img src="${jugador.image}" width="25" height="25" style="border-radius:5px">                 
                             <p class="card-text">
                                 <strong>Nombre:</strong> <c:out value="${jugador.user.username}"/>
                               </p>                              
