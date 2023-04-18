@@ -50,7 +50,9 @@
                 <a href="${valURL}" class="btn btn-default">Valoraciones de
                     <c:out value="${jugadorVista.user.username}" />
                 </a>
-
+                <spring:url value="/logro/player/${jugadorVista.id}" var="LogURL">
+                </spring:url>
+                <a href="${LogURL}" class="btn btn-default"><span class="glyphicon glyphicon-certificate"></span> Ver logros</a>
 
                 
                  <sec:authorize access="hasAuthority('admin')">
@@ -59,9 +61,7 @@
                 </spring:url>
                 <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
                 </sec:authorize>
-                <spring:url value="/logro" var="LogURL">
-                </spring:url>
-                <a href="${LogURL}" class="btn btn-default"><span class="glyphicon glyphicon-certificate"></span> Ver logros</a>
+
 
             </c:if>
 

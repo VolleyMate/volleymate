@@ -23,9 +23,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LogroController {
 
-  private String CREATE_OR_UPDATE_ACHIEVEMENT_FORM = "/logro/crearOActualizar";
+  private String CREATE_ACHIEVEMENT_FORM = "/logro/crearLogro";
+  private String UPDATE_ACHIEVEMENT_FORM = "/logro/actualizarLogro";
     private String ACHIEVEMENTS_LISTING = "/logro/listado";
-    private String ACHIEVEMENTS_SIMPLE_LISTING = "/logro/listadoSimple";
+
     
     private final LogroService achievementService;
     private final JugadorService playerService;
@@ -62,7 +63,7 @@ public class LogroController {
       updateLogros(player, model);
       model.put("jugador", player);
 
-       return ACHIEVEMENTS_SIMPLE_LISTING;
+       return ACHIEVEMENTS_LISTING;
     }
 
     private List<Logro> updateLogros(Jugador player, Map<String, Object> model){
@@ -136,7 +137,7 @@ public class LogroController {
     	Logro achievement = this.achievementService.getAchievementById(id);
         model.put("logro", achievement);
         
-        return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
+        return UPDATE_ACHIEVEMENT_FORM;
     }
     
     @PostMapping("/logro/edit/{id}")
@@ -146,7 +147,7 @@ public class LogroController {
     	if(result.hasErrors()){
         	
             model.put("logro", achievement);
-            return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
+            return UPDATE_ACHIEVEMENT_FORM;
             
         } else{
         	
@@ -172,7 +173,7 @@ public class LogroController {
 		Logro a = new Logro();
         model.put("logro", a);
         
-        return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
+        return CREATE_ACHIEVEMENT_FORM;
 	}
 	
 	@PostMapping("/logro/new")
@@ -182,7 +183,7 @@ public class LogroController {
 		if(result.hasErrors()){
 			
             model.put("logro", a);
-            return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
+            return CREATE_ACHIEVEMENT_FORM;
             
         } else
         	achievementService.saveAchievement(a);
