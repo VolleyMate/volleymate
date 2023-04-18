@@ -14,6 +14,7 @@
             <c:out value="${jugadorConPartidos}"/>
           </div>
     </c:if>
+
         <div class="m-0 row justify-content-center col-auto text-center"> 
             <c:if test="${jugadorVista.premium == true}"><img class="rounded d-block" style="padding-top: 2%;" src="/resources/images/corona.png" width="100" height="100" alt="jugador"></c:if>
 
@@ -119,6 +120,8 @@
     </table>
 
 </petclinic:layout>
+
+
 <style>
     .mensaje {
   position: relative;
@@ -127,6 +130,7 @@
   background-color: #eee;
   border: 1px solid #ccc;
 }
+
 .cerrar {
   position: absolute;
   top: 0;
@@ -134,10 +138,12 @@
   padding: 0.5em;
   cursor: pointer;
 }
+
 </style>
 
 <script>
     function cerrarMensaje() {
   document.getElementById("mensaje").style.display = "none";
 }
+
 </script>
