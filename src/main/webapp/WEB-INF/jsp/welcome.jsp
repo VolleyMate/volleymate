@@ -38,9 +38,50 @@
             height: auto; /* Permite que la altura se ajuste automáticamente */
             margin: 10px 0; /* Agrega un margen superior e inferior */
         }
-        
+        .card {
+        box-shadow: 0 0 10px rgba(16, 88, 139, 0.1);
+        border-width: 2px;
+        border-style: solid;
+        border-color: #0099BB;
+        margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
+        border-radius: 10px;
+        padding-top: 4%;
+        padding-bottom: 4%;
+        padding-left: 4%;
+        padding-right: 4%;
+        background-color: #e6f4f2;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+        animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+        }
     </style>
     <div class="contenedor">
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <img class="img-responsive" src="/resources/images/qr.png" style="width: 30%; margin-left: 33.3%; margin-bottom: 2%;"/> 
+                    <h3>¡Disfruta aquí de nuestra
+                        <a href="https://volleymate.vercel.app">LANDING PAGE!</a>
+                    </h3>
+                </div>
+            </div>
+        </div>
         <spring:url value="/resources/images/VolleyMateInicio.png" htmlEscape="true" var="VolleyMateInicio"/>
         <img class="img-responsive" src="${fn:escapeXml(VolleyMateInicio)}" alt="VolleyMateInicio"/>
         <spring:url value="/resources/images/pivotaltxt.png" htmlEscape="true" var="pivotaltxt"/>
