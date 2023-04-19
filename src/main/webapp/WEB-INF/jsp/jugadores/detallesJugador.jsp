@@ -110,11 +110,16 @@
                 
             </c:if>
 
+            <br>
+            <br>
             <c:if test="${admin || jugadorVista.id == jugadorAutenticado.id}">
+                <div>
                 <spring:url value="/jugadores/delete/{id}" var="eliminarURL">
                     <spring:param name="id" value="${jugadorVista.id}" />
                 </spring:url>
-                <a href="${eliminarURL}" class="btn btn-danger"><span class="glyphicon glyphicon-star"></span>  Eliminar cuenta</a>
+                <a href="${eliminarURL}" class="btn btn-red"><span class="glyphicon glyphicon-trash"></span>  Eliminar cuenta</a>
+                </div>
+
             </c:if>
             </tr>
     </table>
