@@ -34,8 +34,8 @@ INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (1,'Mairena V
 INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (2,'Club Deportivo Claret','C. Monzón', 'Sevilla', true, 'https://goo.gl/maps/JYErpvDCVSKuNLvF9');
 INSERT INTO centros(id,nombre,direccion,ciudad,estado,maps) VALUES (3,'Club Voleibol Esquimo','Cl. Meñaca', 'Sevilla', true, 'https://goo.gl/maps/ZNFjetB53pX1JMcg6');
 
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (1,'Partido amistoso','MASCULINO','Vamos a jugar un partido amistoso',0,'jorsilman',3,'2013-01-02 17:00','2013-01-01 17:00',150,1);
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (2,'Partido de playa','MASCULINO','Vamos a jugar un partido amistoso',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (1,'Partido amistoso','MASCULINO','Vamos a jugar un partido amistoso',0,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,1);
+INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (2,'Partido de playa','MASCULINO','Vamos a jugar un partido amistoso',5,'jorsilman',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (3,'Partido de revancha','MASCULINO','Vamos a jugar un partido amistoso',1,'jorsilman',4,'2013-01-04 17:00','2013-01-03 17:00',150,2);
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (4,'Partido competitivo','MASCULINO','Vamos a jugar un partido amistoso',2,'jorsilman',4,'2013-05-02 17:00','2013-05-01 17:00',150,3);
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (5,'Partido entre amigos','MASCULINO','Vamos a jugar un partido amistoso',6,'jorsilman',3,'2013-05-03 17:00','2013-05-02 17:00',150,2);
@@ -43,13 +43,13 @@ INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha
 INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (7,'Partido entre amigos','MASCULINO','Vamos a jugar un partido amistoso',6,'barba',3,'2013-05-03 17:00','2013-05-02 17:00',150,2);
 
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,1);
-INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,3);
-INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,4);
-INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (1,5);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (2,2);
+INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (2,3);
+INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (2,4);
+INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (2,5);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (3,6);
 INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (3,7);
-INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (3,1);
+INSERT INTO jugador_partidos(jugador_id,partido_id) VALUES (2,7);
 
 INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (1,'Hola, ¿alguien quiere jugar?', '2013-01-01 17:00','jorsilman',1);
 INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (2,'Hola, ¿alguien quiere jugar?', '2015-01-01 17:00','barba',1);
@@ -79,9 +79,3 @@ INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (3,'Di
 INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (4,'Aprobado','Ha alcanzado un aprobado','https://cdn.pixabay.com/photo/2017/03/21/21/06/medal-2163351_1280.png',3,'valoracion');
 
 
-
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (8,'Test1','MASCULINO','Testeando1',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (9,'Test2','MASCULINO','Testeando2',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (10,'Test3','MASCULINO','Testeando3',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (11,'Test4','MASCULINO','Testeando4',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);
-INSERT INTO partidos(id,nombre,sexo,descripcion,tipo,creador,num_jugadores,fecha,fecha_creacion,precio_persona,centro) VALUES (12,'Test5','MASCULINO','Testeando5',5,'admin1',3,'2013-01-02 17:00','2013-01-01 17:00',150,2);

@@ -8,7 +8,12 @@
 <%@page pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="detalleJugador">
-
+    <c:if test="${not empty jugadorConPartidos}">
+        <div id="mensaje" class="mensaje">
+            <span class="cerrar" onclick="cerrarMensaje()">&times;</span>
+            <c:out value="${jugadorConPartidos}"/>
+          </div>
+    </c:if>
 
         <div class="m-0 row justify-content-center col-auto text-center"> 
             <c:if test="${jugadorVista.premium == true}"><img class="rounded d-block" style="padding-top: 2%;" src="/resources/images/corona.png" width="100" height="100" alt="jugador"></c:if>
@@ -105,13 +110,45 @@
                 
             </c:if>
 
-            <sec:authorize access="hasAuthority('admin')">
-            <spring:url value="/jugadores/delete/{idEl}" var="eliminarURL">
-                    <spring:param name="idEl" value="${jugadorVista.id}" />
+            <br>
+            <br>
+            <c:if test="${admin || jugadorVista.id == jugadorAutenticado.id}">
+                <div>
+                <spring:url value="/jugadores/delete/{id}" var="eliminarURL">
+                    <spring:param name="id" value="${jugadorVista.id}" />
                 </spring:url>
-                <a href="${eliminarURL}" class="btn btn-danger"><span class="glyphicon glyphicon-star"></span>  Eliminar cuenta</a>
-            </sec:authorize>
-        </tr>
+                <a href="${eliminarURL}" class="btn btn-red"><span class="glyphicon glyphicon-trash"></span>  Eliminar cuenta</a>
+                </div>
+
+            </c:if>
+            </tr>
     </table>
 
 </petclinic:layout>
+
+
+<style>
+    .mensaje {
+  position: relative;
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+  background-color: #eee;
+  border: 1px solid #ccc;
+}
+
+.cerrar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+</style>
+
+<script>
+    function cerrarMensaje() {
+  document.getElementById("mensaje").style.display = "none";
+}
+
+</script>

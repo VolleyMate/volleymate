@@ -224,6 +224,7 @@ public class JugadorController {
                 model.put("jugadorAutenticado", jugadorAutenticado);
                 model.put("jugadorVista", jugador);
                 model.put("id",jugadorAutenticado.getId());
+                model.put("admin",jugadorService.esAdmin(jugadorAutenticado));
                 return "jugadores/detallesJugador";
             }
             return "welcome";    }
@@ -239,6 +240,7 @@ public class JugadorController {
                 model.put("id",jugadorAutenticado.getId());
                 model.put("valorarId",jugadorVista.getId());
                 model.put("yaValorado",yaValorado);
+                model.put("admin",jugadorService.esAdmin(jugadorAutenticado));
                 
                 return "jugadores/detallesJugador";
     }
@@ -505,27 +507,34 @@ public class JugadorController {
             //Elimina siendo jugador logeado
 
             if (jugadorId == jugadorLogeado.getId()) {
-                SecurityContextHolder.getContext().setAuthentication(null);
-                jugadorService.deleteJugador(jugadorLogeado);
-                List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorLogeado.getUser());
-                for(Authorities a:authorities) {
-                    authoritiesService.deleteAuthorities(a);
+                if(jugadorLogeado.getPartidos().isEmpty()){
+                    SecurityContextHolder.getContext().setAuthentication(null);
+                    jugadorService.deleteJugador(jugadorLogeado);
+                    List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorLogeado.getUser());
+                    for(Authorities a:authorities) {
+                        authoritiesService.deleteAuthorities(a);
+                    }
+                    userService.deleteUser(jugadorLogeado.getUser());
+                    return "redirect:/";
+                } else {
+                    redirAttrs.addFlashAttribute("jugadorConPartidos", "No puedes eliminar tu cuenta si tienes partidos creados");
+                    return "redirect:/jugadores/{jugadorId}";
                 }
-                userService.deleteUser(jugadorLogeado.getUser());
-                return "redirect:/";
-
-                //Elimina siendo admin cualquier jugador
-            } else if (jugadorService.esAdmin(jugadorLogeado) && jugadorId != jugadorLogeado.getId()){
-                jugadorService.deleteJugador(jugadorVista);
-                List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorVista.getUser());
-                for(Authorities a:authorities) {
-                    authoritiesService.deleteAuthorities(a);
+            } else if (jugadorService.esAdmin(jugadorLogeado) && jugadorId != jugadorLogeado.getId()){         //Elimina siendo admin cualquier jugador
+                if(jugadorVista.getPartidos().isEmpty()){
+                    jugadorService.deleteJugador(jugadorVista);
+                    List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorVista.getUser());
+                    for(Authorities a:authorities) {
+                        authoritiesService.deleteAuthorities(a);
+                    }
+                    userService.deleteUser(jugadorVista.getUser());
+                    return "redirect:/listaJugadores";
+                } else {
+                    redirAttrs.addFlashAttribute("jugadorConPartidos", "No puedes eliminar este jugador porque tiene partidos creados");
+                    return "redirect:/jugadores/{jugadorId}";
                 }
-                userService.deleteUser(jugadorVista.getUser());
-                return "redirect:/listaJugadores";
             } else {
-                redirAttrs.addFlashAttribute("claveInvalida", "La clave introducida no coincide con su contraseña");
-                return "/jugadores/{jugadorId}/delete";
+                return "redirect:/";
             }
         } else {
             return "redirect:/";
