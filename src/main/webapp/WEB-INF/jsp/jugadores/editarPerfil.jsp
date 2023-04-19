@@ -33,8 +33,10 @@
                         </div>
 
                         <div class="form-group">
-                            <form:label path="ciudad" >Ciudad:</form:label>
-                            <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />    
+                            <form:label path="ciudad">Ciudad:</form:label>
+                            <form:select path="ciudad" style="border-radius: 20px;" class="form-control">
+                                <form:options items="${ciudades}" value="${ciudad}" itemLabel="nombre"/>
+                            </form:select>  
                         </div>
 
                     </div>

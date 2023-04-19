@@ -35,11 +35,12 @@ import lombok.Setter;
 @Setter
 public class Jugador extends Person{
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "ciudad")
-	private String ciudad;
+	private Ciudad ciudad;
 
     @Column(name = "telephone")
-	private Integer telephone=0;
+	private Integer telephone;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "sexo")

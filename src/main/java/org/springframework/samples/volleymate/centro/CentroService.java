@@ -93,9 +93,11 @@ public class CentroService {
 			errores.add("La dirección en maps no puede estar vacía");
 		}
 		if(!matcher.matches()){
-			errores.add("La dirección en maps no es válida");
+			errores.add("La url no es válida");
 		}
-		
+		if(!centro.getMaps().contains("maps")){
+			errores.add("La dirección en maps no es válida, usa un link de google maps");
+		}
 		return errores;
 	}
 

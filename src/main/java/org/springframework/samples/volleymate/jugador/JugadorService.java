@@ -162,9 +162,14 @@ public class JugadorService {
     @Transactional
     public List<String> findErroresCrearJugador(Jugador jugador){
         List<String> errores = new ArrayList<>();
-        Integer digitos = (int)(Math.log10(jugador.getTelephone())+1);
-        if(!digitos.equals(9)) {
-            errores.add("El teléfono debe tener 9 cifras");
+        
+        if (jugador.getTelephone() == null || jugador.getTelephone().toString().isEmpty()) {
+            errores.add("El teléfono es obligatorio");
+        } else {
+            Integer digitos = (int)(Math.log10(jugador.getTelephone())+1);
+            if (!digitos.equals(9)) {
+                errores.add("El teléfono debe tener 9 cifras");
+            }
         }
         if(!jugador.getUser().getCorreo().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             errores.add("El correo no es válido");
