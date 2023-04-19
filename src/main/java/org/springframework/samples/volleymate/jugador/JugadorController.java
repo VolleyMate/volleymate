@@ -97,7 +97,7 @@ public class JugadorController {
 
 
     @PostMapping(value = "/jugadores/new")
-	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model, Principal principal,@AuthenticationPrincipal Authentication authentication) {
+	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model, Principal principal,@AuthenticationPrincipal Authentication authentication, RedirectAttributes redirAttrs) {
 
         List<String> errores = jugadorService.findErroresCrearJugador(jugador);
 
@@ -115,6 +115,7 @@ public class JugadorController {
                 if (jugadorService.esAdmin(jugadorLog)){
                     jugador.setPremium(false);
                     this.jugadorService.saveJugador(jugador);
+                    redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador creado correctamente");
                     return "redirect:/jugadores/" + jugador.getId();
                 } else {
                     return "redirect:/";
@@ -185,7 +186,7 @@ public class JugadorController {
 	
 	
 	@PostMapping(value = "/jugadores/edit/{id}")
-	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
+	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model, RedirectAttributes redirAttrs){
 
 		if(result.hasErrors()){
 			model.put("errors", result.getAllErrors());
@@ -195,7 +196,7 @@ public class JugadorController {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
 			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","image","sexo","fechaInicioPremium","fechaFinPremium","user","volleys","solicitudes","premium","notificaciones","telephone"); 
             this.jugadorService.saveJugador(jugadorToUpdate);
-			model.put("message","Jugador editado correctamente");
+			redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador editado correctamente");
 			return "redirect:/jugadores";
 		}						
 		
@@ -282,7 +283,7 @@ public class JugadorController {
         String redirect = String.format("redirect:/partidos/%s", partidoId);
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         if(partido == null){
-            redirAttrs.addFlashAttribute("mensajeError", "Ups, parece que ha habido un problema!");
+            redirAttrs.addFlashAttribute("mensajeError", "Ups, ¡parece que ha habido un problema!");
             return redirect;
         }
         // Método servicio boolean
@@ -298,10 +299,10 @@ public class JugadorController {
             if(jugador.getVolleys()>=partido.getPrecioPersona()){
                 this.jugadorService.crearSolicitudPartido(jugador, partido);
                 mensaje += "mensajeExitoso";
-                value += "Solicitud enviada!";
+                value += "¡Solicitud enviada!";
             }else{
                 mensaje += "mensajeError";
-                value += "No tienes volleys suficientes. Compralos en nuestra tienda!";
+                value += "No tienes volleys suficientes. ¡Cómpralos en nuestra tienda!";
                 return HOME_TIENDA;
             }
             redirAttrs.addFlashAttribute(mensaje, value);
@@ -407,6 +408,7 @@ public class JugadorController {
                         authoritiesService.deleteAuthorities(a);
                     }
                     userService.deleteUser(jugadorVista.getUser());
+                    redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador eliminado correctamente");
                     return "redirect:/listaJugadores";
                 } else {
                     redirAttrs.addFlashAttribute("jugadorConPartidos", "No puedes eliminar este jugador porque tiene partidos creados");

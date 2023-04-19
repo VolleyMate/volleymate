@@ -11,14 +11,16 @@
 
 <petclinic:layout pageName="detallePartido">
     <c:if test="${mensajeError != null}">
-        <div style="background-color: red;">
-            <c:out value="${mensajeError}"></c:out>
-        </div>
+        <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${mensajeError}"/>
+          </div>
     </c:if>
     <c:if test="${mensajeExitoso != null}">
-        <div style="background-color: green;">
-            <c:out value="${mensajeExitoso}"></c:out>
-        </div>
+        <div class="alert alert-success alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${mensajeExitoso}"/>
+          </div>
     </c:if>
 
     <h1 style="margin: 20px 0;">Detalles del partido:</h1>

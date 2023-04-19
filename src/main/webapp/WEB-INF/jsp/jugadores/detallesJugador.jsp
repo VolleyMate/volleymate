@@ -9,9 +9,22 @@
 
 <petclinic:layout pageName="detalleJugador">
     <c:if test="${not empty jugadorConPartidos}">
-        <div id="mensaje" class="mensaje">
-            <span class="cerrar" onclick="cerrarMensaje()">&times;</span>
+          <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <c:out value="${jugadorConPartidos}"/>
+          </div>
+    </c:if>
+
+    <c:if test="${mensajeError != null}">
+        <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${mensajeError}"/>
+          </div>
+    </c:if>
+    <c:if test="${mensajeExitoso != null}">
+        <div class="alert alert-success alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${mensajeExitoso}"/>
           </div>
     </c:if>
 
@@ -23,16 +36,21 @@
         <img class="rounded d-block" src="${jugadorVista.image}" width="250" height="250" alt="jugador">
        
 </br>
+
 </br>
         <h1><c:out value="${jugadorVista.firstName}"/><c:out value="  "/><c:out value="${jugadorVista.lastName}"/></h1>
         <h3><b>@<c:out value="${jugadorVista.user.username}"/></b></h3>
-        <c:if test="${jugadorVista.premium == true}"><h4>Premium</h4></c:if>
-        <c:if test="${jugadorVista.premium == false}"><h4>No premium</h4></c:if>
-        <h4>Ciudad: <b><c:out value="${jugadorVista.ciudad.getNombre()}"/></b></h4>
-        <h4>Sexo: <b><c:out value="${jugadorVista.sexo}"/></b></h4>
-        <h4>Valoración Media: <b><c:out value= "${jugadorVista.getValoracionMedia()}"/></b></h4>
+        <c:if test="${jugadorVista.premium == false}"><h4><b>Cuenta gratuita</b></h4></c:if>
+        <h4><span class="glyphicon glyphicon-home"></span><b><c:out value=" "/><c:out value="${jugadorVista.ciudad.getNombre()}"/></b></h4>
+        <h4><span class="glyphicon glyphicon-user"></span><b><c:out value=" "/><c:out value="${jugadorVista.sexo}"/></b></h4>
+        <c:if test="${jugadorVista.getValoracionMedia() == 0.0}">
+            <h4><span class="glyphicon glyphicon-star"></span><b><c:out value=" No ha sido valorado aún"/></b></h4>
+        </c:if>
+        <c:if test="${jugadorVista.getValoracionMedia() != 0.0}">
+            <h4><span class="glyphicon glyphicon-star"><b><c:out value=" "/><c:out value="${jugadorVista.getValoracionMedia()}"/></b></h4>
+        </c:if>
         <c:if test="${jugadorVista.equals(jugadorAutenticado)}">
-            <h4>Teléfono: <b><c:out value="${jugadorVista.telephone}"/></b></h4>
+            <h4><span class="glyphicon glyphicon-earphone"></span><c:out value=" "/><b><c:out value="${jugadorVista.telephone}"/></b></h4>
             <h4><b><c:out value="${jugadorVista.volleys}"/></b><c:out value=" "/><img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;"></h4>
         </c:if>
     </br>
@@ -145,10 +163,3 @@
 }
 
 </style>
-
-<script>
-    function cerrarMensaje() {
-  document.getElementById("mensaje").style.display = "none";
-}
-
-</script>

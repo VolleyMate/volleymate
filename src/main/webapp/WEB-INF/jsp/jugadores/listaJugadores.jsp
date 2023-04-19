@@ -9,6 +9,19 @@
 
 <petclinic:layout pageName="listaJugadores">
     
+<c:if test="${mensajeError != null}">
+        <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${mensajeError}"/>
+          </div>
+    </c:if>
+    <c:if test="${mensajeExitoso != null}">
+        <div class="alert alert-success alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${mensajeExitoso}"/>
+          </div>
+    </c:if>
+
     <div class="container text-center">
         <form id="mi-formulario" class="form-inline" th:action="@{/}">
             <div class="form-group mb-2">
