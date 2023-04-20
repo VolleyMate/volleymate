@@ -34,7 +34,6 @@ public class CentroController {
     private static final String VISTA_CREAR_CENTROS = "centros/crearCentros";
     private static final String VISTA_SOLICITUD_CENTRO = "centros/mensaje";
     private static final String VISTA_EDITAR_CENTROS = "centros/editarCentro";
-	private static final String VISTA_ELIMINAR_CENTROS = "centros/eliminarCentro";
 
     @Autowired
     public CentroController(CentroService centroService, JugadorService jugadorService, EmailService emailService, UserService userService) {

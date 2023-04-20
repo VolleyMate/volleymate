@@ -9,6 +9,15 @@
 
 <petclinic:layout pageName="jugadores">
 
+<c:if test="${errors.size() != 0}">
+    <c:forEach var="error" items="${errors}">
+        <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${error}"/>
+        </div>    
+    </c:forEach>
+</c:if>
+
     <div style="text-align: center;">
         <h2>
             <c:if test="${jugador['new']}">
@@ -53,7 +62,7 @@
                         </div>
                         <div class="form-group">
                             <form:label path="telephone">Teléfono:</form:label>
-                            <form:input path="telephone" type="number" minlength="9" style="border-radius: 20px;" class="form-control" />
+                            <form:input path="telephone" style="border-radius: 20px;" class="form-control" />
                         </div>
                         <div class="form-group">
                             <form:label path="ciudad">Ciudad:</form:label>
@@ -78,14 +87,6 @@
             </form:form>
         </div>
     <p></p>
-    
-    <div style="text-align: center; color: #FF0000">
-            <c:forEach var="error" items="${errors}">
-                <ul>    
-                 <c:out value="${error} "/>
-                </ul>
-            </c:forEach>
-    </div> 
 </petclinic:layout>
 
 <script>

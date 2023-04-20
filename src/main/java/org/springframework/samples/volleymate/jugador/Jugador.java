@@ -40,7 +40,7 @@ public class Jugador extends Person{
 	private Ciudad ciudad;
 
     @Column(name = "telephone")
-	private Integer telephone;
+	private String telephone;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "sexo")
