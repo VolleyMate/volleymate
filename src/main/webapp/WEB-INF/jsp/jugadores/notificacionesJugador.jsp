@@ -7,6 +7,21 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="misNotificaciones">
+    
+    <c:if test="${mensajeError != null}">
+        <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${mensajeError}"/> de <c:out value="${jugadorSolicitud}"/>
+        </div>
+    </c:if>
+
+    <c:if test="${mensajeExitoso != null}">
+        <div class="alert alert-success alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${mensajeExitoso}"/> de <c:out value="${jugadorSolicitud}"/>
+          </div>
+    </c:if>
+
     <div class="row">
         <h2>Mis notificaciones</h2>
             <c:if test="${solicitudesRecibidas.size() == 0}">

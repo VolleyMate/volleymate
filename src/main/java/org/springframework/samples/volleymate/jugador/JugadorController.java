@@ -311,10 +311,12 @@ public class JugadorController {
     }
 
     @GetMapping("/jugadores/solicitudes/denegar/{solicitudId}")
-    public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId){
+    public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId,  RedirectAttributes redirAttrs){
         Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
         // notificar al jugador que ha sido rechazado. 
         this.jugadorService.eliminarSolicitud(solicitud);
+        redirAttrs.addFlashAttribute("mensajeError", "Has rechazado la solicitud");
+        redirAttrs.addFlashAttribute("jugadorSolicitud", solicitud.getJugador().getUser().getUsername());
         return "redirect:/jugadores/notificaciones";
     }
     
@@ -323,7 +325,8 @@ public class JugadorController {
         Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
         try{
                 this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
-                redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
+                redirAttrs.addFlashAttribute("mensajeExitoso", "Has aceptado la solicitud");
+                redirAttrs.addFlashAttribute("jugadorSolicitud", solicitud.getJugador().getUser().getUsername());
                 Jugador jugador = solicitud.getJugador();
                 Partido partido = solicitud.getPartido();
                 Integer volleys = partido.getPrecioPersona();
