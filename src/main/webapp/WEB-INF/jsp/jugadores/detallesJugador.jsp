@@ -14,6 +14,11 @@
             <c:out value="${jugadorConPartidos}"/>
           </div>
     </c:if>
+    <c:if test="${mensajeError!=null}">
+            <div style="background-color: red;">
+                <c:out value="${mensajeError}" ></c:out>
+            </div>
+    </c:if>
 
         <div class="m-0 row justify-content-center col-auto text-center"> 
             <c:if test="${jugadorVista.premium == true}"><img class="rounded d-block" style="padding-top: 2%;" src="/resources/images/corona.png" width="100" height="100" alt="jugador"></c:if>
