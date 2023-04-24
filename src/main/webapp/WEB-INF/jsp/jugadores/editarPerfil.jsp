@@ -10,6 +10,28 @@
 
 <petclinic:layout pageName="jugadores">
 
+<c:if test="${errors.size() != 0}">
+    <c:forEach var="error" items="${errors}">
+        <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${error}"/>
+        </div>    
+    </c:forEach>
+</c:if>
+
+
+<c:if test="${mensajeError != null}">
+        <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${mensajeError}"/>
+          </div>
+    </c:if>
+    <c:if test="${mensajeExitoso != null}">
+        <div class="alert alert-success alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${mensajeExitoso}"/>
+          </div>
+    </c:if>
     <h2>
         <p style="font-size:1.5em; text-align: center;">
             <strong>Editar mi perfil</strong>
@@ -33,8 +55,10 @@
                         </div>
 
                         <div class="form-group">
-                            <form:label path="ciudad" >Ciudad:</form:label>
-                            <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />    
+                            <form:label path="ciudad">Ciudad:</form:label>
+                            <form:select path="ciudad" style="border-radius: 20px;" class="form-control">
+                                <form:options items="${ciudades}" value="${ciudad}" itemLabel="nombre"/>
+                            </form:select>  
                         </div>
 
                     </div>
@@ -51,15 +75,6 @@
 
             </form:form>
         </div>
-    </div>
-
-
-    <div style="text-align: center; color: #FF0000">
-        <c:forEach var="error" items="${errors}">
-            <ul>
-                <c:out value="${error} " />
-            </ul>
-        </c:forEach>
     </div>
 
 </petclinic:layout>

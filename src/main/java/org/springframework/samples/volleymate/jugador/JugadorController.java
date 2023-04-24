@@ -2,7 +2,6 @@ package org.springframework.samples.volleymate.jugador;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -51,12 +50,8 @@ public class JugadorController {
     private static final String VIEW_UPDATE_FORM = "jugadores/editarPerfil";
     private static final String VIEW_CREATE_FORM = "jugadores/crearJugador";
 	private static final String VIEW_NOTIFICACIONES = "jugadores/notificacionesJugador";
-    private static final String HOME_TIENDA = "jugadores/tienda";
-    private static final String HOME_TIENDA_VOLLEYS = "jugadores/tiendaVolleys";
-    private static final String HOME_TIENDA_ASPECTOS = "jugadores/tiendaAspectos";
+    private static final String HOME_TIENDA = "pagos/tienda";
     private static final String HOME_MIS_ASPECTOS = "jugadores/listaMisAspectos";
-    private static final String HOME_TIENDA_PREMIUM = "jugadores/tiendaPremium";
-    private static final String HOME_TIENDA_CONFIRMAR_COMPRA = "jugadores/confirmarCompra";
     private static final String VIEW_LISTADO_JUGADORES = "jugadores/listaJugadores";
     private final JugadorService jugadorService;
     private final PartidoService partidoService;
@@ -103,7 +98,7 @@ public class JugadorController {
 
 
     @PostMapping(value = "/jugadores/new")
-	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model, Principal principal,@AuthenticationPrincipal Authentication authentication) {
+	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model, Principal principal,@AuthenticationPrincipal Authentication authentication, RedirectAttributes redirAttrs) {
 
         List<String> errores = jugadorService.findErroresCrearJugador(jugador);
 
@@ -121,6 +116,7 @@ public class JugadorController {
                 if (jugadorService.esAdmin(jugadorLog)){
                     jugador.setPremium(false);
                     this.jugadorService.saveJugador(jugador);
+                    redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador creado correctamente");
                     return "redirect:/jugadores/" + jugador.getId();
                 } else {
                     return "redirect:/";
@@ -191,7 +187,7 @@ public class JugadorController {
 	
 	
 	@PostMapping(value = "/jugadores/edit/{id}")
-	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
+	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model, RedirectAttributes redirAttrs){
 
 		if(result.hasErrors()){
 			model.put("errors", result.getAllErrors());
@@ -201,7 +197,7 @@ public class JugadorController {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
 			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","image","sexo","fechaInicioPremium","fechaFinPremium","user","volleys","solicitudes","premium","notificaciones","telephone"); 
             this.jugadorService.saveJugador(jugadorToUpdate);
-			model.put("message","Jugador editado correctamente");
+			redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador editado correctamente");
 			return "redirect:/jugadores";
 		}						
 		
@@ -288,7 +284,7 @@ public class JugadorController {
         String redirect = String.format("redirect:/partidos/%s", partidoId);
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         if(partido == null){
-            redirAttrs.addFlashAttribute("mensajeError", "Ups, parece que ha habido un problema!");
+            redirAttrs.addFlashAttribute("mensajeError", "Ups, ¡parece que ha habido un problema!");
             return redirect;
         }
         // Método servicio boolean
@@ -304,10 +300,10 @@ public class JugadorController {
             if(jugador.getVolleys()>=partido.getPrecioPersona()){
                 this.jugadorService.crearSolicitudPartido(jugador, partido);
                 mensaje += "mensajeExitoso";
-                value += "Solicitud enviada!";
+                value += "¡Solicitud enviada!";
             }else{
                 mensaje += "mensajeError";
-                value += "No tienes volleys suficientes. Compralos en nuestra tienda!";
+                value += "No tienes volleys suficientes. ¡Cómpralos en nuestra tienda!";
                 return HOME_TIENDA;
             }
             redirAttrs.addFlashAttribute(mensaje, value);
@@ -316,10 +312,12 @@ public class JugadorController {
     }
 
     @GetMapping("/jugadores/solicitudes/denegar/{solicitudId}")
-    public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId){
+    public String denegarSolicitud(@PathVariable("solicitudId") int solicitudId,  RedirectAttributes redirAttrs){
         Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
         // notificar al jugador que ha sido rechazado. 
         this.jugadorService.eliminarSolicitud(solicitud);
+        redirAttrs.addFlashAttribute("mensajeError", "Has rechazado la solicitud");
+        redirAttrs.addFlashAttribute("jugadorSolicitud", solicitud.getJugador().getUser().getUsername());
         return "redirect:/jugadores/notificaciones";
     }
     
@@ -328,7 +326,8 @@ public class JugadorController {
         Solicitud solicitud = this.jugadorService.findSolicitudById(solicitudId);
         try{
                 this.jugadorService.unirsePartida(solicitud.getJugador().getId(), solicitud.getPartido().getId());
-                redirAttrs.addFlashAttribute("mensajeExitoso", "Enhorabuena, ya estás dentro del partido!");
+                redirAttrs.addFlashAttribute("mensajeExitoso", "Has aceptado la solicitud");
+                redirAttrs.addFlashAttribute("jugadorSolicitud", solicitud.getJugador().getUser().getUsername());
                 Jugador jugador = solicitud.getJugador();
                 Partido partido = solicitud.getPartido();
                 Integer volleys = partido.getPrecioPersona();
@@ -366,122 +365,6 @@ public class JugadorController {
         model.put("solicitudesPendientes", solicitudesPendientes);
         
         return VIEW_NOTIFICACIONES;
-    }
-
-    @GetMapping(value="/tienda")
-    public String showVistaTienda1(Principal principal, ModelMap model){
-        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        model.put("jugador", jugador);
-        return HOME_TIENDA;
-    }
-
-    @GetMapping(value="/tienda/volleys")
-    public String showVistaTiendaVolleys(Principal principal, ModelMap model){
-        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        model.put("jugador", jugador);
-        return HOME_TIENDA_VOLLEYS;
-    }
-
-    //AÑADIR AL MODEL LOS ASPECTOS NECESARIOS PARA LA VISTA
-    @GetMapping(value="/tienda/aspectos")
-    public String showVistaTiendaAspectos(Principal principal, ModelMap model){
-        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        List<Aspecto> aspectos = this.aspectoService.findAllAspectos();
-        Integer numAspectos = aspectos.size();
-        model.put("jugador", jugador);
-        model.put("aspectos", aspectos);
-        model.put("numAspectos", numAspectos);
-        return HOME_TIENDA_ASPECTOS;
-    }
-
-    @GetMapping(value="/tienda/premium")
-    public String showVistaTiendaSuscripcion(Principal principal, ModelMap model){
-        return HOME_TIENDA_PREMIUM;
-    }
-
-    @GetMapping(value="/tienda/confirmaCompra/{idCompra}")
-    public String showVistaComfirmarCompra(Principal principal, @PathVariable("idCompra") Integer idCompra, Map<String,Object> model){
-        switch(idCompra){
-            case 1:
-                model = jugadorService.getValoresCompra(7.99, 1, "paquete premium", idCompra, model);
-                break;
-            case 2:
-                model = jugadorService.getValoresCompra(4.99, 300,"300 volleys", idCompra, model);
-                break;    
-            case 3:
-                model = jugadorService.getValoresCompra(6.50, 450, "450 volleys", idCompra, model);
-                break;
-            case 4:
-                model = jugadorService.getValoresCompra(14.50, 1100, "1100 volleys", idCompra, model);
-                break;
-            case 5:
-                model = jugadorService.getValoresCompra(19.99, 1550, "1550 volleys", idCompra, model);    
-                break;
-            case 6:
-                model = jugadorService.getValoresCompra(49.99, 4100, "4100 volleys", idCompra, model);
-                break;
-            case 7:
-                model = jugadorService.getValoresCompra(1.00, 20,"este aspecto", idCompra, model);
-                break;
-        }
-        return HOME_TIENDA_CONFIRMAR_COMPRA;
-    }
-
-    @GetMapping(value="/tienda/confirmaCompra")
-    public String confirmarCompraPremium(Principal principal, ModelMap model){
-        model.put("precio", 7.99);
-        model.put("numVolleys", 0);
-        model.put("paquete", "Comprar paquete premium");
-        
-        return HOME_TIENDA_CONFIRMAR_COMPRA;
-    }
-
-    @GetMapping(value="/tienda/volleys/comprar/{volleys}")
-    public String comprarVolleys(Principal principal, @PathVariable("volleys") Integer volleys, RedirectAttributes redirAttrs, ModelMap model){
-        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        Integer sumVolleys = jugador.getVolleys() + volleys;
-        jugador.setVolleys(sumVolleys);
-        this.jugadorService.saveJugador(jugador);
-        model.put("jugador", jugador);
-        model.put("mensajeExito", String.format("Su compra de %s volleys ha sido realizada con éxito!", volleys));
-        return HOME_TIENDA;
-    }
-
-    @GetMapping(value="/tienda/premium/comprar")
-    public String comprarPremium(Principal principal, ModelMap model){
-        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        jugador.setPremium(true);
-        jugador.setFechaInicioPremium(LocalDateTime.now());
-        jugador.setFechaFinPremium(LocalDateTime.now().plusDays(30));
-        this.jugadorService.saveJugador(jugador);
-        model.put("jugador", jugador);
-        model.put("mensajeExito", String.format("Ahora eres premium y disfrutas todas sus ventajas!"));
-        return HOME_TIENDA;
-    }
-
-    @GetMapping(value="/tienda/aspectos/comprar/{aspectoId}")
-    public String comprarAspecto(Principal principal, @PathVariable("aspectoId") int aspectoId,ModelMap model){
-        Aspecto aspecto = this.aspectoService.findById(aspectoId);
-        Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        int volleys = jugador.getVolleys();
-        int precio = aspecto.getPrecio();
-
-        if(!jugador.getPremium() && volleys>= precio){
-            int volleysRestantes  = volleys - precio;
-            jugador.setVolleys(volleysRestantes);
-        } else if(volleys < precio){
-            model.put("mensajeError", String.format("No tienes suficientes volleys!!"));
-            model.put("jugador", jugador);
-            return HOME_TIENDA;
-        }
-
-        jugador.getAspectos().add(aspecto);
-        jugador.setAspectos(jugador.getAspectos());
-        this.jugadorService.saveJugador(jugador);
-
-        model.put("jugador", jugador);
-        model.put("mensajeExito", String.format("Enhorabuena, ahora cuentas con un nuevo aspecto!"));
-        return HOME_TIENDA;
     }
 
     @RequestMapping(value = "/listaJugadores")
