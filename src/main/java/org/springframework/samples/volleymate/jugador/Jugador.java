@@ -19,12 +19,17 @@ import javax.persistence.Table;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.samples.volleymate.aspecto.Aspecto;
 import org.springframework.samples.volleymate.model.Person;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.user.User;
 import org.springframework.samples.volleymate.valoracion.Valoracion;
 import org.springframework.samples.volleymate.logro.Logro;
+
+import javax.persistence.ForeignKey;
+
 
 import lombok.Getter;
 import lombok.Setter;
@@ -62,33 +67,46 @@ public class Jugador extends Person{
 	private LocalDateTime fechaFinPremium;
  
     @OneToOne(cascade = CascadeType.ALL)
+	@OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "jugador_partidos", joinColumns = @JoinColumn(name = "jugador_id"),
-			inverseJoinColumns = @JoinColumn(name = "partido_id"))
-	private Set<Partido> partidos;
-
-	@OneToMany(mappedBy = "ratedPlayer", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "ratedPlayer")
+	@OnDelete(action = OnDeleteAction.CASCADE)
     private List<Valoracion> valoracionesRecibidas;
 
-    @OneToMany(mappedBy = "ratingPlayer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ratingPlayer")
+	@OnDelete(action = OnDeleteAction.CASCADE)
     private List<Valoracion> valoracionesDadas;
 
     @ManyToMany
 	@JoinTable(name="logros_jugador",
 				joinColumns = @JoinColumn(name="id_jugador"),
-				inverseJoinColumns = @JoinColumn(name="id_logro"))
+				inverseJoinColumns = @JoinColumn(name="id_logro"),
+				foreignKey = @ForeignKey(name = "fk_logros_jugador_id_jugador", 
+                             foreignKeyDefinition = "FOREIGN KEY (id_jugador) REFERENCES jugadores(id) ON DELETE CASCADE"))
     private List<Logro> logros;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "jugador_partidos", 
+				joinColumns = @JoinColumn(name = "jugador_id"),
+				inverseJoinColumns = @JoinColumn(name = "partido_id"),
+				foreignKey = @ForeignKey(name = "fk_jugador_partidos_jugador_id", 
+							 foreignKeyDefinition = "FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE"))
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Set<Partido> partidos;
+
+
     
 	@ManyToMany
 	@JoinTable(
 		name = "aspectos_jugador", 
 		joinColumns = @JoinColumn(name = "jugador_id"), 
-		inverseJoinColumns = @JoinColumn(name = "aspecto_id"))
-    private List<Aspecto> aspectos;
+		inverseJoinColumns = @JoinColumn(name = "aspecto_id"),
+		foreignKey = @ForeignKey(name = "fk_aspectos_jugador_jugador_id", 
+                             foreignKeyDefinition = "FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE"))
+	private List<Aspecto> aspectos;
 
 	public Double getValoracionMedia (){
 		if(valoracionesRecibidas.isEmpty()){

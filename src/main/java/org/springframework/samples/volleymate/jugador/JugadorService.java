@@ -216,38 +216,14 @@ public class JugadorService {
 
     @Transactional
     public void deleteJugador(Jugador j) {
-        
         Set<Partido> partidos = j.getPartidos();
-        if(partidos.size() != 0){
-            for(Partido p: partidos){
-                if(p.getCreador().equals(j)){
-                    partidoService.deletePartido(p);
-                } else {
-                    p.getJugadores().remove(j);
-                    this.partidoRepository.save(p);
+        for(Partido p: partidos) {
+            if(p.getCreador() == j) {
+                for(Jugador jugador: p.getJugadores()) {
+                    jugador.setVolleys(jugador.getVolleys() + 150);
                 }
             }
-        }
-        List<Valoracion> valoracionesRecibidas = j.getValoracionesRecibidas();
-        for(Valoracion v: valoracionesRecibidas){
-            valoracionRepository.delete(v);
-        }
-
-        List<Valoracion> valoracionesDadas = j.getValoracionesDadas();
-        for(Valoracion v: valoracionesDadas){
-            valoracionRepository.delete(v);
-        }
-
-        List<Aspecto> aspectos = j.getAspectos();
-        for(Aspecto a: aspectos){
-            a.getJugadores().remove(j);
-            this.aspectoRepository.save(a);
-        }
-
-        List<Logro> logros = j.getLogros();
-        for(Logro l: logros){
-            l.getJugadores().remove(j);
-            this.logroRepository.save(l);
+            
         }
 
         this.jugadorRepository.delete(j);
