@@ -14,6 +14,11 @@
             <c:out value="${jugadorConPartidos}"/>
           </div>
     </c:if>
+    <c:if test="${mensajeError!=null}">
+            <div style="background-color: red;">
+                <c:out value="${mensajeError}" ></c:out>
+            </div>
+    </c:if>
 
     <c:if test="${mensajeError != null}">
         <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">

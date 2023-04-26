@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,5 +31,6 @@ public class User{
 	String correo;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<Authorities> authorities;
 }

@@ -1,5 +1,7 @@
 package org.springframework.samples.volleymate.aspecto;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.model.BaseEntity;
 
@@ -26,7 +28,9 @@ public class Aspecto extends BaseEntity {
     private Integer precio;
 
     @ManyToMany(mappedBy = "aspectos")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Jugador> jugadores;
+
 
     
 }

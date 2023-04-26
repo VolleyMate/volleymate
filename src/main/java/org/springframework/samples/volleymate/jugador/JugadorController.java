@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -387,39 +388,33 @@ public class JugadorController {
             Jugador jugadorLogeado = this.jugadorService.findJugadorByUsername(principal.getName());
             Jugador jugadorVista = this.jugadorService.findJugadorById(jugadorId);
             
-            //Elimina siendo jugador logeado
-
-            if (jugadorId == jugadorLogeado.getId()) {
-                if(jugadorLogeado.getPartidos().isEmpty()){
+            if(jugadorService.esAdmin(jugadorLogeado)){
+                if(jugadorService.esAdmin(jugadorVista) && jugadorId != jugadorLogeado.getId()){
+                    redirAttrs.addFlashAttribute("mensajeError", "No puedes eliminar a un administrador");
+                    return "redirect:/jugadores/" + jugadorId;
+                }else if(jugadorId == jugadorLogeado.getId()){
                     SecurityContextHolder.getContext().setAuthentication(null);
-                    jugadorService.deleteJugador(jugadorLogeado);
-                    List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorLogeado.getUser());
-                    for(Authorities a:authorities) {
-                        authoritiesService.deleteAuthorities(a);
-                    }
-                    userService.deleteUser(jugadorLogeado.getUser());
-                    return "redirect:/";
-                } else {
-                    redirAttrs.addFlashAttribute("jugadorConPartidos", "No puedes eliminar tu cuenta si tienes partidos creados");
-                    return "redirect:/jugadores/{jugadorId}";
-                }
-            } else if (jugadorService.esAdmin(jugadorLogeado) && jugadorId != jugadorLogeado.getId()){         //Elimina siendo admin cualquier jugador
-                if(jugadorVista.getPartidos().isEmpty()){
+                    Set<Authorities> authorities = new HashSet<>();
+
+                    jugadorLogeado.getUser().setAuthorities(authorities);
                     jugadorService.deleteJugador(jugadorVista);
-                    List<Authorities> authorities = authoritiesService.findAuthoritiesByUser(jugadorVista.getUser());
-                    for(Authorities a:authorities) {
-                        authoritiesService.deleteAuthorities(a);
-                    }
-                    userService.deleteUser(jugadorVista.getUser());
-                    redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador eliminado correctamente");
+                    //userService.deleteUserByUsername(jugadorVista.getUser().getUsername());
+                    return "redirect:/";
+                }else{
+                    jugadorService.deleteJugador(jugadorVista);
                     return "redirect:/listaJugadores";
-                } else {
-                    redirAttrs.addFlashAttribute("jugadorConPartidos", "No puedes eliminar este jugador porque tiene partidos creados");
-                    return "redirect:/jugadores/{jugadorId}";
                 }
-            } else {
-                return "redirect:/";
+            }else{
+                if(jugadorId == jugadorLogeado.getId()){
+                    SecurityContextHolder.getContext().setAuthentication(null);
+                    jugadorService.deleteJugador(jugadorVista);
+                    return "redirect:/";
+                }else{
+                    redirAttrs.addFlashAttribute("mensajeError", "No puedes eliminar a otro jugador");
+                    return "redirect:/jugadores/" + jugadorId;
+                }
             }
+
         } else {
             return "redirect:/";
         }
