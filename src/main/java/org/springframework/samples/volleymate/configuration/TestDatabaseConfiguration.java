@@ -1,4 +1,4 @@
-package org.springframework.samples.volleymate.configuration;
+/*package org.springframework.samples.volleymate.configuration;
 
 
 
@@ -21,3 +21,4 @@ public class TestDatabaseConfiguration {
                 .build();
     }
 }
+*/

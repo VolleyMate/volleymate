@@ -1,16 +1,17 @@
-package org.springframework.samples.petclinic.jugador;
+package org.springframework.samples.volleymate.jugador;
 
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.samples.volleymate.VolleyMateApplication;
-import org.springframework.samples.volleymate.configuration.TestDatabaseConfiguration;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.jugador.JugadorService;
 import org.springframework.samples.volleymate.jugador.Sexo;
@@ -22,21 +23,28 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.google.appengine.api.mail.MailService;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 //@SpringBootTest(classes = VolleyMateApplication.class)
 //@ActiveProfiles("test")
 
-@SpringBootTest(classes = {VolleyMateApplication.class, TestDatabaseConfiguration.class})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+//@SpringBootTest(classes = {VolleyMateApplication.class})
+@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
 class JugadorServiceTests {
 
 	@Autowired
 	protected JugadorService jugadorService;
+	@MockBean
+    private JavaMailSender mailSender;
 
-	
 
 	@BeforeEach
 	void setup() {

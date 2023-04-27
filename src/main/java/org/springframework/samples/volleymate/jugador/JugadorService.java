@@ -31,15 +31,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class JugadorService {
     
+        @Autowired
     private JugadorRepository jugadorRepository;
+
+    @Autowired
     private PartidoRepository partidoRepository;
+
+    @Autowired
     private UserService userService;
+
+    @Autowired
     private AuthoritiesService authoritiesService;
+
+    @Autowired
     private SolicitudRepository solicitudRepository;
+
+    @Autowired
     private LogroRepository logroRepository;
+
+    @Autowired
     private AspectoRepository aspectoRepository;
+
+    @Autowired
     private ValoracionRepository valoracionRepository;
+
+    @Autowired
     private PartidoService partidoService;
+
 
     @Autowired
     public JugadorService(JugadorRepository jugadorRepository, PartidoRepository partidoRepository, 
