@@ -104,7 +104,7 @@ public class JugadorService {
         Jugador jugador = this.jugadorRepository.findById(jugadorId);
         Partido partido = this.partidoRepository.findById(partidoId);
         
-        if(jugador.getPartidos().contains(partido)){
+        if(jugador.getPartidos() != null && jugador.getPartidos().contains(partido)){
             throw new YaUnidoException();
         }
         else{
