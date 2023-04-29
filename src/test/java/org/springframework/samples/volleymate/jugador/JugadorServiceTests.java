@@ -53,8 +53,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
+@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class), properties = {
+	"spring.jpa.database-platform: org.hibernate.dialect.H2Dialect" })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class JugadorServiceTests {
 
