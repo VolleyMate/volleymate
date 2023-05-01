@@ -9,21 +9,12 @@ import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.samples.volleymate.VolleyMateApplication;
 import org.springframework.samples.volleymate.centro.Centro;
 import org.springframework.samples.volleymate.centro.CentroService;
-import org.springframework.samples.volleymate.jugador.Jugador;
-import org.springframework.samples.volleymate.jugador.JugadorService;
-import org.springframework.samples.volleymate.jugador.Sexo;
 import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoService;
@@ -36,20 +27,8 @@ import org.springframework.samples.volleymate.user.User;
 import org.springframework.samples.volleymate.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import com.google.appengine.api.mail.MailService;
-
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
