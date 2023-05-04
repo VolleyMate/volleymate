@@ -224,7 +224,8 @@ public class JugadorController {
                 model.put("admin",jugadorService.esAdmin(jugadorAutenticado));
                 return "jugadores/detallesJugador";
             }
-            return "welcome";    }
+            return "welcome";    
+    }
 
     @GetMapping("/jugadores/{jugadorId}")
     public String showJugador(@PathVariable("jugadorId") int jugadorId, Map<String,Object> model, Principal principal) {
