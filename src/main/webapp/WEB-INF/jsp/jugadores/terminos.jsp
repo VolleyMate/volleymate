@@ -13,7 +13,7 @@
         Protección de datos de carácter personal según la LOPD
         VOLLEYMATE SA, en aplicación de la normativa vigente en materia de protección de datos de carácter personal,
         informa que los datos personales que se recogen a través de los formularios del Sitio web:
-        https://ispp-volleymate-2.nw.r.appspot.com/ , se incluyen en los ficheros automatizados específicos de usuarios de los
+        https://volleymate-ppl.ew.r.appspot.com/ , se incluyen en los ficheros automatizados específicos de usuarios de los
         servicios de suscripción al plan premium de VolleyMate y compra de “volleys” en la tienda de la misma web.
         La recogida y tratamiento automatizado de los datos de carácter personal tiene como finalidad el mantenimiento de la
         relación comercial y el desempeño de tareas de información, formación, asesoramiento y otras actividades propias de
@@ -33,12 +33,12 @@
         Finalidad del tratamiento de los datos personales:
         ¿Con qué finalidad trataremos tus datos personales?<br/>
         En VOLLEYMATE SA, trataremos tus datos personales recabados a través del Sitio Web:
-        https://ispp-volleymate-2.nw.r.appspot.com/, con las siguientes finalidades:<br/>
+        https://volleymate-ppl.ew.r.appspot.com/, con las siguientes finalidades:<br/>
         1. En caso de contratación de los bienes y servicios ofertados a través de
-        https://ispp-volleymate-2.nw.r.appspot.com/, para mantener la relación contractual, así como la gestión,
+        https://volleymate-ppl.ew.r.appspot.com/, para mantener la relación contractual, así como la gestión,
         administración, información, prestación y mejora del servicio.<br/>
         2. Envío de información solicitada a través de los formularios dispuestos en
-        https://ispp-volleymate-2.nw.r.appspot.com/ <br/>
+        https://volleymate-ppl.ew.r.appspot.com/ <br/>
         3. Remitir boletines (newsletters), así como comunicaciones comerciales de promociones y/o publicidad de
         VOLLEYMATE SA y del sector.<br/>
         <br/>
@@ -73,14 +73,14 @@
         SUSCRIPCIÓN MENSUAL PREMIUM DE VOLLEYMATE.<br/>
         <br/>
         ▪ Puede consultar la política de privacidad y demás aspectos legales de la compañía en el siguiente
-        enlace: https://ispp-volleymate-2.nw.r.appspot.com/terminos<br/>
+        enlace: https://volleymate-ppl.ew.r.appspot.com/terminos<br/>
         <br/>
         ● (ENCARGADO) JOSE IGNACIO CASTRO VÁZQUEZ, con domicilio en
         ● Av. Flota de Indias, 16,41011 Sevilla, NIF/CIF no 85473647B, presta servicios de SUSCRIPCIÓN MENSUAL PREMIUM
         DE VOLLEYMATE.<br/>
         <br/>
         ▪ Puede consultar la política de privacidad y demás aspectos legales de la compañía en el siguiente
-        enlace: https://ispp-volleymate-2.nw.r.appspot.com/terminos<br/>
+        enlace: https://volleymate-ppl.ew.r.appspot.com/terminos<br/>
         <br/>
         Datos recopilados por usuarios de los servicios<br/>
         En los casos en que el usuario incluya ficheros con datos de carácter personal en los servidores de alojamiento
@@ -97,11 +97,11 @@
         protección de datos personales.<br/>
         Derechos propiedad intelectual
         VOLLEYMATE SA es titular de todos los derechos de autor, propiedad intelectual, industrial, "know how" y cuantos
-        otros derechos guardan relación con los contenidos del sitio web https://ispp-volleymate-2.nw.r.appspot.com/ y los
+        otros derechos guardan relación con los contenidos del sitio web https://volleymate-ppl.ew.r.appspot.com/ y los
         servicios ofertados en el mismo, así como de los programas necesarios para su implementación y la información
         relacionada.<br/>
         No se permite la reproducción, publicación y/o uso no estrictamente privado de los contenidos, totales o parciales, del
-        sitio web https://ispp-volleymate-2.nw.r.appspot.com/ sin el consentimiento previo y por escrito.<br/>
+        sitio web https://volleymate-ppl.ew.r.appspot.com/ sin el consentimiento previo y por escrito.<br/>
         <br/>
         Propiedad intelectual del software<br/>
         El usuario debe respetar los programas de terceros puestos a su disposición por VOLLEYMATE SA, aun siendo gratuitos
