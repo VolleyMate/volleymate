@@ -39,7 +39,7 @@
     </div>
 
    
-    <h2>Jugadores</h2>
+    <h1>Jugadores</h1>
     <div class="row listaJugadores numJugadores">
         <c:if test="${numJugadores == 0}">
             No se encuentra ningún jugador.

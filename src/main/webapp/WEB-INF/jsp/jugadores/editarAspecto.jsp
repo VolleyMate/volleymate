@@ -9,11 +9,11 @@
 
 <petclinic:layout pageName="editarAspecto">
 
-    <h2>
+    <h1>
         <div style="font-size:1.5em; text-align: center;">
             <strong>Editar aspecto</strong>
         </div>
-    </h2>
+    </h1>
  
     <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
         <div class="container">

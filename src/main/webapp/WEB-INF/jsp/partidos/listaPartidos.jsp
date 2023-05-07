@@ -7,7 +7,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="partidos">
-    <h2>Partidos disponibles</h2>
+    <h1>Partidos disponibles</h1>
     <form action="/partidos" method="get">
         <div class="col-md-12 text-center" style="justify-content: center;">
             <a href="/jugadores/mispartidos" class="btn btn-default">
@@ -19,7 +19,7 @@
         <br>
         <div style="display: grid; grid-template-columns: repeat(4,1fr); padding-bottom: 3%;">
             <div style="grid-column: 1;">
-                <div style="text-align: left;">
+                <div style="text-align: left; font-size: large;">
                     <label for="sexo">Sexo:</label>
                 </div>
                 <select class="btn btn-default" id="sexo" name="sexo">
@@ -31,7 +31,7 @@
             </div>
             <br>
             <div style="grid-column: 2; grid-row: 1; align-items: center;">
-                <div style="text-align: left;">
+                <div style="text-align: left; font-size: large;">
                     <label for="tipo">Tipo de partido:</label>
                 </div>
                 <select class="btn btn-default" id="tipo" name="tipo">
@@ -117,7 +117,7 @@
                     </button>
                 </a>
             </c:if>
-            <p>Página ${partidos.number + 1} de ${partidos.totalPages}</p>
+            <p style="font-size: large; margin-top: 2%;">Página ${partidos.number + 1} de ${partidos.totalPages}</p>
         </c:if>
         </div>
         <div class="col-md-6 text-right">
