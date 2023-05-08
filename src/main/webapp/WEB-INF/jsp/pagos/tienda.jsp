@@ -9,15 +9,13 @@
 <petclinic:layout pageName="tienda">
     <div class="container">
         <c:if test="${mensajeExito != null}">
-            <div class="alert alert-success alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <c:out value="${mensajeExito}"/>
-        </div>
+            <div style="background-color: greenyellow;">
+                <c:out value="${mensajeExito}" />
+            </div>
         </c:if>
         <c:if test="${mensajeError!=null}">
-            <div class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <c:out value="${mensajeError}"/>
+            <div style="background-color: red;">
+                <c:out value="${mensajeError}" ></c:out>
             </div>
         </c:if>
 
@@ -30,14 +28,14 @@
                         <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;">
                         <c:out value="${jugador.volleys}"/>
                     </h3>
-                    <div class="row">
-                        <div class="col-md-6 tienda">
+                    <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <div class="tienda" style="width: 90%;">
                             <a href="/tienda/volleys">
                                 <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="/resources/images/pelotaVolley.png"/>
                                 <h3>Comprar Volleys</h3>
                             </a>
                         </div>
-                        <div class="col-md-6 tienda">
+                        <div class="tienda" style="width: 90%;">
                             <a href="/tienda/aspectos">
                                 <img class="card-img-top" style="width: 100px; height: 100px; margin: 5%;" src="${jugador.image}"/>
                                 <h3>Comprar aspectos</h3>
