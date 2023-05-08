@@ -8,7 +8,7 @@
 
 <petclinic:layout pageName="misPartidos">
 
-    <h2>Mis partidos</h2>
+    <h1>Mis partidos</h1>
     <div class="row">
         <c:if test="${numPartidos == 0}">
             Aún no se ha publicado ningún partido.
@@ -69,7 +69,7 @@
                     </button>
                 </a>
             </c:if>
-            <p>Página ${partidos.number + 1} de ${partidos.totalPages}</p>
+            <p style="font-size: large;">Página ${partidos.number + 1} de ${partidos.totalPages}</p>
         </c:if>
         </div>
         <div class="col-md-6 text-right">

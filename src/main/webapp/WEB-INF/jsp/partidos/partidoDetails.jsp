@@ -94,7 +94,7 @@
                             <spring:url value="/jugadores/solicitudes/${partido.id}" var="enviarSolicitudUrl">
                             </spring:url>
                             <a href="${fn:escapeXml(enviarSolicitudUrl)}">
-                                <p class="btn btn-success">Enviar solicitud</p>
+                                <p class="btn btn-success" style="font-size: large;">Enviar solicitud</p>
                             </a>
                         </c:otherwise>
                     </c:choose>
