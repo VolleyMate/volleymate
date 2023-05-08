@@ -10,12 +10,12 @@
     <div class="container" style="background-color: #0099bb3e; padding: 20px; width: 100%; margin-top: 5%; border-radius: 20px;">
         <div class="row">
             <div class="col-md-12 col-xl-6 text-center mx-auto" >
-                <h2>Tienda de Volleys</h2>
+                <h1>Tienda de Volleys</h1>
                 <h3>
                     <img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;">
                     <c:out value="${jugador.volleys}"/>
                 </h3>
-                <p style="padding-bottom: 2%;">Aquí tienes algunos paquetes de Volleys:</p>
+                <p style="padding-bottom: 2%; font-size: large;">Aquí tienes algunos paquetes de Volleys:</p>
             </div> 
             <div class="container">
                 <div class="col-md-4 text-center mx-auto">

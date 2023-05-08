@@ -10,7 +10,7 @@
 
                 <petclinic:layout pageName="logro">
                 <c:if test="${jugador.equals(jugadorAutenticado)}">
-                  <h2>Logros</h2>
+                  <h1>Logros</h1>
                   <div>
                     <c:forEach items="${logros}" var="logro">
                       <div class="col-md-3">
@@ -23,7 +23,7 @@
                               <div>
                                 <img style="width: 50px; height: 50px;" src="${logro.imagen}"/>
                               </div>
-                              <div class="card-body">                  
+                              <div class="card-body" style="margin-top: 1%;">                  
                                   <p class="card-text">
                                       <strong>Nombre:</strong> <c:out value="${logro.nombre}"/>
                                     </p>                              
