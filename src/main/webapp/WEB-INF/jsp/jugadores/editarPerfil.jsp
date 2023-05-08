@@ -33,7 +33,7 @@
           </div>
     </c:if>
     <h2>
-        <p style="font-size:1.5em; text-align: center;">
+        <p style="font-size:1.5em; text-align: center; ">
             <strong>Editar mi perfil</strong>
         </p>
     </h2>
@@ -42,7 +42,7 @@
         <div class="container">
             <form:form modelAttribute="jugador" class="form-horizontal " id="add-jugador-form">
                 <div class="col-md-8" style="margin: 50px;">
-                    <div class="form-group has-feedback" >
+                    <div class="form-group has-feedback" style="font-size: large;">
 
                         <div class="form-group">
                             <form:label path="firstName" >Nombre:</form:label>

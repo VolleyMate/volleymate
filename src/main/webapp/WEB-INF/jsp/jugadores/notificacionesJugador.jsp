@@ -22,8 +22,8 @@
           </div>
     </c:if>
 
-    <div class="row">
-        <h2>Mis notificaciones</h2>
+    <div class="row" style="font-size: large;">
+        <h1>Mis notificaciones</h1>
             <c:if test="${solicitudesRecibidas.size() == 0}">
                 No hay notificaciones todavía.
             </c:if>
@@ -68,8 +68,8 @@
                 </table>
             </c:if>
     </div>
-    <div class="row">
-        <h2 style="margin-top: 5%;">Solicitudes pendientes</h2>
+    <div class="row" style="font-size: large;">
+        <h1 style="margin-top: 5%;">Solicitudes pendientes</h1>
         <c:if test="${solicitudesPendientes.size() == 0}">
             No hay solicitudes pendientes.
         </c:if>

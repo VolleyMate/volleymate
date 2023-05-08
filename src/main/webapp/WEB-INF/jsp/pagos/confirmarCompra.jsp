@@ -11,8 +11,8 @@
     <div class="container" style="background-color: #0099bb3e; padding: 20px; width: 60%; margin-top: 5%; border-radius: 20px;">
         <div class="row">
             <div class="col-md-12 col-xl-6 text-center mx-auto" >
-                <h2>Confirmar compra</h2>
-                <p style="padding-bottom: 2%;">¿Está seguro de que desea comprar ${paquete} por ${precio}€?</p>
+                <h1>Confirmar compra</h1>
+                <p style="padding-bottom: 2%; font-size: large;">¿Está seguro de que desea comprar ${paquete} por ${precio}€?</p>
                 <div class="row">
                     <div class="col-md-6">
                         <form:form method="POST" action="/pagos/autorizar_pago" modelAttribute="orderDetail">
