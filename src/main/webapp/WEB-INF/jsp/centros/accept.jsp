@@ -7,12 +7,12 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<petclinic:layout pageName="solicitudCentro">
+<petclinic:layout pageName="accept">
        
     
         <div class="container" style="background-color: #0099bb3e; padding: 20px; width: 70%; margin: 0 auto;border-radius: 20px;"> 
             <div class="row" style="justify-content: center; align-items: center; text-align: center;">
-                <p >Su solicitud para añadir el nuevo centro esta siendo revisada</p>
+                <p >Has aceptado la solicitud de centro</p>
             </div>
             <div class="row" style="justify-content: center; align-items: center; text-align: center;">
                 <br>
@@ -30,3 +30,8 @@
     </div> 
       
 </petclinic:layout>
+<style>
+    .container p {
+        font-size: 24px;
+    }
+</style>

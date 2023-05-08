@@ -15,3 +15,7 @@
 
 # Target directory for maven builds
 target/
+
+.mvn
+mvnw
+mvnw.cmd

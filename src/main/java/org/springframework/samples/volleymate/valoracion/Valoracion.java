@@ -1,5 +1,6 @@
 package org.springframework.samples.volleymate.valoracion;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
@@ -23,11 +24,11 @@ public class Valoracion extends BaseEntity{
     private int puntuacion;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Jugador ratedPlayer;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Jugador ratingPlayer;
 
     private String comentario;

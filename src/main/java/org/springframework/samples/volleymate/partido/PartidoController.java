@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 
 @Controller
@@ -91,12 +92,12 @@ public class PartidoController {
 		Boolean puedeCrear = jugador.getVolleys()>=150;
 		model.put("puedeCrear", puedeCrear);
 		model.put("partido", partido);
-		model.put("centros", centroService.findAllCentros());
+		model.put("centros", centroService.findAcceptedCentros());
 		return VIEW_PARTIDOS_CREATE_OR_UPDATE;
 	}
 
 	@PostMapping(value = "/partidos/new")
-	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model,Principal principal) throws YaUnidoException {
+	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model,Principal principal, RedirectAttributes redirAttrs) throws YaUnidoException {
 		List<String> errores = new ArrayList<>();
 		if(partido.getFecha().isBefore(LocalDateTime.now())) {
 			errores.add("La fecha no puede ser previa al día de hoy");
@@ -114,7 +115,7 @@ public class PartidoController {
 		if (!errores.isEmpty()) {
 			model.put("partido", partido);
 			model.put("errors", errores);
-			model.put("centros", centroService.findAllCentros());
+			model.put("centros", centroService.findAcceptedCentros());
 			Boolean puedeCrear = jugador.getVolleys()>=150;
 			model.put("puedeCrear", puedeCrear);
 			return VIEW_PARTIDOS_CREATE_OR_UPDATE;
@@ -123,6 +124,7 @@ public class PartidoController {
 			jugadorCreador.setVolleys(jugadorCreador.getVolleys()-150);
 			this.partidoService.save(partido);
 			jugadorService.unirsePartida(partido.getCreador().getId(), partido.getId());
+			redirAttrs.addFlashAttribute("mensajeExitoso", "El partido ha sido creado");
 			return "redirect:/partidos/"+partido.getId();
 		}
 	}
@@ -167,7 +169,7 @@ public class PartidoController {
 			Jugador player = jugadorService.findJugadorByUsername(principal.getName());
 			if (partidoService.puedeEditarPartido(player, partido)){
 				model.put("partido", partido);
-				model.put("centros", centroService.findAllCentros());
+				model.put("centros", centroService.findAcceptedCentros());
 				return "partidos/editarPartido";
 			}else{
 				return "welcome";
@@ -179,7 +181,7 @@ public class PartidoController {
 	
 	
 	@PostMapping(value = "/partidos/edit/{id}")
-	public String processEditForm(@Valid Partido partido, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
+	public String processEditForm(@Valid Partido partido, BindingResult result, @PathVariable("id") int id, Map<String, Object> model, RedirectAttributes redirAttrs){
 
 		if(result.hasErrors()){
 			model.put("errors", result.getAllErrors());
@@ -189,6 +191,7 @@ public class PartidoController {
 			Partido partidoUpdate = this.partidoService.findPartidoById(partido.getId());
 			BeanUtils.copyProperties(partido,partidoUpdate,"mensajes","jugadores","solicitudes","creador","fechaCreacion","precioPersona"); 
 			this.partidoService.save(partidoUpdate);
+			redirAttrs.addFlashAttribute("mensajeExitoso", "Partido editado correctamente");
 			return "redirect:/partidos/" + partidoUpdate.getId();
 		}						
 		
@@ -216,7 +219,7 @@ public class PartidoController {
 		Boolean esAdmin = jugadorService.esAdmin(jugadorAut);
 		if(esAdmin){
 			partidoService.deletePartido(partido);
-			return "redirect:/partidos";
+			return "partidos/deletePartido";
 		} else {
 			return "redirect:/";
 		}

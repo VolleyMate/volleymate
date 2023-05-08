@@ -17,6 +17,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.volleymate.centro.Centro;
 import org.springframework.samples.volleymate.jugador.Jugador;
@@ -47,7 +49,8 @@ public class Partido extends BaseEntity {
     @Column(name = "tipo")
     private Tipo tipo;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "creador", referencedColumnName = "username")
 	private Jugador creador;
 
@@ -67,6 +70,7 @@ public class Partido extends BaseEntity {
     private Set<Solicitud> solicitudes;
 
     @ManyToMany(mappedBy = "partidos",cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Jugador> jugadores;
 
     @OneToMany(mappedBy = "partido",cascade = CascadeType.ALL)

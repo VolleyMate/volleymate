@@ -6,6 +6,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.model.BaseEntity;
 import org.springframework.samples.volleymate.partido.Partido;
@@ -23,6 +25,7 @@ public class Solicitud extends BaseEntity {
   @NotNull
   @ManyToOne
   @JoinColumn(name = "jugador_id")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Jugador jugador;
 
   @NotNull

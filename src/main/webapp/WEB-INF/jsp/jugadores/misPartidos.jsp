@@ -8,48 +8,36 @@
 
 <petclinic:layout pageName="misPartidos">
 
+    <h1>Mis partidos</h1>
     <div class="row">
-        <h2>Mis Partidos</h2>
         <c:if test="${numPartidos == 0}">
-            Aún no perteneces a ningún partido.
+            Aún no se ha publicado ningún partido.
         </c:if>
         <c:if test="${numPartidos != 0}">
-            <table id="partidosTable" class="table table-striped" summary="listadoPartidos">
-                <thead>
-                    <tr>
-                        <th style="width: 120px; text-align: center;">Título</th>
-                        <th style="width: 120px; text-align: center;">Fecha de la actividad</th>
-                        <th style="width: 120px; text-align: center;">Ciudad</th>
-                        <th style="width: 120px; text-align: center;">Dirección</th>
-                        <th style="width: 120px; text-align: center;">Jugadores</th>
-                        <th style="width: 120px; text-align: center;"></th>
-                        </tr>
-                    <tr style="height: 15px;"></tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${partidos.content}" var="partido">
-                        <tr style="border: 1px solid black; padding: 5px; border-radius: 50px;">
-                            <td style="text-align: center;">
-                                <c:out value="${partido.nombre}"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <c:out value="${partido.getFechaParseada()}"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <c:out value="${partido.centro.nombre}"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <spring:url value="/partidos/${partido.id}" var="verURL"></spring:url>
-                                <a href="${verURL}" class="btn btn-default">Ver</a>
-                            </td> 
-                        </tr>
-                        <tr style="height: 15px;"></tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+            <c:forEach items="${partidos.content}" var="partido">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">                  
+                            <p class="card-text">
+                                <strong>Jugadores:</strong> <c:out value="${partido.jugadores.size()}"/>/<c:out value="${partido.numJugadoresNecesarios}"/>
+                              </p>                              
+                            <p class="card-text">
+                                <strong>Centro:</strong> <c:out value="${partido.centro.nombre}"/> 
+                            </p>
+                            <p class="card-text">
+                                <strong>Tipo:</strong> <c:out value="${partido.tipo}"/>
+                            </p>
+                            <p class="card-text">
+                                <strong>Fecha de la actividad:</strong> <c:out value="${partido.getFechaParseada()}"/>
+                            </p>
+                            <br>
+                            <div class="text-center">
+                            <a href="/partidos/${partido.id}" class="btn btn-default">Ver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
         </c:if>
     </div>
 
@@ -81,7 +69,7 @@
                     </button>
                 </a>
             </c:if>
-            <p>Página ${partidos.number + 1} de ${partidos.totalPages}</p>
+            <p style="font-size: large;">Página ${partidos.number + 1} de ${partidos.totalPages}</p>
         </c:if>
         </div>
         <div class="col-md-6 text-right">
@@ -89,5 +77,40 @@
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo partido
             </a>
         </div>
-    </div>
+    </div>  
 </petclinic:layout>
+
+<style>
+    .card {
+        box-shadow: 0 0 10px rgba(16, 88, 139, 0.1);
+        border-width: 2px;
+        border-style: solid;
+        border-color: #0099BB;
+        margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
+        border-radius: 10px;
+        padding-top: 4%;
+        padding-bottom: 4%;
+        padding-left: 4%;
+        padding-right: 4%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+        background-color: #e6f4f2;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+</style>

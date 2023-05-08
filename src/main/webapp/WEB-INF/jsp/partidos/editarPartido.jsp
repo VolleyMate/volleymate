@@ -11,11 +11,11 @@
 
     <h2>
         <div style="font-size:1.5em; text-align: center;">
-            <strong>Editar mi perfil</strong>
+            <strong>Editar Partido</strong>
         </div>
     </h2>
  
-    <div style="background-color: #0099BB; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
+    <div style="background-color: #aed3db; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
         <div class="container">
             
              <form:form modelAttribute="partido" class="form-horizontal" id="crear_partido">
