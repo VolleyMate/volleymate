@@ -74,6 +74,16 @@
                                                 </a>
                                             </sec:authorize> 
                                         </div>   
+                                        <div style="padding-top: 3%">
+                                            <sec:authorize access="hasAuthority('admin')">
+                                                <spring:url value="/tienda/aspectos/delete/{aspectoId}" var="deleteUrl">
+                                                     <spring:param name="aspectoId" value="${aspecto.id}" />
+                                                </spring:url>
+                                                <a href="${fn:escapeXml(deleteUrl)}">
+                                                    <p class="btn btn-primary" style="color: rgb(255, 255, 255);">Eliminar aspecto</p>
+                                                </a>
+                                            </sec:authorize> 
+                                        </div> 
                                     </c:otherwise>
                                 </c:choose>
                                 </div>
