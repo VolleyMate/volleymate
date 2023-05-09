@@ -80,7 +80,7 @@
                                                      <spring:param name="aspectoId" value="${aspecto.id}" />
                                                 </spring:url>
                                                 <a href="${fn:escapeXml(deleteUrl)}">
-                                                    <p class="btn btn-primary" style="color: rgb(255, 255, 255);">Eliminar aspecto</p>
+                                                    <p class="btn btn-primary" style="color: rgb(255, 255, 255);">Delete aspecto</p>
                                                 </a>
                                             </sec:authorize> 
                                         </div> 
