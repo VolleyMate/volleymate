@@ -1,6 +1,7 @@
 package org.springframework.samples.volleymate.partido;
 
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,8 +81,8 @@ class PartidoServiceTests {
 		
 
 		Jugador alejandro = new Jugador();
-		alejandro.setFirstName("Barba");
-		alejandro.setLastName("Davis");
+		alejandro.setFirstName("Alejandro");
+		alejandro.setLastName("Carrasco");
 		alejandro.setUser(user2);
         alejandro.setVolleys(200);
         alejandro.setSexo(org.springframework.samples.volleymate.jugador.Sexo.MASCULINO);
@@ -215,125 +216,30 @@ class PartidoServiceTests {
 		assertThat(ciudades).isNotNull();
 		assertThat(ciudades.size()).isEqualTo(1);
 	}
-
-	// @Test
-	// public void shouldFindJugadorDentroPartido() {
-	// 	Jugador jugador = jugadorService.findJugadorByUsername("Test3");
-	// 	Boolean estaDentro = partidoService.getJugadorDentroPartido(2, jugador);
-	// 	assertThat(ciudades).isNotNull();
-	// 	assertThat(ciudades.size()).isEqualTo(1);
-	// }
-
-	// @Test
-	// public void shouldDeletePartido(){
-	// 	List<Partido> partidos = partidoService.findAllPartidos();
-	// 	Partido partido = partidos.get(0);
-	// 	assertThat(partido).isNotNull();
-	// 	partidoService.deletePartido(partido);
-	// 	// assertThat(partidoService.findAllPartidos().size()).isEqualTo(1);
-	// }
-
 	
 
-// 	@Transactional
-// 	public void deletePartido(@Valid Partido partido) throws DataAccessException, DataIntegrityViolationException {
+	@Test
+	public void shouldFindPartidosByCreador() {
+		Jugador jugador = jugadorService.findJugadorByUsername("Test2");
+		Set<Partido> partidos = partidoService.getPartidosByCreatorId(jugador.getId());
+		assertThat(partidos).isNotNull();
+		assertThat(partidos.size()).isEqualTo(1);
+	}
 
-// 		for (Jugador jugador : partido.getJugadores()) {
-// 			if(!partido.getCreador().equals(jugador)){
-// 				jugador.setVolleys(jugador.getVolleys() + 150);
-// 			}
-// 			jugador.getPartidos().remove(partido);
-// 		}
-// 		partidoRepository.delete(partido);
-// 	}
+	@Test
+	public void shouldbuscarPartidosPorJugador() {
+		Jugador jugador = jugadorService.findJugadorByUsername("Test2");
+		Page<Partido> partidos = partidoService.buscarPartidosPorJugador(0, jugador);
+		assertThat(partidos).isNotNull();
+		assertThat(partidos.getSize()).isEqualTo(6);
+	}
 
-// 	public Partido findPartidoById(int id) throws DataAccessException{
-// 		return partidoRepository.findById(id);
-// 	}
-	
-//   	public Set<Partido> getPartidosByCreatorId(Integer id) {
-// 		return partidoRepository.getPartidosByCreatorId(id);
-// 	}
-
-// 	public Boolean getJugadorDentroPartido(Integer partidoId, Principal principal){
-// 		Partido p = partidoRepository.findById(partidoId).get();
-// 		Boolean estaDentro = false;
-// 		List<Jugador> lista = p.getJugadores();
-// 		for (Jugador jug:lista){
-// 			if(jug.getUser().getUsername().equals(principal.getName())){
-// 				estaDentro = true;
-// 			}
-// 		}
-// 		return estaDentro;
-// 	}
-
-
-// 	public Boolean getJugadorEnEsperaPartido(Integer partidoId, Principal principal){
-// 		Set<Solicitud> lista = solicitudRepository.findSolicitudesByPartidoId(partidoId);
-// 		Boolean estaEnEspera = false;
-// 		for (Solicitud solicitud:lista){
-// 			if(solicitud.getJugador().getUser().getUsername().equals(principal.getName())){
-// 				estaEnEspera = true;
-// 			}
-// 		}
-// 		return estaEnEspera;
-// 	}
-
-// 	// Filtrar partidos
-// 	public Page<Partido> filtrarPartidos(Sexo sexo, Tipo tipoPartido, int page) {
-		
-// 		Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
-// 		Page<Partido> partidosSinFiltrar = partidoPageRepository.findAll(pageable);
-		
-//         if (sexo != null && tipoPartido != null) {
-//             Page<Partido> partidosPorSexoYTipo = partidoPageRepository.findBySexoAndTipo(pageable, sexo, tipoPartido);
-// 			return partidosPorSexoYTipo;
-//         } else if (sexo == null && tipoPartido != null) {
-// 			Page<Partido> partidosPorTipo = partidoPageRepository.findByTipo(pageable, tipoPartido);
-// 			return partidosPorTipo;
-// 		} else if (sexo != null && tipoPartido == null) {
-// 			Page<Partido> partidosPorSexo = partidoPageRepository.findBySexo(pageable, sexo);
-// 			return partidosPorSexo;
-//         } else {
-// 			return partidosSinFiltrar;
-// 		}
-        
-//     }
-
-// 	public Set<String> getCiudades() {
-// 		List<Partido> partidos = partidoRepository.findAll();
-// 		Set<String> ciudades = partidos.stream().map(p -> p.getCentro().getCiudad())
-// 			.map(c -> c.replace("á", "a").replace("é", "e")
-// 			.replace("í", "i").replace("ó", "o")
-// 			.replace("ú", "u").toUpperCase()).collect(Collectors.toSet());
-// 		return ciudades;
-// 	}
-
-//   public List<Partido> getPartidosDelJugador(Integer page, Pageable pageable, Jugador jugador){
-//     return partidoRepository.findAllPageable(pageable).stream()
-//     						.filter(p->p.getJugadores().contains(jugador))
-//     						.collect(Collectors.toList());
-//   }
-
-//   	public Page<Partido> buscarPartidosPorJugador (int page, Jugador jugador){
-// 		Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
-// 		return partidoPageRepository.findByJugadoresId(pageable, jugador.getId());
-// 	}
-
-// 	public void salirPartido (Partido partido, Jugador jugador){
-// 		Set<Partido> partidos = jugador.getPartidos();
-// 		partidos.remove(partido);
-// 		jugador.setPartidos(partidos);
-		
-// 		List<Jugador> jugadores = partido.getJugadores();
-// 		jugadores.remove(jugador);
-// 		partido.setJugadores(jugadores);
-
-// 		partidoRepository.save(partido);
-// 	}
-
-// 	public boolean puedeEditarPartido(Jugador jugador, Partido partido) {
-// 		return partido.getCreador().getId() == jugador.getId() && partido.getJugadores().size() == 1;
-// 	}
+	@Test
+	public void shouldEditarPartido() {
+		Partido partido = partidoService.findPartidoById(1);
+		Jugador jugador = partido.getCreador();
+		Boolean puedeEditar = partidoService.puedeEditarPartido(jugador, partido);
+		assertThat(puedeEditar).isTrue();
+	}
 
 }
