@@ -137,11 +137,13 @@ public class JugadorController {
 		
 	}
 
-@GetMapping(value = "/jugadores/edit/{id}")
+    @GetMapping(value = "/jugadores/edit/{id}")
 	public String initEditForm(Model model, @PathVariable("id") int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Jugador jugadorAEditar = jugadorService.findJugadorById(id);
+        Jugador jugadorLog = jugadorService.findJugadorByUsername(auth.getName());
 		if(auth != null){
-			if(auth.isAuthenticated()){
+			if(jugadorService.esAdmin(jugadorLog)||jugadorAEditar.getId()==jugadorLog.getId()){
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 				String user = currentUser.getUsername();
 				try{
@@ -157,34 +159,17 @@ public class JugadorController {
                         model.addAttribute(jugador);
                         return VIEW_UPDATE_FORM;   
                     }
-					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
-					for (GrantedAuthority usuarioR : usuario){
-					String credencial = usuarioR.getAuthority();
-						if(player.getId()==id || credencial.equals("admin")){
-							Jugador jugador = jugadorService.findJugadorById(id);
-							String username = jugador.getUser().getUsername();
-							String pass = jugador.getUser().getPassword();
-                            Sexo sexo = jugador.getSexo();
-
-							model.addAttribute("pass", pass);
-							model.addAttribute("username", username);
-                            model.addAttribute("sexo", sexo);
-							
-							model.addAttribute(jugador);
-							return VIEW_UPDATE_FORM;
-						}else{
-							return "welcome";
-						}
-					}
 				} catch (DataIntegrityViolationException ex){
 					
 					return VIEW_UPDATE_FORM;
 				}
 				
-				
-			}return "welcome";
+			}else{
+                return "redirect:/";
+            }
+            
 		}
-		return "welcome";
+        return "redirect:/";
 	
 	}
 	
@@ -206,6 +191,8 @@ public class JugadorController {
 		
 	}
 
+
+    
 
     @GetMapping("/jugadores")
     public String showJugadorAutenticado(Map<String,Object> model, Principal principal) {
