@@ -44,4 +44,16 @@ public class Centro extends BaseEntity {
     @OneToMany(mappedBy = "centro", cascade = CascadeType.ALL)
     private List<Partido> partidos;
 
+    public Centro(Jugador creador, String nombre, String direccion, String ciudad, String maps, boolean estado) {
+        this.setCreador(creador);
+        this.setNombre(nombre);
+        this.setDireccion(direccion);
+        this.setCiudad(ciudad);
+        this.setMaps(maps);
+        this.setEstado(estado);
+    }
+
+    public Centro() {
+    }
+
 }
