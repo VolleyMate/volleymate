@@ -112,6 +112,12 @@ public class PartidoController {
 			errores.add("El número de jugadores debe ser mayor que 1");
 		}
 		Jugador jugador = jugadorService.findJugadorByUsername(principal.getName());
+		if(partido.getSexo().equals(Sexo.MASCULINO) && jugador.getSexo().equals(org.springframework.samples.volleymate.jugador.Sexo.FEMENINO)) {
+			errores.add("No puedes crear un partido masculino siendo mujer");
+		}
+		if(partido.getSexo().equals(Sexo.FEMENINO) && jugador.getSexo().equals(org.springframework.samples.volleymate.jugador.Sexo.MASCULINO)) {
+			errores.add("No puedes crear un partido femenino siendo hombre");
+		}
 		if (!errores.isEmpty()) {
 			model.put("partido", partido);
 			model.put("errors", errores);
