@@ -380,7 +380,7 @@ public class JugadorController {
             Jugador jugadorVista = this.jugadorService.findJugadorById(jugadorId);
             
             if(jugadorService.esAdmin(jugadorLogeado)){
-                if(jugadorService.esAdmin(jugadorVista) && jugadorId != jugadorLogeado.getId()){
+                if(jugadorService.esAdmin(jugadorVista)){
                     redirAttrs.addFlashAttribute("mensajeError", "No puedes eliminar a un administrador");
                     return "redirect:/jugadores/" + jugadorId;
                 }else if(jugadorId == jugadorLogeado.getId()){
