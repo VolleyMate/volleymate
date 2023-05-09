@@ -140,7 +140,7 @@ public class JugadorController {
         Jugador jugadorAEditar = jugadorService.findJugadorById(id);
         Jugador jugadorLog = jugadorService.findJugadorByUsername(auth.getName());
 		if(auth != null){
-			if(jugadorService.esAdmin(jugadorLog)||jugadorAEditar.getId()==jugadorLog.getId()){
+			if(jugadorService.esAdmin(jugadorLog)||jugadorAEditar.getId().equals(jugadorLog.getId())){
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 				String user = currentUser.getUsername();
 				try{
