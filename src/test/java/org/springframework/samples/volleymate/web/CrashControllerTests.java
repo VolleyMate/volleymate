@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.web;
+package org.springframework.samples.volleymate.web;
 
 /**
  * Test class for {@link CrashController}

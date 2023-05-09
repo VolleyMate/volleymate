@@ -8,8 +8,8 @@
 
 <petclinic:layout pageName="tienda">
     <div class="container">
-        <h1>POLÍTICA DE PRIVACIDAD Y TÉRMINOS DE SERVICIO</h1>
-    <p>
+        <h1 style="text-align: center; text-decoration: underline;">POLÍTICA DE PRIVACIDAD Y TÉRMINOS DE SERVICIO</h1>
+    <p style="font-size: large;">
         Protección de datos de carácter personal según la LOPD
         VOLLEYMATE SA, en aplicación de la normativa vigente en materia de protección de datos de carácter personal,
         informa que los datos personales que se recogen a través de los formularios del Sitio web:

@@ -12,6 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.model.BaseEntity;
 import org.springframework.samples.volleymate.partido.Partido;
@@ -31,8 +33,9 @@ public class Mensaje extends BaseEntity {
     @Column(name = "fecha_envio", updatable = false, nullable = false)
     private LocalDateTime fecha_envio = LocalDateTime.now();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "emisor", referencedColumnName = "username")
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	private Jugador emisor;
 
     @NotNull

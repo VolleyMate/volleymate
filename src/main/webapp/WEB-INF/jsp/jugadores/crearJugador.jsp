@@ -9,6 +9,15 @@
 
 <petclinic:layout pageName="jugadores">
 
+<c:if test="${errors.size() != 0}">
+    <c:forEach var="error" items="${errors}">
+        <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${error}"/>
+        </div>    
+    </c:forEach>
+</c:if>
+
     <div style="text-align: center;">
         <h2>
             <c:if test="${jugador['new']}">
@@ -35,11 +44,14 @@
                         </div>
                         <div class="form-group">
                             <form:label path="user.password">Contraseña:</form:label>
-                            <form:input path="user.password" style="border-radius: 20px;" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <form:label path="image">Imagen URL:</form:label>
-                            <form:input path="image" style="border-radius: 20px;" class="form-control" />
+                            <div class="input-group">
+                                <form:input id="password" path="user.password" type="password" style="border-radius: 20px;" class="form-control" />
+                                <span class="input-group-addon" style="background-color: transparent; border-color: transparent;">
+                                    <button type="button" id="showPassword" class="btn btn-default">
+                                      <span class="glyphicon glyphicon-eye-close"></span>
+                                    </button>
+                                  </span>
+                            </div>
                         </div>
                     </div>
 
@@ -54,7 +66,9 @@
                         </div>
                         <div class="form-group">
                             <form:label path="ciudad">Ciudad:</form:label>
-                            <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />
+                            <form:select path="ciudad" style="border-radius: 20px;" class="form-control">
+                                <form:options items="${ciudades}" value="${ciudad}" itemLabel="nombre"/>
+                            </form:select>
                         </div>
                         <div class="form-group">
                             <form:label path="sexo">Sexo:</form:label>
@@ -73,12 +87,26 @@
             </form:form>
         </div>
     <p></p>
-    
-    <div style="text-align: center; color: #FF0000">
-            <c:forEach var="error" items="${errors}">
-                <ul>    
-                 <c:out value="${error} "/>
-                </ul>
-            </c:forEach>
-    </div> 
 </petclinic:layout>
+
+<script>
+    $(function() {
+      $('#showPassword').click(function() {
+        var password = $('#password');
+        var type = password.attr('type');
+        if (type === 'password') {
+          password.attr('type', 'text');
+          $(this).find('span').removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+        } else {
+          password.attr('type', 'password');
+          $(this).find('span').removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
+        }
+      });
+    });
+    </script>
+
+    <style>
+        .btn-default:focus, .btn-default:active, .btn-default:hover {
+  outline: none;
+}
+    </style>

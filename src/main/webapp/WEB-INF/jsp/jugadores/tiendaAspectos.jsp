@@ -60,6 +60,12 @@
                                     <a href="${fn:escapeXml(editUrl)}">
                                         <p style="color: darkgoldenrod;">Editar aspecto</p>
                                     </a>
+                                    <spring:url value="/tienda/aspectos/delete/{aspectoId}" var="deleteUrl">
+                                        <spring:param name="aspectoId" value="${aspecto.id}" />
+                                   </spring:url>
+                                   <a href="${fn:escapeXml(deleteUrl)}">
+                                       <p style="color: red;">Eliminar aspecto</p>
+                                   </a>
                                 </sec:authorize>    
                             </c:otherwise>
                         </c:choose>
