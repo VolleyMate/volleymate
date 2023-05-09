@@ -48,9 +48,9 @@ input[type=radio]:checked~label.star svg path {
 
 <petclinic:layout pageName="crearValoracion">
   <div class="container">
-    <h2 style="text-align: center; font-size: 1.5em;">
+    <h1 style="text-align: center; font-size: 1.5em;">
       <strong>Crea tu valoración para el usuario</strong>
-    </h2>
+    </h1>
     <div style="background-color: #0099bb3e; padding: 20px; width: 75%; margin: 0 auto;border-radius: 20px;">
     <div class="container">
     <div class="row justify-content-center">
@@ -109,7 +109,7 @@ input[type=radio]:checked~label.star svg path {
 
               </div>
               <div class="form-group text-center">
-                <form:label path="comentario">Haz algún comentario si lo ves necesario</form:label>
+                <form:label path="comentario" style="font-size: large;">Haz algún comentario si lo ves necesario</form:label>
                 <form:textarea path="comentario" class="form-control" style="border-radius: 20px; margin: 0 2.2%;" rows="4"></form:textarea>
               </div>
             

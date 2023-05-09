@@ -13,7 +13,7 @@
 </head>
 <body>
     <h1>Valoraciones del perfil</h1>
-    <div class="row listaJugadores numJugadores">
+    <div class="row listaJugadores numJugadores" style="font-size: large;">
         <c:if test="${valoraciones.size() == 0}">
             No hay valoraciones para este jugador.
         </c:if>
