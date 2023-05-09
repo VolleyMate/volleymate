@@ -60,4 +60,8 @@ public class AspectoService {
 		return errores;
 	}
 
+	public void deleteAspecto(Aspecto aspecto) {
+		this.aspectoRepository.delete(aspecto);
+	}
+
 }

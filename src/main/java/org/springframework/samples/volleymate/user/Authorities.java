@@ -6,6 +6,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.samples.volleymate.model.BaseEntity;
 
 import lombok.Getter;
@@ -19,6 +21,7 @@ public class Authorities extends BaseEntity{
 	
 	@ManyToOne
 	@JoinColumn(name = "username")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	User user;
 	
 	@Size(min = 3, max = 50)

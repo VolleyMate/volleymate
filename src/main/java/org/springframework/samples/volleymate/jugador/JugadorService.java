@@ -31,15 +31,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class JugadorService {
     
+        @Autowired
     private JugadorRepository jugadorRepository;
+
+    @Autowired
     private PartidoRepository partidoRepository;
+
+    @Autowired
     private UserService userService;
+
+    @Autowired
     private AuthoritiesService authoritiesService;
+
+    @Autowired
     private SolicitudRepository solicitudRepository;
+
+    @Autowired
     private LogroRepository logroRepository;
+
+    @Autowired
     private AspectoRepository aspectoRepository;
+
+    @Autowired
     private ValoracionRepository valoracionRepository;
+
+    @Autowired
     private PartidoService partidoService;
+
 
     @Autowired
     public JugadorService(JugadorRepository jugadorRepository, PartidoRepository partidoRepository, 
@@ -86,7 +104,7 @@ public class JugadorService {
         Jugador jugador = this.jugadorRepository.findById(jugadorId);
         Partido partido = this.partidoRepository.findById(partidoId);
         
-        if(jugador.getPartidos().contains(partido)){
+        if(jugador.getPartidos() != null && jugador.getPartidos().contains(partido)){
             throw new YaUnidoException();
         }
         else{
@@ -162,10 +180,21 @@ public class JugadorService {
     @Transactional
     public List<String> findErroresCrearJugador(Jugador jugador){
         List<String> errores = new ArrayList<>();
-        Integer digitos = (int)(Math.log10(jugador.getTelephone())+1);
-        if(!digitos.equals(9)) {
+        
+        String telephone = jugador.getTelephone();
+
+        if (telephone == null || telephone.isEmpty()) {
+            errores.add("El teléfono es obligatorio");
+        } else if (telephone.length() != 9) {
             errores.add("El teléfono debe tener 9 cifras");
+        } else {
+            try {
+                Integer.parseInt(telephone);
+            } catch (NumberFormatException e) {
+                errores.add("El teléfono solo debe contener números");
+            }
         }
+        
         if(!jugador.getUser().getCorreo().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             errores.add("El correo no es válido");
         }
@@ -216,38 +245,14 @@ public class JugadorService {
 
     @Transactional
     public void deleteJugador(Jugador j) {
-        
         Set<Partido> partidos = j.getPartidos();
-        if(partidos.size() != 0){
-            for(Partido p: partidos){
-                if(p.getCreador().equals(j)){
-                    partidoService.deletePartido(p);
-                } else {
-                    p.getJugadores().remove(j);
-                    this.partidoRepository.save(p);
+        for(Partido p: partidos) {
+            if(p.getCreador() == j) {
+                for(Jugador jugador: p.getJugadores()) {
+                    jugador.setVolleys(jugador.getVolleys() + 150);
                 }
             }
-        }
-        List<Valoracion> valoracionesRecibidas = j.getValoracionesRecibidas();
-        for(Valoracion v: valoracionesRecibidas){
-            valoracionRepository.delete(v);
-        }
-
-        List<Valoracion> valoracionesDadas = j.getValoracionesDadas();
-        for(Valoracion v: valoracionesDadas){
-            valoracionRepository.delete(v);
-        }
-
-        List<Aspecto> aspectos = j.getAspectos();
-        for(Aspecto a: aspectos){
-            a.getJugadores().remove(j);
-            this.aspectoRepository.save(a);
-        }
-
-        List<Logro> logros = j.getLogros();
-        for(Logro l: logros){
-            l.getJugadores().remove(j);
-            this.logroRepository.save(l);
+            
         }
 
         this.jugadorRepository.delete(j);

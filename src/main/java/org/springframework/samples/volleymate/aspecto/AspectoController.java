@@ -1,7 +1,6 @@
 package org.springframework.samples.volleymate.aspecto;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.security.Principal;
 import java.util.List;
@@ -15,12 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.data.domain.Page;
-import org.springframework.samples.volleymate.jugador.JugadorService;
-import org.springframework.samples.volleymate.jugador.EmailService;
-import org.springframework.samples.volleymate.jugador.Jugador;
-import org.springframework.samples.volleymate.user.UserService;
 
 
 
@@ -32,7 +25,7 @@ public class AspectoController {
 
 
     private static final String VISTA_CREAR_ASPECTO = "jugadores/crearAspecto";
-    private static final String VISTA_TIENDA = "jugadores/tienda";
+    private static final String VISTA_TIENDA = "pagos/tienda";
     private static final String VISTA_EDITAR_ASPECTOS = "jugadores/editarAspecto";
 
 
@@ -95,4 +88,17 @@ public class AspectoController {
 		}						
 		
 	}
+
+    //Eliminar aspecto para administrador
+    @GetMapping(value = "/tienda/aspectos/delete/{aspectoId}")
+    public String deleteAspecto(@PathVariable("aspectoId") int aspectoId, Map<String, Object> model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))){
+            Aspecto aspecto = aspectoService.findById(aspectoId);
+            aspectoService.deleteAspecto(aspecto);
+            return "redirect:/tienda/";
+        }else{
+            return "welcome";
+        }
+    }
 }

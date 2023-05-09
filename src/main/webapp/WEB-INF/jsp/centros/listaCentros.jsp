@@ -8,7 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="listaCentros">
-    <h2>Centros disponibles</h2>
+    <h1>Centros disponibles</h1>
 
     <div class="row">
         <c:if test="${numCentros == 0}">
@@ -62,7 +62,7 @@
                     </button>
                 </a>
             </c:if>
-            <p>Página ${centros.number + 1} de ${centros.totalPages}</p>
+            <p style="font-size: large;">Página ${centros.number + 1} de ${centros.totalPages}</p>
         </c:if>
         </div>
         <div style="display: flex; justify-content: center; align-items: center;">
