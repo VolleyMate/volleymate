@@ -287,6 +287,10 @@ public class JugadorController {
             redirAttrs.addFlashAttribute("mensajeError", "Ups, ¡parece que ha habido un problema!");
             return redirect;
         }
+        if((partido.getSexo().equals(org.springframework.samples.volleymate.partido.Sexo.FEMENINO) && jugador.getSexo().equals(Sexo.MASCULINO) || (partido.getSexo().equals(org.springframework.samples.volleymate.partido.Sexo.MASCULINO) && jugador.getSexo().equals(Sexo.FEMENINO)))){
+            redirAttrs.addFlashAttribute("mensajeError", "No puedes unirte a un partido de sexo diferente al tuyo");
+            return redirect;
+        }
         // Método servicio boolean
         Boolean yaTieneSolicitud = solicitudService.getYaTieneSolicitud(partidoId, principal);
         //////////////////////    
