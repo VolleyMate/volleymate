@@ -25,7 +25,7 @@ public class Solicitud extends BaseEntity {
   @NotNull
   @ManyToOne
   @JoinColumn(name = "jugador_id")
-  @OnDelete(action = OnDeleteAction.CASCADE)
+  @OnDelete(action = OnDeleteAction.NO_ACTION)
   private Jugador jugador;
 
   @NotNull

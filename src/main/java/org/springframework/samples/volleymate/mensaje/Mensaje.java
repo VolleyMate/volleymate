@@ -35,7 +35,7 @@ public class Mensaje extends BaseEntity {
 
     @OneToOne()
     @JoinColumn(name = "emisor", referencedColumnName = "username")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
 	private Jugador emisor;
 
     @NotNull
