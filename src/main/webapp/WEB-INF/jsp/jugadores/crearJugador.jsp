@@ -76,6 +76,10 @@
                                 <form:options items="${sexos}" value="${sexos}"/>
                             </form:select>
                         </div>
+                        <div>
+                            <input type="checkbox" name="aceptaTerminos" style="border-radius: 20px;" class="form-control" />
+                            <label for="aceptaTerminos">Acepto los <a href="/terminos">términos y condiciones</a></label>
+                        </div>
                         <br>
                         <div style="text-align: center">
                             <button style="background-color: #838789" class="btn btn-default" type="submit">Registrarse</button>
