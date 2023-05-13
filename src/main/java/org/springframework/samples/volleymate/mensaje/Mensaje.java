@@ -39,7 +39,7 @@ public class Mensaje extends BaseEntity {
 	private Jugador emisor;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "partido")
     private Partido partido;
 

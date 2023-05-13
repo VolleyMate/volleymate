@@ -69,14 +69,13 @@ public class Partido extends BaseEntity {
     @OneToMany(mappedBy = "partido",cascade = CascadeType.ALL)
     private Set<Solicitud> solicitudes;
 
-    @ManyToMany(mappedBy = "partidos",cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToMany(mappedBy = "partidos")
     private List<Jugador> jugadores;
 
     @OneToMany(mappedBy = "partido",cascade = CascadeType.ALL)
     private List<Mensaje> mensajes;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "centro",referencedColumnName = "id")
     private Centro centro;
 
