@@ -8,16 +8,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -38,6 +41,7 @@ import org.springframework.samples.volleymate.configuration.SecurityConfiguratio
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.jugador.JugadorController;
 import org.springframework.samples.volleymate.jugador.JugadorService;
+import org.springframework.samples.volleymate.jugador.exceptions.YaUnidoException;
 import org.springframework.samples.volleymate.logro.Logro;
 import org.springframework.samples.volleymate.logro.LogroService;
 import org.springframework.samples.volleymate.mensaje.Mensaje;
@@ -46,6 +50,7 @@ import org.springframework.samples.volleymate.pagos.PaymentService;
 import org.springframework.samples.volleymate.partido.Partido;
 import org.springframework.samples.volleymate.partido.PartidoPageService;
 import org.springframework.samples.volleymate.partido.PartidoService;
+import org.springframework.samples.volleymate.partido.Tipo;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.samples.volleymate.user.Authorities;
@@ -56,6 +61,11 @@ import org.springframework.samples.volleymate.valoracion.ValoracionService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+
+
+
 
 @WebMvcTest(controllers = JugadorController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class, properties = {
     "database=hsqldb",
@@ -90,7 +100,7 @@ class JugadorControllerTests {
 
 
     @BeforeEach
-	void setup() {
+	void setup() throws YaUnidoException {
 
         // ==== Jugador1 ==== //
 		User user = new User();
@@ -134,6 +144,8 @@ class JugadorControllerTests {
 
 		given(this.jugadorService.listAll(null, 0)).willReturn(new ArrayList<>(Arrays.asList(george)));
 
+
+		
 		
 
 		// ==== Jugador2 ==== //
@@ -182,6 +194,48 @@ class JugadorControllerTests {
 		given(this.aspectoService.findAllAspectos()).willReturn(new ArrayList<Aspecto>());
 		given(this.jugadorService.esAdmin(jugador3)).willReturn(true);
 
+		Centro centro = new Centro();
+		centro.setNombre("Centro de prueba");
+		centro.setCiudad("Sevilla");
+		centro.setDireccion("Dirrección de prueba");
+		centro.setEstado(true);
+		centro.setMaps("https://goo.gl/maps/P5uyWUKnDqNLAbnE6");
+		
+		Partido partido = new Partido();
+		partido.setNombre("Partido de prueba");
+		partido.setSexo(org.springframework.samples.volleymate.partido.Sexo.MASCULINO);
+		partido.setDescripcion("Descripción de prueba");
+		partido.setTipo(Tipo.VOLEIBOL);
+		partido.setCentro(centro);
+		partido.setFecha(LocalDateTime.of(2024, 6, 12, 12, 0, 0));
+		partido.setFechaCreacion(LocalDateTime.of(2024, 6, 11, 12, 0, 0));
+		partido.setPrecioPersona(100);
+		partido.setNumJugadoresNecesarios(5);
+		partido.setCreador(barba);
+		List<Jugador> jugadores = new ArrayList<Jugador>();
+		jugadores.add(barba);
+		partido.setJugadores(jugadores);
+
+		given(this.partidoService.findPartidoById(1)).willReturn(partido);
+		given(this.solicitudService.getYaTieneSolicitud(eq(1), any(Principal.class))).willReturn(Boolean.FALSE);
+
+		Mockito.doNothing().when(jugadorService).crearSolicitudPartido(Mockito.any(Jugador.class), Mockito.any(Partido.class));
+
+		Solicitud solicitud = new Solicitud();
+		solicitud.setPartido(partido);
+		solicitud.setJugador(george);
+
+		given(this.jugadorService.findSolicitudById(1)).willReturn(solicitud);
+		Mockito.doNothing().when(jugadorService).eliminarSolicitud(Mockito.any(Solicitud.class));
+
+		Mockito.doNothing().when(jugadorService).unirsePartida(Mockito.anyInt(), Mockito.anyInt());
+
+
+
+
+		Mockito.doNothing().when(jugadorService).saveJugador(Mockito.any(Jugador.class));
+
+
 	}
 
 	@WithMockUser(value = "spring", username = "Test3", authorities = "jugador")
@@ -206,8 +260,7 @@ class JugadorControllerTests {
 		.param("user.password", "123")
 		.param("user.correo", "test4@us.es")
 		.param("user.enabled", "true")
-		.param("user.authorities", "jugador")).with(csrf())
-				.andExpect(status().isOk());
+		.param("user.authorities", "jugador")).with(csrf()).andExpect(status().isOk());
 	}*/
 				
 
@@ -260,6 +313,29 @@ class JugadorControllerTests {
 		mockMvc.perform(get("/terminos")).andExpect(status().isOk())
 				.andExpect(view().name("jugadores/terminos"));
 	}
+
+	@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
+    @Test
+	void testSolicitudUnirse() throws Exception {
+		mockMvc.perform(get("/jugadores/solicitudes/1")).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/partidos/1"));
+	}
+
+	@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
+    @Test
+	void testDenegarSolicitud() throws Exception {
+		mockMvc.perform(get("/jugadores/solicitudes/denegar/1")).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/jugadores/notificaciones"));
+	}
+
+	/*@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
+    @Test
+	void testAceptarSolicitud() throws Exception {
+		mockMvc.perform(get("/jugadores/solicitudes/aceptar/1")).andExpect(status().is2xxSuccessful())
+				.andExpect(view().name("redirect:/jugadores/notificaciones"));
+	}*/
+
+
 
 	
 
