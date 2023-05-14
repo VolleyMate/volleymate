@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.aspecto;
 
-import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,20 +70,22 @@ public class AspectoServiceTests {
 
         // ==== Aspecto1 ==== //
         Aspecto aspecto1 = new Aspecto();
+        aspecto1.setId(1);
         aspecto1.setImagen("string");
         aspecto1.setPrecio(250);
         List<Jugador> jugadores1 = new ArrayList<>();
         jugadores1.add(jugador3);
         aspecto1.setJugadores(jugadores1);
-        aspectoService.saveAspecto(aspecto1);
+        aspectoService.save(aspecto1);
 
         Aspecto aspecto2 = new Aspecto();
+        aspecto2.setId(2);
         aspecto2.setImagen("string");
         aspecto2.setPrecio(0);
         List<Jugador> jugadores2 = new ArrayList<>();
         jugadores2.add(jugador3);
         aspecto2.setJugadores(jugadores1);
-        aspectoService.saveAspecto(aspecto2);
+        aspectoService.save(aspecto2);
     }
 
     @Test
