@@ -50,7 +50,7 @@ public class Partido extends BaseEntity {
     private Tipo tipo;
 
     @OneToOne()
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "creador", referencedColumnName = "username")
 	private Jugador creador;
 
@@ -66,16 +66,14 @@ public class Partido extends BaseEntity {
     @Column(name = "fecha_creacion", updatable = false, nullable = false)
     private LocalDateTime fechaCreacion=LocalDateTime.now();
 
-    @OneToMany(mappedBy = "partido", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "partido",cascade = CascadeType.ALL)
     private Set<Solicitud> solicitudes;
 
-    @ManyToMany(mappedBy = "partidos", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @ManyToMany(mappedBy = "partidos",cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Jugador> jugadores;
 
-    @OneToMany(mappedBy = "partido",cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "partido",cascade = CascadeType.ALL)
     private List<Mensaje> mensajes;
 
     @ManyToOne()
