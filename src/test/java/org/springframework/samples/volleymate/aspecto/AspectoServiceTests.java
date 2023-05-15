@@ -54,13 +54,11 @@ public class AspectoServiceTests {
 
         // ==== Authorities ==== //
 		Authorities rol3 = new Authorities();
-        rol3.setId(3);
 		rol3.setAuthority("jugador");
 		user3.setAuthorities(new HashSet<Authorities>(Arrays.asList(rol3)));
 
         // ==== Jugador3 ==== //
 		Jugador jugador3 = new Jugador();
-        jugador3.setId(3);
 		jugador3.setFirstName("Jugador3");
 		jugador3.setLastName("Davis");
 		jugador3.setUser(user3);
@@ -72,7 +70,6 @@ public class AspectoServiceTests {
 
         // ==== Aspecto1 ==== //
         Aspecto aspecto1 = new Aspecto();
-        aspecto1.setId(1);
         aspecto1.setImagen("string");
         aspecto1.setPrecio(250);
         List<Jugador> jugadores1 = new ArrayList<>();
@@ -81,12 +78,11 @@ public class AspectoServiceTests {
         aspectoService.save(aspecto1);
 
         Aspecto aspecto2 = new Aspecto();
-        aspecto2.setId(2);
         aspecto2.setImagen("string");
         aspecto2.setPrecio(0);
         List<Jugador> jugadores2 = new ArrayList<>();
         jugadores2.add(jugador3);
-        aspecto2.setJugadores(jugadores1);
+        aspecto2.setJugadores(jugadores2);
         aspectoService.save(aspecto2);
     }
 

@@ -1,5 +1,6 @@
 package org.springframework.samples.volleymate.mensaje;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -55,43 +56,40 @@ public class MensajeServiceTests {
     @BeforeEach
     void setUp() {
 
-        // ==== User3 ==== //
-        User user3 = new User();
-		user3.setUsername("Test3");
-		user3.setPassword("123");
-		user3.setEnabled(true);
-		user3.setCorreo("test3@test.com");
+        // ==== User1 ==== //
+        User user1 = new User();
+		user1.setUsername("Test1");
+		user1.setPassword("123");
+		user1.setEnabled(true);
 
         // ==== Authorities ==== //
-		Authorities rol3 = new Authorities();
-		rol3.setAuthority("jugador");
-		user3.setAuthorities(new HashSet<Authorities>(Arrays.asList(rol3)));
+		Authorities rol1 = new Authorities();
+		rol1.setAuthority("jugador");
+		user1.setAuthorities(new HashSet<Authorities>(Arrays.asList(rol1)));
 
-        // ==== Jugador3 ==== //
-		Jugador jugador3 = new Jugador();
-        jugador3.setId(3);
-		jugador3.setFirstName("Jugador3");
-		jugador3.setLastName("Davis");
-		jugador3.setUser(user3);
-		jugador3.setVolleys(200);
-		jugador3.setSexo(Sexo.MASCULINO);
-		jugadorService.saveJugador(jugador3);
-        userService.saveUser(user3);
-        authoritiesService.saveAuthorities(user3.getUsername(), "jugador");
+        // ==== Jugador1 ==== //
+		Jugador jugador1 = new Jugador();
+		jugador1.setFirstName("Jugador1");
+		jugador1.setLastName("Davis");
+		jugador1.setUser(user1);
+		jugador1.setVolleys(200);
+		jugador1.setSexo(Sexo.MASCULINO);
+		jugadorService.saveJugador(jugador1);
+        userService.saveUser(user1);
+        authoritiesService.saveAuthorities(user1.getUsername(), "jugador");
 
         // ==== User2 ==== //
         User user2 = new User();
 		user2.setUsername("Test2");
 		user2.setPassword("123");
 		user2.setEnabled(true);
-		user2.setCorreo("test2@test.com");
 
         // ==== Authorities ==== //
 		Authorities rol2 = new Authorities();
 		rol2.setAuthority("jugador");
 		user2.setAuthorities(new HashSet<Authorities>(Arrays.asList(rol2)));
 
-        // ==== Jugador3 ==== //
+        // ==== Jugador2 ==== //
 		Jugador jugador2 = new Jugador();
 		jugador2.setFirstName("Jugador2");
 		jugador2.setLastName("Gomez");
@@ -108,19 +106,19 @@ public class MensajeServiceTests {
         partido.setNombre("Nombre prueba");
         partido.setDescripcion("Desc prueba");
         partido.setTipo(Tipo.VOLEIBOL);
-        partido.setCreador(jugador3);
+        partido.setCreador(jugador1);
         partido.setNumJugadoresNecesarios(2);
         List<Jugador> jugadores = new ArrayList<>();
         jugadores.add(jugador2);
-        jugadores.add(jugador3);
+        jugadores.add(jugador1);
         partido.setJugadores(jugadores);
+        partidoService.save(partido);
 
         // === Mensaje 1 === //
-        Mensaje mensaje = new Mensaje();
-        mensaje.setContenidoMensaje("Prueba");
-        mensaje.setEmisor(jugador3);
-        mensaje.setPartido(partido);
-        mensajeService.save(mensaje);
+       Mensaje mensaje = new Mensaje();
+       mensaje.setContenidoMensaje("Este es un contenido de prueba");
+       mensaje.setEmisor(jugador2);
+       mensaje.setPartido(partido);
 
         List<Mensaje> mensajes = new ArrayList<>();
         mensajes.add(mensaje);
@@ -137,7 +135,7 @@ public class MensajeServiceTests {
 
     @Test
     public void shouldFindTusMensajes() {
-        Set<Mensaje> mensajes = mensajeService.findTusMensajes(jugadorService.findJugadorById(3));
+        Set<Mensaje> mensajes = mensajeService.findTusMensajes(jugadorService.findJugadorById(2));
         assertThat(mensajes).isNotNull();
         assertThat(mensajes.size()).isEqualTo(1);
     }
