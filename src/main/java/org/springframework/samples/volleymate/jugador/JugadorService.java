@@ -195,7 +195,7 @@ public class JugadorService {
             }
         }
         
-        if(!jugador.getUser().getCorreo().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+        if(!jugador.getUser().getCorreo().matches("^[A-Za-z0-9+_.-]+@(gmail|hotmail|us)\\.(\\w+)$")) {
             errores.add("El correo no es válido");
         }
         if(jugador.getFirstName().length() < 3) {
@@ -209,6 +209,12 @@ public class JugadorService {
         }
         if(jugadorRepository.findByCorreo(jugador.getUser().getCorreo()) != null){
             errores.add("El correo ya existe");
+        }
+        if(jugador.getUser().getPassword().length() < 8) {
+            errores.add("La contraseña debe tener 8 caracteres cualesquiera");
+        }
+        if(jugador.getUser().getUsername().length() < 3) {
+            errores.add("El nombre de usuario debe tener más de 3 caracteres");
         }
         return errores;
     }
