@@ -94,7 +94,7 @@
                             <spring:url value="/jugadores/solicitudes/${partido.id}" var="enviarSolicitudUrl">
                             </spring:url>
                             <a href="${fn:escapeXml(enviarSolicitudUrl)}">
-                                <p class="btn btn-success" style="font-size: large;">Enviar solicitud</p>
+                                <p class="btn btn-green" style="font-size: large;">Enviar solicitud</p>
                             </a>
                         </c:otherwise>
                     </c:choose>
@@ -138,7 +138,7 @@
                 <spring:url value="/partidos/eliminar/{partidoId}" var="eliminarURL">
                     <spring:param value="${partido.id}" name="partidoId"/>
                 </spring:url>
-                <a href="${eliminarURL}" class="btn btn-danger">Eliminar partido [ADMIN]</a>
+                <a href="${eliminarURL}" class="btn btn-red">Eliminar partido [ADMIN]</a>
             </sec:authorize>
         </div>
     </div>

@@ -23,7 +23,7 @@
           	<form:hidden path="id"/>
           </div>
           <div class="row form-row">
-            <div class="col-md-8">
+            <div class="col-md-8 mx-auto">
               <div class="col-md-5" style="margin: 25px;">
                 <div class="form-group">
                   <form:label path="nombre" >Nombre:</form:label>
@@ -34,6 +34,7 @@
                   <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />
                 </div>
               </div>
+
               <div class="col-md-5" style="margin: 25px;">
                 <div class="form-group">
                   <form:label path="direccion" >Dirección:</form:label>
@@ -48,7 +49,7 @@
                   <form:input path="estado" style="border-radius: 20px; display:none;" class="form-control" />
                 </div>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12 text-center">
                 <button class="btn btn-md btn-default" style="background-color: #838789; margin: 0 5px;" type="submit">Actualizar</button>
               </div>
               <br>

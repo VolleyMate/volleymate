@@ -13,12 +13,13 @@
           <p><strong>Agregar nuevo aspecto</strong></p>
         </div>
     </h2>     
+    
     <div style="background-color: #0099bb3e; padding: 20px; width: 70%; margin: 0 auto;border-radius: 20px;">
       <div class="container"> 
         <form:form modelAttribute="aspecto" class="form-horizontal" id="crear_aspecto">
           <div class="row form-row">
             <div class="col-md-8">
-              <div class="col-md-5" style="margin: 25px;">
+
                 <div class="form-group">
                   <form:label path="imagen" >Imagen:</form:label>
                   <form:input path="imagen" style="border-radius: 20px;" class="form-control" />
@@ -28,7 +29,7 @@
                   <form:input path="precio" style="border-radius: 20px;" type="number" min="0" class="form-control" />
                 </div>              
               </div>
-              <div class="col-md-12">
+              <div class="col-md-8 text-center">
                   <div style="text-align: center;">
                     <button class="btn btn-lg btn-default" style="background-color: #838789; margin: 0 5px;"
                             type="submit">Agregar
@@ -37,7 +38,7 @@
               </div>
               <br>
               <br>
-            </div>
+            </div>   
           </div>
         </form:form>
       </div>   
