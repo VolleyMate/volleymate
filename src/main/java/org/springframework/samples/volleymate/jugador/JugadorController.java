@@ -3,7 +3,6 @@ package org.springframework.samples.volleymate.jugador;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,13 +20,10 @@ import org.springframework.samples.volleymate.partido.PartidoService;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudService;
 import org.springframework.samples.volleymate.user.Authorities;
-import org.springframework.samples.volleymate.user.AuthoritiesService;
 import org.springframework.samples.volleymate.user.User;
-import org.springframework.samples.volleymate.user.UserService;
 import org.springframework.samples.volleymate.valoracion.ValoracionService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -58,19 +54,15 @@ public class JugadorController {
     private final SolicitudService solicitudService;
     private final ValoracionService valoracionService;
     private final AspectoService aspectoService;
-    private final UserService userService;
-    private final AuthoritiesService authoritiesService;
 
     @Autowired
-    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService, AspectoService aspectoService, UserService userService, AuthoritiesService authoritiesService) {
+    public JugadorController(JugadorService jugadorService, PartidoService partidoService, SolicitudService solicitudService,ValoracionService valoracionService, AspectoService aspectoService) {
 
 		this.jugadorService = jugadorService;
     	this.partidoService = partidoService;
         this.solicitudService = solicitudService;
         this.valoracionService = valoracionService;
         this.aspectoService = aspectoService;
-        this.userService = userService;
-        this.authoritiesService = authoritiesService;
     }
 
 
