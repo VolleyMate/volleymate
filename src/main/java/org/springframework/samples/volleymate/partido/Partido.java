@@ -78,7 +78,7 @@ public class Partido extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Mensaje> mensajes;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "centro",referencedColumnName = "id")
     private Centro centro;
 

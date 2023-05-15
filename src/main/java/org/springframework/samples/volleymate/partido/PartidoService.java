@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.volleymate.jugador.Jugador;
+import org.springframework.samples.volleymate.mensaje.Mensaje;
+import org.springframework.samples.volleymate.mensaje.MensajeRepository;
 import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
@@ -26,13 +28,16 @@ public class PartidoService {
 
 	private SolicitudRepository solicitudRepository;
 
+	private MensajeRepository mensajeRepository;
+
 	@Autowired
 	private PartidoPageRepository partidoPageRepository;
 
 	@Autowired
-	public PartidoService(PartidoRepository partidoRepository, SolicitudRepository solicitudRepository) {
+	public PartidoService(PartidoRepository partidoRepository, SolicitudRepository solicitudRepository, MensajeRepository mensajeRepository) {
 		this.solicitudRepository = solicitudRepository;
 		this.partidoRepository = partidoRepository;
+		this.mensajeRepository = mensajeRepository;
 	}
 
 	private int tamanoPaginacionPorPagina = 6;

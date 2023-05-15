@@ -77,6 +77,8 @@ public class JugadorController {
     @GetMapping(value = "/jugadores/new")
 	public String crearJugadorInicio(Map<String, Object> model, @AuthenticationPrincipal Authentication authentication, Principal principal) {
         List<Aspecto> aspectos = this.aspectoService.findAllAspectosGratuitos();
+        boolean aceptaTerminos = false;
+
         if (authentication != null ){
             Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
             if(jugadorService.esAdmin(jugadorLog)){
@@ -84,6 +86,7 @@ public class JugadorController {
                 jugador.setPremium(false);
                 model.put("jugador", jugador);
                 model.put("aspectos", aspectos);
+                model.put("aceptaTerminos", aceptaTerminos);
                 return VIEW_CREATE_FORM;    
             }
             return "redirect:/";
@@ -92,16 +95,19 @@ public class JugadorController {
             jugador.setPremium(false);
             model.put("jugador", jugador);
             model.put("aspectos", aspectos);
+            model.put("aceptaTerminos", aceptaTerminos);
             return VIEW_CREATE_FORM;
         }
 	}
 
 
     @PostMapping(value = "/jugadores/new")
-	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model, Principal principal,@AuthenticationPrincipal Authentication authentication, RedirectAttributes redirAttrs) {
+	public String processCreationForm(@Valid Jugador jugador, boolean aceptaTerminos,Map<String, Object> model, Principal principal,@AuthenticationPrincipal Authentication authentication, RedirectAttributes redirAttrs) {
 
         List<String> errores = jugadorService.findErroresCrearJugador(jugador);
-
+        if(aceptaTerminos == false){
+            errores.add("Debe aceptar los términos y condiciones");
+        }
 		if (!errores.isEmpty()) {
 			model.put("errors", errores);
 			return VIEW_CREATE_FORM;
