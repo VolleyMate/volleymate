@@ -91,14 +91,19 @@ public class Jugador extends Person{
 
 	
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	/*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "jugador_partidos", 
             joinColumns = @JoinColumn(name = "jugador_id"),
             inverseJoinColumns = @JoinColumn(name = "partido_id"),
             foreignKey = @ForeignKey(name = "fk_jugador_partidos_jugador_id", 
-                        foreignKeyDefinition = "FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE"),
+                        foreignKeyDefinition = "FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE NO ACTION"),
             inverseForeignKey = @ForeignKey(name = "fk_jugador_partidos_partido_id",
-                        foreignKeyDefinition = "FOREIGN KEY (partido_id) REFERENCES partidos(id) ON DELETE CASCADE"))
+                        foreignKeyDefinition = "FOREIGN KEY (partido_id) REFERENCES partidos(id) ON DELETE NO ACTION"))
+    private Set<Partido> partidos;*/
+	@ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(name = "jugador_partidos",
+            joinColumns = @JoinColumn(name = "jugador_id"),
+            inverseJoinColumns = @JoinColumn(name = "partido_id"))
     private Set<Partido> partidos;
 
 

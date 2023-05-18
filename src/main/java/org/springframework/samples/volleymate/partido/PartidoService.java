@@ -61,6 +61,11 @@ public class PartidoService {
 			}
 			jugador.getPartidos().remove(partido);
 		}
+
+		
+		for(Mensaje mensaje : partido.getMensajes()){
+			mensajeRepository.delete(mensaje);
+		}
 		partidoRepository.delete(partido);
 	}
 

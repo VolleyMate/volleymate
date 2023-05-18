@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -49,10 +50,10 @@ public class Partido extends BaseEntity {
     @Column(name = "tipo")
     private Tipo tipo;
 
-    @OneToOne()
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "creador", referencedColumnName = "username")
-	private Jugador creador;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "creador", referencedColumnName = "username", foreignKey = @javax.persistence.ForeignKey(name = "FK_CREADOR", foreignKeyDefinition = "FOREIGN KEY (creador) REFERENCES jugadores(username) ON DELETE CASCADE"))
+    private Jugador creador;
+
 
     @Column(name = "num_jugadores")
     private Integer numJugadoresNecesarios;
@@ -69,11 +70,14 @@ public class Partido extends BaseEntity {
     @OneToMany(mappedBy = "partido",cascade = CascadeType.ALL)
     private Set<Solicitud> solicitudes;
 
-    @ManyToMany(mappedBy = "partidos",cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    /*@ManyToMany(mappedBy = "partidos")
+    private List<Jugador> jugadores;*/
+    @ManyToMany(mappedBy = "partidos")
     private List<Jugador> jugadores;
 
-    @OneToMany(mappedBy = "partido",cascade = CascadeType.ALL)
+
+
+    @OneToMany(mappedBy = "partido")
     private List<Mensaje> mensajes;
 
     @ManyToOne()
