@@ -258,6 +258,7 @@ public class JugadorService {
                     jugador.setVolleys(jugador.getVolleys() + 150);
                 }
             }
+            partidoService.deletePartido(p);
             
         }
 

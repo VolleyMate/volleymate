@@ -42,7 +42,7 @@ public class Mensaje extends BaseEntity {
     
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "partido", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_PARTIDO", 
-    foreignKeyDefinition = "FOREIGN KEY (partido) REFERENCES partidos(id) ON DELETE CASCADE"))
+    foreignKeyDefinition = "FOREIGN KEY (partido) REFERENCES partidos(id) ON DELETE SET NULL"))
     private Partido partido;
 
     public String getFechaParseada(){

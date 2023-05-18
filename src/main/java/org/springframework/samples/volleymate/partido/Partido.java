@@ -50,8 +50,11 @@ public class Partido extends BaseEntity {
     @Column(name = "tipo")
     private Tipo tipo;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "creador", referencedColumnName = "username", foreignKey = @javax.persistence.ForeignKey(name = "FK_CREADOR", foreignKeyDefinition = "FOREIGN KEY (creador) REFERENCES jugadores(username) ON DELETE CASCADE"))
+    /*@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "creador", referencedColumnName = "username") 
+    private Jugador creador;*/
+    @ManyToOne()
+    @JoinColumn(name = "creador",referencedColumnName = "username")
     private Jugador creador;
 
 
