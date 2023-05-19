@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class LogroController {
@@ -119,7 +120,7 @@ public class LogroController {
     }
     
     @GetMapping("/logro/delete/{achievementId}")
-    public String deleteAchievement(@PathVariable("achievementId") int id, Principal principal){
+    public String deleteAchievement(@PathVariable("achievementId") int id, Principal principal, RedirectAttributes redirAttrs){
       
       Logro a = achievementService.getAchievementById(id);
       List<Jugador> jugadoresConLogro = a.getJugadores();
@@ -135,7 +136,7 @@ public class LogroController {
       }
 
     	achievementService.deleteAchievementById(id);
-       
+      redirAttrs.addFlashAttribute("mensajeExitoso", "Logro eliminado con éxito");
     	return "redirect:/logro/";
     }
     
@@ -151,13 +152,31 @@ public class LogroController {
     @PostMapping("/logro/edit/{id}")
     public String processUpdateForm(@Valid Logro achievement, BindingResult result,
                             @PathVariable("id") int id, Map<String, Object> model){
-        
+      
+                              List<String> errores = new ArrayList<>();
+                              if(achievement.getMetrica() == null) {
+                                errores.add("La métrica no puede ser nula");
+                              }
+                              if(achievement.getDescripcion()==null || achievement.getDescripcion()=="") {
+                                errores.add("La descripción no puede estar vacía");
+                              }
+                              if(achievement.getNombre()==null || achievement.getNombre()=="") {
+                                errores.add("El nombre no puede estar vacío");
+                              }
+                              if(achievement.getThreshold()==null || achievement.getThreshold()<1){
+                                errores.add("El número de meta no puede ser menor que 1");
+                              }                        
+      
     	if(result.hasErrors()){
         	
             model.put("logro", achievement);
             return CREATE_ACHIEVEMENT_FORM;
             
-        } else{
+        } else if (!errores.isEmpty()) {
+            model.put("errors", errores);
+            model.put("logro", achievement);
+            return CREATE_ACHIEVEMENT_FORM;
+        } else {
         	
             Logro achievement2Update = this.achievementService.getAchievementById(id);
             BeanUtils.copyProperties(achievement, achievement2Update, "id");

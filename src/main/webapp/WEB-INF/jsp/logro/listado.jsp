@@ -9,6 +9,14 @@
               <%@ page contentType="text/html; charset=UTF-8" %>
 
                 <petclinic:layout pageName="logro">
+                
+                <c:if test="${mensajeExitoso != null}">
+                  <div class="alert alert-success alert-dismissible" style="padding-top: 2%;" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <c:out value="${mensajeExitoso}"/>
+                    </div>
+              </c:if>
+
                 <c:if test="${jugador.equals(jugadorAutenticado)}">
                   <h1>Logros</h1>
                   <div>

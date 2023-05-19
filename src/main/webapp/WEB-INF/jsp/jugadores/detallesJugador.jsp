@@ -83,7 +83,7 @@
                     <spring:url value="/jugadores/volleys/add/{username}" var="añadirURL">
                     <spring:param name="username" value="${jugadorVista.user.username}" />
                 </spring:url>
-                <a href="${añadirURL}" class="btn btn-default">Añadir 150 volleys [ADMIN]</a>
+                <a href="${añadirURL}" class="btn btn-success">Añadir 150 volleys a <c:out value="${jugadorVista.user.username}"/></a>
                 </sec:authorize>
 
 
@@ -123,7 +123,7 @@
                     <spring:url value="/jugadores/volleys/add/{id}" var="añadirURL">
                         <spring:param name="id" value="${jugadorVista.user.username}" />
                     </spring:url>
-                    <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
+                    <a href="${añadirURL}" class="btn btn-warning">Añadir 150 volleys a <c:out value="${jugadorVista.user.username}"/></a>
                 </sec:authorize>
                 
             </c:if>

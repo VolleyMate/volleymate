@@ -8,7 +8,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="listaCentros">
-    <h1>Centros disponibles</h1>
+
+<h1>Centros disponibles</h1>
 
     <div class="row">
         <c:if test="${numCentros == 0}">
