@@ -8,8 +8,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.URL;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.model.BaseEntity;
 
@@ -31,7 +29,6 @@ public class Logro extends BaseEntity {
     private String descripcion;
 
     @Column(name = "imagen")
-    @URL
     private String imagen;
 
     @Column(name = "threshold")

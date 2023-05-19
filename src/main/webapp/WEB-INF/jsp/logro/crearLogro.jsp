@@ -41,8 +41,12 @@
                   <form:textarea path="descripcion" style="border-radius: 20px;" rows="5" cols="30" class="form-control"/>
                 </div>
                 <div class="form-group">
-                  <form:label path="imagen">Imagen:</form:label>
-                  <form:input path="imagen" style="border-radius: 20px;" class="form-control" />
+                  <label for="imagen">Tipo de logro:</label>
+                  <select name="imagen" id="imagen" style="border-radius: 20px;" class="form-control">
+                    <option value="/resources/images/bronce.png">Bronce</option>
+                    <option value="/resources/images/plata.png">Plata</option>
+                    <option value="/resources/images/oro.png">Oro</option>
+                  </select>
                 </div>
                 
               </div>

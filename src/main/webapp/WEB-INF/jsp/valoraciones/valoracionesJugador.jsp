@@ -32,7 +32,7 @@
                                 </spring:url>
                                 <a href="${fn:escapeXml(verURL)}" class="btn">
                                     <c:out value="${valoracion.ratingPlayer.user.username}"/>
-                                    <img class="rounded d-block" style="padding-left: 6%;" src="${valoracion.ratingPlayer.image}" width="60" height="60" alt="jugador">
+                                    <img class="rounded d-block" style="padding-left: 6%;" src="${valoracion.ratingPlayer.image}" width="70" height="60" alt="jugador">
                                 </a>
                             </p>
                             <p class="card-text">

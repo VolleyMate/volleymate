@@ -186,7 +186,7 @@ public class JugadorController {
 		}
 		else {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","image","sexo","fechaInicioPremium","fechaFinPremium","user","volleys","solicitudes","premium","notificaciones","telephone"); 
+			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","image","sexo","fechaInicioPremium","fechaFinPremium","user","volleys","solicitudes","premium","notificaciones","telephone","aspectos"); 
             this.jugadorService.saveJugador(jugadorToUpdate);
 			redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador editado correctamente");
 			return "redirect:/jugadores";

@@ -59,7 +59,7 @@ INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (3
 INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (4,'Hola, ¿alguien quiere jugar?', '2017-01-01 17:01','jugador',7);
 
 
-INSERT INTO aspectos(id,imagen,precio) VALUES (1,'https://img.freepik.com/vector-premium/icono-perfil-avatar_188544-4755.jpg?w=2000',0);
+INSERT INTO aspectos(id,imagen,precio) VALUES (1,'',0);
 INSERT INTO aspectos(id,imagen,precio) VALUES (2,'https://img.freepik.com/vector-premium/personaje-dibujos-animados-insignia-bandera-finlandia-jugando-voleibol_152558-37413.jpg?size=626&ext=jpg',0);
 INSERT INTO aspectos(id,imagen,precio) VALUES (3,'https://img.freepik.com/vector-premium/ilustracion-diseno-vectores-dibujos-animados-planos-personaje-lindo-volley-ball_570764-3711.jpg',0);
 INSERT INTO aspectos(id,imagen,precio) VALUES (4,'https://img.freepik.com/vector-gratis/silueta-voleibol-diseno-plano_23-2149400512.jpg?size=626&ext=jpg',400);
@@ -76,10 +76,10 @@ INSERT INTO aspectos_jugador(jugador_id, aspecto_id) VALUES (5,5);
 INSERT INTO aspectos_jugador(jugador_id, aspecto_id) VALUES (6,6);
 INSERT INTO aspectos_jugador(jugador_id, aspecto_id) VALUES (7,7);
 
-INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (1,'Primer partido','Ha jugado un partido en la aplicacion','https://cdn.pixabay.com/photo/2017/03/21/21/06/medal-2163351_1280.png',1,'partidos');
-INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (2,'Cinco partidos','Ha jugado cinco partidos en la aplicacion','https://img.freepik.com/vector-premium/medalla-plata-2do-lugar-plata_87720-2497.jpg?w=2000',5,'partidos');
-INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (3,'Diez partidos','Ha jugado diez partidos en la aplicacion','https://img.freepik.com/vector-premium/medalla-oro-al-primer-lugar-insignia-oro-1er-lugar-medalla-oro-imagen-numero-1-rama-olivo-ilustracion_255498-64.jpg',10,'partidos');
-INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (4,'Aprobado','Ha alcanzado un aprobado','https://cdn.pixabay.com/photo/2017/03/21/21/06/medal-2163351_1280.png',3,'valoracion');
+INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (1,'Primer partido','Ha jugado un partido en la aplicacion','/resources/images/bronce.png',1,'partidos');
+INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (2,'Cinco partidos','Ha jugado cinco partidos en la aplicacion','/resources/images/plata.png',5,'partidos');
+INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (3,'Diez partidos','Ha jugado diez partidos en la aplicacion','/resources/images/oro.png',10,'partidos');
+INSERT INTO logros(id,nombre,descripcion,imagen,threshold,metrica) VALUES (4,'Aprobado','Ha alcanzado un aprobado','/resources/images/bronce.png',3,'valoracion');
 
 insert into logros_jugador(id_jugador,id_logro) values (7,1);
 
