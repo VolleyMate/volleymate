@@ -80,10 +80,10 @@
 
                 
                  <sec:authorize access="hasAuthority('admin')">
-                    <spring:url value="/jugadores/volleys/añadir/{id}" var="añadirURL">
-                    <spring:param name="id" value="${valorarId}" />
+                    <spring:url value="/jugadores/volleys/add/{username}" var="añadirURL">
+                    <spring:param name="username" value="${jugadorVista.user.username}" />
                 </spring:url>
-                <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
+                <a href="${añadirURL}" class="btn btn-default">Añadir 150 volleys [ADMIN]</a>
                 </sec:authorize>
 
 
@@ -120,10 +120,10 @@
                 <a href="${aspURL}" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span> Mis aspectos</a>
 
                 <sec:authorize access="hasAuthority('admin')">
-                    <spring:url value="/jugadores/volleys/añadir/{id}" var="añadirURL">
-                    <spring:param name="id" value="${id}" />
-                </spring:url>
-                <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
+                    <spring:url value="/jugadores/volleys/add/{id}" var="añadirURL">
+                        <spring:param name="id" value="${jugadorVista.user.username}" />
+                    </spring:url>
+                    <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
                 </sec:authorize>
                 
             </c:if>

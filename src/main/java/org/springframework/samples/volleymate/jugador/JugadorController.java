@@ -439,6 +439,16 @@ public class JugadorController {
     public String showTerminos(){
         return "jugadores/terminos";
     }
+
+    @GetMapping(value="/jugadores/volleys/add/{playerUsername}")
+    public String añadirVolleys(Principal principal, @PathVariable("playerUsername") String playerUsername, ModelMap model){
+        Jugador jugadorAñadir = this.jugadorService.findJugadorByUsername(playerUsername);
+        Integer sumVolleys = jugadorAñadir.getVolleys() + 150;
+        jugadorAñadir.setVolleys(sumVolleys);
+        this.jugadorService.saveJugador(jugadorAñadir);
+        return "redirect:/jugadores/"+jugadorAñadir.getId();        
+    }
+
 }
 
 
