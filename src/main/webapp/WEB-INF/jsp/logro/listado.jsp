@@ -17,6 +17,7 @@
     </div>
   </c:if>
 
+  <h1>Logros de <c:out value="${jugador.user.username}"/></h1>
 
   <div class="row">
     <c:if test="${jugador.equals(jugadorAutenticado)}">

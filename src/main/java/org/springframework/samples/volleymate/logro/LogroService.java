@@ -1,5 +1,6 @@
 package org.springframework.samples.volleymate.logro;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -108,6 +109,23 @@ public class LogroService {
         res.addObject("achievements", getAllAchievements());
 
         return res;
+    }
+
+    public List<String> validarLogro (Logro logro){
+        List<String> errores = new ArrayList<>();
+        if (logro.getMetrica() == null) {
+          errores.add("La métrica no puede ser nula");
+        }
+        if (logro.getDescripcion() == null || logro.getDescripcion() == "") {
+          errores.add("La descripción no puede estar vacía");
+        }
+        if (logro.getNombre() == null || logro.getNombre() == "") {
+          errores.add("El nombre no puede estar vacío");
+        }
+        if (logro.getThreshold() == null || logro.getThreshold() < 1) {
+          errores.add("El número de meta no puede ser menor que 1");
+        }
+        return errores;
     }
 
 }
