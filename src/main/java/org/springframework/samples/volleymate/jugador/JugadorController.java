@@ -441,7 +441,7 @@ public class JugadorController {
     }
 
     @GetMapping(value="/jugadores/volleys/add/{playerUsername}")
-    public String añadirVolleys(Principal principal, @PathVariable("playerUsername") String playerUsername, ModelMap model){
+    public String addVolleys(Principal principal, @PathVariable("playerUsername") String playerUsername, ModelMap model){
         Jugador jugadorAñadir = this.jugadorService.findJugadorByUsername(playerUsername);
         Integer sumVolleys = jugadorAñadir.getVolleys() + 150;
         jugadorAñadir.setVolleys(sumVolleys);
