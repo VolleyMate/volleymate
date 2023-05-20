@@ -2,6 +2,7 @@ package org.springframework.samples.volleymate.jugador;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -347,19 +348,24 @@ public class JugadorController {
     public String showVistaNotificaciones(Principal principal, ModelMap model){
         //seccion notificaciones
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        LocalDateTime fechaActual = LocalDateTime.now();
         Set<Solicitud> solicitudesRecibidas = this.solicitudService.findSolicitudesATusPartidos(jugador);
         List<Solicitud> solicitudesNuevas = new ArrayList<>();
         for (Solicitud sol:solicitudesRecibidas){
-            if (sol.getJugador().getVolleys() - sol.getPartido().getPrecioPersona() >= 0){
+            if (((sol.getJugador().getVolleys() - sol.getPartido().getPrecioPersona() >= 0)||(sol.getJugador().getPremium()))&&(sol.getPartido().getFecha().isAfter(fechaActual))&&(sol.getPartido().getJugadores().size()<sol.getPartido().getNumJugadoresNecesarios())){
                 solicitudesNuevas.add(sol);
-            } else{
-                this.jugadorService.eliminarSolicitud(sol);
             }
         }
         model.put("solicitudesRecibidas", solicitudesNuevas);
         
         Set<Solicitud> solicitudesPendientes = this.solicitudService.findTusSolicitudes(jugador);
-        model.put("solicitudesPendientes", solicitudesPendientes);
+        List<Solicitud> solicitudesPendientesNuevas = new ArrayList<>();
+        for (Solicitud sol:solicitudesPendientes){
+            if (((sol.getJugador().getVolleys() - sol.getPartido().getPrecioPersona() >= 0)||(sol.getJugador().getPremium()))&&(sol.getPartido().getFecha().isAfter(fechaActual))&&(sol.getPartido().getJugadores().size()<sol.getPartido().getNumJugadoresNecesarios())){
+                solicitudesPendientesNuevas.add(sol);
+            } 
+        }
+        model.put("solicitudesPendientes", solicitudesPendientesNuevas);
         
         return VIEW_NOTIFICACIONES;
     }
