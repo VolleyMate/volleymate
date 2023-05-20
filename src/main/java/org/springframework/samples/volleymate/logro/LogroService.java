@@ -5,10 +5,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.samples.volleymate.jugador.JugadorService;
+import org.springframework.samples.volleymate.user.Authorities;
 import org.springframework.samples.volleymate.valoracion.Valoracion;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,23 +30,23 @@ public class LogroService {
     public LogroService(LogroRepository achievementRepository) {
         this.achievementRepo = achievementRepository;
     }
-
+    @Transactional
     public Collection<Logro> getAllAchievements() {
         return (Collection<Logro>) achievementRepo.findAll();
     }
-
+    @Transactional
     public Logro getAchievementById(Integer id) {
         return achievementRepo.findById(id).get();
     }
-
+    @Transactional
     public void deleteAchievementById(Integer id) {
         achievementRepo.deleteById(id);
     }
-
+    @Transactional
     public void saveAchievement(Logro achievement) {
         achievementRepo.save(achievement);
     }
-
+    @Transactional
     public List<Logro> updateLogros(Jugador player, Map<String, Object> model) {
 
         Collection<Logro> achievements = getAllAchievements();
@@ -63,7 +67,7 @@ public class LogroService {
 
         return player.getLogros();
     }
-
+    @Transactional
     public void checkLogro(Logro l, Jugador j, Map<String, Double> mem) {
 
         List<Logro> lj = j.getLogros();
@@ -76,7 +80,7 @@ public class LogroService {
         j.setLogros(lj);
         playerService.saveJugador(j);
     }
-
+    @Transactional
     public void updateProgreso(Logro l, Jugador j, Map<String, Double> mem) {
         Double v = .0;
 
@@ -102,7 +106,7 @@ public class LogroService {
 
         mem.put(l.getMetrica(), v);
     }
-
+    @Transactional
     public ModelAndView showAll() {
 
         ModelAndView res = new ModelAndView("logro/listado");
@@ -110,7 +114,7 @@ public class LogroService {
 
         return res;
     }
-
+    @Transactional
     public List<String> validarLogro (Logro logro){
         List<String> errores = new ArrayList<>();
         if (logro.getMetrica() == null) {
@@ -128,4 +132,15 @@ public class LogroService {
         return errores;
     }
 
+    @Transactional
+    public boolean esAdmin(Jugador jugador){
+        Boolean esAdmin = false;
+        Set<Authorities> authorities = jugador.getUser().getAuthorities();
+		for(Authorities a: authorities) {
+			if(a.getAuthority().equals("admin")) {
+				esAdmin = true;
+			}
+		}
+        return esAdmin;
+    }
 }

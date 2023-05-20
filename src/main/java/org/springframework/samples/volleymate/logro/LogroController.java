@@ -29,17 +29,16 @@ public class LogroController {
   private final LogroService achievementService;
   private final JugadorService playerService;
 
+
   @Autowired
-  public LogroController(LogroService achievementService,
-      JugadorService playerService) {
+  public LogroController(LogroService achievementService,JugadorService playerService) {
 
     this.achievementService = achievementService;
     this.playerService = playerService;
   }
 
   @GetMapping("/logro")
-  public String getAllAchievements(Map<String, Object> model,
-      Principal principal) {
+  public String getAllAchievements(Map<String, Object> model,Principal principal) {
 
     Jugador player = playerService.findJugadorByUsername(principal.getName());
     Jugador jugadorAutenticado = playerService.findJugadorByUsername(principal.getName());
@@ -64,8 +63,8 @@ public class LogroController {
 
   @GetMapping(value = "/logro/new")
   public String initCreationForm(Principal principal, ModelMap model) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))) {
+    Jugador jugador = playerService.findJugadorByUsername(principal.getName());
+    if (achievementService.esAdmin(jugador)) {
       Logro logro = new Logro();
       model.put("logro", logro);
       return CREATE_ACHIEVEMENT_FORM;
@@ -91,12 +90,17 @@ public class LogroController {
   }
 
   @GetMapping("/logro/edit/{id}")
-  public String initUpdateForm(@PathVariable("id") int id, Map<String, Object> model) {
-
-    Logro achievement = this.achievementService.getAchievementById(id);
+  public String initUpdateForm(@PathVariable("id") int id, Map<String, Object> model, Principal principal) {
+    Jugador jugador = playerService.findJugadorByUsername(principal.getName());
+    if (achievementService.esAdmin(jugador)) {
+      Logro achievement = this.achievementService.getAchievementById(id);
     model.put("logro", achievement);
 
     return CREATE_ACHIEVEMENT_FORM;
+    } else {
+      model.put("message", "No tienes permisos para realizar esta acción");
+      return "redirect:/logro/";
+    }
   }
 
   @PostMapping("/logro/edit/{id}")
@@ -119,23 +123,29 @@ public class LogroController {
 
   @GetMapping("/logro/delete/{achievementId}")
   public String deleteAchievement(@PathVariable("achievementId") int id, Principal principal,RedirectAttributes redirAttrs) {
-
-    Logro a = achievementService.getAchievementById(id);
-    List<Jugador> jugadoresConLogro = a.getJugadores();
-
-    for (Jugador j : jugadoresConLogro) {
-
-      List<Logro> logrosJugador = j.getLogros();
-      logrosJugador.remove(a);
-
-      j.setLogros(logrosJugador);
-
-      playerService.saveJugador(j);
+    Jugador jugador = playerService.findJugadorByUsername(principal.getName());
+    if (achievementService.esAdmin(jugador)) {
+      Logro a = achievementService.getAchievementById(id);
+      List<Jugador> jugadoresConLogro = a.getJugadores();
+  
+      for (Jugador j : jugadoresConLogro) {
+  
+        List<Logro> logrosJugador = j.getLogros();
+        logrosJugador.remove(a);
+  
+        j.setLogros(logrosJugador);
+  
+        playerService.saveJugador(j);
+      }
+  
+      achievementService.deleteAchievementById(id);
+      redirAttrs.addFlashAttribute("mensajeExitoso", "Logro eliminado con éxito");
+      return "redirect:/logro/";
+    } else {
+      redirAttrs.addFlashAttribute("mensajeError", "No tienes permisos para realizar esta acción");
+      return "redirect:/logro/";
     }
-
-    achievementService.deleteAchievementById(id);
-    redirAttrs.addFlashAttribute("mensajeExitoso", "Logro eliminado con éxito");
-    return "redirect:/logro/";
+    
   }
 
 }

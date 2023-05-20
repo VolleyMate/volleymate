@@ -27,11 +27,14 @@
       <c:if test="${logros.size() != 0}">
           <c:forEach items="${logros}" var="logro">
               <div class="col-md-4">
-                <spring:url value="/logro/edit/{achievementId}" var="editUrl">
-                  <spring:param name="achievementId" value="${logro.id}" />
-                </spring:url>
-                <a href="${fn:escapeXml(editUrl)}" class="card-link">
-                  <div class="card">
+                <c:if test="${esAdmin}">
+                  <spring:url value="/logro/edit/{achievementId}" var="editUrl">
+                    <spring:param name="achievementId" value="${logro.id}" />
+                  </spring:url>
+                  <a href="${fn:escapeXml(editUrl)}" class="card-link">
+                </c:if>
+                  <c:if test="${progreso.get(logro.metrica) >= logro.threshold}">
+                    <div class="card">
                       <div class="card-body">
                           <div class="content" style="margin-left: 35%; margin-bottom: 5%;">
                             <img style="width: 100px; height: 100px;" src="${logro.imagen}" />
@@ -47,13 +50,45 @@
                           </p>
                           <br>
                           <div class="text-center">
-                            <spring:url value="/logro/delete/{achievementId}" var="deleteUrl">
-                              <spring:param name="achievementId" value="${logro.id}" />
-                            </spring:url>
-                            <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash glyphicon-4x" style="font-size: 2rem;"></a>
+                            <c:if test="${esAdmin}">
+                              <spring:url value="/logro/delete/{achievementId}" var="deleteUrl">
+                                <spring:param name="achievementId" value="${logro.id}" />
+                              </spring:url>
+                              <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash glyphicon-4x" style="font-size: 2rem;"></a>
+                            </c:if>
                           </div>
                       </div>
                   </div>
+                  </c:if>
+
+                  <c:if test="${progreso.get(logro.metrica) < logro.threshold}">
+                    <div class="card-no-logro">
+                      <div class="card-body">
+                          <div class="content" style="margin-left: 35%; margin-bottom: 5%;">
+                            <img style="width: 100px; height: 100px;" src="${logro.imagen}" />
+                          </div>
+                          <p class="card-text">
+                              <strong>Nombre:</strong> <c:out value="${logro.nombre}"/>
+                            </p>                              
+                          <p class="card-text">
+                              <strong>Descripción:</strong> <c:out value="${logro.descripcion}"/> 
+                          </p>
+                          <p class="card-text">
+                              <strong>Progreso:</strong> <c:out value="${progreso.get(logro.metrica)} / ${logro.threshold}" />
+                          </p>
+                          <br>
+                          <div class="text-center">
+                            <c:if test="${esAdmin}">
+                              <spring:url value="/logro/delete/{achievementId}" var="deleteUrl">
+                                <spring:param name="achievementId" value="${logro.id}" />
+                              </spring:url>
+                              <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash glyphicon-4x" style="font-size: 2rem;"></a>
+                            </c:if>
+                          </div>
+                      </div>
+                  </div>
+                  </c:if>
+                  
               </div>
           </c:forEach>
       </c:if>
@@ -67,11 +102,14 @@
       <c:if test="${logros.size() != 0}">
           <c:forEach items="${logros}" var="logro">
               <div class="col-md-4">
-                <spring:url value="/logro/edit/{achievementId}" var="editUrl">
-                  <spring:param name="achievementId" value="${logro.id}" />
-                </spring:url>
-                <a href="${fn:escapeXml(editUrl)}" class="card-link">
-                  <div class="card">
+                <c:if test="${esAdmin}">
+                  <spring:url value="/logro/edit/{achievementId}" var="editUrl">
+                    <spring:param name="achievementId" value="${logro.id}" />
+                  </spring:url>
+                  <a href="${fn:escapeXml(editUrl)}" class="card-link">
+                </c:if>
+                  <c:if test="${progreso.get(logro.metrica) >= logro.threshold}">
+                    <div class="card">
                       <div class="card-body">
                         <div class="content" style="margin-left: 35%; margin-bottom: 5%;">
                           <img style="width: 100px; height: 100px;" src="${logro.imagen}" />
@@ -87,13 +125,45 @@
                           </p>
                           <br>
                           <div class="text-center">
-                            <spring:url value="/logro/delete/{achievementId}" var="deleteUrl">
-                              <spring:param name="achievementId" value="${logro.id}" />
-                            </spring:url>
-                            <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash glyphicon-4x" style="font-size: 2rem;"></a>
+                            <c:if test="${esAdmin}">
+                              <spring:url value="/logro/delete/{achievementId}" var="deleteUrl">
+                                <spring:param name="achievementId" value="${logro.id}" />
+                              </spring:url>
+                              <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash glyphicon-4x" style="font-size: 2rem;"></a>
+                            </c:if>
                           </div>
                       </div>
                   </div>
+                  </c:if>
+                  
+                  <c:if test="${progreso.get(logro.metrica) < logro.threshold}">
+                    <div class="card-no-logro">
+                      <div class="card-body">
+                        <div class="content" style="margin-left: 35%; margin-bottom: 5%;">
+                          <img style="width: 100px; height: 100px;" src="${logro.imagen}" />
+                        </div>
+                          <p class="card-text">
+                              <strong>Nombre:</strong> <c:out value="${logro.nombre}"/>
+                            </p>                              
+                          <p class="card-text">
+                              <strong>Descripción:</strong> <c:out value="${logro.descripcion}"/> 
+                          </p>
+                          <p class="card-text">
+                              <strong>Progreso:</strong> <c:out value="${progreso.get(logro.metrica)} / ${logro.threshold}" />
+                          </p>
+                          <br>
+                          <div class="text-center">
+                            <c:if test="${esAdmin}">
+                              <spring:url value="/logro/delete/{achievementId}" var="deleteUrl">
+                                <spring:param name="achievementId" value="${logro.id}" />
+                              </spring:url>
+                              <a href="${fn:escapeXml(deleteUrl)}" class="glyphicon glyphicon-trash glyphicon-4x" style="font-size: 2rem;"></a>
+                            </c:if>
+                            
+                          </div>
+                      </div>
+                  </div>
+                </c:if>
               </div>
           </c:forEach>
       </c:if>
@@ -128,7 +198,6 @@
   .card:hover {
       transform: scale(1.1);
       cursor: pointer;
-      background-color: #a9eac0;
       animation: pulse 1.5s infinite;
   }
 
@@ -137,7 +206,7 @@
       border-width: 2px;
       border-style: solid;
       border-color: #0099BB;
-      background-color: #aab2b1;
+      background-color: #fb8686;
       margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
       border-radius: 10px;
       padding-top: 4%;
@@ -150,7 +219,6 @@
   .card-no-logro:hover {
       transform: scale(1.1);
       cursor: pointer;
-      background-color: #aab2b1;
       animation: pulse 1.5s infinite;
   }
 

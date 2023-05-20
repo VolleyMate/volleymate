@@ -69,16 +69,15 @@
         </div>
 
     </div>
-    </div>
-
-        <div class="col-md-6">
+    <div class="row" style="width: 100%; padding-top: 5%;">
+        <div class="col-md-6 text-left">
             <a href="/centros/solicitud/new" class="btn btn-default">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo centro
-            </a>
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Solicitar centro</a>
             <sec:authorize access="hasAuthority('admin')">
-            <a href="/centros/solicitud/list" class="btn btn-default"> <span  aria-hidden="true"></span> Ver solicitudes [ADMIN]</a>
+            <a href="/centros/solicitud/list" class="btn btn-default"> <span  aria-hidden="true"></span> Ver solicitudes</a>
         </sec:authorize>
         </div>
+    </div>
 
 
 </petclinic:layout>

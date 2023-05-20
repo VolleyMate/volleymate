@@ -27,8 +27,9 @@
                               </p>                              
                             <p class="card-text">
                                 <strong>Jugador:</strong> 
-                                <spring:url value="/jugadores/${id}" var="verURL">
-                                    <spring:param name="id" value="${jugador.id}" />
+                                
+                                <spring:url value="/jugadores/{id}" var="verURL">
+                                    <spring:param name="id" value="${valoracion.ratingPlayer.id}" />
                                 </spring:url>
                                 <a href="${fn:escapeXml(verURL)}" class="btn">
                                     <c:out value="${valoracion.ratingPlayer.user.username}"/>
