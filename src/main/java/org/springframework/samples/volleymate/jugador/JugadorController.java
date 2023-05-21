@@ -148,21 +148,18 @@ public class JugadorController {
         Jugador jugadorLog = jugadorService.findJugadorByUsername(auth.getName());
 		if(auth != null){
 			if(jugadorService.esAdmin(jugadorLog)||jugadorAEditar.getId().equals(jugadorLog.getId())){
-				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String user = currentUser.getUsername();
 				try{
-					Jugador player = jugadorService.findJugadorByUsername(user);
-                    if(jugadorService.esAdmin(player)){
-                        Jugador jugador = jugadorService.findJugadorById(id);
-                        String username = jugador.getUser().getUsername();
-                        String pass = jugador.getUser().getPassword();
-                        Sexo sexo = jugador.getSexo();
-                        model.addAttribute("pass", pass);
-                        model.addAttribute("username", username);
-                        model.addAttribute("sexo", sexo);
-                        model.addAttribute(jugador);
-                        return VIEW_UPDATE_FORM;   
-                    }
+					
+                    Jugador jugador = jugadorService.findJugadorById(id);
+                    String username = jugador.getUser().getUsername();
+                    String pass = jugador.getUser().getPassword();
+                    Sexo sexo = jugador.getSexo();
+                    model.addAttribute("pass", pass);
+                    model.addAttribute("username", username);
+                    model.addAttribute("sexo", sexo);
+                    model.addAttribute(jugador);
+                    return VIEW_UPDATE_FORM;   
+                    
 				} catch (DataIntegrityViolationException ex){
 					
 					return VIEW_UPDATE_FORM;
@@ -187,7 +184,7 @@ public class JugadorController {
 		}
 		else {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","image","sexo","fechaInicioPremium","fechaFinPremium","user","volleys","solicitudes","premium","notificaciones","telephone","aspectos"); 
+			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","partidosCreados","image","sexo","fechaInicioPremium","fechaFinPremium","user","volleys","solicitudes","premium","notificaciones","telephone","aspectos"); 
             this.jugadorService.saveJugador(jugadorToUpdate);
 			redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador editado correctamente");
 			return "redirect:/jugadores";
