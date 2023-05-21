@@ -195,7 +195,7 @@ public class JugadorService {
             }
         }
         
-        if(!jugador.getUser().getCorreo().matches("^[A-Za-z0-9+_.-]+@(gmail|hotmail|us)\\.(\\w+)$")) {
+        if(!jugador.getUser().getCorreo().matches("^[A-Za-z0-9+_.-]+@(gmail|outlook|alum.us|yahoo|hotmail|us)\\.(\\w+)$")) {
             errores.add("El correo no es válido");
         }
         if(jugador.getFirstName().length() < 3) {
