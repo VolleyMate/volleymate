@@ -101,10 +101,12 @@ public class PaymentService {
     private RedirectUrls getRedirectUrls(String numVolleys){
         RedirectUrls redirectUrls = new RedirectUrls();
         //Posible cambio necesario de las urls al desplegar.
-        String url = String.format("http://localhost:8080/tienda/volleys/comprar/%s", numVolleys);
+
+        String url = String.format("https://volleymate-wpl.ew.r.appspot.com/tienda/volleys/comprar/%s", numVolleys);
 
         if(Integer.valueOf(numVolleys)==0){
-            url = String.format("http://localhost:8080/tienda/premium/comprar", numVolleys);
+            url = String.format("https://volleymate-wpl.ew.r.appspot.com/tienda/premium/comprar", numVolleys);
+
         }
 
         redirectUrls.setCancelUrl(url);
