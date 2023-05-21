@@ -2,6 +2,7 @@ package org.springframework.samples.volleymate.partido;
 
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -102,25 +103,45 @@ public class PartidoService {
 	}
 
 	// Filtrar partidos
+	// public Page<Partido> filtrarPartidos(Sexo sexo, Tipo tipoPartido, int page) {
+		
+	// 	Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
+	// 	Page<Partido> partidosSinFiltrar = partidoPageRepository.findAll(pageable);
+		
+    //     if (sexo != null && tipoPartido != null) {
+    //         Page<Partido> partidosPorSexoYTipo = partidoPageRepository.findBySexoAndTipo(pageable, sexo, tipoPartido);
+	// 		return partidosPorSexoYTipo;
+    //     } else if (sexo == null && tipoPartido != null) {
+	// 		Page<Partido> partidosPorTipo = partidoPageRepository.findByTipo(pageable, tipoPartido);
+	// 		return partidosPorTipo;
+	// 	} else if (sexo != null && tipoPartido == null) {
+	// 		Page<Partido> partidosPorSexo = partidoPageRepository.findBySexo(pageable, sexo);
+	// 		return partidosPorSexo;
+    //     } else {
+	// 		return partidosSinFiltrar;
+	// 	}
+        
+    // }
 	public Page<Partido> filtrarPartidos(Sexo sexo, Tipo tipoPartido, int page) {
-		
-		Pageable pageable = PageRequest.of(page,tamanoPaginacionPorPagina);
-		Page<Partido> partidosSinFiltrar = partidoPageRepository.findAll(pageable);
-		
-        if (sexo != null && tipoPartido != null) {
-            Page<Partido> partidosPorSexoYTipo = partidoPageRepository.findBySexoAndTipo(pageable, sexo, tipoPartido);
+		Pageable pageable = PageRequest.of(page, tamanoPaginacionPorPagina);
+		LocalDateTime fechaActual = LocalDateTime.now();
+		Page<Partido> partidosSinFiltrar = partidoPageRepository.findByFechaAfter(pageable, fechaActual);
+	
+		if (sexo != null && tipoPartido != null) {
+			Page<Partido> partidosPorSexoYTipo = partidoPageRepository.findBySexoAndTipoAndFechaAfter(pageable, sexo, tipoPartido, fechaActual);
 			return partidosPorSexoYTipo;
-        } else if (sexo == null && tipoPartido != null) {
-			Page<Partido> partidosPorTipo = partidoPageRepository.findByTipo(pageable, tipoPartido);
+		} else if (sexo == null && tipoPartido != null) {
+			Page<Partido> partidosPorTipo = partidoPageRepository.findByTipoAndFechaAfter(pageable, tipoPartido, fechaActual);
 			return partidosPorTipo;
 		} else if (sexo != null && tipoPartido == null) {
-			Page<Partido> partidosPorSexo = partidoPageRepository.findBySexo(pageable, sexo);
+			Page<Partido> partidosPorSexo = partidoPageRepository.findBySexoAndFechaAfter(pageable, sexo, fechaActual);
 			return partidosPorSexo;
-        } else {
+		} else {
 			return partidosSinFiltrar;
 		}
-        
-    }
+	}
+	
+
 
 	public Set<String> getCiudades() {
 		List<Partido> partidos = partidoRepository.findAll();
