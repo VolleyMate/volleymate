@@ -177,12 +177,14 @@ public class JugadorController {
 	
 	@PostMapping(value = "/jugadores/edit/{id}")
 	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model, RedirectAttributes redirAttrs){
-
+        List<String> errores = jugadorService.findErroresEditarJugador(jugador);
 		if(result.hasErrors()){
 			model.put("errors", result.getAllErrors());
 			return VIEW_UPDATE_FORM;
-		}
-		else {
+        }else if(!errores.isEmpty()){
+            model.put("errors", errores);
+            return VIEW_UPDATE_FORM;
+        } else {
 			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
 			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","partidosCreados","image","sexo","fechaInicioPremium","fechaFinPremium","user","volleys","solicitudes","premium","notificaciones","telephone","aspectos"); 
             this.jugadorService.saveJugador(jugadorToUpdate);

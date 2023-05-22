@@ -263,5 +263,19 @@ public class JugadorService {
 
         this.jugadorRepository.delete(j);
     }
+    @Transactional
+    public List<String> findErroresEditarJugador(Jugador jugador){
+        List<String> errores = new ArrayList<>();
+    
+        if(jugador.getFirstName().length() < 3) {
+            errores.add("El nombre debe tener más de 3 caracteres");
+        }
+        if(jugador.getLastName().length() < 3) {
+            errores.add("El apellido debe tener más de 3 caracteres");
+        }
+        return errores;
+    }
+
+    
 
 }
