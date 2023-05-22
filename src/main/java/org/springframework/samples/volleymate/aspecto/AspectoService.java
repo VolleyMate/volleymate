@@ -11,6 +11,8 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class AspectoService {
@@ -50,16 +52,26 @@ public class AspectoService {
     public List<Aspecto> findAllAspectosGratuitos() {
         return this.aspectoRepository.findAspectosGratuitos();
     }
-    
+	
 	@Transactional
-	public List<String> validarAspecto (Aspecto aspecto) {
+	public List<String> validarAspecto(Aspecto aspecto) {
 		List<String> errores = new ArrayList<>();
-		Integer digitos = (int)(Math.log10(aspecto.getPrecio())+1);
-
-		if(aspecto.getImagen().isEmpty()){
+		Integer digitos = (int)(Math.log10(aspecto.getPrecio()) + 1);
+	
+		if (aspecto.getImagen().isEmpty()) {
 			errores.add("La imagen no puede estar vacía");
+		} else {
+			// Validar si la imagen es una URL
+			String urlPattern = "(http(s)?://)?([\\w-]+\\.)+[\\w-]+(/[\\w- ;,./?%&=]*)?";
+			Pattern pattern = Pattern.compile(urlPattern);
+			Matcher matcher = pattern.matcher(aspecto.getImagen());
+	
+			if (!matcher.matches()) {
+				errores.add("La imagen debe ser una URL válida");
+			}
 		}
-		if(digitos.toString().isEmpty()){
+	
+		if (digitos.toString().isEmpty()) {
 			errores.add("El precio no puede estar vacío");
 		}
 		return errores;

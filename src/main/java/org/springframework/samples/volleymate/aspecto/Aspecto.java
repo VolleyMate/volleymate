@@ -25,7 +25,7 @@ public class Aspecto extends BaseEntity {
     private String imagen;
 
 	@Column(name = "precio")
-    private Integer precio;
+    private Integer precio=0;
 
     @ManyToMany(mappedBy = "aspectos")
     @OnDelete(action = OnDeleteAction.CASCADE)

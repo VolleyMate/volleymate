@@ -1,6 +1,7 @@
 package org.springframework.samples.volleymate.aspecto;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,7 +30,6 @@ public class AspectoController {
 
 
     private static final String VISTA_CREAR_ASPECTO = "jugadores/crearAspecto";
-    private static final String VISTA_TIENDA = "pagos/tienda";
     private static final String VISTA_EDITAR_ASPECTOS = "jugadores/editarAspecto";
 
 
@@ -101,6 +101,10 @@ public class AspectoController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))){
             Aspecto aspecto = aspectoService.findById(aspectoId);
+            List<Jugador> jugadores = aspecto.getJugadores();
+            for(Jugador jugador: jugadores){
+                jugador.setImage("/resources/images/perfilPorDefecto.png");
+            }
             aspectoService.deleteAspecto(aspecto);
             redirAttrs.addFlashAttribute("mensajeExito", "Aspecto eliminado correctamente");
             return "redirect:/tienda/";
