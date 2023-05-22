@@ -61,6 +61,36 @@
                             </form:select>  
                         </div>
 
+
+                        <div class="form-group">
+                            <form:label path="telephone">Teléfono:</form:label>
+                            <form:input path="telephone" style="border-radius: 20px;" class="form-control" />
+                        </div>
+ 
+                        <div class="form-group">
+                            <form:label path="sexo">Sexo:</form:label>
+                            <form:select path="sexo" style="border-radius: 20px;" class="form-control">
+                                <form:options items="${sexos}" value="${sexos}"/>
+                            </form:select>
+                        </div>
+
+                        <div class="form-group">
+                            <form:label path="user.correo">Correo:</form:label>
+                            <form:input path="user.correo" style="border-radius: 20px;" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <form:label path="user.password">Contraseña:</form:label>
+                            <div class="input-group">
+                                <form:input id="password" path="user.password" type="password" style="border-radius: 20px;" class="form-control" />
+                                <span class="input-group-addon" style="background-color: transparent; border-color: transparent;">
+                                    <button type="button" id="showPassword" class="btn btn-default">
+                                      <span class="glyphicon glyphicon-eye-close"></span>
+                                    </button>
+                                  </span>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="form-group" style="text-align: center;">
@@ -78,3 +108,20 @@
     </div>
 
 </petclinic:layout>
+
+
+<script>
+    $(function() {
+      $('#showPassword').click(function() {
+        var password = $('#password');
+        var type = password.attr('type');
+        if (type === 'password') {
+          password.attr('type', 'text');
+          $(this).find('span').removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+        } else {
+          password.attr('type', 'password');
+          $(this).find('span').removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
+        }
+      });
+    });
+    </script>
