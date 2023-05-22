@@ -67,11 +67,10 @@ public class PaymentController {
         return HOME_TIENDA_VOLLEYS;
     }
 
-    //AÑADIR AL MODEL LOS ASPECTOS NECESARIOS PARA LA VISTA
     @GetMapping(value="/tienda/aspectos")
     public String showVistaTiendaAspectos(Principal principal, ModelMap model){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
-        List<Aspecto> aspectos = this.aspectoService.findAllAspectos();
+        List<Aspecto> aspectos = this.aspectoService.findAspectosDisponiblesAComprarPorJugador(jugador);
         Integer numAspectos = aspectos.size();
         model.put("jugador", jugador);
         model.put("aspectos", aspectos);

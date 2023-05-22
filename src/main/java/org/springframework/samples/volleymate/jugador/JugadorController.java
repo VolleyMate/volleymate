@@ -426,6 +426,7 @@ public class JugadorController {
         List<Aspecto> aspectos = jugador.getAspectos();
         model.put("jugador", jugador);
         model.put("aspectos", aspectos);
+        model.put("esAdmin", jugadorService.esAdmin(jugador));
         return HOME_MIS_ASPECTOS;
     }
 
