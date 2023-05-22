@@ -59,7 +59,7 @@ INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (3
 INSERT INTO mensajes (id,contenido_mensaje,fecha_envio,emisor,partido) VALUES (4,'Hola, ¿alguien quiere jugar?', '2017-01-01 17:01','jugador',7);
 
 
-INSERT INTO aspectos(id,imagen,precio) VALUES (1,'',0);
+INSERT INTO aspectos(id,imagen,precio) VALUES (1,'/resources/images/perfilPorDefecto.png',0);
 INSERT INTO aspectos(id,imagen,precio) VALUES (2,'https://img.freepik.com/vector-premium/personaje-dibujos-animados-insignia-bandera-finlandia-jugando-voleibol_152558-37413.jpg?size=626&ext=jpg',0);
 INSERT INTO aspectos(id,imagen,precio) VALUES (3,'https://img.freepik.com/vector-premium/ilustracion-diseno-vectores-dibujos-animados-planos-personaje-lindo-volley-ball_570764-3711.jpg',0);
 INSERT INTO aspectos(id,imagen,precio) VALUES (4,'https://img.freepik.com/vector-gratis/silueta-voleibol-diseno-plano_23-2149400512.jpg?size=626&ext=jpg',400);

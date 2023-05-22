@@ -8,7 +8,18 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="crearAspecto">
-    <h2>
+    
+
+
+<c:if test="${errors.size() != 0}">
+  <c:forEach var="error" items="${errors}">
+      <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <c:out value="${error}"/>
+      </div>    
+  </c:forEach>
+</c:if>
+<h2>
         <div style="font-size:1.5em; text-align: center;">
           <p><strong>Agregar nuevo aspecto</strong></p>
         </div>
@@ -21,7 +32,7 @@
             <div class="col-md-8">
 
                 <div class="form-group">
-                  <form:label path="imagen" >Imagen:</form:label>
+                  <form:label path="imagen" >Imagen (URL):</form:label>
                   <form:input path="imagen" style="border-radius: 20px;" class="form-control" />
                 </div>  
                 <div class="form-group">
@@ -42,14 +53,5 @@
           </div>
         </form:form>
       </div>   
-    </div>
-          
-    <div style="text-align: center; color: #FF0000; padding-top: 2%;">
-          <c:forEach var="error" items="${errors}">
-              <ul>    
-               <c:out value="${error} "/>
-              </ul>
-          </c:forEach>
-  </div> 
       
 </petclinic:layout>
