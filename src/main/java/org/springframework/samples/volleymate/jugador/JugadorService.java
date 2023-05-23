@@ -263,5 +263,46 @@ public class JugadorService {
 
         this.jugadorRepository.delete(j);
     }
+    @Transactional
+    public List<String> findErroresEditarJugador(Jugador jugador){
+        List<String> errores = new ArrayList<>();
+    
+        String telephone = jugador.getTelephone();
+
+        if (telephone == null || telephone.isEmpty()) {
+            errores.add("El teléfono es obligatorio");
+        } else if (telephone.length() != 9) {
+            errores.add("El teléfono debe tener 9 cifras");
+        } else {
+            try {
+                Integer.parseInt(telephone);
+            } catch (NumberFormatException e) {
+                errores.add("El teléfono solo debe contener números");
+            }
+        }
+        if(jugador.getFirstName().length() < 3) {
+            errores.add("El nombre debe tener más de 3 caracteres");
+        }
+        if(jugador.getLastName().length() < 3) {
+            errores.add("El apellido debe tener más de 3 caracteres");
+        }
+        String correoInput = jugador.getUser().getCorreo();
+        Optional<Jugador> jugadorActualizar = jugadorRepository.findById(jugador.getId());
+        Jugador jugadorAct = jugadorActualizar.get();
+        String correoAnterior = jugadorAct.getUser().getCorreo();
+        
+        if(!correoInput.equals(correoAnterior) && jugadorRepository.findByCorreo(jugador.getUser().getCorreo()) != null){
+            errores.add("El correo ya está en uso");
+        }
+        if(jugador.getUser().getPassword().length() < 8) {
+            errores.add("La contraseña debe tener 8 caracteres cualesquiera");
+        }
+         if(!jugador.getUser().getCorreo().matches("^[A-Za-z0-9+_.-]+@(gmail|outlook|alum.us|yahoo|hotmail|us)\\.(\\w+)$")) {
+            errores.add("El correo no es válido");
+        }
+        return errores;
+    }
+
+    
 
 }

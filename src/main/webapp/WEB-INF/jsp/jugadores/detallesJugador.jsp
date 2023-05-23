@@ -51,8 +51,8 @@
         </c:if>
         <c:if test="${jugadorVista.equals(jugadorAutenticado)}">
             <h4><span class="glyphicon glyphicon-earphone"></span><c:out value=" "/><b><c:out value="${jugadorVista.telephone}"/></b></h4>
-            <h4><b><c:out value="${jugadorVista.volleys}"/></b><c:out value=" "/><img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;"></h4>
         </c:if>
+        <h4><b><c:out value="${jugadorVista.volleys}"/></b><c:out value=" "/><img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;"></h4>
     </br>
     </br>
     

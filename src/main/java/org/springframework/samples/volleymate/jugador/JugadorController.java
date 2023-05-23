@@ -12,6 +12,8 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.ui.ModelMap;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,6 +159,7 @@ public class JugadorController {
                     model.addAttribute("pass", pass);
                     model.addAttribute("username", username);
                     model.addAttribute("sexo", sexo);
+                    model.addAttribute("authorities", sexo);
                     model.addAttribute(jugador);
                     return VIEW_UPDATE_FORM;   
                     
@@ -176,21 +179,28 @@ public class JugadorController {
 	
 	
 	@PostMapping(value = "/jugadores/edit/{id}")
-	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model, RedirectAttributes redirAttrs){
+public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model, RedirectAttributes redirAttrs) {
+    List<String> errores = jugadorService.findErroresEditarJugador(jugador);
+    if (result.hasErrors()) {
+        model.put("errors", result.getAllErrors());
+        return VIEW_UPDATE_FORM;
+    } else if (!errores.isEmpty()) {
+        model.put("errors", errores);
+        return VIEW_UPDATE_FORM;
+    } else {
+        Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
+        
+        BeanUtils.copyProperties(jugador, jugadorToUpdate, "id", "user","aspectos","partidos","solicitudes","notificaciones","fechaInicioPremium","fechaFinPremium","logros","partidosCreados","premium","image","volleys","");
+        
+        User userToUpdate = jugadorToUpdate.getUser();
+        userToUpdate.setCorreo(jugador.getUser().getCorreo());
+        userToUpdate.setPassword(jugador.getUser().getPassword());
 
-		if(result.hasErrors()){
-			model.put("errors", result.getAllErrors());
-			return VIEW_UPDATE_FORM;
-		}
-		else {
-			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","partidosCreados","image","sexo","fechaInicioPremium","fechaFinPremium","user","volleys","solicitudes","premium","notificaciones","telephone","aspectos"); 
-            this.jugadorService.saveJugador(jugadorToUpdate);
-			redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador editado correctamente");
-			return "redirect:/jugadores";
-		}						
-		
-	}
+        this.jugadorService.saveJugador(jugadorToUpdate);
+        return "redirect:/jugadores";
+    }
+}
+
 
 
     
