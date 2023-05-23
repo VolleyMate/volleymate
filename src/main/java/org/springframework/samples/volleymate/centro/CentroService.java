@@ -65,12 +65,6 @@ public class CentroService {
 
 	@Transactional
 	public void deleteCentro(Centro centro) {
-		List<Partido> partidos = partidoService.findAllPartidos();
-		for(Partido partido: partidos) {
-			if(partido.getCentro().equals(centro)) {
-				partidoService.deletePartido(partido);
-			}
-		}
 		centroRepository.delete(centro);
 	}
 

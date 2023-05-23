@@ -2,6 +2,7 @@ package org.springframework.samples.volleymate.jugador;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -11,6 +12,8 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.ui.ModelMap;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +80,8 @@ public class JugadorController {
     @GetMapping(value = "/jugadores/new")
 	public String crearJugadorInicio(Map<String, Object> model, @AuthenticationPrincipal Authentication authentication, Principal principal) {
         List<Aspecto> aspectos = this.aspectoService.findAllAspectosGratuitos();
+        boolean aceptaTerminos = false;
+
         if (authentication != null ){
             Jugador jugadorLog = jugadorService.findJugadorByUsername(principal.getName());
             if(jugadorService.esAdmin(jugadorLog)){
@@ -84,6 +89,7 @@ public class JugadorController {
                 jugador.setPremium(false);
                 model.put("jugador", jugador);
                 model.put("aspectos", aspectos);
+                model.put("aceptaTerminos", aceptaTerminos);
                 return VIEW_CREATE_FORM;    
             }
             return "redirect:/";
@@ -92,16 +98,19 @@ public class JugadorController {
             jugador.setPremium(false);
             model.put("jugador", jugador);
             model.put("aspectos", aspectos);
+            model.put("aceptaTerminos", aceptaTerminos);
             return VIEW_CREATE_FORM;
         }
 	}
 
 
     @PostMapping(value = "/jugadores/new")
-	public String processCreationForm(@Valid Jugador jugador, Map<String, Object> model, Principal principal,@AuthenticationPrincipal Authentication authentication, RedirectAttributes redirAttrs) {
+	public String processCreationForm(@Valid Jugador jugador, boolean aceptaTerminos,Map<String, Object> model, Principal principal,@AuthenticationPrincipal Authentication authentication, RedirectAttributes redirAttrs) {
 
         List<String> errores = jugadorService.findErroresCrearJugador(jugador);
-
+        if(aceptaTerminos == false){
+            errores.add("Debe aceptar los términos y condiciones");
+        }
 		if (!errores.isEmpty()) {
 			model.put("errors", errores);
 			return VIEW_CREATE_FORM;
@@ -141,21 +150,19 @@ public class JugadorController {
         Jugador jugadorLog = jugadorService.findJugadorByUsername(auth.getName());
 		if(auth != null){
 			if(jugadorService.esAdmin(jugadorLog)||jugadorAEditar.getId().equals(jugadorLog.getId())){
-				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String user = currentUser.getUsername();
 				try{
-					Jugador player = jugadorService.findJugadorByUsername(user);
-                    if(jugadorService.esAdmin(player)){
-                        Jugador jugador = jugadorService.findJugadorById(id);
-                        String username = jugador.getUser().getUsername();
-                        String pass = jugador.getUser().getPassword();
-                        Sexo sexo = jugador.getSexo();
-                        model.addAttribute("pass", pass);
-                        model.addAttribute("username", username);
-                        model.addAttribute("sexo", sexo);
-                        model.addAttribute(jugador);
-                        return VIEW_UPDATE_FORM;   
-                    }
+					
+                    Jugador jugador = jugadorService.findJugadorById(id);
+                    String username = jugador.getUser().getUsername();
+                    String pass = jugador.getUser().getPassword();
+                    Sexo sexo = jugador.getSexo();
+                    model.addAttribute("pass", pass);
+                    model.addAttribute("username", username);
+                    model.addAttribute("sexo", sexo);
+                    model.addAttribute("authorities", sexo);
+                    model.addAttribute(jugador);
+                    return VIEW_UPDATE_FORM;   
+                    
 				} catch (DataIntegrityViolationException ex){
 					
 					return VIEW_UPDATE_FORM;
@@ -172,21 +179,29 @@ public class JugadorController {
 	
 	
 	@PostMapping(value = "/jugadores/edit/{id}")
-	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model, RedirectAttributes redirAttrs){
+public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model, RedirectAttributes redirAttrs) {
+    List<String> errores = jugadorService.findErroresEditarJugador(jugador);
+    if (result.hasErrors()) {
+        model.put("errors", result.getAllErrors());
+        return VIEW_UPDATE_FORM;
+    } else if (!errores.isEmpty()) {
+        model.put("errors", errores);
+        return VIEW_UPDATE_FORM;
+    } else {
+        Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
+        
+        BeanUtils.copyProperties(jugador, jugadorToUpdate, "id", "user","aspectos","partidos","solicitudes","notificaciones","fechaInicioPremium","fechaFinPremium","logros","partidosCreados","premium","image","volleys","");
+        
+        User userToUpdate = jugadorToUpdate.getUser();
+        userToUpdate.setCorreo(jugador.getUser().getCorreo());
+        userToUpdate.setPassword(jugador.getUser().getPassword());
 
-		if(result.hasErrors()){
-			model.put("errors", result.getAllErrors());
-			return VIEW_UPDATE_FORM;
-		}
-		else {
-			Jugador jugadorToUpdate = this.jugadorService.findJugadorById(jugador.getId());
-			BeanUtils.copyProperties(jugador,jugadorToUpdate,"partidos","image","sexo","fechaInicioPremium","fechaFinPremium","user","volleys","solicitudes","premium","notificaciones","telephone"); 
-            this.jugadorService.saveJugador(jugadorToUpdate);
-			redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador editado correctamente");
-			return "redirect:/jugadores";
-		}						
-		
-	}
+        this.jugadorService.saveJugador(jugadorToUpdate);
+        redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador editado correctamente");
+        return "redirect:/jugadores";
+    }
+}
+
 
 
     
@@ -341,19 +356,24 @@ public class JugadorController {
     public String showVistaNotificaciones(Principal principal, ModelMap model){
         //seccion notificaciones
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
+        LocalDateTime fechaActual = LocalDateTime.now();
         Set<Solicitud> solicitudesRecibidas = this.solicitudService.findSolicitudesATusPartidos(jugador);
         List<Solicitud> solicitudesNuevas = new ArrayList<>();
         for (Solicitud sol:solicitudesRecibidas){
-            if (sol.getJugador().getVolleys() - sol.getPartido().getPrecioPersona() >= 0){
+            if (((sol.getJugador().getVolleys() - sol.getPartido().getPrecioPersona() >= 0)||(sol.getJugador().getPremium()))&&(sol.getPartido().getFecha().isAfter(fechaActual))&&(sol.getPartido().getJugadores().size()<sol.getPartido().getNumJugadoresNecesarios())){
                 solicitudesNuevas.add(sol);
-            } else{
-                this.jugadorService.eliminarSolicitud(sol);
             }
         }
         model.put("solicitudesRecibidas", solicitudesNuevas);
         
         Set<Solicitud> solicitudesPendientes = this.solicitudService.findTusSolicitudes(jugador);
-        model.put("solicitudesPendientes", solicitudesPendientes);
+        List<Solicitud> solicitudesPendientesNuevas = new ArrayList<>();
+        for (Solicitud sol:solicitudesPendientes){
+            if (((sol.getJugador().getVolleys() - sol.getPartido().getPrecioPersona() >= 0)||(sol.getJugador().getPremium()))&&(sol.getPartido().getFecha().isAfter(fechaActual))&&(sol.getPartido().getJugadores().size()<sol.getPartido().getNumJugadoresNecesarios())){
+                solicitudesPendientesNuevas.add(sol);
+            } 
+        }
+        model.put("solicitudesPendientes", solicitudesPendientesNuevas);
         
         return VIEW_NOTIFICACIONES;
     }
@@ -417,15 +437,17 @@ public class JugadorController {
         List<Aspecto> aspectos = jugador.getAspectos();
         model.put("jugador", jugador);
         model.put("aspectos", aspectos);
+        model.put("esAdmin", jugadorService.esAdmin(jugador));
         return HOME_MIS_ASPECTOS;
     }
 
     @GetMapping(value="/jugadores/setAspecto/{aspectoId}")
-    public String setAspecto(Principal principal, ModelMap model, @PathVariable("aspectoId") Integer aspectoId){
+    public String setAspecto(Principal principal, ModelMap model, @PathVariable("aspectoId") Integer aspectoId, RedirectAttributes redirAttrs){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         Aspecto aspecto = aspectoService.findById(aspectoId);
         jugador.setImage(aspecto.getImagen());
         jugadorService.saveJugador(jugador);
+        redirAttrs.addFlashAttribute("mensajeExitoso", "Aspecto cambiado con éxito");
         return "redirect:/jugadores";
     }
 
@@ -433,6 +455,17 @@ public class JugadorController {
     public String showTerminos(){
         return "jugadores/terminos";
     }
+
+    @GetMapping(value="/jugadores/volleys/add/{playerUsername}")
+    public String addVolleys(Principal principal, @PathVariable("playerUsername") String playerUsername, ModelMap model,RedirectAttributes redirAttrs){
+        Jugador jugadorAñadir = this.jugadorService.findJugadorByUsername(playerUsername);
+        Integer sumVolleys = jugadorAñadir.getVolleys() + 150;
+        jugadorAñadir.setVolleys(sumVolleys);
+        this.jugadorService.saveJugador(jugadorAñadir);
+        redirAttrs.addFlashAttribute("mensajeExitoso", "Volleys añadidos con éxito");
+        return "redirect:/jugadores/"+jugadorAñadir.getId();        
+    }
+
 }
 
 

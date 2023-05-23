@@ -9,15 +9,21 @@
 <petclinic:layout pageName="tienda">
     <div class="container">
         <c:if test="${mensajeExito != null}">
-            <div style="background-color: greenyellow;">
-                <c:out value="${mensajeExito}" />
-            </div>
-        </c:if>
-        <c:if test="${mensajeError!=null}">
-            <div style="background-color: red;">
-                <c:out value="${mensajeError}" ></c:out>
-            </div>
-        </c:if>
+    <div class="alert alert-success alert-dismissible" style="padding-top: 2%;" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+      <c:out value="${mensajeExito}" />
+    </div>
+  </c:if>
+        
+
+  <c:if test="${mensajeError != null}">
+    <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+      <c:out value="${mensajeError}" />
+    </div>
+  </c:if>
 
         <div class="row">
             <div class="col-md-6" style="padding: 2%;">
@@ -73,6 +79,7 @@
                     </c:if>
                     <c:if test="${jugador.premium == true}">
                         <h1 style="text-align: center; padding-top: 15%;">YA ERES USUARIO PREMIUM</h1>
+                        <img class="rounded d-block" style="padding-top: 2%;" src="/resources/images/corona.png" width="100" height="100" alt="jugador">
                     </c:if>
                 </div>
             </div>

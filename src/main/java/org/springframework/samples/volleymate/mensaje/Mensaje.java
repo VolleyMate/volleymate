@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -35,12 +36,13 @@ public class Mensaje extends BaseEntity {
 
     @OneToOne()
     @JoinColumn(name = "emisor", referencedColumnName = "username")
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	private Jugador emisor;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "partido")
+    
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "partido", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_PARTIDO", 
+    foreignKeyDefinition = "FOREIGN KEY (partido) REFERENCES partidos(id) ON DELETE SET NULL"))
     private Partido partido;
 
     public String getFechaParseada(){

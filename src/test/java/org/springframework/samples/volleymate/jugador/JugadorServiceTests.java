@@ -234,7 +234,9 @@ class JugadorServiceTests {
 		jugador.setLastName("García");
 		jugador.setTelephone("12345678");
 		User user = new User();
-		user.setCorreo("juan.garcia@example.com");
+		user.setCorreo("juan.garcia@gmail.com");
+		user.setPassword("123456789");
+		user.setUsername("usuario");
 		jugador.setUser(user);
 
 		// Ejecución
@@ -250,6 +252,8 @@ class JugadorServiceTests {
 		jugador2.setTelephone("657236154");
 		User user2 = new User();
 		user2.setCorreo("juan.garci");
+		user2.setPassword("123456789");
+		user2.setUsername("usuario");
 		jugador2.setUser(user2);
 
 		// Ejecución
@@ -268,6 +272,13 @@ class JugadorServiceTests {
 		Jugador jugador2 = jugadorService.findJugadorByUsername("Test2");
 		assertThat(jugadorService.esAdmin(jugador2)).isEqualTo(false);
 	}
+
+	/*@Test
+	public void shouldDeleteJugador(){
+		Jugador jugador = jugadorService.findJugadorByUsername("Test");
+		jugadorService.deleteJugador(jugador);
+		assertThat(jugadorService.findAll().size()).isEqualTo(2);
+	}*/
 	
 }
 

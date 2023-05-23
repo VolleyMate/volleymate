@@ -51,8 +51,8 @@
         </c:if>
         <c:if test="${jugadorVista.equals(jugadorAutenticado)}">
             <h4><span class="glyphicon glyphicon-earphone"></span><c:out value=" "/><b><c:out value="${jugadorVista.telephone}"/></b></h4>
-            <h4><b><c:out value="${jugadorVista.volleys}"/></b><c:out value=" "/><img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;"></h4>
         </c:if>
+        <h4><b><c:out value="${jugadorVista.volleys}"/></b><c:out value=" "/><img src="/resources/images/pelotaVolley.png" alt="imagen de volleys" style="width: 20px; height: 20px; margin-right: 10px;"></h4>
     </br>
     </br>
     
@@ -80,10 +80,10 @@
 
                 
                  <sec:authorize access="hasAuthority('admin')">
-                    <spring:url value="/jugadores/volleys/añadir/{id}" var="añadirURL">
-                    <spring:param name="id" value="${valorarId}" />
+                    <spring:url value="/jugadores/volleys/add/{username}" var="añadirURL">
+                    <spring:param name="username" value="${jugadorVista.user.username}" />
                 </spring:url>
-                <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
+                <a href="${añadirURL}" class="btn btn-success">Añadir 150 volleys a <c:out value="${jugadorVista.user.username}"/></a>
                 </sec:authorize>
 
 
@@ -120,10 +120,10 @@
                 <a href="${aspURL}" class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span> Mis aspectos</a>
 
                 <sec:authorize access="hasAuthority('admin')">
-                    <spring:url value="/jugadores/volleys/añadir/{id}" var="añadirURL">
-                    <spring:param name="id" value="${id}" />
-                </spring:url>
-                <a href="${añadirURL}" class="btn btn-default">Añadir volleys [ADMIN]</a>
+                    <spring:url value="/jugadores/volleys/add/{id}" var="añadirURL">
+                        <spring:param name="id" value="${jugadorVista.user.username}" />
+                    </spring:url>
+                    <a href="${añadirURL}" class="btn btn-warning">Añadir 150 volleys a <c:out value="${jugadorVista.user.username}"/></a>
                 </sec:authorize>
                 
             </c:if>

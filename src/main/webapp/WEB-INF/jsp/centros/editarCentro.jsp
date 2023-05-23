@@ -9,6 +9,15 @@
 
 <petclinic:layout pageName="centros">
 
+<c:if test="${errors.size() != 0}">
+    <c:forEach var="error" items="${errors}">
+        <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${error}"/>
+        </div>    
+    </c:forEach>
+</c:if>
+
     <h2>
         <div style="font-size:1.5em; text-align: center;">
             <strong>Editar centro</strong>
@@ -23,7 +32,7 @@
           	<form:hidden path="id"/>
           </div>
           <div class="row form-row">
-            <div class="col-md-8">
+            <div class="col-md-8 mx-auto">
               <div class="col-md-5" style="margin: 25px;">
                 <div class="form-group">
                   <form:label path="nombre" >Nombre:</form:label>
@@ -34,6 +43,7 @@
                   <form:input path="ciudad" style="border-radius: 20px;" class="form-control" />
                 </div>
               </div>
+
               <div class="col-md-5" style="margin: 25px;">
                 <div class="form-group">
                   <form:label path="direccion" >Dirección:</form:label>
@@ -48,7 +58,7 @@
                   <form:input path="estado" style="border-radius: 20px; display:none;" class="form-control" />
                 </div>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12 text-center">
                 <button class="btn btn-md btn-default" style="background-color: #838789; margin: 0 5px;" type="submit">Actualizar</button>
               </div>
               <br>
@@ -59,15 +69,6 @@
 
                 <form:errors></form:errors>
         </div>
-    </div>
-
-
-    <div style="text-align: center; color: #FF0000; padding-top: 2%;">
-        <c:forEach var="error" items="${errors}">
-            <ul>
-                <c:out value="${error} " />
-            </ul>
-        </c:forEach>
     </div>
 
 </petclinic:layout>

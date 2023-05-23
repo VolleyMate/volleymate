@@ -1,6 +1,7 @@
 package org.springframework.samples.volleymate.solicitud;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -25,7 +26,7 @@ public class Solicitud extends BaseEntity {
   @NotNull
   @ManyToOne
   @JoinColumn(name = "jugador_id")
-  @OnDelete(action = OnDeleteAction.NO_ACTION)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Jugador jugador;
 
   @NotNull

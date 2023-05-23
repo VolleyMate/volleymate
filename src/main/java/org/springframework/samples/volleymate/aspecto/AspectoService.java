@@ -2,13 +2,17 @@ package org.springframework.samples.volleymate.aspecto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.volleymate.jugador.Jugador;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class AspectoService {
@@ -39,29 +43,61 @@ public class AspectoService {
 		aspectoRepository.save(aspecto);
 	}
 
+	@Transactional
     public Aspecto findById(Integer aspectoId) {
         return this.aspectoRepository.findById(aspectoId).get();
     }
-
+	
+	@Transactional
     public List<Aspecto> findAllAspectosGratuitos() {
         return this.aspectoRepository.findAspectosGratuitos();
     }
-    
-	public List<String> validarAspecto (Aspecto aspecto) {
+	
+	@Transactional
+	public List<String> validarAspecto(Aspecto aspecto) {
 		List<String> errores = new ArrayList<>();
-		Integer digitos = (int)(Math.log10(aspecto.getPrecio())+1);
-
-		if(aspecto.getImagen().isEmpty()){
+		Integer digitos = (int)(Math.log10(aspecto.getPrecio()) + 1);
+	
+		if (aspecto.getImagen().isEmpty()) {
 			errores.add("La imagen no puede estar vacía");
+		} else {
+			// Validar si la imagen es una URL
+			String urlPattern = "(http(s)?://)?([\\w-]+\\.)+[\\w-]+(/[\\w- ;,./?%&=]*)?";
+			Pattern pattern = Pattern.compile(urlPattern);
+			Matcher matcher = pattern.matcher(aspecto.getImagen());
+	
+			if (!matcher.matches()) {
+				errores.add("La imagen debe ser una URL válida");
+			}
 		}
-		if(digitos.toString().isEmpty()){
+	
+		if (digitos.toString().isEmpty()) {
 			errores.add("El precio no puede estar vacío");
 		}
 		return errores;
 	}
 
+	@Transactional
 	public void deleteAspecto(Aspecto aspecto) {
 		this.aspectoRepository.delete(aspecto);
 	}
+
+	public List<Aspecto> findAspectosDisponiblesAComprarPorJugador(Jugador jugador) {
+		List<Aspecto> aspectoQueTiene = aspectoRepository.findAspectosDisponibles(jugador);
+		List<Aspecto> aspectos = this.findAllAspectos();
+	
+		Iterator<Aspecto> iterator = aspectos.iterator();
+		while (iterator.hasNext()) {
+			Aspecto aspectoIt = iterator.next();
+			for (Aspecto aspectoQueTieneIt : aspectoQueTiene) {
+				if (aspectoQueTieneIt.equals(aspectoIt)) {
+					iterator.remove();
+					break; // Salimos del bucle interno si encontramos una coincidencia
+				}
+			}
+		}
+		return aspectos;
+	}
+	
 
 }

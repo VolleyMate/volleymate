@@ -8,7 +8,16 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="crearPartido">
-    <h2>
+  <c:if test="${errors.size() != 0}">
+    <c:forEach var="error" items="${errors}">
+        <div class="alert alert-danger alert-dismissible" style="padding-top: 2%;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <c:out value="${error}"/>
+        </div>    
+    </c:forEach>
+</c:if>    
+
+<h2>
         <p style="font-size:1.5em; text-align: center;">
             <strong>Crear partido</strong>
         </p>
@@ -87,13 +96,5 @@
         </form:form>
       </div>   
     </div>
-          
-    <div style="text-align: center; color: #FF0000">
-          <c:forEach var="error" items="${errors}">
-              <ul>    
-               <c:out value="${error} "/>
-              </ul>
-          </c:forEach>
-  </div> 
       
 </petclinic:layout>
