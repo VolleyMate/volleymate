@@ -18,15 +18,19 @@
     </c:forEach>
 </c:if>
 
-    <div style="text-align: center;">
+    <div style="text-align: center; padding-bottom: 3%;">
         <h2>
             <c:if test="${jugador['new']}">
                 <p>Regístrate</p>
             </c:if>
         </h2>
     </div>
-    <div style="background-color: #0099bb3e; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px;">
+    <div style="background-color: #0099bb3e; padding: 20px; width: 80%; margin: 0 auto;border-radius: 20px; padding-top: 3%;">
         <div class="container">         
+            <div style="padding-left: 20%;">
+                <p style="color: rgb(196, 140, 21); font-weight: 900;">¡Cuidado con la elección de nombre de usuario! No lo podrás editar</p>
+            </div>
+            
             <form:form modelAttribute="jugador" class="form-horizontal " id="add-jugador-form">
                 <div class="row form-row">
                     <div class="col-md-4" style="margin: 25px;">
@@ -76,10 +80,15 @@
                                 <form:options items="${sexos}" value="${sexos}"/>
                             </form:select>
                         </div>
-                        <div>
-                            <input type="checkbox" name="aceptaTerminos" style="border-radius: 20px;" class="form-control" />
-                            <label for="aceptaTerminos">Acepto los <a href="/terminos">términos y condiciones</a></label>
-                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <div class="form-group" style="padding-top: 3%;">
+                              <input type="checkbox" name="aceptaTerminos" style="border-radius: 20px;" class="form-control" />
+                            </div>
+                            <div style="margin-left: 10px; padding-left: 5%; padding-top: 2%;">
+                              <label for="aceptaTerminos">Acepto los <a href="/terminos">términos y condiciones</a></label>
+                            </div>
+                          </div>
+                          
                         <br>
                         <div style="text-align: center">
                             <button style="background-color: #838789" class="btn btn-default" type="submit">Registrarse</button>
@@ -91,6 +100,9 @@
             </form:form>
         </div>
     <p></p>
+    <div style="padding-top: 3%;">
+        <p style="text-align: center; font-size: 2rem;">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
+    </div>
 </petclinic:layout>
 
 <script>
