@@ -49,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/centros/**").authenticated()
         .antMatchers("/logro/**").authenticated()
 				.antMatchers("/misAspectos/**").authenticated()
-				.antMatchers("/terminos/**").authenticated()
+				.antMatchers("/terminos/**").permitAll()
 
 				.anyRequest().denyAll()
 				.and()

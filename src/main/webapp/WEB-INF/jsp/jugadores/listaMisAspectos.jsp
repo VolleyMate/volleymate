@@ -8,28 +8,74 @@
 
 <petclinic:layout pageName="listaMisAspectos">
 
-<h2>Mis aspectos</h2>
-<div class="row">
-    <c:if test="${aspectos.size() == 0}">
-        No tienes aún ningún aspecto.
+    <h2>Mis aspectos</h2>
+
+    <c:if test="${esAdmin}">
+        <div class="row">
+            <c:if test="${aspectos.size() == 0}">
+                No tienes aún ningún aspecto.
+            </c:if>
+            <c:if test="${aspectos.size()  != 0}">
+                <c:forEach items="${aspectos}" var="aspecto">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body square">
+                                <spring:url value="/jugadores/setAspecto/{aspectoId}" var="setURL">
+                                    <spring:param name="aspectoId" value="${aspecto.id}" />
+                                </spring:url>
+                                <a href="${setURL}" class="btn btn-default">
+                                    <img src="${aspecto.imagen}" alt="Aspecto">
+                                </a>
+                            </div>
+                                <div style="padding-top: 3%">
+                                    <sec:authorize access="hasAuthority('admin')">
+                                        <spring:url value="/tienda/aspectos/edit/{aspectoId}" var="editUrl">
+                                            <spring:param name="aspectoId" value="${aspecto.id}" />
+                                        </spring:url>
+                                        <a href="${fn:escapeXml(editUrl)}">
+                                            <p class="btn btn-default">Editar aspecto</p>
+                                        </a>
+                                    </sec:authorize>
+                                </div>
+                                <div style="padding-top: 3%">
+                                    <sec:authorize access="hasAuthority('admin')">
+                                        <spring:url value="/tienda/aspectos/delete/{aspectoId}" var="deleteUrl">
+                                            <spring:param name="aspectoId" value="${aspecto.id}" />
+                                        </spring:url>
+                                        <a href="${fn:escapeXml(deleteUrl)}">
+                                            <p class="btn btn-red">Eliminar aspecto</p>
+                                        </a>
+                                </div>
+                            </div>
+                        </div>
+                </c:forEach>
+            </c:if>
+        </div>
     </c:if>
-    <c:if test="${aspectos.size()  != 0}">
-        <c:forEach items="${aspectos}" var="aspecto">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body square">
-                        <spring:url value="/jugadores/setAspecto/{aspectoId}" var="setURL">
-                            <spring:param name="aspectoId" value="${aspecto.id}" />
-                        </spring:url>
-                        <a href="${setURL}" class="btn btn-default">
-                            <img src="${aspecto.imagen}" alt="Aspecto">
-                        </a>
+
+    <c:if test="${!esAdmin}">
+        <div class="row">
+            <c:if test="${aspectos.size() == 0}">
+                No tienes aún ningún aspecto.
+            </c:if>
+            <c:if test="${aspectos.size()  != 0}">
+                <c:forEach items="${aspectos}" var="aspecto">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body square">
+                                <spring:url value="/jugadores/setAspecto/{aspectoId}" var="setURL">
+                                    <spring:param name="aspectoId" value="${aspecto.id}" />
+                                </spring:url>
+                                <a href="${setURL}" class="btn btn-default">
+                                    <img src="${aspecto.imagen}" alt="Aspecto">
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </c:forEach>
+                </c:forEach>
+            </c:if>
+        </div>
     </c:if>
-</div>
 </petclinic:layout>
 <style>
     .square {

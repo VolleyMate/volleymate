@@ -1,4 +1,4 @@
-package org.springframework.samples.volleymate.jugador;
+package org.springframework.samples.volleymate.partido;
 
 import static org.hamcrest.Matchers.hasProperty;
 import static org.mockito.BDDMockito.given;
@@ -67,10 +67,10 @@ import static org.mockito.ArgumentMatchers.eq;
 
 
 
-@WebMvcTest(controllers = JugadorController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class, properties = {
+@WebMvcTest(controllers = PartidoController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class, properties = {
     "database=hsqldb",
 "spring.h2.console.enabled=true" })
-class JugadorControllerTests {
+class PartidoControllerTests {
 
     @MockBean
 	private JugadorService jugadorService;
@@ -83,6 +83,9 @@ class JugadorControllerTests {
 
     @MockBean
     private AspectoService aspectoService;
+
+    @MockBean
+    private CentroService centroService;
 
     @MockBean
     private PartidoService partidoService;
@@ -121,8 +124,8 @@ class JugadorControllerTests {
 		george.setLastName("Davis");
 		george.setUser(user);
         george.setVolleys(200);
-        george.setSexo(Sexo.MASCULINO);
-		george.setCiudad(Ciudad.BADAJOZ);
+        george.setSexo(org.springframework.samples.volleymate.jugador.Sexo.MASCULINO);
+		george.setCiudad(org.springframework.samples.volleymate.jugador.Ciudad.BADAJOZ);
 		george.setFechaFinPremium(LocalDateTime.parse("2024-01-01T00:00:00"));
 		george.setFechaInicioPremium(LocalDateTime.parse("2020-01-01T00:00:00"));
 
@@ -166,7 +169,7 @@ class JugadorControllerTests {
 		barba.setLastName("Davis");
 		barba.setUser(user2);
         barba.setVolleys(200);
-        barba.setSexo(Sexo.MASCULINO);
+        barba.setSexo(org.springframework.samples.volleymate.jugador.Sexo.MASCULINO);
 
 		given(this.jugadorService.findJugadorById(2)).willReturn(barba);
 		given(this.jugadorService.findJugadorByUsername("Test2")).willReturn(barba);
@@ -187,7 +190,7 @@ class JugadorControllerTests {
 		jugador3.setLastName("Davis");
 		jugador3.setUser(user3);
 		jugador3.setVolleys(200);
-		jugador3.setSexo(Sexo.MASCULINO);
+		jugador3.setSexo(org.springframework.samples.volleymate.jugador.Sexo.MASCULINO);
 
 		given(this.jugadorService.findJugadorById(3)).willReturn(jugador3);
 		given(this.jugadorService.findJugadorByUsername("Test3")).willReturn(jugador3);
@@ -238,107 +241,47 @@ class JugadorControllerTests {
 
 	}
 
-	@WithMockUser(value = "spring", username = "Test3", authorities = "jugador")
+@WithMockUser(value = "spring", username = "Test3", authorities = "jugador")
     @Test
 	void testInitCreationForm() throws Exception {
-		mockMvc.perform(get("/jugadores/new")).andExpect(status().isOk())
-				.andExpect(view().name("jugadores/crearJugador"));
+		mockMvc.perform(get("/partidos/new")).andExpect(status().isOk())
+				.andExpect(view().name("partidos/crearPartido"));
 	}
 
-	/*@WithMockUser(value = "spring", username = "Test3", authorities = "jugador")
+@WithMockUser(value = "spring", username = "Test3", authorities = "jugador")
     @Test
-	void testProcessCreationFormSuccess() throws Exception {
-		mockMvc.perform(post("/jugadores/new")
-		.param("firstName", "Joe")
-		.param("lastName", "Bloggs")
-		.param("sexo", "MASCULINO")
-		.param("fechaNacimiento", "1999/01/01")
-		.param("volleys", "200")
-		.param("telephone", "123456789")
-		.param("ciudad", "SEVILLA")
-		.param("user.username", "Test4")
-		.param("user.password", "123")
-		.param("user.correo", "test4@us.es")
-		.param("user.enabled", "true")
-		.param("user.authorities", "jugador")).with(csrf()).andExpect(status().isOk());
-	}*/
-				
-
-
-    @WithMockUser(value = "spring", username = "Test3", authorities = "jugador")
-    @Test
-    void testPerfil() throws Exception {
-        mockMvc.perform(get("/jugadores/1")).andExpect(status().isOk())
-                .andExpect(view().name("jugadores/detallesJugador"));
+    void testPartidos() throws Exception {
+        mockMvc.perform(get("/partidos")).andExpect(status().isOk());
     }
 
-	@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
+@WithMockUser(value = "spring", username = "Test3", authorities = "jugador")
     @Test
-	void testShowJugadorAutenticado() throws Exception {
-		mockMvc.perform(get("/jugadores")).andExpect(status().isOk())
-				.andExpect(view().name("jugadores/detallesJugador"));
-	}
+    void testJugadoresPartido() throws Exception {
+        mockMvc.perform(get("/jugadores/partido/1")).andExpect(status().isOk())
+                .andExpect(view().name("partidos/jugadoresPartido"));
+    }
 
-	@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
+ @WithMockUser(value = "spring", username = "Test3", authorities = "jugador")
     @Test
-	void testShowMisPartidos() throws Exception {
-		mockMvc.perform(get("/jugadores/mispartidos")).andExpect(status().isOk())
-				.andExpect(view().name("jugadores/misPartidos"));
-	}
+    void testShowPartido() throws Exception {
+        mockMvc.perform(get("/partidos/1")).andExpect(status().isOk())
+                .andExpect(view().name("partidos/partidoDetails"));
+    }
 
-	@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
+@WithMockUser(value = "spring", username = "Test3", authorities = "jugador")
     @Test
-	void testShowVistaNotificaciones() throws Exception {
-		mockMvc.perform(get("/jugadores/notificaciones")).andExpect(status().isOk())
-				.andExpect(view().name("jugadores/notificacionesJugador"));
-	}
+    void testSolicitudes() throws Exception {
+        mockMvc.perform(get("/partidos/solicitudes/1")).andExpect(status().isOk())
+                .andExpect(view().name("partidos/solicitudes"));
+    }
 
-	@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
+
+
+@WithMockUser(value = "spring", username = "Test3", authorities = "jugador")
     @Test
-	void testShowJugadores() throws Exception {
-		mockMvc.perform(get("/listaJugadores")).andExpect(status().isOk())
-				.andExpect(view().name("jugadores/listaJugadores"));
-	}
+    void testsalirPartido() throws Exception {
+        mockMvc.perform(get("/partidos/salir/8")).andExpect(status().is3xxRedirection());
+    }
 
-	@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
-    @Test
-	void testShowVistaMisAspectos() throws Exception {
-		mockMvc.perform(get("/misAspectos")).andExpect(status().isOk())
-				.andExpect(view().name("jugadores/listaMisAspectos"));
-	}
-
-	@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
-    @Test
-	void testShowTerminos() throws Exception {
-		mockMvc.perform(get("/terminos")).andExpect(status().isOk())
-				.andExpect(view().name("jugadores/terminos"));
-	}
-
-	@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
-    @Test
-	void testSolicitudUnirse() throws Exception {
-		mockMvc.perform(get("/jugadores/solicitudes/1")).andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/partidos/1"));
-	}
-
-	@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
-    @Test
-	void testDenegarSolicitud() throws Exception {
-		mockMvc.perform(get("/jugadores/solicitudes/denegar/1")).andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/jugadores/notificaciones"));
-	}
-
-	/*@WithMockUser(value = "spring", username = "Test", authorities = "jugador")
-    @Test
-	void testAceptarSolicitud() throws Exception {
-		mockMvc.perform(get("/jugadores/solicitudes/aceptar/1")).andExpect(status().is2xxSuccessful())
-				.andExpect(view().name("redirect:/jugadores/notificaciones"));
-	}*/
-
-
-
-	
-
-	
 
 }

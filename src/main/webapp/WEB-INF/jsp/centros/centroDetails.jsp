@@ -46,19 +46,19 @@
                 </div>
             </div>
         </div>   
-    
+        </div>
 
         <div style="text-align: center; padding-top: 3%;">
             <sec:authorize access="hasAuthority('admin')">
             <spring:url value="/centros/edit/{centroId}" var="editUrl">
                 <spring:param name="centroId" value="${centro.id}" />
             </spring:url>
-            <a href="${editUrl}" class="btn btn-primary">Editar centro</a>
+            <a href="${editUrl}" class="btn btn-default">Editar centro</a>
 
             <spring:url value="/centros/delete/{centroId}" var="eliminarURL">
                 <spring:param value="${centro.id}" name="centroId"/>
             </spring:url>
-            <a href="/centros/delete/${centro.id}" class="btn btn-danger">Eliminar centro [ADMIN]</a>
+            <a href="/centros/delete/${centro.id}" class="btn btn-red">Eliminar centro [ADMIN]</a>
         </sec:authorize>
     
     </div>

@@ -145,35 +145,6 @@ public class CentroController {
         }
     }
 
-    // //Editar centro para administrador
-    // @GetMapping(value = "/centros/edit/{centroId}")
-    // public String initEditForm(Map<String, Object> model, @PathVariable("centroId") int centroId, Principal principal) {
-    //     //Solo se puede editar el centro si el usuario es administrador
-    //     Centro centro = centroService.findCentroById(centroId);
-    //     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    //     if(auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))){
-    //         model.put("centro", centro);
-    //         return "centros/editarCentro"; 
-    //     }else{
-    //         model.put("message", "No tienes permisos para realizar esta acción");
-    //         return "redirect:/";
-    //     }
-        
-    // }
-
-    // @PostMapping(value = "/centros/edit/{centroId}")
-    // public String processEditForm(@Valid Centro centro, BindingResult result, @PathVariable("centroId") int centroId, Principal principal, Map<String, Object> model) {
-    //     if(result.hasErrors()) {
-    //         model.put("errors", result.getAllErrors());
-    //         return "centros/editarCentro";
-    //     }else {
-    //         Centro centroToUpdate = centroService.findCentroById(centroId);
-    //         BeanUtils.copyProperties(centro, centroToUpdate, "nombre", "direccion", "maps", "ciudad", "estado");
-    //         this.centroService.saveCentro(centro);
-    //         model.put("message", "Centro actualizado correctamente");
-    //         return "redirect:/centros";
-    //     }
-    // }
 
     @GetMapping(value = "/centros/edit/{centroId}")
 	public String initEditForm(Map<String, Object> model, @PathVariable("centroId") int centroId, Principal principal) {

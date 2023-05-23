@@ -30,9 +30,9 @@
                 </select>
             </div>
             <br>
-            <div style="grid-column: 2; grid-row: 1; align-items: center;">
-                <div style="text-align: left; font-size: large;">
-                    <label for="tipo">Tipo de partido:</label>
+            <div style="grid-column: 2; grid-row: 1; align-items: center; padding-left: 6%;">
+                <div style="text-align: left; font-size: large; padding-left: 3%;">
+                    <label for="tipo">Tipo:</label>
                 </div>
                 <select class="btn btn-default" id="tipo" name="tipo">
                     <option value="">Cualquiera</option>

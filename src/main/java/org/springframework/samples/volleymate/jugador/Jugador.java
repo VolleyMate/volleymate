@@ -89,14 +89,20 @@ public class Jugador extends Person{
                              foreignKeyDefinition = "FOREIGN KEY (id_jugador) REFERENCES jugadores(id) ON DELETE CASCADE"))
     private List<Logro> logros;
 
+	
+
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "jugador_partidos", 
-				joinColumns = @JoinColumn(name = "jugador_id"),
-				inverseJoinColumns = @JoinColumn(name = "partido_id"),
-				foreignKey = @ForeignKey(name = "fk_jugador_partidos_jugador_id", 
-							 foreignKeyDefinition = "FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE CASCADE"))
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Set<Partido> partidos;
+    @JoinTable(name = "jugador_partidos", 
+            joinColumns = @JoinColumn(name = "jugador_id"),
+            inverseJoinColumns = @JoinColumn(name = "partido_id"),
+            foreignKey = @ForeignKey(name = "fk_jugador_partidos_jugador_id", 
+                        foreignKeyDefinition = "FOREIGN KEY (jugador_id) REFERENCES jugadores(id) ON DELETE SET NULL"),
+            inverseForeignKey = @ForeignKey(name = "fk_jugador_partidos_partido_id",
+                        foreignKeyDefinition = "FOREIGN KEY (partido_id) REFERENCES partidos(id) ON DELETE SET NULL"))
+    private Set<Partido> partidos; 
+
+	@OneToMany(mappedBy = "creador", cascade = CascadeType.ALL)
+    private List<Partido> partidosCreados; 
 
 
     

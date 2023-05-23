@@ -52,13 +52,13 @@
                             <td>
                                 <spring:url value="/jugadores/solicitudes/aceptar/${solicitud.id}" var="aceptarSolicitudUrl"></spring:url>
                                 <a href="${fn:escapeXml(aceptarSolicitudUrl)}">
-                                    <p class="btn btn-success">Aceptar solicitud</p>
+                                    <p class="btn btn-green">Aceptar solicitud</p>
                                 </a>
                             </td>
                             <td>
                                 <spring:url value="/jugadores/solicitudes/denegar/${solicitud.id}" var="denegarSolicitudUrl"></spring:url>
                                 <a href="${fn:escapeXml(denegarSolicitudUrl)}">
-                                    <p class="btn btn-danger">Denegar solicitud</p>
+                                    <p class="btn btn-red">Denegar solicitud</p>
                                 </a>
                             </td>
                             </tr>

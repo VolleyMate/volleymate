@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 @Controller
 public class PartidoController {
@@ -57,6 +58,7 @@ public class PartidoController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){
     		Page<Partido> partidos = partidoService.filtrarPartidos(sexo,tipo,page);
+			
 			Integer numPartidos = partidos.getNumberOfElements();
     		model.put("partidos", partidos);
 			model.put("numPartidos", numPartidos);

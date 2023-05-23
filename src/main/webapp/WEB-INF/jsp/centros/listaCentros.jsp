@@ -8,13 +8,15 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <petclinic:layout pageName="listaCentros">
-    <h1>Centros disponibles</h1>
+
+<h1>Centros disponibles</h1>
 
     <div class="row">
         <c:if test="${numCentros == 0}">
             Aún no se ha aceptado ningún centro.
         </c:if>
         <c:if test="${numCentros != 0}">
+            
             <c:forEach items="${centros.content}" var="centro">
                 <div class="col-md-4">
                     <div class="card">
@@ -65,21 +67,18 @@
             <p style="font-size: large;">Página ${centros.number + 1} de ${centros.totalPages}</p>
         </c:if>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center;">
-        <div class="col-md-6 text-right">
-            <a href="/centros/solicitud/new" class="btn btn-default">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo centro
-            </a>
-        </div>
-        <div class="row" style="width: 100%;">
+
+    </div>
+    <div class="row" style="width: 100%; padding-top: 5%;">
         <div class="col-md-6 text-left">
+            <a href="/centros/solicitud/new" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Solicitar centro</a>
             <sec:authorize access="hasAuthority('admin')">
-            <a href="/centros/solicitud/list" class="btn btn-default"> <span  aria-hidden="true"></span> Ver solicitudes [ADMIN]</a>
+            <a href="/centros/solicitud/list" class="btn btn-default"> <span  aria-hidden="true"></span> Ver solicitudes</a>
         </sec:authorize>
         </div>
-        </div>
     </div>
-    </div>
+
 
 </petclinic:layout>
 

@@ -27,11 +27,13 @@
                               </p>                              
                             <p class="card-text">
                                 <strong>Jugador:</strong> 
-                                <spring:url value="/jugadores/${id}" var="verURL">
-                                    <spring:param name="id" value="${jugador.id}" />
+                                
+                                <spring:url value="/jugadores/{id}" var="verURL">
+                                    <spring:param name="id" value="${valoracion.ratingPlayer.id}" />
                                 </spring:url>
                                 <a href="${fn:escapeXml(verURL)}" class="btn">
-                                    <c:out value="${valoracion.ratingPlayer.user.username}"/> 
+                                    <c:out value="${valoracion.ratingPlayer.user.username}"/>
+                                    <img class="rounded d-block" style="padding-left: 6%;" src="${valoracion.ratingPlayer.image}" width="70" height="60" alt="jugador">
                                 </a>
                             </p>
                             <p class="card-text">
@@ -89,6 +91,9 @@
     a{
         color: black;
     }
-    a:hover{
+
+    .btn:hover {
+        color: inherit; /* o el color que desees para el texto */
+        text-decoration: none; /* opcional: quitar la subraya si está presente */
     }
 </style>

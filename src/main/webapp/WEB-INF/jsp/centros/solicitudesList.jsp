@@ -30,9 +30,11 @@
                                 <strong>Ciudad:</strong> <c:out value="${centro.ciudad}"/>
                             </p>
                             <p class="card-text">
-                                <strong>Dirección en el mapa:</strong> <c:out value="${centro.maps}"/>
+                                <strong>Dirección en el mapa:</strong>
+                                <spring:url value="${centro.maps}" var="añadirURL"></spring:url>
+                                <a href="${añadirURL}" class="btn btn-default">Link</a>
                             </p>
-                            <div>
+                            <div style="padding-top: 5%;">
                                 <a href="/centros/solicitud/accept/${centro.id}" class="btn btn-default" style="background-color: green;">
                                     <span class="glyphicon" aria-hidden="true"></span> Aceptar solicitud
                                 </a>

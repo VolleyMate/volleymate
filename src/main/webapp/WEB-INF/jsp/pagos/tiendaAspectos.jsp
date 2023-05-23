@@ -62,7 +62,7 @@
                                             <spring:param name="aspectoId" value="${aspecto.id}"/>
                                         </spring:url>
                                         <a href="${fn:escapeXml(comprarAspectoUrl)}">
-                                            <p class="btn btn-warning" style="color: rgb(255, 255, 255);">Comprar</p>
+                                            <p class="btn btn-default" style="background-color: goldenrod;">Comprar</p>
                                         </a>   
                                         <div style="padding-top: 3%">
                                             <sec:authorize access="hasAuthority('admin')">
@@ -70,7 +70,7 @@
                                                      <spring:param name="aspectoId" value="${aspecto.id}" />
                                                 </spring:url>
                                                 <a href="${fn:escapeXml(editUrl)}">
-                                                    <p class="btn btn-primary" style="color: rgb(255, 255, 255);">Editar aspecto</p>
+                                                    <p class="btn btn-default">Editar aspecto</p>
                                                 </a>
                                             </sec:authorize> 
                                         </div>   
@@ -80,7 +80,7 @@
                                                      <spring:param name="aspectoId" value="${aspecto.id}" />
                                                 </spring:url>
                                                 <a href="${fn:escapeXml(deleteUrl)}">
-                                                    <p class="btn btn-primary" style="color: rgb(255, 255, 255);">Delete aspecto</p>
+                                                    <p class="btn btn-red" >Eliminar aspecto</p>
                                                 </a>
                                             </sec:authorize> 
                                         </div> 

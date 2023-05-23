@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ValoracionController {
@@ -54,11 +55,12 @@ public class ValoracionController {
 	}
 
 	@PostMapping(value = "/valoraciones/new/{jugadorId}")
-	public String processCreationForm(@Valid Valoracion valoracion, BindingResult result, ModelMap model) {
+	public String processCreationForm(@Valid Valoracion valoracion, BindingResult result, ModelMap model, RedirectAttributes redirAttrs) {
 		if (result.hasErrors()) {
 			return VIEW_VALORACION_CREATE_OR_UPDATE;
 		} else {
 			this.vService.saveValoracion(valoracion);
+			redirAttrs.addFlashAttribute("mensajeExitoso", "Valoración enviada correctamente");
 			return "redirect:/jugadores/" + valoracion.getRatedPlayer().getId();
 		}
 	}

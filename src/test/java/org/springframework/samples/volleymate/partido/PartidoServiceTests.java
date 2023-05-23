@@ -1,5 +1,7 @@
-package org.springframework.samples.volleymate.jugador;
+package org.springframework.samples.volleymate.partido;
 
+
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,19 +27,22 @@ import org.springframework.samples.volleymate.user.Authorities;
 import org.springframework.samples.volleymate.user.AuthoritiesService;
 import org.springframework.samples.volleymate.user.User;
 import org.springframework.samples.volleymate.user.UserService;
+import org.springframework.samples.volleymate.jugador.Jugador;
+import org.springframework.samples.volleymate.jugador.JugadorService;
 import org.springframework.stereotype.Service;
 import org.springframework.test.annotation.DirtiesContext;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class), properties = {
 	"spring.jpa.database-platform: org.hibernate.dialect.H2Dialect" })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class JugadorServiceTests {
-
-	@Autowired
+class PartidoServiceTests {
+    @Autowired
 	protected JugadorService jugadorService;
 
 	@Autowired
@@ -60,13 +65,11 @@ class JugadorServiceTests {
 
 
 
-	@BeforeEach
-	void setup() {
-		
 
-		// ==== Jugador2 ==== //
+    @BeforeEach
+    public void setUp(){
 
-		User user2 = new User();
+        User user2 = new User();
 		user2.setUsername("Test2");
 		user2.setPassword("123");
 		user2.setEnabled(true);
@@ -77,12 +80,12 @@ class JugadorServiceTests {
         user2.setAuthorities(new HashSet<Authorities>(Arrays.asList(rol2)));
 		
 
-		Jugador barba = new Jugador();
-		barba.setFirstName("Barba");
-		barba.setLastName("Davis");
-		barba.setUser(user2);
-        barba.setVolleys(200);
-        barba.setSexo(Sexo.MASCULINO);
+		Jugador alejandro = new Jugador();
+		alejandro.setFirstName("Alejandro");
+		alejandro.setLastName("Carrasco");
+		alejandro.setUser(user2);
+        alejandro.setVolleys(200);
+        alejandro.setSexo(org.springframework.samples.volleymate.jugador.Sexo.MASCULINO);
 
 		// ==== Jugador3 ==== //
 		User user3 = new User();
@@ -100,7 +103,7 @@ class JugadorServiceTests {
 		jugador3.setLastName("Davis");
 		jugador3.setUser(user3);
 		jugador3.setVolleys(200);
-		jugador3.setSexo(Sexo.MASCULINO);
+		jugador3.setSexo(org.springframework.samples.volleymate.jugador.Sexo.MASCULINO);
 
 		jugadorService.saveJugador(jugador3);
 		
@@ -114,20 +117,20 @@ class JugadorServiceTests {
 		centro.setDireccion("Dirrección de prueba");
 		centro.setEstado(true);
 		centro.setMaps("https://goo.gl/maps/P5uyWUKnDqNLAbnE6");
-		
-		Partido partido = new Partido();
+        
+        Partido partido = new Partido();
 		partido.setNombre("Partido de prueba");
-		partido.setSexo(org.springframework.samples.volleymate.partido.Sexo.MASCULINO);
-		partido.setDescripcion("Descripción de prueba");
+		partido.setSexo(Sexo.MASCULINO);
+        partido.setDescripcion("Descripción de prueba");
 		partido.setTipo(Tipo.VOLEIBOL);
 		partido.setCentro(centro);
 		partido.setFecha(LocalDateTime.of(2024, 6, 12, 12, 0, 0));
 		partido.setFechaCreacion(LocalDateTime.of(2024, 6, 11, 12, 0, 0));
 		partido.setPrecioPersona(100);
 		partido.setNumJugadoresNecesarios(5);
-		partido.setCreador(barba);
+		partido.setCreador(alejandro);
 		List<Jugador> jugadores = new ArrayList<Jugador>();
-		jugadores.add(barba);
+		jugadores.add(alejandro);
 		partido.setJugadores(jugadores);
 
 		
@@ -152,7 +155,7 @@ class JugadorServiceTests {
 		george.setLastName("Davis");
 		george.setUser(user);
         george.setVolleys(200);
-        george.setSexo(Sexo.MASCULINO);
+        george.setSexo(org.springframework.samples.volleymate.jugador.Sexo.MASCULINO);
 		Set<Partido> partidos = new HashSet<Partido>();
 		partidos.add(partido);
 		george.setPartidos(partidos);
@@ -174,114 +177,69 @@ class JugadorServiceTests {
 		partidoService.save(partido2);
 
 		
-		jugadorService.saveJugador(barba);
+		jugadorService.saveJugador(alejandro);
 		jugadorService.saveJugador(george);
+    }
 
+    @Test
+	public void shouldFindAllPartidos() {
+		List<Partido> partidos = partidoService.findAllPartidos();
+		assertThat(partidos).isNotNull();
+		assertThat(partidos.size()).isEqualTo(2);
 	}
 
 	@Test
-	public void shouldFindAllJugadores() {
-		List<Jugador> jugadores = jugadorService.findAll();
-		assertThat(jugadores).isNotNull();
-		assertThat(jugadores.size()).isEqualTo(3);
-	}
-
-	@Test
-	public void shouldFindJugadorById() {
-		Jugador jugador = jugadorService.findJugadorById(2);
-		assertThat(jugador).isNotNull();
-		assertThat(jugador.getFirstName()).isEqualTo("Barba");
-	}
-
-	@Test
-	public void shouldFindJugadorByUsername() {
-		Jugador jugador = jugadorService.findJugadorByUsername("Test");
-		assertThat(jugador).isNotNull();
-		assertThat(jugador.getFirstName()).isEqualTo("George");
-	}
-
-	@Test
-	public void shouldUnirseAPartido() throws YaUnidoException{
-		Jugador jugador = jugadorService.findJugadorByUsername("Test2");
+	public void shouldFindPartidoById() {
 		Partido partido = partidoService.findPartidoById(2);
-		jugadorService.unirsePartida(jugador.getId(), partido.getId());
-		Partido partido2 = partidoService.findPartidoById(1);
-		assertThat(partido2.getJugadores().size()).isEqualTo(1);
+		assertThat(partido).isNotNull();
+		assertThat(partido.getDescripcion().equals("Descripción de prueba 2"));
 	}
 
 	@Test
-	public void shouldCrearEliminarSolicitud(){
-		Jugador jugador = jugadorService.findJugadorByUsername("Test");
-		Partido partido = partidoService.findPartidoById(1);
-		jugadorService.crearSolicitudPartido(jugador, partido);
-		assertThat(solicitudService.findAllSolicitudesByPartidoId(partido.getId()).size()).isEqualTo(1);
-		Set<Solicitud> solicitudes = solicitudService.findAllSolicitudesByPartidoId(partido.getId());
-		List<Solicitud> listaSolicitudes = new ArrayList<>(solicitudes);
-		jugadorService.eliminarSolicitud(listaSolicitudes.get(0));
-		assertThat(solicitudService.findAllSolicitudesByPartidoId(partido.getId()).size()).isEqualTo(0);
+	public void shouldFindPartidoByJugador() {
+		Jugador jugador = jugadorService.findJugadorByUsername("Test3");
+		Page<Partido> partidos = partidoService.buscarPartidosPorJugador(0, jugador);
+		assertThat(partidos).isNotNull();
+		assertThat(partidos.getSize()).isEqualTo(6);
 	}
 
 	@Test
-	public void shoulFindPartidosByJugadorId(){
-		assertThat(jugadorService.findPartidosByJugadorId(2).size()).isEqualTo(1);
+	public void shouldFiltrarPartidos() {
+		Page<Partido> partidos = partidoService.filtrarPartidos(org.springframework.samples.volleymate.partido.Sexo.MASCULINO, Tipo.VOLEIBOL, 0);
+		assertThat(partidos).isNotNull();
+		assertThat(partidos.getSize()).isEqualTo(6);
 	}
 
 	@Test
-	public void testFindErroresCrearJugador() {
-		// Preparación
-		Jugador jugador = new Jugador();
-		jugador.setFirstName("Juan");
-		jugador.setLastName("García");
-		jugador.setTelephone("12345678");
-		User user = new User();
-		user.setCorreo("juan.garcia@gmail.com");
-		user.setPassword("123456789");
-		user.setUsername("usuario");
-		jugador.setUser(user);
-
-		// Ejecución
-		List<String> errores = jugadorService.findErroresCrearJugador(jugador);
-
-		// Comprobación
-		assertEquals(1, errores.size());
-		assertEquals("El teléfono debe tener 9 cifras", errores.get(0));
-
-		Jugador jugador2 = new Jugador();
-		jugador2.setFirstName("Juan");
-		jugador2.setLastName("García");
-		jugador2.setTelephone("657236154");
-		User user2 = new User();
-		user2.setCorreo("juan.garci");
-		user2.setPassword("123456789");
-		user2.setUsername("usuario");
-		jugador2.setUser(user2);
-
-		// Ejecución
-		List<String> errores2 = jugadorService.findErroresCrearJugador(jugador2);
-
-		assertEquals(1, errores2.size());
-		assertEquals("El correo no es válido", errores2.get(0));
-
-		
+	public void shouldFindCiudades() {
+		Set<String> ciudades = partidoService.getCiudades();
+		assertThat(ciudades).isNotNull();
+		assertThat(ciudades.size()).isEqualTo(1);
 	}
-
-	@Test
-	public void esAdminTest(){
-		Jugador jugador = jugadorService.findJugadorByUsername("Test");
-		assertThat(jugadorService.esAdmin(jugador)).isEqualTo(true);
-		Jugador jugador2 = jugadorService.findJugadorByUsername("Test2");
-		assertThat(jugadorService.esAdmin(jugador2)).isEqualTo(false);
-	}
-
-	/*@Test
-	public void shouldDeleteJugador(){
-		Jugador jugador = jugadorService.findJugadorByUsername("Test");
-		jugadorService.deleteJugador(jugador);
-		assertThat(jugadorService.findAll().size()).isEqualTo(2);
-	}*/
-
-
 	
 
-}
+	@Test
+	public void shouldFindPartidosByCreador() {
+		Jugador jugador = jugadorService.findJugadorByUsername("Test2");
+		Set<Partido> partidos = partidoService.getPartidosByCreatorId(jugador.getId());
+		assertThat(partidos).isNotNull();
+		assertThat(partidos.size()).isEqualTo(1);
+	}
 
+	@Test
+	public void shouldbuscarPartidosPorJugador() {
+		Jugador jugador = jugadorService.findJugadorByUsername("Test2");
+		Page<Partido> partidos = partidoService.buscarPartidosPorJugador(0, jugador);
+		assertThat(partidos).isNotNull();
+		assertThat(partidos.getSize()).isEqualTo(6);
+	}
+
+	@Test
+	public void shouldEditarPartido() {
+		Partido partido = partidoService.findPartidoById(1);
+		Jugador jugador = partido.getCreador();
+		Boolean puedeEditar = partidoService.puedeEditarPartido(jugador, partido);
+		assertThat(puedeEditar).isTrue();
+	}
+
+}
