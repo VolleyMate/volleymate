@@ -197,6 +197,7 @@ public String processEditForm(@Valid Jugador jugador, BindingResult result, @Pat
         userToUpdate.setPassword(jugador.getUser().getPassword());
 
         this.jugadorService.saveJugador(jugadorToUpdate);
+        redirAttrs.addFlashAttribute("mensajeExitoso", "Jugador editado correctamente");
         return "redirect:/jugadores";
     }
 }
@@ -441,11 +442,12 @@ public String processEditForm(@Valid Jugador jugador, BindingResult result, @Pat
     }
 
     @GetMapping(value="/jugadores/setAspecto/{aspectoId}")
-    public String setAspecto(Principal principal, ModelMap model, @PathVariable("aspectoId") Integer aspectoId){
+    public String setAspecto(Principal principal, ModelMap model, @PathVariable("aspectoId") Integer aspectoId, RedirectAttributes redirAttrs){
         Jugador jugador = this.jugadorService.findJugadorByUsername(principal.getName());
         Aspecto aspecto = aspectoService.findById(aspectoId);
         jugador.setImage(aspecto.getImagen());
         jugadorService.saveJugador(jugador);
+        redirAttrs.addFlashAttribute("mensajeExitoso", "Aspecto cambiado con éxito");
         return "redirect:/jugadores";
     }
 
@@ -455,11 +457,12 @@ public String processEditForm(@Valid Jugador jugador, BindingResult result, @Pat
     }
 
     @GetMapping(value="/jugadores/volleys/add/{playerUsername}")
-    public String addVolleys(Principal principal, @PathVariable("playerUsername") String playerUsername, ModelMap model){
+    public String addVolleys(Principal principal, @PathVariable("playerUsername") String playerUsername, ModelMap model,RedirectAttributes redirAttrs){
         Jugador jugadorAñadir = this.jugadorService.findJugadorByUsername(playerUsername);
         Integer sumVolleys = jugadorAñadir.getVolleys() + 150;
         jugadorAñadir.setVolleys(sumVolleys);
         this.jugadorService.saveJugador(jugadorAñadir);
+        redirAttrs.addFlashAttribute("mensajeExitoso", "Volleys añadidos con éxito");
         return "redirect:/jugadores/"+jugadorAñadir.getId();        
     }
 
