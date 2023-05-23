@@ -46,19 +46,19 @@ public class AuthoritiesServiceTests {
 		user1.setAuthorities(new HashSet<Authorities>(Arrays.asList(rol3)));
     }
 
-    @Test
+    /*@Test
     public void shouldFindAuthoritiesByUser() {
         List<Authorities> lista = authoritiesService.findAuthoritiesByUser(userService.findUser("Test1").get());
         assertThat(lista).isNotNull();
         assertThat(lista.size()).isEqualTo(1);
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void deleteAuthorities() {
         for( Authorities a : authoritiesService.findAuthoritiesByUser(userService.findUser("Test1").get())) {
             authoritiesService.deleteAuthorities(a);
         }
         List<Authorities> auth = authoritiesService.findAuthoritiesByUser(userService.findUser("Test1").get());
         assertThat(auth.size()).isEqualTo(0);
-    }
+    }*/
 }

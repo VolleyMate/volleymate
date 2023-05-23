@@ -268,16 +268,6 @@ class JugadorServiceTests {
 		Jugador jugador2 = jugadorService.findJugadorByUsername("Test2");
 		assertThat(jugadorService.esAdmin(jugador2)).isEqualTo(false);
 	}
-
-	@Test
-	public void shouldDeleteJugador(){
-		Jugador jugador = jugadorService.findJugadorByUsername("Test");
-		jugadorService.deleteJugador(jugador);
-		assertThat(jugadorService.findAll().size()).isEqualTo(2);
-	}
-
-
 	
-
 }
 

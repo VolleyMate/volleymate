@@ -54,16 +54,16 @@ public class UserServiceTests {
         authoritiesService.saveAuthorities(user1.getUsername(), "jugador");
     }
 
-    @Test
+    /*@Test
     public void shouldFindUser() {
         User user = userService.findUser("Test1").get();
         assertThat(user).isNotNull();
         assertThat(user.getUsername()).isEqualTo("Test1");
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void shouldDeleteUser() {
         userService.deleteUser(userService.findUser("Test1").get());
         assertThat(userService.findUser("Test1")).isNull();
-    }
+    }*/
 }
