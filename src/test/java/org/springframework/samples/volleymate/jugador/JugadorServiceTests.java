@@ -279,9 +279,6 @@ class JugadorServiceTests {
 		jugadorService.deleteJugador(jugador);
 		assertThat(jugadorService.findAll().size()).isEqualTo(2);
 	}*/
-
-
 	
-
 }
 
