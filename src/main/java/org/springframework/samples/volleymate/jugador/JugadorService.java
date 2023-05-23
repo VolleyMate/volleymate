@@ -21,6 +21,8 @@ import org.springframework.samples.volleymate.solicitud.Solicitud;
 import org.springframework.samples.volleymate.solicitud.SolicitudRepository;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -303,6 +305,31 @@ public class JugadorService {
         return errores;
     }
 
+    public  List<String> findErroresCrearPartido (Partido partido, Principal principal){
+        List<String> errores = new ArrayList<>();
+        if(partido.getFecha().isBefore(LocalDateTime.now())) {
+            errores.add("La fecha no puede ser previa al día de hoy");
+        }
+        if(partido.getDescripcion()==null || partido.getDescripcion()=="") {
+            errores.add("La descripción no puede estar vacía");
+        }
+        if(partido.getNombre()==null || partido.getNombre()=="") {
+            errores.add("El nombre no puede estar vacío");
+        }
+        if(partido.getNumJugadoresNecesarios()==null || partido.getNumJugadoresNecesarios()<=1){
+            errores.add("El número de jugadores debe ser mayor que 1");
+        }
+        Jugador jugador = jugadorRepository.findByUsername(principal.getName());
+        if(partido.getSexo().equals(org.springframework.samples.volleymate.partido.Sexo.MASCULINO) && jugador.getSexo().equals(org.springframework.samples.volleymate.jugador.Sexo.FEMENINO)) {
+            errores.add("No puedes crear un partido masculino siendo mujer");
+        }
+        if(partido.getSexo().equals(org.springframework.samples.volleymate.partido.Sexo.FEMENINO) && jugador.getSexo().equals(org.springframework.samples.volleymate.jugador.Sexo.MASCULINO)) {
+            errores.add("No puedes crear un partido femenino siendo hombre");
+        }
+        return errores;
+    }
+
     
+
 
 }
