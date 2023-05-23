@@ -100,26 +100,8 @@ public class PartidoController {
 
 	@PostMapping(value = "/partidos/new")
 	public String processCreationForm(@Valid Partido partido, BindingResult result, ModelMap model,Principal principal, RedirectAttributes redirAttrs) throws YaUnidoException {
-		List<String> errores = new ArrayList<>();
-		if(partido.getFecha().isBefore(LocalDateTime.now())) {
-			errores.add("La fecha no puede ser previa al día de hoy");
-		}
-		if(partido.getDescripcion()==null || partido.getDescripcion()=="") {
-			errores.add("La descripción no puede estar vacía");
-		}
-		if(partido.getNombre()==null || partido.getNombre()=="") {
-			errores.add("El nombre no puede estar vacío");
-		}
-		if(partido.getNumJugadoresNecesarios()==null || partido.getNumJugadoresNecesarios()<=1){
-			errores.add("El número de jugadores debe ser mayor que 1");
-		}
+		List<String> errores = jugadorService.findErroresCrearPartido(partido, principal);
 		Jugador jugador = jugadorService.findJugadorByUsername(principal.getName());
-		if(partido.getSexo().equals(Sexo.MASCULINO) && jugador.getSexo().equals(org.springframework.samples.volleymate.jugador.Sexo.FEMENINO)) {
-			errores.add("No puedes crear un partido masculino siendo mujer");
-		}
-		if(partido.getSexo().equals(Sexo.FEMENINO) && jugador.getSexo().equals(org.springframework.samples.volleymate.jugador.Sexo.MASCULINO)) {
-			errores.add("No puedes crear un partido femenino siendo hombre");
-		}
 		if (!errores.isEmpty()) {
 			model.put("partido", partido);
 			model.put("errors", errores);
@@ -189,13 +171,17 @@ public class PartidoController {
 	
 	
 	@PostMapping(value = "/partidos/edit/{id}")
-	public String processEditForm(@Valid Partido partido, BindingResult result, @PathVariable("id") int id, Map<String, Object> model, RedirectAttributes redirAttrs){
-
-		if(result.hasErrors()){
-			model.put("errors", result.getAllErrors());
+	public String processEditForm(@Valid Partido partido, BindingResult result, @PathVariable("id") int id, Map<String, Object> model, RedirectAttributes redirAttrs,Principal principal){
+		List<String> errores = jugadorService.findErroresCrearPartido(partido, principal);
+		if(!errores.isEmpty()){
+			model.put("errors",errores);
+			model.put("centros", centroService.findAcceptedCentros());
 			return "partidos/editarPartido";
-		}
-		else {
+		} else if(result.hasErrors()){
+			model.put("errors",errores);
+			model.put("centros", centroService.findAcceptedCentros());
+			return "partidos/editarPartido";
+		}else {
 			Partido partidoUpdate = this.partidoService.findPartidoById(partido.getId());
 			BeanUtils.copyProperties(partido,partidoUpdate,"mensajes","jugadores","solicitudes","creador","fechaCreacion","precioPersona"); 
 			this.partidoService.save(partidoUpdate);
