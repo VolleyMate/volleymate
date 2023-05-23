@@ -70,7 +70,7 @@ public class AspectoServiceTests {
 
         // ==== Aspecto1 ==== //
         Aspecto aspecto1 = new Aspecto();
-        aspecto1.setImagen("string");
+        aspecto1.setImagen("https://img.freepik.com/vector-premium/caricatura-persona-sosteniendo-pelota_494525-740.jpg?size=626&ext=jpg");
         aspecto1.setPrecio(250);
         List<Jugador> jugadores1 = new ArrayList<>();
         jugadores1.add(jugador3);
@@ -78,7 +78,7 @@ public class AspectoServiceTests {
         aspectoService.save(aspecto1);
 
         Aspecto aspecto2 = new Aspecto();
-        aspecto2.setImagen("string");
+        aspecto2.setImagen("https://img.freepik.com/vector-premium/caricatura-persona-sosteniendo-pelota_494525-740.jpg?size=626&ext=jpg");
         aspecto2.setPrecio(0);
         List<Jugador> jugadores2 = new ArrayList<>();
         jugadores2.add(jugador3);
