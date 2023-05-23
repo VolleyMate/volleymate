@@ -111,6 +111,7 @@ public class MensajeServiceTests {
         jugadores.add(jugador2);
         jugadores.add(jugador1);
         partido.setJugadores(jugadores);
+        
         partidoService.save(partido);
 
         // === Mensaje 1 === //
@@ -118,6 +119,7 @@ public class MensajeServiceTests {
        mensaje.setContenidoMensaje("Este es un contenido de prueba");
        mensaje.setEmisor(jugador2);
        mensaje.setPartido(partido);
+       mensajeService.save(mensaje);
 
         List<Mensaje> mensajes = new ArrayList<>();
         mensajes.add(mensaje);
