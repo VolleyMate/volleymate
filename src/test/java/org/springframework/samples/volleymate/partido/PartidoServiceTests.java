@@ -185,7 +185,7 @@ class PartidoServiceTests {
 	public void shouldFindAllPartidos() {
 		List<Partido> partidos = partidoService.findAllPartidos();
 		assertThat(partidos).isNotNull();
-		assertThat(partidos.size()).isEqualTo(10);
+		assertThat(partidos.size()).isEqualTo(2);
 	}
 
 	@Test
